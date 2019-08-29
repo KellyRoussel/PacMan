@@ -29,6 +29,17 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void run() {
     	running = true;
+<<<<<<< HEAD
+=======
+    	long beforeTime, afterTime, timeDiff, sleepTime;
+    	long overSleepTime = 0;
+    	int noDelays = 0;
+    	long excess = 0;
+    	
+    	beforeTime =  java.lang.System.nanoTime(); 
+    	long period = 2000;
+    	
+>>>>>>> 4265f65227683a081b33fdc875e05eb7c5aeb922
     	while(running) {
     		gameUpdate();
     		gameRender();
