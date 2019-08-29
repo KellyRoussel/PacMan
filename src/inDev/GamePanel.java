@@ -1,39 +1,20 @@
 package inDev;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.Timer;
-
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import sun.java2d.loops.DrawRect;
 
 
 public class GamePanel extends JPanel implements Runnable{
 	
 	
-	private Timer timer;
     private PacMan pacMan;
-    private final int DELAY = 10;
     private Image dbImage = null;
     public boolean running;
 
@@ -47,15 +28,14 @@ public class GamePanel extends JPanel implements Runnable{
     	while(running) {
     		//gameUpdate();
     		gameRender();
-    		repaint();
+    		paintScreen();
     		
     		try {
-    			Thread.sleep(20);
+    			Thread.sleep(1);
     		}catch(InterruptedException ex) {}
     	}
     }
 
-    
     
     
     private void initPanel() {
@@ -76,24 +56,22 @@ public class GamePanel extends JPanel implements Runnable{
 
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        doDrawing(g);
-        
-        Toolkit.getDefaultToolkit().sync();
-    }
-    
-    private void doDrawing(Graphics g) {
-        
-        Graphics2D g2d = (Graphics2D) g;
-
-        g2d.drawImage(pacMan.getImage(), pacMan.getX(), 
+    private void paintScreen() {
+    	Graphics g;
+    	try {
+    		g = this.getGraphics();
+    		if((g!=null) && (dbImage != null)) {
+    			g.drawImage(pacMan.getImage(), pacMan.getX(), 
         		pacMan.getY(), this);
+    		}
+    		 Toolkit.getDefaultToolkit().sync();
+    		 g.dispose();
+    	}catch(Exception e) {
+    		System.out.println("Graphics context error: "+e);
+    	}
     }
     
-    
+   
     private void gameRender() {
         
     	if (dbImage == null){
