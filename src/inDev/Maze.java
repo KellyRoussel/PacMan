@@ -1,6 +1,7 @@
 package inDev;
 
 public class Maze {
+	
 	public void load() {
 		
 	}
