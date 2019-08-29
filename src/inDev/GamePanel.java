@@ -46,6 +46,12 @@ public class GamePanel extends JPanel implements KeyListener{
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("Left key pressed");
         }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            System.out.println("Up key pressed");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            System.out.println("Down key pressed");
+        }
 		
 	}
 	@Override
@@ -56,6 +62,12 @@ public class GamePanel extends JPanel implements KeyListener{
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("Left key realeased");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            System.out.println("Up key realeased");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            System.out.println("Down key realeased");
         }
 		
 	}
