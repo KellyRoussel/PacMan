@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     }
 
     
-   
+    
     
     private void initPanel() {
 
@@ -121,6 +121,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
         repaint(pacMan.getX(), pacMan.getY(), 
         		pacMan.getWidth(), pacMan.getHeight());     
     }    
+
 
 	
 	public void startGame() {
