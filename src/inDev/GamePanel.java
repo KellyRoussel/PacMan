@@ -28,15 +28,42 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void run() {
     	running = true;
+    	long beforeTime, afterTime, timeDiff, sleepTime;
+    	long overSleepTime = 0;
+    	int noDelays = 0;
+    	long excess = 0;
+    	
+    	beforeTime =  java.lang.System.nanoTime(); 
+    	long period = 1;
+    	
     	while(running) {
     		gameUpdate();
     		gameRender();
     		paintScreen();
     		
-    		try {
-    			Thread.sleep(1);
-    		}catch(InterruptedException ex) {}
+    		afterTime =  java.lang.System.nanoTime();
+    		timeDiff = afterTime - beforeTime;
+    		sleepTime = (period - timeDiff) - overSleepTime;
+    		 if (sleepTime > 0) {     
+    			 try {        
+    				 Thread.sleep(sleepTime);      
+    				 }      
+    			 catch(InterruptedException ex){}      
+    			 overSleepTime = (java.lang.System.nanoTime() - afterTime) - sleepTime;   
+    			 }   
+    		 else {    
+    			 excess -= sleepTime;
+    			 overSleepTime = 0;
+    		     
+    			 if (++noDelays >= 2) {
+    				 Thread.yield();  
+    				 noDelays = 0;
+    			 }
     	}
+    		 beforeTime = java.lang.System.nanoTime();
+    	} 
+    	System.exit(0);
+
     }
 
     
@@ -99,20 +126,20 @@ public class GamePanel extends JPanel implements Runnable{
         		pacMan.getWidth(), pacMan.getHeight());     
     }    
 
-	public void playClip(String clip) { //play the music at the location "clip"
-		try {
-			File clipPath = new File(clip);
-			if(clipPath.exists()) {
-				AudioInputStream audioInput = AudioSystem.getAudioInputStream(clipPath);
-				Clip music = AudioSystem.getClip();
-				music.open(audioInput);
-				music.start();
-			}
-			else{System.out.println("Audio file couldn't be found");}
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+//	public void playClip(String clip) { //play the music at the location "clip"
+//		try {
+//			File clipPath = new File(clip);
+//			if(clipPath.exists()) {
+//				AudioInputStream audioInput = AudioSystem.getAudioInputStream(clipPath);
+//				Clip music = AudioSystem.getClip();
+//				music.open(audioInput);
+//				music.start();
+//			}
+//			else{System.out.println("Audio file couldn't be found");}
+//		}catch(Exception ex) {
+//			ex.printStackTrace();
+//		}
+//	}
 	
 	public void startGame() {
 		new Thread(this).start();
