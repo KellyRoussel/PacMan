@@ -2,6 +2,7 @@ package inDev;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 
@@ -21,7 +22,7 @@ public class PacMan implements Character{
 
 	    private void loadImage() {
 	        
-	        ImageIcon ii = new ImageIcon("cr.png");
+	        ImageIcon ii = new ImageIcon("ressources"+File.separator+"cr.png");
 	        image = ii.getImage(); 
 	        
 	        w = image.getWidth(null);
