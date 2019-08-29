@@ -1,5 +1,7 @@
 package inDev;
 
+import java.awt.Graphics;
+
 public class Ghost implements Character{
 	
 	public static boolean state = true;
@@ -7,7 +9,7 @@ public class Ghost implements Character{
 	private GhostStrategy stategy;
 	
 	@Override
-	public void draw() {
+	public void draw(Graphics g) {
 		// TODO Auto-generated method stub
 		
 	}

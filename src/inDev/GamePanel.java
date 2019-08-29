@@ -18,9 +18,10 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	
     private PacMan pacMan;
-    private Image dbImage = null;
     public boolean running;
-
+    private Graphics dbg;
+    private Image dbImage = null;
+    
     public GamePanel() {
         initPanel();
         startGame();
@@ -65,9 +66,7 @@ public class GamePanel extends JPanel implements Runnable{
     	System.exit(0);
 
     }
-
-    
-    
+ 
     private void initPanel() {
 
         addKeyListener(new KeyAdapter() {
@@ -83,39 +82,51 @@ public class GamePanel extends JPanel implements Runnable{
         setFocusable(true);
 
         pacMan = new PacMan();
-
     }
 
     private void paintScreen() {
-    	Graphics g;
-    	try {
-    		g = this.getGraphics();
-    		if((g!=null) && (dbImage != null)) {
-    			g.drawImage(pacMan.getImage(), pacMan.getX(), 
-        		pacMan.getY(), this);
-    		}
-    		 Toolkit.getDefaultToolkit().sync();
-    		 g.dispose();
-    	}catch(Exception e) {
-    		System.out.println("Graphics context error: "+e);
-    	}
-    }
+        Graphics g;
+        try {
+			 g = this.getGraphics(); 
+			 g.drawImage(dbImage, 0, 0, null);
+			 Toolkit.getDefaultToolkit().sync(); 
+		}
+        catch (Exception e){ 
+        	System.out.println("Graphics context error: " + e);  
+        }
+	}
     
+    private void gameUpdate() {
+    	pacMan.move();
+    }	
+    
+<<<<<<< HEAD
+=======
     private void gameUpdate() {
     	pacMan.move();
     }
     
+>>>>>>> 157232fa61cc6e2b489efb0df3de016ae0db09db
     private void gameRender() {
-        
     	if (dbImage == null){
-            dbImage = createImage(600, 800);
+            dbImage = createImage(PacManGame.DefaultWidth-50, PacManGame.DefaultHeight-50);
             if (dbImage == null) {
               System.out.println("dbImage is null");
-              return; 
-            }
-            else
-            	dbImage.getGraphics().setColor(Color.white);
+			   return; }
+			else {
+				dbg = dbImage.getGraphics();
+			}
     	}
+<<<<<<< HEAD
+          // clear the background
+        dbg.setColor(Color.black);
+        dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
+
+        pacMan.draw(dbg);     
+
+    }    
+
+=======
     	
         dbImage.getGraphics().fillRect (0, 0, 600, 800);
         dbImage.getGraphics().setColor (Color.BLACK);
@@ -128,15 +139,19 @@ public class GamePanel extends JPanel implements Runnable{
 
 
 	
+>>>>>>> 157232fa61cc6e2b489efb0df3de016ae0db09db
 	public void startGame() {
 		new Thread(this).start();
 	}
+	
 	public void stop() {
 		
 	}
+	
 	public void pause() {
 		
 	}
+	
 	public void resume() {
 		
 	}
