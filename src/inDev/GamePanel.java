@@ -9,6 +9,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class GamePanel extends JPanel implements Runnable{
@@ -94,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
         		pacMan.getWidth(), pacMan.getHeight());     
     }    
 
-	public void playClip(String clip) {
+	public void playClip(String clip) { //play the music at the location "clip"
 		try {
 			File clipPath = new File(clip);
 			if(clipPath.exists()) {
