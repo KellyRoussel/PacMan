@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
     	long excess = 0;
     	
     	beforeTime =  java.lang.System.nanoTime(); 
-    	long period = 1;
+    	long period = 2000;
     	
     	while(running) {
     		gameUpdate();
