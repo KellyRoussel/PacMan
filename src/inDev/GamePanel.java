@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import sun.java2d.loops.DrawRect;
 
 
-public class GamePanel extends JPanel implements ActionListener, Runnable{
+public class GamePanel extends JPanel implements Runnable{
 	
 	
 	private Timer timer;
@@ -74,8 +74,6 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
 
         pacMan = new PacMan();
 
-        timer = new Timer(DELAY, this);
-        timer.start();
     }
 
     @Override
@@ -95,10 +93,6 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
         		pacMan.getY(), this);
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-    }
     
     private void gameRender() {
         
