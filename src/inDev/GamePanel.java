@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	private Timer timer;
     private PacMan pacMan;
     private final int DELAY = 10;
+    private Image dbImage = null;
 
     public GamePanel() {
         initPanel();
@@ -77,10 +79,24 @@ public class GamePanel extends JPanel implements ActionListener{
     
     private void step() {
         
-    	pacMan.move();
+    	if (dbImage == null){
+            dbImage = createImage(600, 800);
+            if (dbImage == null) {
+              System.out.println("dbImage is null");
+              return; 
+            }
+            else
+            	dbImage.getGraphics().setColor(Color.white);
+    	}
+    	
+        dbImage.getGraphics().fillRect (0, 0, 600, 800);
+        dbImage.getGraphics().setColor (Color.BLACK);
         
-        repaint(pacMan.getX()-1, pacMan.getY()-1, 
-        		pacMan.getWidth()+2, pacMan.getHeight()+2);     
+        pacMan.move();
+        this.repaint();
+        this.validate();
+        repaint(pacMan.getX(), pacMan.getY(), 
+        		pacMan.getWidth(), pacMan.getHeight());     
     }    
 
     private class TAdapter extends KeyAdapter {
