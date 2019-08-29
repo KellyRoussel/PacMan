@@ -41,11 +41,23 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+	    if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            System.out.println("Right key pressed");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("Left key pressed");
+        }
 		
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            System.out.println("Right key realeased");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("Left key realeased");
+        }
 		
 	}
 }
