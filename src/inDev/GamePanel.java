@@ -39,6 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
 
     public GamePanel() {
         initPanel();
+        startGame();
     }
     
     public void run() {
@@ -97,7 +98,6 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        gameRender();
     }
     
     private void gameRender() {
@@ -125,7 +125,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
 
 	
 	public void startGame() {
-		
+		new Thread(this).start();
 	}
 	public void stop() {
 		
