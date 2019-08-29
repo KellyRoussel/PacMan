@@ -1,5 +1,6 @@
 package inDev;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -103,7 +104,8 @@ public class PacMan implements Character{
 	    }
 
 		@Override
-		public void draw() {
+		public void draw(Graphics g) {
+			g.drawImage(image, x, y, null);
 			// TODO Auto-generated method stub
 			
 		}
@@ -113,4 +115,5 @@ public class PacMan implements Character{
 			// TODO Auto-generated method stub
 			
 		}
+
 	}
