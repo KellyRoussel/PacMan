@@ -3,55 +3,98 @@ package inDev;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.Timer;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import sun.java2d.loops.DrawRect;
 
-public class GamePanel extends JPanel implements KeyListener{
+
+public class GamePanel extends JPanel implements ActionListener{
 	
-	private static final int RECT_X = 20;
-	   private static final int RECT_Y = RECT_X;
-	   private static final int RECT_WIDTH = 100;
-	   private static final int RECT_HEIGHT = RECT_WIDTH;
+	
+	
+	
+	private Timer timer;
+    private PacMan pacMan;
+    private final int DELAY = 10;
 
-	   @Override
-	   protected void paintComponent(Graphics g) {
-	      super.paintComponent(g);
-	      // draw the rectangle here
-	      g.drawRect(RECT_X, RECT_Y, RECT_WIDTH, RECT_HEIGHT);
-	   }
+    public GamePanel() {
+        initPanel();
+    }
 
-	   @Override
-	   public Dimension getPreferredSize() {
-	      // so that our GUI is big enough
-	      return new Dimension(RECT_WIDTH + 2 * RECT_X, RECT_HEIGHT + 2 * RECT_Y);
-	   }
+    private void initPanel() {
 
-	   // create the GUI explicitly on the Swing event thread
-	   private static void createAndShowGui() {
-	      GamePanel mainPanel = new GamePanel();
+        addKeyListener(new TAdapter());
+        setBackground(Color.black);
+        setFocusable(true);
 
-	      JFrame frame = new JFrame("DrawRect");
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      frame.getContentPane().add(mainPanel);
-	      frame.pack();
-	      frame.setLocationByPlatform(true);
-	      frame.setVisible(true);
-	   }
+        pacMan = new PacMan();
 
+        timer = new Timer(DELAY, this);
+        timer.start();
+    }
 
-	public GamePanel() {
-		SwingUtilities.invokeLater(new Runnable() {
-	         public void run() {
-	            createAndShowGui();
-	         }
-	      });
-	}
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        doDrawing(g);
+        
+        Toolkit.getDefaultToolkit().sync();
+    }
+    
+    private void doDrawing(Graphics g) {
+        
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.drawImage(pacMan.getImage(), pacMan.getX(), 
+        		pacMan.getY(), this);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        step();
+    }
+    
+    private void step() {
+        
+    	pacMan.move();
+        
+        repaint(pacMan.getX()-1, pacMan.getY()-1, 
+        		pacMan.getWidth()+2, pacMan.getHeight()+2);     
+    }    
+
+    private class TAdapter extends KeyAdapter {
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        	pacMan.keyReleased(e);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        	pacMan.keyPressed(e);
+        }
+    }
 	
 	public void startGame() {
 		
@@ -66,43 +109,4 @@ public class GamePanel extends JPanel implements KeyListener{
 		
 	}
 	
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-	    if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Right key pressed");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Left key pressed");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            System.out.println("Up key pressed");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            System.out.println("Down key pressed");
-        }
-		
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Right key realeased");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Left key realeased");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            System.out.println("Up key realeased");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            System.out.println("Down key realeased");
-        }
-		
-	}
 }

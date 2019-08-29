@@ -1,5 +1,6 @@
 package inDev;
 
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 
@@ -16,13 +17,14 @@ public class PacManGame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel gp = new GamePanel();
 		this.setContentPane(gp);
-		this.addKeyListener(gp);
 		this.setResizable(false);
 	}
 	
 	
 	
 	public static void main(String[] args) {
-		new PacManGame();
+		EventQueue.invokeLater(() -> {
+			new PacManGame();
+        });
 	}
 }
