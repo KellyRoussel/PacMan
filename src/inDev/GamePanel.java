@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import sun.java2d.loops.DrawRect;
 
 
-public class GamePanel extends JPanel implements ActionListener{
+public class GamePanel extends JPanel implements ActionListener, Runnable{
 	
 	
 	
@@ -35,9 +35,23 @@ public class GamePanel extends JPanel implements ActionListener{
 	private Timer timer;
     private PacMan pacMan;
     private final int DELAY = 10;
+    public boolean running;
 
     public GamePanel() {
         initPanel();
+    }
+    
+    public void run() {
+    	running = true;
+    	while(running) {
+    		//gameUpdate();
+    		//gameRender();
+    		repaint();
+    		
+    		try {
+    			Thread.sleep(20);
+    		}catch(InterruptedException ex) {}
+    	}
     }
 
     private void initPanel() {
