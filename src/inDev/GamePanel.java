@@ -1,9 +1,15 @@
 package inDev;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import sun.java2d.loops.DrawRect;
 
 public class GamePanel extends JPanel implements KeyListener{
 	
@@ -24,6 +30,9 @@ public class GamePanel extends JPanel implements KeyListener{
 	public void resume() {
 		
 	}
+
+	
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
