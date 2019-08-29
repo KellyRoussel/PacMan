@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void run() {
     	running = true;
     	while(running) {
-    		//gameUpdate();
+    		gameUpdate();
     		gameRender();
     		paintScreen();
     		
@@ -71,7 +71,10 @@ public class GamePanel extends JPanel implements Runnable{
     	}
     }
     
-   
+    private void gameUpdate() {
+    	pacMan.move();
+    }
+    
     private void gameRender() {
         
     	if (dbImage == null){
@@ -87,7 +90,6 @@ public class GamePanel extends JPanel implements Runnable{
         dbImage.getGraphics().fillRect (0, 0, 600, 800);
         dbImage.getGraphics().setColor (Color.BLACK);
         
-        pacMan.move();
         this.repaint();
         this.validate();
         repaint(pacMan.getX(), pacMan.getY(), 
