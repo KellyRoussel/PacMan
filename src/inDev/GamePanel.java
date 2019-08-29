@@ -29,42 +29,15 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void run() {
     	running = true;
-    	long beforeTime, afterTime, timeDiff, sleepTime;
-    	long overSleepTime = 0;
-    	int noDelays = 0;
-    	long excess = 0;
-    	
-    	beforeTime =  java.lang.System.nanoTime(); 
-    	long period = 1;
-    	
     	while(running) {
     		gameUpdate();
     		gameRender();
     		paintScreen();
     		
-    		afterTime =  java.lang.System.nanoTime();
-    		timeDiff = afterTime - beforeTime;
-    		sleepTime = (period - timeDiff) - overSleepTime;
-    		 if (sleepTime > 0) {     
-    			 try {        
-    				 Thread.sleep(sleepTime);      
-    				 }      
-    			 catch(InterruptedException ex){}      
-    			 overSleepTime = (java.lang.System.nanoTime() - afterTime) - sleepTime;   
-    			 }   
-    		 else {    
-    			 excess -= sleepTime;
-    			 overSleepTime = 0;
-    		     
-    			 if (++noDelays >= 2) {
-    				 Thread.yield();  
-    				 noDelays = 0;
-    			 }
+    		try {
+    			Thread.sleep(1);
+    		}catch(InterruptedException ex) {}
     	}
-    		 beforeTime = java.lang.System.nanoTime();
-    	} 
-    	System.exit(0);
-
     }
  
     private void initPanel() {
@@ -100,13 +73,6 @@ public class GamePanel extends JPanel implements Runnable{
     	pacMan.move();
     }	
     
-<<<<<<< HEAD
-=======
-    private void gameUpdate() {
-    	pacMan.move();
-    }
-    
->>>>>>> 157232fa61cc6e2b489efb0df3de016ae0db09db
     private void gameRender() {
     	if (dbImage == null){
             dbImage = createImage(PacManGame.DefaultWidth-50, PacManGame.DefaultHeight-50);
@@ -117,7 +83,6 @@ public class GamePanel extends JPanel implements Runnable{
 				dbg = dbImage.getGraphics();
 			}
     	}
-<<<<<<< HEAD
           // clear the background
         dbg.setColor(Color.black);
         dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
@@ -126,20 +91,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     }    
 
-=======
-    	
-        dbImage.getGraphics().fillRect (0, 0, 600, 800);
-        dbImage.getGraphics().setColor (Color.BLACK);
-        
-        this.repaint();
-        this.validate();
-        repaint(pacMan.getX(), pacMan.getY(), 
-        		pacMan.getWidth(), pacMan.getHeight());     
-    }    
-
-
-	
->>>>>>> 157232fa61cc6e2b489efb0df3de016ae0db09db
 	public void startGame() {
 		new Thread(this).start();
 	}
