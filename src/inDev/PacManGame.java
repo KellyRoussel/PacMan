@@ -1,5 +1,6 @@
 package inDev;
 
+import java.awt.Frame;
 import javax.swing.JFrame;
 
 public class PacManGame extends JFrame{
