@@ -36,14 +36,12 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
 	private Timer timer;
     private PacMan pacMan;
     private final int DELAY = 10;
-<<<<<<< HEAD
     private Image dbImage = null;
-=======
     public boolean running;
->>>>>>> 9ca1d5a42171497554a1816281814476a04fc119
 
     public GamePanel() {
         initPanel();
+        startGame();
     }
     
     public void run() {
@@ -130,7 +128,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     }
 	
 	public void startGame() {
-		
+		new Thread(this);
 	}
 	public void stop() {
 		
