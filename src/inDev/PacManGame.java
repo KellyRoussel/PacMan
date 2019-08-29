@@ -14,7 +14,9 @@ public class PacManGame extends JFrame{
 		this.setSize(DefaultWidth, DefaultHeight);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setContentPane(new GamePanel());
+		GamePanel gp = new GamePanel();
+		this.setContentPane(gp);
+		this.addKeyListener(gp);
 		this.setResizable(false);
 	}
 	

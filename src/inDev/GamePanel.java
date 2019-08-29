@@ -15,7 +15,6 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	
 	public GamePanel() {
-		this.addKeyListener(this);
 	}
 	
 	public void startGame() {
