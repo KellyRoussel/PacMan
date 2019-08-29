@@ -31,8 +31,6 @@ import sun.java2d.loops.DrawRect;
 public class GamePanel extends JPanel implements ActionListener, Runnable{
 	
 	
-	
-	
 	private Timer timer;
     private PacMan pacMan;
     private final int DELAY = 10;
@@ -48,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     	running = true;
     	while(running) {
     		//gameUpdate();
-    		//gameRender();
+    		gameRender();
     		repaint();
     		
     		try {
@@ -57,9 +55,20 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     	}
     }
 
+    
+   
+    
     private void initPanel() {
 
-        addKeyListener(new TAdapter());
+        addKeyListener(new KeyAdapter() {
+        	public void keyPressed(KeyEvent e) {
+        		pacMan.keyPressed(e);
+        	}
+        	public void keyReleased(KeyEvent e) {
+        		pacMan.keyReleased(e);
+        	}
+        });
+        
         setBackground(Color.black);
         setFocusable(true);
 
@@ -89,10 +98,10 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        step();
+        gameRender();
     }
     
-    private void step() {
+    private void gameRender() {
         
     	if (dbImage == null){
             dbImage = createImage(600, 800);
@@ -114,18 +123,6 @@ public class GamePanel extends JPanel implements ActionListener, Runnable{
         		pacMan.getWidth(), pacMan.getHeight());     
     }    
 
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-        	pacMan.keyReleased(e);
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-        	pacMan.keyPressed(e);
-        }
-    }
 	
 	public void startGame() {
 		new Thread(this);
