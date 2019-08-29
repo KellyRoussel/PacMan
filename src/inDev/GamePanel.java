@@ -99,20 +99,7 @@ public class GamePanel extends JPanel implements Runnable{
         		pacMan.getWidth(), pacMan.getHeight());     
     }    
 
-	public void playClip(String clip) { //play the music at the location "clip"
-		try {
-			File clipPath = new File(clip);
-			if(clipPath.exists()) {
-				AudioInputStream audioInput = AudioSystem.getAudioInputStream(clipPath);
-				Clip music = AudioSystem.getClip();
-				music.open(audioInput);
-				music.start();
-			}
-			else{System.out.println("Audio file couldn't be found");}
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+
 	
 	public void startGame() {
 		new Thread(this).start();
