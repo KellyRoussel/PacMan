@@ -12,7 +12,7 @@ public class PacMan implements Character{
 		private String direction = "Left";
 		private int style = 0;
 		private int counter = 0;
-	    private int dx;
+	    private int dx = -4;
 	    private int dy;
 	    private int x = 40;
 	    private int y = 60;
