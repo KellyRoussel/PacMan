@@ -28,7 +28,7 @@ public class GameController implements Runnable{
     	
     	pacMan = new PacMan();
 
-    	Sound beginning = new Sound(GameController.class.getResource("/Sounds/beginning.wav"));
+    	Sound background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
 
     	
         try {
@@ -62,8 +62,8 @@ public class GameController implements Runnable{
         	//	pacMan.keyReleased(e);
         	//}
         });
-        music = beginning;
-        beginning.play();
+        music = background;
+        background.loop();
         
         startGame();
 	}
@@ -85,7 +85,6 @@ public class GameController implements Runnable{
     }
 
 	private void gameUpdate() {
-
     	pacMan.move();
     }	
     
