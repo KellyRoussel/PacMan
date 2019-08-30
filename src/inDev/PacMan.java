@@ -74,25 +74,30 @@ public class PacMan implements Character{
 	        
 	        if (key == KeyEvent.VK_LEFT) {
 	        	direction = "Left";
-	            dx = -4;
+			dy = 0;
+	        	dx = -4;
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
 	        	direction = "Right";
-	            dx = 4;
+			dy = 0;
+	        	dx = 4;
 	        }
 
 	        if (key == KeyEvent.VK_UP) {
 	        	direction = "Up";
+			dx = 0;
 	        	dy = -4;
 	        }
 
 	        if (key == KeyEvent.VK_DOWN) {
 	        	direction = "Down";
-	            dy = 4;
+			dx = 0;
+	         	dy = 4;
 	        }
 	    }
-
+	    
+/*
 	    public void keyReleased(KeyEvent e) {
 	        
 	        int key = e.getKeyCode();
@@ -113,7 +118,7 @@ public class PacMan implements Character{
 	            dy = 0;
 	        }
 	    }
-
+*/
 		@Override
 		public void draw(Graphics g) {
 	        image = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png").getImage(); 
