@@ -1,5 +1,6 @@
 package inDev;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,6 +8,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.net.URL;
+
+import javax.swing.JPanel;
 
 public class GameController implements Runnable{
 	
@@ -24,7 +27,12 @@ public class GameController implements Runnable{
     	this.gamePanel = gamePanel;
     	this.frame = frame;
     	
-    	frame.setContentPane(gamePanel);
+		BorderLayout bl = new BorderLayout();
+		JPanel mainPane = new JPanel(bl);
+    	
+    	frame.setContentPane(mainPane);
+    	mainPane.add(gamePanel,BorderLayout.CENTER);
+    	mainPane.add(new StatusBar(), BorderLayout.SOUTH);
     	
     	pacMan = new PacMan();
 

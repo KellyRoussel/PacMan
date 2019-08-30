@@ -55,7 +55,7 @@ public class GamePanel extends JPanel{
         dbg.setColor(Color.black);
         dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
         
-        maze.draw(dbg, Math.min((this.getWidth())/30, (this.getHeight() - 100) / 33));
+        maze.draw(dbg, Math.min((this.getWidth())/30, (this.getHeight()) / 33));
         pacMan.draw(dbg);
 
     }  
