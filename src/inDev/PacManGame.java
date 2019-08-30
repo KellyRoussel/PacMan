@@ -23,7 +23,10 @@ public class PacManGame extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel gp = new GamePanel();
+<<<<<<< HEAD
+=======
 		this.setResizable(true);
+>>>>>>> 8b2791e3d2925bb7b0e9b018d4cb65af471e1afc
 		new GameController(new GamePanel(), this);
 	}
 	
