@@ -27,7 +27,7 @@ public class PacMan implements Character{
 	    private void loadImage() {
 	        ImageIcon ii = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png");
 	        image = ii.getImage(); 
-	        
+	 
 	        w = image.getWidth(null);
 	        h = image.getHeight(null);
 	    }

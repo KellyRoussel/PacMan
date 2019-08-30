@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+
 import javax.swing.Timer;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,11 +23,12 @@ public class GamePanel extends JPanel{
     private Image dbImage = null;
     
     public GamePanel() {
+    	
     	setBackground(Color.black);
         setFocusable(true);
+        
     }
-    
-    
+  
     public void paintScreen() {
         Graphics g;
         try {
@@ -38,7 +41,7 @@ public class GamePanel extends JPanel{
         }
 	}
 
-    public void gameRender(PacMan pacMan) {
+    public void gameRender(PacMan pacMan, Maze maze) {
     	if (dbImage == null){
             dbImage = createImage(PacManGame.DefaultWidth, PacManGame.DefaultHeight);
             if (dbImage == null) {
@@ -51,8 +54,9 @@ public class GamePanel extends JPanel{
           // clear the background
         dbg.setColor(Color.black);
         dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
-
-        pacMan.draw(dbg);     
+        
+        maze.draw(dbg, Math.min((this.getWidth())/30, (this.getHeight() - 100) / 33));
+        pacMan.draw(dbg);
 
     }  
 }

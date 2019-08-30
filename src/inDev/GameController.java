@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 
 public class GameController implements Runnable{
 	
@@ -13,15 +14,23 @@ public class GameController implements Runnable{
     private boolean pause;
 	private GamePanel gamePanel;
 	private PacManGame frame = null; 
-	
+	private Maze maze = null;
 	
     public GameController(GamePanel gamePanel, PacManGame frame) {
 		// TODO Auto-generated constructor stub
     	this.gamePanel = gamePanel;
     	this.frame = frame;
+    	
     	frame.setContentPane(gamePanel);
+    	
     	pacMan = new PacMan();
-        
+    	
+        try {
+			maze = new Maze();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
         		
@@ -40,6 +49,7 @@ public class GameController implements Runnable{
         		pacMan.keyReleased(e);
         	}
         });
+        
         startGame();
 	}
     
@@ -50,7 +60,7 @@ public class GameController implements Runnable{
     	while(running) {
     		if(! pause) {
 	    		gameUpdate();
-	    		gamePanel.gameRender(pacMan);
+	    		gamePanel.gameRender(pacMan, maze);
 	    		gamePanel.paintScreen();
     		}
     		try {
