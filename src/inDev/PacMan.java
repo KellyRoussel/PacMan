@@ -9,6 +9,9 @@ import javax.swing.ImageIcon;
 
 public class PacMan implements Character{
 
+		private String direction = "Left";
+		private int style = 0;
+		private int counter = 0;
 	    private int dx;
 	    private int dy;
 	    private int x = 40;
@@ -22,8 +25,7 @@ public class PacMan implements Character{
 	    }
 
 	    private void loadImage() {
-	        
-	        ImageIcon ii = new ImageIcon("ressources"+File.separator+"cr.png");
+	        ImageIcon ii = new ImageIcon(direction + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	        
 	        w = image.getWidth(null);
@@ -31,9 +33,15 @@ public class PacMan implements Character{
 	    }
 
 	    public void move() {
-	        
+	    	counter = (counter + 1) % 10;
+	    	if(counter == 0)
+	    		style = (style + 1) % 2;
+	    	
 	        x += dx;
+	        x = (x + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
 	        y += dy;
+	        y = (y + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
+	        System.out.println(x + " " + y);
 	    }
 
 	    public int getX() {
@@ -66,18 +74,22 @@ public class PacMan implements Character{
 	        int key = e.getKeyCode();
 
 	        if (key == KeyEvent.VK_LEFT) {
+	        	direction = "Left";
 	            dx = -4;
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
+	        	direction = "Right";
 	            dx = 4;
 	        }
 
 	        if (key == KeyEvent.VK_UP) {
-	            dy = -4;
+	        	direction = "Up";
+	        	dy = -4;
 	        }
 
 	        if (key == KeyEvent.VK_DOWN) {
+	        	direction = "Down";
 	            dy = 4;
 	        }
 	    }
@@ -105,8 +117,8 @@ public class PacMan implements Character{
 
 		@Override
 		public void draw(Graphics g) {
+	        image = new ImageIcon(direction + "_"+ style + ".png").getImage(); 
 			g.drawImage(image, x, y, null);
-			// TODO Auto-generated method stub
 			
 		}
 
