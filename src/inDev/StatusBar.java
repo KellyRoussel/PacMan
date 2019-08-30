@@ -1,6 +1,7 @@
 package inDev;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -14,15 +15,14 @@ public class StatusBar extends JPanel{
 	private int lives = 0;
 	
 	public StatusBar() {
+		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, 150));
-		
-		setLayout(new GridLayout(1, 3));
-		JLabel scr = new JLabel("score");
-		add(scr);
-		JLabel lives = new JLabel("vies");
-		add(lives);
-		JLabel level = new JLabel("niveau");
-		add(level);
+		JLabel label = new JLabel("<html><font color='WHITE'>ICI C'EST STATUSBAR</font></html>");
+		label.setFont (label.getFont ().deriveFont (20.0f));
+		label.setAlignmentX(CENTER_ALIGNMENT);
+		label.setAlignmentY(CENTER_ALIGNMENT);
+		add(label);
+	
 	}
 	
 	public void load() {
