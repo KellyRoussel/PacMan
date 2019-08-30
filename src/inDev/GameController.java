@@ -58,14 +58,11 @@ public class GameController implements Runnable{
     		}catch(InterruptedException ex) {}
     	}
     }
-	
-	
+
 	private void gameUpdate() {
 
     	pacMan.move();
     }	
-    
-      
     
 	public void startGame() {
 		new Thread(this).start();
@@ -88,9 +85,9 @@ public class GameController implements Runnable{
 		return pacMan;
 	}
 
+	
 	public void setPacMan(PacMan pacMan) {
 		this.pacMan = pacMan;
 	}
-	
 	
 }

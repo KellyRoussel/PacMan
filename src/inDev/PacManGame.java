@@ -3,6 +3,10 @@ package inDev;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -22,7 +26,7 @@ public class PacManGame extends JFrame{
 	
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		EventQueue.invokeLater(() -> {
 			new PacManGame();
         });
