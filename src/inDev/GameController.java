@@ -5,11 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-<<<<<<< HEAD
 import java.io.FileNotFoundException;
-=======
 import java.net.URL;
->>>>>>> 8b2791e3d2925bb7b0e9b018d4cb65af471e1afc
 
 public class GameController implements Runnable{
 	
@@ -29,9 +26,12 @@ public class GameController implements Runnable{
     	
     	pacMan = new PacMan();
 <<<<<<< HEAD
+<<<<<<< HEAD
     	Sound beginning = new Sound(GameController.class.getResource("/Sounds/beginning.wav"));
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
     	
         try {
 			maze = new Maze();
@@ -39,12 +39,10 @@ public class GameController implements Runnable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-=======
     	URL url = GameController.class.getResource("/Sounds/beginning.wav");
     	Sound beginning = new Sound(url);
 >>>>>>> 7f0ac054b8f5a41fbae6fda111891fc22552f523
         
->>>>>>> 8b2791e3d2925bb7b0e9b018d4cb65af471e1afc
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
         		
@@ -64,14 +62,19 @@ public class GameController implements Runnable{
         	//}
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
         beginning.play();
 =======
 <<<<<<< HEAD
-        
 =======
+>>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
+        
         beginning.loop();
+<<<<<<< HEAD
 >>>>>>> 8b2791e3d2925bb7b0e9b018d4cb65af471e1afc
 >>>>>>> 7f0ac054b8f5a41fbae6fda111891fc22552f523
+=======
+>>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
         startGame();
 	}
     
