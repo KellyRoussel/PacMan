@@ -22,7 +22,7 @@ public class GameController implements Runnable{
     	this.frame = frame;
     	frame.setContentPane(gamePanel);
     	pacMan = new PacMan();
-    	URL url = GameController.class.getResource("beginning.wav");
+    	URL url = GameController.class.getResource("/Sounds/beginning.wav");
     	Sound beginning = new Sound(url);
         
         gamePanel.addKeyListener(new KeyAdapter() {
@@ -43,7 +43,7 @@ public class GameController implements Runnable{
         	//	pacMan.keyReleased(e);
         	//}
         });
-        beginning.play();
+        beginning.loop();
         startGame();
 	}
     
