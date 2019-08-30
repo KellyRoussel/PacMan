@@ -25,7 +25,6 @@ public class PacManGame extends JFrame{
 	}
 	
 	
-	
 	public static void main(String[] args) throws FileNotFoundException {
 		EventQueue.invokeLater(() -> {
 			new PacManGame();
