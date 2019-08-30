@@ -2,6 +2,7 @@ package inDev;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,11 +16,13 @@ public class StatusBar extends JPanel{
 	public StatusBar() {
 		setPreferredSize(new Dimension(600, 150));
 		
-		setLayout(new BorderLayout());
-		
-		add(new JLabel("score"), BorderLayout.CENTER);
-		add(new JLabel("vies"), BorderLayout.LINE_START);
-		add(new JLabel("niveau"), BorderLayout.LINE_END);
+		setLayout(new GridLayout(1, 3));
+		JLabel scr = new JLabel("score");
+		add(scr);
+		JLabel lives = new JLabel("vies");
+		add(lives);
+		JLabel level = new JLabel("niveau");
+		add(level);
 	}
 	
 	public void load() {
