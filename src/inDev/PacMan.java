@@ -71,7 +71,7 @@ public class PacMan implements Character{
 	    public void keyPressed(KeyEvent e) {
 
 	        int key = e.getKeyCode();
-
+	        
 	        if (key == KeyEvent.VK_LEFT) {
 	        	direction = "Left";
 	            dx = -4;

@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
     private PacMan pacMan;
     public boolean running;
+    public boolean pause;
     private Graphics dbg;
     private Image dbImage = null;
     
@@ -29,11 +30,13 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void run() {
     	running = true;
+    	pause = false;
     	while(running) {
-    		gameUpdate();
-    		gameRender();
-    		paintScreen();
-    		
+    		if(! pause) {
+	    		gameUpdate();
+	    		gameRender();
+	    		paintScreen();
+    		}
     		try {
     			Thread.sleep(20);
     		}catch(InterruptedException ex) {}
@@ -46,7 +49,18 @@ public class GamePanel extends JPanel implements Runnable{
         
         addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
-        		pacMan.keyPressed(e);
+        		
+        		int key = e.getKeyCode();
+        		
+        		if (key == KeyEvent.VK_P) {
+    	        	pause = !pause;
+    	        	System.out.println(pause);
+        		}
+        		
+        		if(!pause){
+        			pacMan.keyPressed(e);
+        		}
+        	
         	}
         	public void keyReleased(KeyEvent e) {
         		pacMan.keyReleased(e);
