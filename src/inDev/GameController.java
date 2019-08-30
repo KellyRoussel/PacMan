@@ -13,9 +13,11 @@ public class GameController implements Runnable{
 	private PacMan pacMan;
     private boolean running;
     private boolean pause;
+    private boolean soundOn;
 	private GamePanel gamePanel;
 	private PacManGame frame = null; 
 	private Maze maze = null;
+	private Sound music;
 	
     public GameController(GamePanel gamePanel, PacManGame frame) {
 		// TODO Auto-generated constructor stub
@@ -25,13 +27,9 @@ public class GameController implements Runnable{
     	frame.setContentPane(gamePanel);
     	
     	pacMan = new PacMan();
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     	Sound beginning = new Sound(GameController.class.getResource("/Sounds/beginning.wav"));
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
+
     	
         try {
 			maze = new Maze();
@@ -39,9 +37,6 @@ public class GameController implements Runnable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	URL url = GameController.class.getResource("/Sounds/beginning.wav");
-    	Sound beginning = new Sound(url);
->>>>>>> 7f0ac054b8f5a41fbae6fda111891fc22552f523
         
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
@@ -50,6 +45,12 @@ public class GameController implements Runnable{
         		
         		if (key == KeyEvent.VK_P) {
     	        	pause = !pause;
+        		}
+        		if (key == KeyEvent.VK_M) {
+        			if (soundOn) {
+        				music.stop();
+        			} else { music.play(); }
+        			soundOn = !soundOn;
         		}
         		
         		if(!pause){
@@ -61,20 +62,9 @@ public class GameController implements Runnable{
         	//	pacMan.keyReleased(e);
         	//}
         });
-<<<<<<< HEAD
-<<<<<<< HEAD
+        music = beginning;
         beginning.play();
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
         
-        beginning.loop();
-<<<<<<< HEAD
->>>>>>> 8b2791e3d2925bb7b0e9b018d4cb65af471e1afc
->>>>>>> 7f0ac054b8f5a41fbae6fda111891fc22552f523
-=======
->>>>>>> 4d7ab0934092e69194d53dbc5cd33667a9220572
         startGame();
 	}
     
