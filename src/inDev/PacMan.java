@@ -14,8 +14,8 @@ public class PacMan implements Character{
 		private int counter = 0;
 	    private int dx = -4;
 	    private int dy;
-	    private int x = 40;
-	    private int y = 60;
+	    private int x = 250;
+	    private int y = 450;
 	    private int w;
 	    private int h;
 	    private Image image;
