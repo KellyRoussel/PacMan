@@ -18,5 +18,9 @@ public class Sound {
 	public void loop() {
 		clip.loop();
 	}
+	
+	public void stop(){
+		clip.stop();
+	}
  
 }
