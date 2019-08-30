@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 public class GameController implements Runnable{
 	
@@ -21,6 +22,8 @@ public class GameController implements Runnable{
     	this.frame = frame;
     	frame.setContentPane(gamePanel);
     	pacMan = new PacMan();
+    	URL url = GameController.class.getResource("beginning.wav");
+    	Sound beginning = new Sound(url);
         
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
@@ -40,6 +43,7 @@ public class GameController implements Runnable{
         		pacMan.keyReleased(e);
         	}
         });
+        beginning.play();
         startGame();
 	}
     

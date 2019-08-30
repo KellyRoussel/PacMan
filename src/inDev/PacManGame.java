@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 public class PacManGame extends JFrame{
@@ -20,7 +23,7 @@ public class PacManGame extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel gp = new GamePanel();
-		this.setResizable(false);
+		this.setResizable(true);
 		new GameController(new GamePanel(), this);
 	}
 	
@@ -29,5 +32,6 @@ public class PacManGame extends JFrame{
 		EventQueue.invokeLater(() -> {
 			new PacManGame();
         });
+		
 	}
 }
