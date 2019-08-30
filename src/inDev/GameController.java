@@ -39,9 +39,9 @@ public class GameController implements Runnable{
         		}
         	
         	}
-        	public void keyReleased(KeyEvent e) {
-        		pacMan.keyReleased(e);
-        	}
+        	//public void keyReleased(KeyEvent e) {
+        	//	pacMan.keyReleased(e);
+        	//}
         });
         beginning.play();
         startGame();
