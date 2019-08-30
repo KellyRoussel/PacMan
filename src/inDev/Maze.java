@@ -22,6 +22,8 @@ public class Maze {
         }
 	}
 	
+	
+	
 	public void load() {
 		
 	}
