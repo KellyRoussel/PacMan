@@ -25,7 +25,7 @@ public class PacMan implements Character{
 	    }
 
 	    private void loadImage() {
-	        ImageIcon ii = new ImageIcon(direction + "_"+ style + ".png");
+	        ImageIcon ii = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	        
 	        w = image.getWidth(null);
@@ -41,7 +41,6 @@ public class PacMan implements Character{
 	        x = (x + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
 	        y += dy;
 	        y = (y + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
-	        System.out.println(x + " " + y);
 	    }
 
 	    public int getX() {
@@ -117,7 +116,7 @@ public class PacMan implements Character{
 
 		@Override
 		public void draw(Graphics g) {
-	        image = new ImageIcon(direction + "_"+ style + ".png").getImage(); 
+	        image = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png").getImage(); 
 			g.drawImage(image, x, y, null);
 			
 		}
