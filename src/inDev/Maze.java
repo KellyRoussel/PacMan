@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 public class Maze {
 	
-	private int [][] maze;
+	public int [][] maze;
 	private Image [][] images;
 	private int sizeImages = 0;
 	private Image [][] currents;
