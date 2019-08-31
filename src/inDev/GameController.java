@@ -107,7 +107,7 @@ public class GameController implements Runnable{
 	    		gamePanel.paintScreen();
     		}
     		try {
-    			Thread.sleep(500);
+    			Thread.sleep(100);
     		}catch(InterruptedException ex) {}
     	}
     }
