@@ -126,12 +126,12 @@ public class GameController implements Runnable{
     	if(h != 0) {
     		switch(pacMan.getDirection()) {
     		case "Left":
-    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/(h/33)) % 33;
+    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/(h/33)) % 33;
         		nColumn = (int) Math.floor(pacMan.getNextX()/(w/30)) % 30;
     			break;
     		case "Right":
     			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/(h/33)) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/(w/30)) % 30;
+        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW())/(w/30)) % 30;
     			break;
     		case "Up":
     			nRaw = (int) Math.floor(pacMan.getNextY()/(h/33)) % 33;
