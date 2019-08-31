@@ -22,6 +22,8 @@ public class GameController implements Runnable{
 	private Maze maze = null;
 	private Sound music;
 	private StatusBar statusBar = null;
+	
+	public static final int FPS = 20;
 
 	private int counterLives = 0;
 
@@ -105,7 +107,7 @@ public class GameController implements Runnable{
 	    		gamePanel.paintScreen();
     		}
     		try {
-    			Thread.sleep(20);
+    			Thread.sleep(500);
     		}catch(InterruptedException ex) {}
     	}
     }

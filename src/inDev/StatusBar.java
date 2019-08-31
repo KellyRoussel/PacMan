@@ -83,7 +83,6 @@ public class StatusBar extends JPanel{
 
 	public void decrementLife() {
 		// TODO Auto-generated method stub
-		System.out.println("DONE");
 		lives--;
 		lvPane.removeAll();
 		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
