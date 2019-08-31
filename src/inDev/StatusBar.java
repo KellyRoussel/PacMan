@@ -3,6 +3,7 @@ package inDev;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -20,6 +21,7 @@ public class StatusBar extends JPanel{
 	
 	private JLabel scoreLabel = null;
 	private JPanel fruitsPane = null; 
+	private JPanel lvPane = null;
 	
 	
 	public StatusBar() {
@@ -30,7 +32,7 @@ public class StatusBar extends JPanel{
 		// Creation du score
 		
 		scoreLabel = new JLabel();
-		scoreLabel.setFont(new Font("Trattatello", Font.BOLD, 25));
+		scoreLabel.setFont(new Font("Trattatello", Font.BOLD, 30));
 		scoreLabel.setAlignmentX(CENTER_ALIGNMENT);
 		scoreLabel.setAlignmentY(CENTER_ALIGNMENT);
 		updateScore();
@@ -38,10 +40,10 @@ public class StatusBar extends JPanel{
 		
 		 // Creation des vies
 		
-		JPanel lvPane = new JPanel(new GridLayout(1, 4));
+		lvPane = new JPanel(new FlowLayout());
 		lvPane.setBackground(Color.black);
 		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
-		livesPn.setFont(new Font("Trattatello", Font.BOLD, 25));
+		livesPn.setFont(new Font("Trattatello", Font.BOLD, 30));
 		livesPn.setAlignmentX(CENTER_ALIGNMENT);
 		livesPn.setAlignmentY(CENTER_ALIGNMENT);
 		lvPane.add(livesPn);
@@ -77,5 +79,28 @@ public class StatusBar extends JPanel{
 	}
 	public void update() {
 		
+	}
+
+	public void decrementLife() {
+		// TODO Auto-generated method stub
+		System.out.println("DONE");
+		lives--;
+		lvPane.removeAll();
+		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
+		livesPn.setFont(new Font("Trattatello", Font.BOLD, 30));
+		livesPn.setAlignmentX(CENTER_ALIGNMENT);
+		livesPn.setAlignmentY(CENTER_ALIGNMENT);
+		lvPane.add(livesPn);
+		
+		for(int i = 0; i < lives; i++) {
+			ImageIcon icon = new ImageIcon("ressources" + File.separator + "life.png");
+			JLabel thumb = new JLabel();
+			thumb.setBackground(Color.black);
+			thumb.setIcon(icon);
+			
+			lvPane.add(thumb);
+		}
+		lvPane.repaint();
+		lvPane.validate();
 	}
 }

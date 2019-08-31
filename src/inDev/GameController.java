@@ -22,6 +22,9 @@ public class GameController implements Runnable{
 	private Maze maze = null;
 	private Sound music;
 	private StatusBar statusBar = null;
+
+	private int counterLives = 0;
+
 	
     public GameController(GamePanel gamePanel, PacManGame frame) {
 		// TODO Auto-generated constructor stub
@@ -83,12 +86,19 @@ public class GameController implements Runnable{
     	running = true;
     	pause = false;
     	while(running) {
+    		
     		if(! pause) {
     			
     			// Tester le changement du score
     			statusBar.incrementScore(1);
     			statusBar.updateScore();
 	    		
+    			
+    			// Tester le changement des vies
+    			
+    			counterLives++;
+        		if(counterLives % 200 == 0)
+        			statusBar.decrementLife();
     			
     			gameUpdate();
 	    		gamePanel.gameRender(pacMan, maze);
