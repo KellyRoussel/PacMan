@@ -15,7 +15,7 @@ public class PacMan implements Character{
 	    private int dx = -4;
 	    private int dy;
 	    private int x = 250;
-	    private int y = 450;
+	    private int y = 425;
 	    private int w;
 	    private int h;
 	    private Image image;
@@ -109,19 +109,15 @@ public class PacMan implements Character{
 	    public void keyReleased(KeyEvent e) {
 	        
 	        int key = e.getKeyCode();
-
 	        if (key == KeyEvent.VK_LEFT) {
 	            dx = 0;
 	        }
-
 	        if (key == KeyEvent.VK_RIGHT) {
 	            dx = 0;
 	        }
-
 	        if (key == KeyEvent.VK_UP) {
 	            dy = 0;
 	        }
-
 	        if (key == KeyEvent.VK_DOWN) {
 	            dy = 0;
 	        }
