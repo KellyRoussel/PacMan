@@ -27,7 +27,7 @@ public class PacMan implements Character{
 	    }
 
 	    private void loadImage() {
-	        ImageIcon ii = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png");
+	        ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	 
 	        setW(image.getWidth(null));
@@ -81,25 +81,25 @@ public class PacMan implements Character{
 	        int key = e.getKeyCode();
 	        
 	        if (key == KeyEvent.VK_LEFT) {
-	        	direction = "Left";
+	        	setDirection("Left");
 			dy = 0;
 	        	dx = -4;
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
-	        	direction = "Right";
+	        	setDirection("Right");
 			dy = 0;
 	        	dx = 4;
 	        }
 
 	        if (key == KeyEvent.VK_UP) {
-	        	direction = "Up";
+	        	setDirection("Up");
 			dx = 0;
 	        	dy = -4;
 	        }
 
 	        if (key == KeyEvent.VK_DOWN) {
-	        	direction = "Down";
+	        	setDirection("Down");
 			dx = 0;
 	         	dy = 4;
 	        }
@@ -129,7 +129,7 @@ public class PacMan implements Character{
 */
 		@Override
 		public void draw(Graphics g) {
-	        image = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png").getImage(); 
+	        image = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png").getImage(); 
 			g.drawImage(image, x, y, null);
 			
 		}
@@ -170,6 +170,14 @@ public class PacMan implements Character{
 
 		private void setH(int h) {
 			this.h = h;
+		}
+
+		public String getDirection() {
+			return direction;
+		}
+
+		private void setDirection(String direction) {
+			this.direction = direction;
 		}
 
 	}

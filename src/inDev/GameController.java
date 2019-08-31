@@ -109,10 +109,9 @@ public class GameController implements Runnable{
     	pacMan.nextY();
     	
     	if(h != 0) {
-    		int nRaw = (int) Math.floor(pacMan.getNextX()/(h/33));
-    		int nColumn = (int) Math.floor(pacMan.getNextY()/(w/30));
+    		int nRaw = (int) Math.floor(pacMan.getNextX()/(w/33));
+    		int nColumn = (int) Math.floor(pacMan.getNextY()/(h/30));
     		int tile = maze.getMaze()[nRaw][nColumn];
-    		System.out.println(tile);
     		if(tile != 0) {
     			//Afficher collision dans la StatusBar
     	}else{
