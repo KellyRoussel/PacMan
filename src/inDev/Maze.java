@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 public class Maze {
 	
-	public int [][] maze;
+	private int [][] maze;
 	private Image [][] images;
 	private int sizeImages = 0;
 	private Image [][] currents;
@@ -27,8 +27,8 @@ public class Maze {
 			String line = sc.nextLine();
 			String[] strings = line.split(",");
 			for(int j = 0; j < 30; j++) {
-				maze[i][j] = Integer.parseInt(strings[j]);
-				images[i][j] = new ImageIcon("ressources" + File.separator + "maze" + maze[i][j] + ".png").getImage();
+				getMaze()[i][j] = Integer.parseInt(strings[j]);
+				images[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j] + ".png").getImage();
 			}
         }
 		
@@ -60,5 +60,9 @@ public class Maze {
 	
 	public void display() {
 		
+	}
+
+	public int [][] getMaze() {
+		return maze;
 	}
 }
