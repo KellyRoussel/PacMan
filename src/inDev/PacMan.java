@@ -32,6 +32,14 @@ public class PacMan implements Character{
 	        h = image.getHeight(null);
 	    }
 
+	    public int nextX(){
+	    	return (x+dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
+	    }
+	    
+	    public int nextY() {
+	    	return (y+dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
+	    }
+	    
 	    public void move() {
 	    	counter = (counter + 1) % 10;
 	    	if(counter == 0)
