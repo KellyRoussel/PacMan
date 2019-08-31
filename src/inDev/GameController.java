@@ -126,25 +126,26 @@ public class GameController implements Runnable{
     	if(h != 0) {
     		switch(pacMan.getDirection()) {
     		case "Left":
-    			nRaw = (int) Math.floor(pacMan.getNextX()/(w/30));
-        		nColumn = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/(h/33));
+    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/(h/33)) % 33;
+        		nColumn = (int) Math.floor(pacMan.getNextX()/(w/30)) % 30;
     			break;
     		case "Right":
-    			nRaw = (int) Math.floor((pacMan.getNextX() + pacMan.getW())/(w/30));
-        		nColumn = (int) Math.floor((pacMan.getNextY()+pacMan.getH()/2)/(h/33));
+    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/(h/33)) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/(w/30)) % 30;
     			break;
     		case "Up":
-    			nRaw = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/(w/30));
-        		nColumn = (int) Math.floor(pacMan.getNextY()/(h/33));
+    			nRaw = (int) Math.floor(pacMan.getNextY()/(h/33)) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/(w/30)) % 30;
     			break;
     		case "Down":
-    			nRaw = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/(w/30));
-        		nColumn = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/(h/33));
+    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/(h/33)) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/(w/30)) % 30;
     			break;
     		default:
     			break;
     		}
-    		
+    		//System.out.println(nRaw);
+    		//System.out.println(nColumn);
     		int tile = maze.getMaze()[nRaw][nColumn];
     		System.out.println(tile);
     		if(tile != 0) {
@@ -152,6 +153,7 @@ public class GameController implements Runnable{
     	}else{
     		pacMan.move();
     	}
+    	
 	}
     }	
     
