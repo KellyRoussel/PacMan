@@ -47,10 +47,10 @@ public class PacMan implements Character{
 	    	if(counter == 0)
 	    		style = (style + 1) % 2;
 	    	
-	        x += dx;
-	        x = (x + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
-	        y += dy;
-	        y = (y + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
+	        x = nextX;
+	        //x = (x + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
+	        y = nextY;
+	        //y = (y + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
 	    }
 
 	    public int getX() {
