@@ -21,6 +21,7 @@ public class GameController implements Runnable{
 	private PacManGame frame = null; 
 	private Maze maze = null;
 	private Sound music;
+	private StatusBar statusBar = null;
 	
     public GameController(GamePanel gamePanel, PacManGame frame) {
 		// TODO Auto-generated constructor stub
@@ -29,10 +30,11 @@ public class GameController implements Runnable{
     	
 		BorderLayout bl = new BorderLayout();
 		JPanel mainPane = new JPanel(bl);
-    	
+    	statusBar = new StatusBar();
+		
     	frame.setContentPane(mainPane);
     	mainPane.add(gamePanel,BorderLayout.CENTER);
-    	mainPane.add(new StatusBar(), BorderLayout.SOUTH);
+    	mainPane.add(statusBar, BorderLayout.SOUTH);
     	
     	pacMan = new PacMan();
 
@@ -82,7 +84,13 @@ public class GameController implements Runnable{
     	pause = false;
     	while(running) {
     		if(! pause) {
-	    		gameUpdate();
+    			
+    			// Tester le changement du score
+    			statusBar.incrementScore(1);
+    			statusBar.updateScore();
+	    		
+    			
+    			gameUpdate();
 	    		gamePanel.gameRender(pacMan, maze);
 	    		gamePanel.paintScreen();
     		}
