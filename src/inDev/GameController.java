@@ -134,18 +134,19 @@ public class GameController implements Runnable{
         		nColumn = (int) Math.floor((pacMan.getNextY()+pacMan.getH()/2)/(h/30));
     			break;
     		case "Up":
-    			nRaw = (int) Math.floor(pacMan.getNextX()/(w/33));
+    			nRaw = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/(w/33));
         		nColumn = (int) Math.floor(pacMan.getNextY()/(h/30));
     			break;
     		case "Down":
-    			nRaw = (int) Math.floor(pacMan.getNextX()/(w/33));
-        		nColumn = (int) Math.floor(pacMan.getNextY()/(h/30));
+    			nRaw = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/(w/33));
+        		nColumn = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/(h/30));
     			break;
     		default:
     			break;
     		}
     		
     		int tile = maze.getMaze()[nRaw][nColumn];
+    		System.out.println(tile);
     		if(tile != 0) {
     			//Afficher collision dans la StatusBar
     	}else{
