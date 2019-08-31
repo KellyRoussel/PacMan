@@ -48,9 +48,7 @@ public class PacMan implements Character{
 	    		style = (style + 1) % 2;
 	    	
 	        x = nextX;
-	        //x = (x + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
 	        y = nextY;
-	        //y = (y + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
 	    }
 
 	    public int getX() {
