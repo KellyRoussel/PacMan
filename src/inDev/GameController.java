@@ -98,8 +98,10 @@ public class GameController implements Runnable{
     	float w = gamePanel.getSize().width;
     	
     	// Juste des essais pour le détections des murs
-     	int nRaw = (int) Math.floor(pacMan.nextX()/(h/33));
-     	int nColumn = (int) Math.floor(pacMan.nextY()/(h/30));
+    	pacMan.nextX();
+    	pacMan.nextY();
+     	int nRaw = (int) Math.floor(pacMan.getNextX()/(h/33));
+     	int nColumn = (int) Math.floor(pacMan.getNextY()/(h/30));
      	//System.out.println(maze.maze[0][0]);
      	//System.out.println(nRaw);
      	//System.out.println(nColumn);

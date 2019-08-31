@@ -19,6 +19,8 @@ public class PacMan implements Character{
 	    private int w;
 	    private int h;
 	    private Image image;
+	    private int nextX;
+	    private int nextY;
 
 	    public PacMan() {
 	        loadImage();
@@ -32,12 +34,12 @@ public class PacMan implements Character{
 	        h = image.getHeight(null);
 	    }
 
-	    public int nextX(){
-	    	return (x+dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth;
+	    public void nextX(){
+	    	setNextX((x+dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth);
 	    }
 	    
-	    public int nextY() {
-	    	return (y+dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight;
+	    public void nextY() {
+	    	setNextY((y+dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight);
 	    }
 	    
 	    public void move() {
@@ -138,6 +140,22 @@ public class PacMan implements Character{
 		public void treatcollision() {
 			// TODO Auto-generated method stub
 			
+		}
+
+		public int getNextX() {
+			return nextX;
+		}
+
+		public void setNextX(int nextX) {
+			this.nextX = nextX;
+		}
+
+		public int getNextY() {
+			return nextY;
+		}
+
+		public void setNextY(int nextY) {
+			this.nextY = nextY;
 		}
 
 	}
