@@ -35,7 +35,6 @@ public class Maze {
 	}
 	
 	public void loadImages(int size) {
-		System.out.println("Executed");
 		for(int i = 0; i < 33; i++) {
 			for(int j = 0; j < 30; j++) {
 				ImageIcon ii = new ImageIcon(images[i][j].getScaledInstance(size, size, Image.SCALE_DEFAULT));
