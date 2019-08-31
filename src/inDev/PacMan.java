@@ -21,6 +21,7 @@ public class PacMan implements Character{
 	    private Image image;
 	    private int nextX = 0;
 	    private int nextY = 0;
+	    private final int PAS = 2;
 
 	    public PacMan() {
 	        loadImage();
@@ -35,11 +36,11 @@ public class PacMan implements Character{
 	    }
 
 	    public void nextX(){
-	    	setNextX((x+dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth);
+	    	setNextX((x + dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth);
 	    }
 	    
 	    public void nextY() {
-	    	setNextY((y+dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight);
+	    	setNextY((y + dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight);
 	    }
 	    
 	    public void move() {
@@ -83,25 +84,25 @@ public class PacMan implements Character{
 	        if (key == KeyEvent.VK_LEFT) {
 	        	setDirection("Left");
 			dy = 0;
-	        	dx = -4;
+	        	dx = -1 * PAS;
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
 	        	setDirection("Right");
 			dy = 0;
-	        	dx = 4;
+	        	dx = PAS;
 	        }
 
 	        if (key == KeyEvent.VK_UP) {
 	        	setDirection("Up");
-			dx = 0;
-	        	dy = -4;
+	        	dx = 0;
+	        	dy = -1 * PAS;
 	        }
 
 	        if (key == KeyEvent.VK_DOWN) {
 	        	setDirection("Down");
 			dx = 0;
-	         	dy = 4;
+	         	dy = PAS;
 	        }
 	    }
 	    

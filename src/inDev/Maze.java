@@ -13,6 +13,7 @@ public class Maze {
 	private int [][] maze;
 	private Image [][] images;
 	private int sizeImages = 0;
+	public static int size = 0; 
 	private Image [][] currents;
 	
 	public Maze() throws FileNotFoundException {
@@ -35,6 +36,7 @@ public class Maze {
 	}
 	
 	public void loadImages(int size) {
+		this.size = size;
 		for(int i = 0; i < 33; i++) {
 			for(int j = 0; j < 30; j++) {
 				ImageIcon ii = new ImageIcon(images[i][j].getScaledInstance(size, size, Image.SCALE_DEFAULT));
@@ -44,7 +46,7 @@ public class Maze {
 	}
 		
 	public void draw(Graphics g, int size) {
-		
+		this.size = size;
 		if(sizeImages != size) {
 			loadImages(size);
 			sizeImages = size;

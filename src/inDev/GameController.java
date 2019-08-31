@@ -107,7 +107,7 @@ public class GameController implements Runnable{
 	    		gamePanel.paintScreen();
     		}
     		try {
-    			Thread.sleep(500);
+    			Thread.sleep(FPS);
     		}catch(InterruptedException ex) {}
     	}
     }
@@ -123,23 +123,25 @@ public class GameController implements Runnable{
     	pacMan.nextX();
     	pacMan.nextY();
     	
-    	if(h != 0) {
+    	int sz = Maze.size;
+    	
+    	if(sz != 0) {
     		switch(pacMan.getDirection()) {
     		case "Left":
-    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/(h/33)) % 33;
-        		nColumn = (int) Math.floor(pacMan.getNextX()/(w/30)) % 30;
+    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
+        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
     			break;
     		case "Right":
-    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/(h/33)) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/(w/30)) % 30;
+    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
     			break;
     		case "Up":
-    			nRaw = (int) Math.floor(pacMan.getNextY()/(h/33)) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/(w/30)) % 30;
+    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
     			break;
     		case "Down":
-    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/(h/33)) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/(w/30)) % 30;
+    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
+        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
     			break;
     		default:
     			break;
@@ -151,9 +153,8 @@ public class GameController implements Runnable{
     		if(tile != 0) {
     			//Afficher collision dans la StatusBar
     	}else{
-    		pacMan.move();
+    		pacMan.move();    	
     	}
-    	
 	}
     }	
     
