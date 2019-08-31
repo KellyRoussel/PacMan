@@ -19,8 +19,8 @@ public class PacMan implements Character{
 	    private int w;
 	    private int h;
 	    private Image image;
-	    private int nextX;
-	    private int nextY;
+	    private int nextX = 0;
+	    private int nextY = 0;
 
 	    public PacMan() {
 	        loadImage();
@@ -30,8 +30,8 @@ public class PacMan implements Character{
 	        ImageIcon ii = new ImageIcon("ressources" + File.separator + direction + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	 
-	        w = image.getWidth(null);
-	        h = image.getHeight(null);
+	        setW(image.getWidth(null));
+	        setH(image.getHeight(null));
 	    }
 
 	    public void nextX(){
@@ -65,12 +65,12 @@ public class PacMan implements Character{
 	    
 	    public int getWidth() {
 	        
-	        return w;
+	        return getW();
 	    }
 	    
 	    public int getHeight() {
 	        
-	        return h;
+	        return getH();
 	    }    
 
 	    public Image getImage() {
@@ -156,6 +156,22 @@ public class PacMan implements Character{
 
 		public void setNextY(int nextY) {
 			this.nextY = nextY;
+		}
+
+		public int getW() {
+			return w;
+		}
+
+		private void setW(int w) {
+			this.w = w;
+		}
+
+		public int getH() {
+			return h;
+		}
+
+		private void setH(int h) {
+			this.h = h;
 		}
 
 	}

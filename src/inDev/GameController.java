@@ -100,17 +100,17 @@ public class GameController implements Runnable{
     	// Juste des essais pour le détections des murs
     	pacMan.nextX();
     	pacMan.nextY();
-     	int nRaw = (int) Math.floor(pacMan.getNextX()/(h/33));
-     	int nColumn = (int) Math.floor(pacMan.getNextY()/(h/30));
-     	//System.out.println(nRaw);
-     	//System.out.println(nColumn);
-    	//System.out.println(maze.getMaze()[nRaw][nColumn]);
-//    	if(tile != 0) {
-//    		System.out.println("Mur !");
+    	if(h != 0) {
+    		int nRaw = (int) Math.floor((pacMan.getNextX()+ pacMan.getW()/2)/(h/33));
+    		int nColumn = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/(h/30));
+    		int tile = maze.getMaze()[nRaw][nColumn];
+    		if(tile != 0) {
+    			//System.out.println("Mur !");
      		//Afficher collision dans la StatusBar
-//    	}else{
-     	pacMan.move();
-	//}
+    	}else{
+    		pacMan.move();
+    	}
+	}
     }	
     
 	public void startGame() {
