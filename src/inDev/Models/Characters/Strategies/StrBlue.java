@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models.Characters.Strategies;
 
 public class StrBlue implements GhostStrategy{
 

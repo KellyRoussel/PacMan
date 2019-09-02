@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

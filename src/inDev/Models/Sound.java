@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models;
 
 import java.applet.Applet;
 import java.applet.AudioClip;

@@ -1,4 +1,4 @@
-﻿package inDev;
+﻿package inDev.Controllers;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,24 +14,38 @@ import javax.swing.JPanel;
 
 import com.sun.tools.javac.util.List;
 
+import inDev.Models.Maze;
+import inDev.Models.Sound;
+import inDev.Models.Characters.PacMan;
+import inDev.Models.Foods.Gum;
+import inDev.Models.Foods.PacGum;
+import inDev.Views.GamePanel;
+import inDev.Views.PacManGame;
+import inDev.Views.StatusBar;
+
 public class GameController implements Runnable{
+
+	
+	private PacManGame frame; 
+	
+	private GamePanel gamePanel;
+	private StatusBar statusBar;
 	
 	private PacMan pacMan;
-    private boolean running;
-    private boolean pause;
-    private boolean soundOn;
-	private GamePanel gamePanel;
-	private PacManGame frame = null; 
-	private Maze maze = null;
-	private Sound music;
-	private StatusBar statusBar = null;
+	private Maze maze;
 	private ArrayList<Gum> gumList = null;
 	private ArrayList<PacGum> pacGumList = null;
+	
+	private Sound music;
 	
 	public static final int FPS = 20;
 	public static final int GUM_GAIN = 4;
 	public static final int PAC_GUM_GAIN = 8;
 	
+    private boolean running;
+    private boolean pause;
+    private boolean soundOn;
+    
 	public static boolean fullScreen = false;
     public static boolean resize = false;
 	

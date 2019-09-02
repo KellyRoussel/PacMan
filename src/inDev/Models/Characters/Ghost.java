@@ -1,6 +1,8 @@
-package inDev;
+package inDev.Models.Characters;
 
 import java.awt.Graphics;
+
+import inDev.Models.Characters.Strategies.GhostStrategy;
 
 public class Ghost implements Character{
 	
