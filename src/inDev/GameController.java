@@ -28,14 +28,28 @@ public class GameController implements Runnable{
 	private Sound music;
 	private StatusBar statusBar = null;
 	private ArrayList<Gum> gumList = null;
+	private ArrayList<PacGum> pacGumList = null;
 	public static final int FPS = 20;
 	private static final int GUM_GAIN = 4;
-
+	private static final int PAC_GUM_GAIN = 8;
+	private int [][] pacGumIndexes; 
 	private int counterLives = 0;
 
 	
     public GameController(GamePanel gamePanel, PacManGame frame) {
 		// TODO Auto-generated constructor stub
+    	
+    	pacGumIndexes = new int[3][2];
+    	
+    	pacGumIndexes[0][0] = 6;
+    	pacGumIndexes[0][1] = 2;
+    	
+    	pacGumIndexes[1][0] = 12;
+    	pacGumIndexes[1][1] = 10;
+    	
+    	pacGumIndexes[2][0] = 30;
+    	pacGumIndexes[2][1] = 13;
+    	
     	this.gamePanel = gamePanel;
     	this.frame = frame;
     	
@@ -65,10 +79,16 @@ public class GameController implements Runnable{
     	
     	for(int i = 0; i < 33; i++)
     		for(int j = 0; j < 30; j++) {
-    			if(mazeMat[i][j] == 120) {
+    			if(mazeMat[i][j] == 120 && !isPacGum(i, j)) {
     				gumList.add(new Gum(i, j));
     			}
     		}
+    	
+    	pacGumList = new ArrayList<PacGum>();
+    	
+    	for(int i = 0; i < pacGumIndexes.length; i++)
+    		pacGumList.add(new PacGum(pacGumIndexes[i][0], pacGumIndexes[i][1]));
+    	
     	
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
@@ -105,6 +125,14 @@ public class GameController implements Runnable{
         startGame();
 	}
     
+	private boolean isPacGum(int x, int y) {
+		for(int i = 0; i < pacGumIndexes.length; i++) {
+			if(pacGumIndexes[i][0] == x && pacGumIndexes[i][1] == y)
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void run() {
     	running = true;
@@ -122,7 +150,7 @@ public class GameController implements Runnable{
         			*/
     			
     			gameUpdate();
-	    		gamePanel.gameRender(pacMan, maze, gumList);
+	    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList);
 	    		gamePanel.paintScreen();
     		}
     		try {
@@ -176,6 +204,13 @@ public class GameController implements Runnable{
     			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
     				gumList.get(i).setEaten();
     				statusBar.incrementScore(GUM_GAIN);
+        			statusBar.updateScore();
+    			}
+    		}
+    		for(int i = 0; i < pacGumList.size(); i++) {
+    			if(pacGumList.get(i).getX() == nRaw && pacGumList.get(i).getY() == nColumn && !pacGumList.get(i).isEaten()) {
+    				pacGumList.get(i).setEaten();
+    				statusBar.incrementScore(PAC_GUM_GAIN);
         			statusBar.updateScore();
     			}
     		}
