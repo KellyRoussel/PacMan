@@ -7,6 +7,7 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
+import inDev.Models.Maze;
 import inDev.Views.PacManGame;
 
 public class PacMan implements Character{
@@ -40,11 +41,11 @@ public class PacMan implements Character{
 	    }
 
 	    public void nextX(){
-	    	setNextX((x + dx + PacManGame.DefaultWidth) % PacManGame.DefaultWidth);
+	    	setNextX((x + dx + Maze.getSize() * 30 - 20) % (Maze.getSize() * 30 - 20));
 	    }
 	    
 	    public void nextY() {
-	    	setNextY((y + dy + PacManGame.DefaultHeight) % PacManGame.DefaultHeight);
+	    	setNextY((y + dy + Maze.getSize() * 33) % (Maze.getSize() * 33));
 	    }
 	    
 	    public void move() {
