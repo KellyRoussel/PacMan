@@ -15,23 +15,28 @@ import javax.swing.JPanel;
 import com.sun.tools.javac.util.List;
 
 public class GameController implements Runnable{
+
+	
+	private PacManGame frame; 
+	
+	private GamePanel gamePanel;
+	private StatusBar statusBar;
 	
 	private PacMan pacMan;
-    private boolean running;
-    private boolean pause;
-    private boolean soundOn;
-	private GamePanel gamePanel;
-	private PacManGame frame = null; 
-	private Maze maze = null;
-	private Sound music;
-	private StatusBar statusBar = null;
+	private Maze maze;
 	private ArrayList<Gum> gumList = null;
 	private ArrayList<PacGum> pacGumList = null;
+	
+	private Sound music;
 	
 	public static final int FPS = 20;
 	public static final int GUM_GAIN = 4;
 	public static final int PAC_GUM_GAIN = 8;
 	
+    private boolean running;
+    private boolean pause;
+    private boolean soundOn;
+    
 	public static boolean fullScreen = false;
     public static boolean resize = false;
 	

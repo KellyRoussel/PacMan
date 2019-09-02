@@ -12,24 +12,25 @@ public class PacMan implements Character{
 		private String direction = "Left";
 		private int style = 0;
 		private int counter = 0;
-	    private int dx = -4;
-	    private int dy;
+	    
 	    private int x;
 	    private int y;
+	    
 	    private int w;
 	    private int h;
+	    
 	    private Image image;
 	    private int nextX = 0;
 	    private int nextY = 0;
 	    private final int PAS = 2;
-		private boolean undefinedPosition = true;
+		
+	    private int dx = -1 * PAS;
+	    private int dy;
+	    
+	    private boolean undefinedPosition = true;
 
 	    public PacMan() {
-	        loadImage();
-	    }
-
-	    private void loadImage() {
-	        ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png");
+	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	 
 	        setW(image.getWidth(null));
@@ -84,13 +85,13 @@ public class PacMan implements Character{
 	        
 	        if (key == KeyEvent.VK_LEFT) {
 	        	setDirection("Left");
-			dy = 0;
+	        	dy = 0;
 	        	dx = -1 * PAS;
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
 	        	setDirection("Right");
-			dy = 0;
+	        	dy = 0;
 	        	dx = PAS;
 	        }
 
@@ -102,29 +103,11 @@ public class PacMan implements Character{
 
 	        if (key == KeyEvent.VK_DOWN) {
 	        	setDirection("Down");
-			dx = 0;
+	        	dx = 0;
 	         	dy = PAS;
 	        }
 	    }
 	    
-/*
-	    public void keyReleased(KeyEvent e) {
-	        
-	        int key = e.getKeyCode();
-	        if (key == KeyEvent.VK_LEFT) {
-	            dx = 0;
-	        }
-	        if (key == KeyEvent.VK_RIGHT) {
-	            dx = 0;
-	        }
-	        if (key == KeyEvent.VK_UP) {
-	            dy = 0;
-	        }
-	        if (key == KeyEvent.VK_DOWN) {
-	            dy = 0;
-	        }
-	    }
-*/
 		@Override
 		public void draw(Graphics g) {
 	        image = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png").getImage(); 
