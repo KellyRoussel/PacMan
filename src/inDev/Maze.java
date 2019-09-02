@@ -14,7 +14,7 @@ public class Maze {
 	private int [][] maze;
 	//private Image [][] images;
 	private int sizeImages = 0;
-	public static int size = 0; 
+	private static int size = 0; 
 	private Image [][] currents;
 	
 	public Maze() throws FileNotFoundException {
@@ -98,5 +98,10 @@ public class Maze {
 			}
 		}
 		return new Point(0, 0);
+	}
+
+	public static int getSize() {
+		// TODO Auto-generated method stub
+		return size;
 	}
 }
