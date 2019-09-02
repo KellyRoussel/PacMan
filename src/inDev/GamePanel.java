@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 import java.awt.Graphics2D;
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel{
         }
 	}
 
-    public void gameRender(PacMan pacMan, Maze maze) {
+    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList) {
     	if (GameController.resize) {
     		PacManGame.resize();
     		GameController.resize = false;
@@ -66,7 +67,11 @@ public class GamePanel extends JPanel{
         	pacMan.setPosition(p.x, p.y);
         }
         	
+        for(int i = 0; i < gumList.size(); i++) {
+        	if(!gumList.get(i).isEaten())
+        		gumList.get(i).draw(dbg, gumList.get(i).getY() * maze.size + 5, gumList.get(i).getX() * maze.size + 5);
+        }
+        
         pacMan.draw(dbg);
-
     }  
 }

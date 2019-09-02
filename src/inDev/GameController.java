@@ -8,8 +8,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import com.sun.tools.javac.util.List;
 
 public class GameController implements Runnable{
 	
@@ -24,8 +27,9 @@ public class GameController implements Runnable{
 	private Maze maze = null;
 	private Sound music;
 	private StatusBar statusBar = null;
-	
+	private ArrayList<Gum> gumList = null;
 	public static final int FPS = 20;
+	private static final int GUM_GAIN = 4;
 
 	private int counterLives = 0;
 
@@ -56,6 +60,16 @@ public class GameController implements Runnable{
         
     	pacMan = new PacMan();
         
+    	gumList = new ArrayList<Gum>();
+    	int [][] mazeMat = maze.getMaze();
+    	
+    	for(int i = 0; i < 33; i++)
+    		for(int j = 0; j < 30; j++) {
+    			if(mazeMat[i][j] == 0) {
+    				gumList.add(new Gum(i, j));
+    			}
+    		}
+    	
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
         		
@@ -99,10 +113,6 @@ public class GameController implements Runnable{
     		
     		if(! pause) {
     			
-    			// Tester le changement du score
-    			statusBar.incrementScore(1);
-    			statusBar.updateScore();
-	    		
     			
     			// Tester le changement des vies
     			
@@ -112,7 +122,7 @@ public class GameController implements Runnable{
         			*/
     			
     			gameUpdate();
-	    		gamePanel.gameRender(pacMan, maze);
+	    		gamePanel.gameRender(pacMan, maze, gumList);
 	    		gamePanel.paintScreen();
     		}
     		try {
@@ -162,6 +172,13 @@ public class GameController implements Runnable{
     		if(tile%60 != 0) {
     			statusBar.updateCollision(pacMan.getDirection());
     	}else{
+    		for(int i = 0; i < gumList.size(); i++) {
+    			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
+    				gumList.get(i).setEaten();
+    				statusBar.incrementScore(GUM_GAIN);
+        			statusBar.updateScore();
+    			}
+    		}
     		statusBar.updateCollision("NONE");
     		pacMan.move();    	
     	}

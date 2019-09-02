@@ -1,5 +1,7 @@
 package inDev;
 
+import java.awt.Graphics;
+
 public class PacGum implements Food{
 
 	@Override
@@ -9,7 +11,7 @@ public class PacGum implements Food{
 	}
 
 	@Override
-	public void draw() {
+	public void draw(Graphics g, int x, int y) {
 		// TODO Auto-generated method stub
 		
 	}
