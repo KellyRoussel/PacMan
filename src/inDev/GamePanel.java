@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import javax.swing.Timer;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
 import javax.sound.sampled.AudioInputStream;
@@ -60,6 +61,11 @@ public class GamePanel extends JPanel{
         dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
         
         maze.draw(dbg, Math.min((this.getWidth())/30, (this.getHeight()) / 33));
+        if(pacMan.undefinedPosition()){
+        	Point p = maze.getFirstPosition();
+        	pacMan.setPosition(p.x, p.y);
+        }
+        	
         pacMan.draw(dbg);
 
     }  

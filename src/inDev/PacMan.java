@@ -14,14 +14,15 @@ public class PacMan implements Character{
 		private int counter = 0;
 	    private int dx = -4;
 	    private int dy;
-	    private int x = 250;
-	    private int y = 425;
+	    private int x;
+	    private int y;
 	    private int w;
 	    private int h;
 	    private Image image;
 	    private int nextX = 0;
 	    private int nextY = 0;
 	    private final int PAS = 2;
+		private boolean undefinedPosition = true;
 
 	    public PacMan() {
 	        loadImage();
@@ -175,6 +176,20 @@ public class PacMan implements Character{
 
 		private void setDirection(String direction) {
 			this.direction = direction;
+		}
+
+		public boolean undefinedPosition() {
+			if(undefinedPosition ) {
+				undefinedPosition = false;
+				return true;
+			}
+			return false;
+		}
+
+		public void setPosition(int x, int y) {
+			// TODO Auto-generated method stub
+			this.x = x;
+			this.y = y;
 		}
 
 	}

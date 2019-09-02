@@ -43,8 +43,6 @@ public class GameController implements Runnable{
     	mainPane.add(gamePanel,BorderLayout.CENTER);
     	mainPane.add(statusBar, BorderLayout.SOUTH);
     	
-    	pacMan = new PacMan();
-
     	Sound background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
 
     	
@@ -54,6 +52,9 @@ public class GameController implements Runnable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        
+        
+    	pacMan = new PacMan();
         
         gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {

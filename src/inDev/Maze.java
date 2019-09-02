@@ -2,6 +2,7 @@ package inDev;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -29,7 +30,7 @@ public class Maze {
 			String[] strings = line.split(",");
 			for(int j = 0; j < 30; j++) {
 				getMaze()[i][j] = Integer.parseInt(strings[j]);
-				currents[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j] + ".png").getImage();
+				currents[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j]%60 + ".png").getImage();
 			}
         }
 		
@@ -65,5 +66,16 @@ public class Maze {
 
 	public int [][] getMaze() {
 		return maze;
+	}
+
+	public Point getFirstPosition() {
+		for(int i = 0; i < 33; i++) {
+			for(int j = 0; j < 30; j++) {
+				if(maze[i][j] == 60) {
+					return new Point(j * size, i * size + 2);
+				}
+			}
+		}
+		return new Point(0, 0);
 	}
 }
