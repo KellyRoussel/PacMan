@@ -119,6 +119,7 @@ public class GameController implements Runnable{
         //Lancer la musique
         music = background;
         background.loop();
+        soundOn = true;
         
         // Lancer le jeu
         startGame();
