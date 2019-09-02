@@ -17,6 +17,8 @@ public class GameController implements Runnable{
     private boolean running;
     private boolean pause;
     private boolean soundOn;
+    public static boolean fullScreen = false;
+    public static boolean resize = false;
 	private GamePanel gamePanel;
 	private PacManGame frame = null; 
 	private Maze maze = null;
@@ -66,6 +68,11 @@ public class GameController implements Runnable{
         				music.stop();
         			} else { music.play(); }
         			soundOn = !soundOn;
+        		}
+        		
+        		if (key == KeyEvent.VK_F) {
+        			resize = true;
+        			fullScreen = !fullScreen;
         		}
         		
         		if(!pause){

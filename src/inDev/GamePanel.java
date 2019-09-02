@@ -42,6 +42,10 @@ public class GamePanel extends JPanel{
 	}
 
     public void gameRender(PacMan pacMan, Maze maze) {
+    	if (GameController.resize) {
+    		PacManGame.resize();
+    		GameController.resize = false;
+    	}
     	if (dbImage == null){
             dbImage = createImage(PacManGame.DefaultWidth, PacManGame.DefaultHeight);
             if (dbImage == null) {
