@@ -159,7 +159,7 @@ public class GameController implements Runnable{
     		//System.out.println(nColumn);
     		int tile = maze.getMaze()[nRaw][nColumn];
     		System.out.println(tile);
-    		if(tile != 0) {
+    		if(tile%60 != 0) {
     			statusBar.updateCollision(pacMan.getDirection());
     	}else{
     		statusBar.updateCollision("NONE");

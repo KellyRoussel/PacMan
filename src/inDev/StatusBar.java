@@ -7,11 +7,15 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class StatusBar extends JPanel{
 
@@ -27,30 +31,57 @@ public class StatusBar extends JPanel{
 	public StatusBar() {
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, 150));
-		setLayout(new GridLayout(1, 3));
+		setBorder(new EmptyBorder(0, 20, 0, 20));
+		setLayout(new GridLayout(2, 3));
 		
-		// Creation du score
+		JLabel scoreL = new JLabel();
+		scoreL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		scoreL.setText("<html><font color = 'WHITE'> SCORE </font></html>");
+		scoreL.setAlignmentX(CENTER_ALIGNMENT);
+		scoreL.setAlignmentY(CENTER_ALIGNMENT);
+		add(scoreL);
 		
+		
+		JLabel livesL = new JLabel();
+		livesL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		livesL.setText("<html><font color = 'WHITE'> VIES </font></html>");
+		livesL.setAlignmentX(CENTER_ALIGNMENT);
+		livesL.setAlignmentY(CENTER_ALIGNMENT);
+		add(livesL);
+		
+		JLabel CollisionL = new JLabel();
+		CollisionL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		CollisionL.setText("<html><font color = 'WHITE'> COLLISION </font></html>");
+		CollisionL.setAlignmentX(CENTER_ALIGNMENT);
+		CollisionL.setAlignmentY(CENTER_ALIGNMENT);
+		add(CollisionL);
+		
+		
+		// Creation du score		
+		JPanel scorePane = new JPanel(new FlowLayout());
+		scorePane.setBackground(Color.black);
 		scoreLabel = new JLabel();
+		scoreLabel.setText("<html><font color='WHITE'>SCORE </font></html>");
 		scoreLabel.setFont(new Font("Trattatello", Font.BOLD, 30));
-		scoreLabel.setAlignmentX(CENTER_ALIGNMENT);
-		scoreLabel.setAlignmentY(CENTER_ALIGNMENT);
-		updateScore();
-		add(scoreLabel);
+		scorePane.add(scoreLabel);
+		add(scorePane);
 		
 		 // Creation des vies
 		
 		lvPane = new JPanel(new FlowLayout());
 		lvPane.setBackground(Color.black);
-		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
-		livesPn.setFont(new Font("Trattatello", Font.BOLD, 30));
-		livesPn.setAlignmentX(CENTER_ALIGNMENT);
-		livesPn.setAlignmentY(CENTER_ALIGNMENT);
-		lvPane.add(livesPn);
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("ressources" + File.separator + "life.png"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(20, 20,Image.SCALE_SMOOTH);
 		
 		for(int i = 0; i < lives; i++) {
-			ImageIcon icon = new ImageIcon("ressources" + File.separator + "life.png");
+			ImageIcon icon = new ImageIcon(dimg);
 			JLabel thumb = new JLabel();
+			thumb.setPreferredSize(new Dimension(20, 20));
 			thumb.setBackground(Color.black);
 			thumb.setIcon(icon);
 			
@@ -60,13 +91,13 @@ public class StatusBar extends JPanel{
 		add(lvPane);
 		
 		// Creation du score
-		
+		JPanel collision = new JPanel(new FlowLayout());
+		collision.setBackground(Color.black);
 		collisionPane = new JLabel();
 		collisionPane.setFont(new Font("Trattatello", Font.BOLD, 30));
-		collisionPane.setAlignmentX(CENTER_ALIGNMENT);
-		collisionPane.setAlignmentY(CENTER_ALIGNMENT);
 		updateCollision("NONE");
-		add(collisionPane);
+		collision.add(collisionPane);
+		add(collision);
 		
 		/*fruitsPane = new JPanel();
 		fruitsPane.setBackground(Color.black);
@@ -80,7 +111,7 @@ public class StatusBar extends JPanel{
 	}
 
 	public void updateScore() {
-		scoreLabel.setText("<html><font color='WHITE'>SCORE </font> <font color = 'YELLOW'>" + score + "</font></html>");
+		scoreLabel.setText("<html><font color = 'YELLOW'>" + score + "</font></html>");
 	}
 	
 	public void incrementScore(int value) {
