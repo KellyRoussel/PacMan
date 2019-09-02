@@ -101,7 +101,7 @@ public class GameController implements Runnable{
         		if (key == KeyEvent.VK_M) {
         			if (soundOn) {
         				music.stop();
-        			} else { music.play(); }
+        			} else { music.loop(); }
         			soundOn = !soundOn;
         		}
         		
