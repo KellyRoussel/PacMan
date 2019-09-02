@@ -65,7 +65,7 @@ public class GameController implements Runnable{
     	
     	for(int i = 0; i < 33; i++)
     		for(int j = 0; j < 30; j++) {
-    			if(mazeMat[i][j] == 0) {
+    			if(mazeMat[i][j] == 120) {
     				gumList.add(new Gum(i, j));
     			}
     		}

@@ -25,15 +25,25 @@ public class Maze {
 		
 		Scanner sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
 		
+		int debutX = 0;
+		int debutY = 0;
+		
 		for(int i = 0; i < 33; i++) {
 			String line = sc.nextLine();
 			String[] strings = line.split(",");
 			for(int j = 0; j < 30; j++) {
-				getMaze()[i][j] = Integer.parseInt(strings[j]);
+				maze[i][j] = Integer.parseInt(strings[j]);
+				if(maze[i][j] == 60) {
+					debutX = i;
+					debutY = j;
+				}
 				currents[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j]%60 + ".png").getImage();
 			}
         }
-		
+		recursiveAction(debutX + 1, debutY);
+		recursiveAction(debutX - 1, debutY);	
+		recursiveAction(debutX, debutY + 1);
+		recursiveAction(debutX, debutY - 1);
 	}
 	
 	/*public void loadImages(int size) {
@@ -46,6 +56,17 @@ public class Maze {
         }
 	}*/
 		
+	private void recursiveAction(int debutX, int debutY) {
+		// TODO Auto-generated method stub
+		if(debutX >= 0 && debutX < 33 && debutY >= 0 && debutY < 30 && maze[debutX][debutY] == 0) {
+			maze[debutX][debutY] = 120;
+			recursiveAction(debutX + 1, debutY);
+			recursiveAction(debutX - 1, debutY);	
+			recursiveAction(debutX, debutY + 1);
+			recursiveAction(debutX, debutY - 1);
+		}
+	}
+
 	public void draw(Graphics g, int size) {
 		this.size = size;
 		/*if(sizeImages != size) {
