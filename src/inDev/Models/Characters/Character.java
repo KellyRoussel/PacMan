@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models.Characters;
 
 import java.awt.Graphics;
 

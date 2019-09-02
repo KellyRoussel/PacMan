@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Views;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,6 +13,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+
+import inDev.Controllers.GameController;
 
 public class PacManGame extends JFrame{
 	

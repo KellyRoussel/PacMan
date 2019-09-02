@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models.Foods;
 
 import java.awt.Graphics;
 

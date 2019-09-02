@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models.Characters;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
+
+import inDev.Views.PacManGame;
 
 public class PacMan implements Character{
 

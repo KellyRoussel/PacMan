@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Views;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,6 +8,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
+
+import inDev.Controllers.GameController;
+import inDev.Models.Maze;
+import inDev.Models.Characters.PacMan;
+import inDev.Models.Foods.Gum;
+import inDev.Models.Foods.PacGum;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;

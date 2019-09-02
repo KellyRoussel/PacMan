@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models.Foods;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,7 +6,7 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
-public class Gum implements Food{
+public class PacGum implements Food{
 
 	
 	
@@ -23,14 +23,14 @@ public class Gum implements Food{
 		return y;
 	}
 
-	public Gum(int x, int y) {
+	public PacGum(int x, int y) {
 	    loadImage();
 	    this.x = x;
 	    this.y = y;
 	}
 	
     private void loadImage() {
-        ImageIcon ii = new ImageIcon("ressources" + File.separator + "gum.png");
+        ImageIcon ii = new ImageIcon("ressources" + File.separator + "pacGum.png");
         image = ii.getImage(); 
     }
 	
@@ -41,7 +41,7 @@ public class Gum implements Food{
 
 	@Override
 	public void draw(Graphics g, int x, int y) {
-        image = new ImageIcon("ressources" + File.separator + "gum.png").getImage(); 
+        image = new ImageIcon("ressources" + File.separator + "pacGum.png").getImage(); 
 		g.drawImage(image, x, y, null);
 		
 	}

@@ -1,4 +1,4 @@
-package inDev;
+package inDev.Models;
 
 import java.awt.Graphics;
 import java.awt.Image;

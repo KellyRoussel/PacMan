@@ -1,4 +1,4 @@
-﻿package inDev;
+﻿package inDev.Controllers;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,6 +13,15 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import com.sun.tools.javac.util.List;
+
+import inDev.Models.Maze;
+import inDev.Models.Sound;
+import inDev.Models.Characters.PacMan;
+import inDev.Models.Foods.Gum;
+import inDev.Models.Foods.PacGum;
+import inDev.Views.GamePanel;
+import inDev.Views.PacManGame;
+import inDev.Views.StatusBar;
 
 public class GameController implements Runnable{
 
