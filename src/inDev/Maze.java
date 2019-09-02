@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 public class Maze {
 	
 	private int [][] maze;
-	private Image [][] images;
+	//private Image [][] images;
 	private int sizeImages = 0;
 	public static int size = 0; 
 	private Image [][] currents;
@@ -19,7 +19,7 @@ public class Maze {
 	public Maze() throws FileNotFoundException {
 		
 		maze = new int[33][30];
-		images = new Image[33][30];
+		//images = new Image[33][30];
 		currents = new Image[33][30];
 		
 		Scanner sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
@@ -29,13 +29,13 @@ public class Maze {
 			String[] strings = line.split(",");
 			for(int j = 0; j < 30; j++) {
 				getMaze()[i][j] = Integer.parseInt(strings[j]);
-				images[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j] + ".png").getImage();
+				currents[i][j] = new ImageIcon("ressources" + File.separator + "maze" + getMaze()[i][j] + ".png").getImage();
 			}
         }
 		
 	}
 	
-	public void loadImages(int size) {
+	/*public void loadImages(int size) {
 		this.size = size;
 		for(int i = 0; i < 33; i++) {
 			for(int j = 0; j < 30; j++) {
@@ -43,18 +43,18 @@ public class Maze {
 				currents[i][j] = ii.getImage();
 			}
         }
-	}
+	}*/
 		
 	public void draw(Graphics g, int size) {
 		this.size = size;
-		if(sizeImages != size) {
+		/*if(sizeImages != size) {
 			loadImages(size);
 			sizeImages = size;
-		}
+		}*/
 		
 		for(int i = 0; i < 33; i++) {
 			for(int j = 0; j < 30; j++) {
-				g.drawImage(currents[i][j], j * size, i * size, null);
+				g.drawImage(currents[i][j], j * size, i * size,size,size, null);
 			}
         }
 	}
