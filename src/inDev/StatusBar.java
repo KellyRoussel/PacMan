@@ -22,7 +22,7 @@ public class StatusBar extends JPanel{
 	private JLabel scoreLabel = null;
 	private JPanel fruitsPane = null; 
 	private JPanel lvPane = null;
-	
+	private JLabel collisionPane = null;
 	
 	public StatusBar() {
 		setBackground(Color.black);
@@ -59,12 +59,26 @@ public class StatusBar extends JPanel{
 		
 		add(lvPane);
 		
-		fruitsPane = new JPanel();
+		// Creation du score
+		
+		collisionPane = new JLabel();
+		collisionPane.setFont(new Font("Trattatello", Font.BOLD, 30));
+		collisionPane.setAlignmentX(CENTER_ALIGNMENT);
+		collisionPane.setAlignmentY(CENTER_ALIGNMENT);
+		updateCollision("NONE");
+		add(collisionPane);
+		
+		/*fruitsPane = new JPanel();
 		fruitsPane.setBackground(Color.black);
-		add(fruitsPane);
+		add(fruitsPane);*/
 	
 	}
 		
+	public void updateCollision(String string) {
+		// TODO Auto-generated method stub
+		collisionPane.setText("<html><font color = 'YELLOW'>" + string + "</font></html>");
+	}
+
 	public void updateScore() {
 		scoreLabel.setText("<html><font color='WHITE'>SCORE </font> <font color = 'YELLOW'>" + score + "</font></html>");
 	}

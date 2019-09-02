@@ -98,9 +98,10 @@ public class GameController implements Runnable{
     			
     			// Tester le changement des vies
     			
-    			counterLives++;
+    			/*counterLives++;
         		if(counterLives % 200 == 0)
         			statusBar.decrementLife();
+        			*/
     			
     			gameUpdate();
 	    		gamePanel.gameRender(pacMan, maze);
@@ -151,8 +152,9 @@ public class GameController implements Runnable{
     		int tile = maze.getMaze()[nRaw][nColumn];
     		System.out.println(tile);
     		if(tile != 0) {
-    			//Afficher collision dans la StatusBar
+    			statusBar.updateCollision(pacMan.getDirection());
     	}else{
+    		statusBar.updateCollision("NONE");
     		pacMan.move();    	
     	}
 	}
