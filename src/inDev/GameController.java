@@ -121,6 +121,7 @@ public class GameController implements Runnable{
         });
         music = background;
         background.loop();
+        soundOn = true;
         
         startGame();
 	}
