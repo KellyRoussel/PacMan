@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import inDev.Models.Maze;
 import inDev.Models.Sound;
 import inDev.Models.Characters.PacMan;
+import inDev.Models.Foods.Fruit;
 import inDev.Models.Foods.Gum;
 import inDev.Models.Foods.PacGum;
 import inDev.Views.GamePanel;
@@ -30,12 +31,14 @@ public class GameController implements Runnable{
 	private Maze maze;
 	private ArrayList<Gum> gumList = null;
 	private ArrayList<PacGum> pacGumList = null;
+	private ArrayList<Fruit> fruitList = null;
 	
 	private Sound music;
 	
-	public static final int FPS = 20;
+	public static final int FPS = 10;
 	public static final int GUM_GAIN = 4;
 	public static final int PAC_GUM_GAIN = 8;
+	public static final int FRUIT_GAIN = 16;
 	
     private boolean running;
     private boolean pause;
@@ -65,8 +68,6 @@ public class GameController implements Runnable{
     	
     	Sound background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
     	
-    	//Définir les positions des pacGums
-    	setPacGumsPositions();
     	
     	//Creer une instance de la labyrinthe
         try {
@@ -78,22 +79,25 @@ public class GameController implements Runnable{
     	//Creer le PacMan        
     	pacMan = new PacMan();
         
-    	// Creer les Gums
+    	// Creer les Gums et PacGums
+    	
     	gumList = new ArrayList<Gum>();
+    	pacGumList = new ArrayList<PacGum>();
+    	fruitList = new ArrayList<Fruit>();
+    	
     	int [][] mazeMat = maze.getMaze();
     	
     	for(int i = 0; i < 33; i++)
     		for(int j = 0; j < 30; j++) {
-    			if(mazeMat[i][j] == 120 && !isPacGum(i, j)) {
+    			if(mazeMat[i][j] == 30)
     				gumList.add(new Gum(i, j));
-    			}
+		    	if(mazeMat[i][j] == 40)
+					pacGumList.add(new PacGum(i, j));
+		    	if(mazeMat[i][j] == 50)
+		    		fruitList.add(new Fruit(i, j));
     		}
-    	
-    	//Creer les pacGums
-    	pacGumList = new ArrayList<PacGum>();
-    	
-    	for(int i = 0; i < pacGumIndexes.length; i++)
-    		pacGumList.add(new PacGum(pacGumIndexes[i][0], pacGumIndexes[i][1]));
+
+    			
     	
     	//Lancer un listener sur le clavier
         gamePanel.addKeyListener(new KeyAdapter() {
@@ -132,26 +136,6 @@ public class GameController implements Runnable{
         startGame();
 	}
 
-	private void setPacGumsPositions() {
-		pacGumIndexes = new int[3][2];
-    	
-    	pacGumIndexes[0][0] = 6;
-    	pacGumIndexes[0][1] = 2;
-    	
-    	pacGumIndexes[1][0] = 12;
-    	pacGumIndexes[1][1] = 10;
-    	
-    	pacGumIndexes[2][0] = 30;
-    	pacGumIndexes[2][1] = 13;
-	}
-    
-	private boolean isPacGum(int x, int y) {
-		for(int i = 0; i < pacGumIndexes.length; i++) {
-			if(pacGumIndexes[i][0] == x && pacGumIndexes[i][1] == y)
-				return true;
-		}
-		return false;
-	}
 
 	@Override
 	public void run() {
@@ -160,7 +144,7 @@ public class GameController implements Runnable{
     	while(running) {
     		if(! pause) {		
     			gameUpdate();
-	    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList);
+	    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList, fruitList);
 	    		gamePanel.paintScreen();
     		}
     		try {
@@ -203,11 +187,8 @@ public class GameController implements Runnable{
     		}
     		int tile = maze.getMaze()[nRaw][nColumn];
     		
-    		if(tile%60 != 0) {
-    			//Mur 
-    			statusBar.updateCollision(pacMan.getDirection());
-	    	}else{
-	    		//Tile vide
+    		if(tile == 0 || tile >= 30) {
+    			//Tile vide
 	    		for(int i = 0; i < gumList.size(); i++) {
 	    			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
 	    				//Tile contenant une Gum
@@ -224,9 +205,23 @@ public class GameController implements Runnable{
 	        			statusBar.updateScore();
 	    			}
 	    		}
-    		statusBar.updateCollision("NONE");
-    		pacMan.move(); 
-    		pacMan.setInsideTile(nRaw, nColumn);
+	    		
+	    		for(int i = 0; i < fruitList.size(); i++) {
+	    			if(fruitList.get(i).getX() == nRaw && fruitList.get(i).getY() == nColumn && !fruitList.get(i).isEaten()) {
+	    				//Tile contenant un PacGum
+	    				fruitList.get(i).setEaten();
+	    				statusBar.incrementScore(FRUIT_GAIN);
+	        			statusBar.updateScore();
+	    			}
+	    		}
+	    		
+	    		statusBar.updateCollision("NONE");
+	    		pacMan.move(); 
+	    		pacMan.setInsideTile(nRaw, nColumn);
+    			
+	    	}else{
+	    		//Mur 
+    			statusBar.updateCollision(pacMan.getDirection());
 	    	}
 	}
     }	

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="inDev.Models.Characters.Strategies.Normal.TurquoiseStrategy" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/Normal/TurquoiseStrategy.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="106" width="250" x="2021" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="inDev.Views.GamePanel" project="PacMan" 
+    file="/PacMan/src/inDev/Views/GamePanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="196" width="440" x="1354" y="563"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="inDev.Models.Characters.Strategies.Normal.OrangeStrategy" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/Normal/OrangeStrategy.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="106" width="250" x="2311" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="inDev.Views.PacManGame" project="PacMan" 
+    file="/PacMan/src/inDev/Views/PacManGame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="214" width="188" x="1350" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="inDev.Models.Characters.Ghost" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Ghost.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="178" width="147" x="1834" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="inDev.Models.Foods.Gum" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Foods/Gum.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="286" width="175" x="920" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="inDev.Views.StatusBar" project="PacMan" 
+    file="/PacMan/src/inDev/Views/StatusBar.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="322" width="182" x="330" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="inDev.Models.Foods.Fruit" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Foods/Fruit.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="124" width="175" x="115" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="inDev.Models.Foods.PacGum" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Foods/PacGum.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="286" width="175" x="1135" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="inDev.Models.Sound" project="PacMan" file="/PacMan/src/inDev/Models/Sound.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="160" width="108" x="552" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="inDev.Models.Characters.Strategies.Normal.StrategyPink" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/Normal/StrategyPink.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="250" x="2601" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="inDev.Controllers.GameController" project="PacMan" 
+    file="/PacMan/src/inDev/Controllers/GameController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="394" width="279" x="1135" y="-701"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="inDev.Models.Characters.Strategies.StrBlue" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/StrBlue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="206" x="2891" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="inDev.Models.Characters.Strategies.Normal.RedStrategy" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/Normal/RedStrategy.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="250" x="3137" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="15" language="java" name="inDev.Models.Characters.Character" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Character.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="124" width="147" x="1834" y="563"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="16" language="java" name="inDev.Models.Foods.Food" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Foods/Food.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="175" x="920" y="563"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="17" language="java" name="inDev.Models.Characters.PacMan" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/PacMan.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="790" width="185" x="1609" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="18" language="java" name="inDev.Models.Characters.Strategies.GhostStrategy" project="PacMan" 
+    file="/PacMan/src/inDev/Models/Characters/Strategies/GhostStrategy.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="88" width="206" x="2466" y="563"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="19" language="java" name="inDev.Models.Maze" project="PacMan" file="/PacMan/src/inDev/Models/Maze.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="322" width="180" x="700" y="-267"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="20">    
+    <bendpoint x="1578" y="-267"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="21" name="gamePanel"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="23">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <association id="24">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="25" name="pacMan"/>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="27">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="15"/>  
+  </realization>  
+  <realization id="28">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <realization id="29">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="15"/>  
+  </realization>  
+  <realization id="30">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <realization id="31">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <realization id="32">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <association id="33">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="34" name="statusBar"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="37" name="maze"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="39">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="40" name="stategy"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="42">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="43" name="gumList"/>      
+      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="45">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="46" name="pacGumList"/>      
+      <multiplicity id="47" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="48">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="49" name="gp"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="51">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <realization id="52">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <association id="53">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="54" name="frame"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="56">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <association id="57">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="58" name="music"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="61" name="SINGLE_INSTANCE"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
