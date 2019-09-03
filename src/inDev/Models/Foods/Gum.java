@@ -6,6 +6,9 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
+import inDev.Models.Maze;
+import inDev.Views.GamePanel;
+
 public class Gum implements Food{
 
 	
@@ -39,10 +42,18 @@ public class Gum implements Food{
 		return isEaten;
 	}
 
+	public int shiftedX(int x, int size) {
+    	int nColumn = (x / Maze.getDefaultSize());
+    	int nLeft = (x % Maze.getDefaultSize());
+    	nLeft = nLeft * size / Maze.getDefaultSize();
+    	nLeft += nColumn * size;
+    	return nLeft;
+    }
+	
 	@Override
 	public void draw(Graphics g, int x, int y) {
         image = new ImageIcon("ressources" + File.separator + "gum.png").getImage(); 
-		g.drawImage(image, x, y, null);
+		g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), null);
 		
 	}
 

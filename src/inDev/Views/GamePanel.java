@@ -30,7 +30,9 @@ public class GamePanel extends JPanel{
 	
     private Graphics dbg;
     private Image dbImage = null;
-    
+    public static int debutX = 0;
+	public static int debutY = 0;
+	
     public GamePanel() {
     	
     	setBackground(Color.black);
@@ -55,34 +57,35 @@ public class GamePanel extends JPanel{
     		PacManGame.resize();
     		GameController.resize = false;
     	}
-    	if (dbImage == null){
-            dbImage = createImage(PacManGame.DefaultWidth, PacManGame.DefaultHeight);
-            if (dbImage == null) {
-              System.out.println("dbImage is null");
-			   return; }
-			else {
-				dbg = dbImage.getGraphics();
-			}
-    	}
+        dbImage = createImage(PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);
+        if (dbImage == null) {
+          System.out.println("dbImage is null");
+		   return; }
+		else {
+			dbg = dbImage.getGraphics();
+		}
           // clear the background
         dbg.setColor(Color.black);
-        dbg.fillRect (0, 0, PacManGame.DefaultWidth, PacManGame.DefaultHeight);
+        dbg.fillRect (0, 0, PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);
         
-        maze.draw(dbg, Math.min((this.getWidth())/30, (this.getHeight()) / 33));
+        maze.draw(dbg);
+        
         if(pacMan.undefinedPosition()){
         	Point p = maze.getFirstPosition();
         	pacMan.setPosition(p.x, p.y);
         }
-        	
+        
         for(int i = 0; i < gumList.size(); i++) {
         	if(!gumList.get(i).isEaten())
-        		gumList.get(i).draw(dbg, gumList.get(i).getY() * maze.getSize() + 5, gumList.get(i).getX() * maze.getSize() + 5);
+        		gumList.get(i).draw(dbg, gumList.get(i).getY() * maze.getDefaultSize() + 5, gumList.get(i).getX() * maze.getDefaultSize() + 5);
         }
         for(int i = 0; i < pacGumList.size(); i++) {
         	if(!pacGumList.get(i).isEaten())
-        		pacGumList.get(i).draw(dbg, pacGumList.get(i).getY() * maze.getSize() + 5, pacGumList.get(i).getX() * maze.getSize() + 5);
+        		pacGumList.get(i).draw(dbg, pacGumList.get(i).getY() * maze.getDefaultSize() + 5, pacGumList.get(i).getX() * maze.getDefaultSize() + 5);
         }
         
-        pacMan.draw(dbg);
+        ;
+        pacMan.draw(dbg);	
+
     }  
 }

@@ -1,19 +1,11 @@
 ﻿package inDev.Controllers;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
-
-import com.sun.tools.javac.util.List;
-
 import inDev.Models.Maze;
 import inDev.Models.Sound;
 import inDev.Models.Characters.PacMan;
@@ -182,7 +174,7 @@ public class GameController implements Runnable{
     	pacMan.nextX();
     	pacMan.nextY();
     	
-    	int sz = Maze.getSize();
+    	int sz = maze.getDefaultSize();
     	
     	if(sz != 0) {
     		//Pour savoir le tile suivant ou le pacman va se placer

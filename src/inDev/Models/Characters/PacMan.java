@@ -8,6 +8,7 @@ import java.io.File;
 import javax.swing.ImageIcon;
 
 import inDev.Models.Maze;
+import inDev.Views.GamePanel;
 import inDev.Views.PacManGame;
 
 public class PacMan implements Character{
@@ -41,11 +42,11 @@ public class PacMan implements Character{
 	    }
 
 	    public void nextX(){
-	    	setNextX((x + dx + Maze.getSize() * 30 - 20) % (Maze.getSize() * 30 - 20));
+	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 20) % (Maze.getDefaultSize() * 30 - 20));
 	    }
 	    
 	    public void nextY() {
-	    	setNextY((y + dy + Maze.getSize() * 33) % (Maze.getSize() * 33));
+	    	setNextY((y + dy + Maze.getDefaultSize() * 33) % (Maze.getDefaultSize() * 33));
 	    }
 	    
 	    public void move() {
@@ -110,12 +111,17 @@ public class PacMan implements Character{
 	         	dy = PAS;
 	        }
 	    }
-	    
+	    public int shiftedX(int x, int size) {
+	    	int nColumn = (x / Maze.getDefaultSize());
+	    	int nLeft = (x % Maze.getDefaultSize());
+	    	nLeft = nLeft * size / Maze.getDefaultSize();
+	    	nLeft += nColumn * size;
+	    	return nLeft;
+	    }
 		@Override
 		public void draw(Graphics g) {
 	        image = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png").getImage(); 
-			g.drawImage(image, x, y, Maze.getSize(), Maze.getSize(), null);
-			
+			g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), Maze.getSize(), Maze.getSize(), null);
 		}
 
 		@Override
@@ -180,18 +186,19 @@ public class PacMan implements Character{
 
 		public void setInsideTile(int nRaw, int nColumn) {
 			// TODO Auto-generated method stub
+			int sz = Maze.getDefaultSize();
 			switch(getDirection()) {
 	    		case "Left":
-	    			y = nRaw * Maze.getSize();
+	    			y = nRaw * sz;
 	    			break;
 	    		case "Right":
-	    			y = nRaw * Maze.getSize();
+	    			y = nRaw * sz;
 	    			break;
 	    		case "Up":
-	    			x = nColumn * Maze.getSize();
+	    			x = nColumn * sz;
 	    			break;
 	    		case "Down":
-	    			x = nColumn * Maze.getSize();
+	    			x = nColumn * sz;
 	    			break;
 	    		default:
 	    			break;

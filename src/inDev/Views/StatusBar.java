@@ -23,6 +23,8 @@ public class StatusBar extends JPanel{
 	private int score = 0;
 	private int lives = 3;
 	
+	public static final int HEIGHT = 150;
+	
 	private JLabel scoreLabel = null;
 	private JPanel fruitsPane = null; 
 	private JPanel lvPane = null;
@@ -30,7 +32,7 @@ public class StatusBar extends JPanel{
 	
 	public StatusBar() {
 		setBackground(Color.black);
-		setPreferredSize(new Dimension(600, 150));
+		setPreferredSize(new Dimension(600, HEIGHT));
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 		setLayout(new GridLayout(2, 3));
 		
