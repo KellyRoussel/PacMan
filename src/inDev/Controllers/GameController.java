@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import com.sun.tools.javac.util.List;
 
 import inDev.Models.Maze;
 import inDev.Models.Sound;
