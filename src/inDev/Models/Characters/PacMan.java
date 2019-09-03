@@ -114,7 +114,7 @@ public class PacMan implements Character{
 		@Override
 		public void draw(Graphics g) {
 	        image = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png").getImage(); 
-			g.drawImage(image, x, y, Maze.getSize() - 4, Maze.getSize() - 4, null);
+			g.drawImage(image, x, y, Maze.getSize() - 2, Maze.getSize() - 2, null);
 			
 		}
 
@@ -182,16 +182,16 @@ public class PacMan implements Character{
 			// TODO Auto-generated method stub
 			switch(getDirection()) {
 	    		case "Left":
-	    			y = nRaw * Maze.getSize() + 2;
+	    			y = nRaw * Maze.getSize() + 1;
 	    			break;
 	    		case "Right":
-	    			y = nRaw * Maze.getSize() + 2;
+	    			y = nRaw * Maze.getSize() + 1;
 	    			break;
 	    		case "Up":
-	    			x = nColumn * Maze.getSize() + 2;
+	    			x = nColumn * Maze.getSize() + 1;
 	    			break;
 	    		case "Down":
-	    			x = nColumn * Maze.getSize() + 2;
+	    			x = nColumn * Maze.getSize() + 1;
 	    			break;
 	    		default:
 	    			break;
