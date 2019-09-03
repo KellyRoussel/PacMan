@@ -29,6 +29,14 @@ public class PacGum implements Food{
 	    this.y = y;
 	}
 	
+	public PacGum() {
+	    x = 0;
+	    y = 0;
+	    isEaten = false;
+	    image = null;
+	}
+	
+	
     private void loadImage() {
         ImageIcon ii = new ImageIcon("ressources" + File.separator + "pacGum.png");
         image = ii.getImage(); 
