@@ -212,9 +212,9 @@ public class GameController implements Runnable{
 	    		
 	    		for(int i = 0; i < fruitList.size(); i++) {
 	    			if(fruitList.get(i).getX() == nRaw && fruitList.get(i).getY() == nColumn && !fruitList.get(i).isEaten()) {
-	    				//Tile contenant un PacGum
+	    				//Tile contenant un fruit
 	    				fruitList.get(i).setEaten();
-	    				statusBar.incrementScore(FRUIT_GAIN);
+	    				statusBar.decrementLife();
 	        			statusBar.updateScore();
 	    			}
 	    		}
