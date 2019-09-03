@@ -187,24 +187,24 @@ public class GameController implements Runnable{
     	if(sz != 0) {
     		//Pour savoir le tile suivant ou le pacman va se placer
     		switch(pacMan.getDirection()) {
-    		case "Left":
-    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
-        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
-    			break;
-    		case "Right":
-    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
-    			break;
-    		case "Up":
-    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
-    			break;
-    		case "Down":
-    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
-        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
-    			break;
-    		default:
-    			break;
+	    		case "Left":
+	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
+	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
+	    			break;
+	    		case "Right":
+	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
+	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
+	    			break;
+	    		case "Up":
+	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
+	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
+	    			break;
+	    		case "Down":
+	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
+	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
+	    			break;
+	    		default:
+	    			break;
     		}
     		int tile = maze.getMaze()[nRaw][nColumn];
     		
@@ -230,8 +230,9 @@ public class GameController implements Runnable{
 	    			}
 	    		}
     		statusBar.updateCollision("NONE");
-    		pacMan.move();    	
-    	}
+    		pacMan.move(); 
+    		pacMan.setInsideTile(nRaw, nColumn);
+	    	}
 	}
     }	
     
