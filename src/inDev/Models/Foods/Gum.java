@@ -29,6 +29,13 @@ public class Gum implements Food{
 	    this.y = y;
 	}
 	
+	public Gum() {
+	    x = x;
+	    y = y;
+	    isEaten = false;
+	    image = null;
+	}
+	
     private void loadImage() {
         ImageIcon ii = new ImageIcon("ressources" + File.separator + "gum.png");
         image = ii.getImage(); 
