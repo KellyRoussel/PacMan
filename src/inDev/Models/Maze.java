@@ -9,11 +9,15 @@ import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 
+import inDev.Views.GamePanel;
+
 public class Maze {
 	
 	private int [][] maze;
 	//private Image [][] images;
 	private static int size = 20; 
+	private static int defaultSize = 20; 
+
 	private Image [][] currents;
 	
 	public Maze() throws FileNotFoundException {
@@ -66,12 +70,11 @@ public class Maze {
 		}
 	}
 
-	public void draw(Graphics g, int size) {
-		this.size = size;
+	public void draw(Graphics g) {
 
 		for(int i = 0; i < 33; i++) {
 			for(int j = 0; j < 30; j++) {
-				g.drawImage(currents[i][j], j * size, i * size,size,size, null);
+				g.drawImage(currents[i][j], GamePanel.debutX + j * size, GamePanel.debutY + i * size,size,size, null);
 			}
         }
 	}
@@ -96,7 +99,20 @@ public class Maze {
 	}
 
 	public static int getSize() {
-		// TODO Auto-generated method stub
 		return size;
+	}
+
+	public static void setSize(int mazeSize) {
+		// TODO Auto-generated method stub
+		size = mazeSize;
+	}
+
+	public static int getDefaultSize() {
+		// TODO Auto-generated method stub
+		return defaultSize;
+	}
+	public static void setDefaultSize(int mazeSize) {
+		// TODO Auto-generated method stub
+		defaultSize = mazeSize;
 	}
 }
