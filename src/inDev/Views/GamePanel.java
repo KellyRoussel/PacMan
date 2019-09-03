@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import inDev.Controllers.GameController;
 import inDev.Models.Maze;
 import inDev.Models.Characters.PacMan;
+import inDev.Models.Foods.Fruit;
 import inDev.Models.Foods.Gum;
 import inDev.Models.Foods.PacGum;
 
@@ -52,7 +53,7 @@ public class GamePanel extends JPanel{
         }
 	}
 
-    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList) {
+    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList, ArrayList<Fruit> fruitList) {
     	if (GameController.resize) {
     		PacManGame.resize();
     		GameController.resize = false;
@@ -83,9 +84,13 @@ public class GamePanel extends JPanel{
         	if(!pacGumList.get(i).isEaten())
         		pacGumList.get(i).draw(dbg, pacGumList.get(i).getY() * maze.getDefaultSize() + 5, pacGumList.get(i).getX() * maze.getDefaultSize() + 5);
         }
+        for(int i = 0; i < fruitList.size(); i++) {
+        	if(!fruitList.get(i).isEaten())
+        		fruitList.get(i).draw(dbg, fruitList.get(i).getY() * maze.getDefaultSize() + 2, fruitList.get(i).getX() * maze.getDefaultSize() + 2);
+        }
         
-        ;
-        pacMan.draw(dbg);	
+        pacMan.draw(dbg);;
+        
 
     }  
 }
