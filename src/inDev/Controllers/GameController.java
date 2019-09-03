@@ -1,10 +1,14 @@
 ﻿package inDev.Controllers;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -41,7 +45,7 @@ public class GameController implements Runnable{
 	public static final int FRUIT_GAIN = 16;
 	
     private boolean running;
-    private boolean pause;
+    public static boolean pause;
     private boolean soundOn;
     
 	public static boolean fullScreen = false;
@@ -144,9 +148,9 @@ public class GameController implements Runnable{
     	while(running) {
     		if(! pause) {		
     			gameUpdate();
-	    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList, fruitList);
-	    		gamePanel.paintScreen();
     		}
+    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList, fruitList);
+    		gamePanel.paintScreen();
     		try {
     			Thread.sleep(FPS);
     		}catch(InterruptedException ex) {}

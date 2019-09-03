@@ -37,7 +37,7 @@ public class StatusBar extends JPanel{
 		setLayout(new GridLayout(2, 3));
 		
 		JLabel scoreL = new JLabel();
-		scoreL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		scoreL.setFont(new Font("Joystix", Font.BOLD, 30));
 		scoreL.setText("<html><font color = 'WHITE'> SCORE </font></html>");
 		scoreL.setAlignmentX(CENTER_ALIGNMENT);
 		scoreL.setAlignmentY(CENTER_ALIGNMENT);
@@ -45,14 +45,14 @@ public class StatusBar extends JPanel{
 		
 		
 		JLabel livesL = new JLabel();
-		livesL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		livesL.setFont(new Font("Joystix", Font.BOLD, 30));
 		livesL.setText("<html><font color = 'WHITE'> VIES </font></html>");
 		livesL.setAlignmentX(CENTER_ALIGNMENT);
 		livesL.setAlignmentY(CENTER_ALIGNMENT);
 		add(livesL);
 		
 		JLabel CollisionL = new JLabel();
-		CollisionL.setFont(new Font("Trattatello", Font.BOLD, 30));
+		CollisionL.setFont(new Font("Joystix", Font.BOLD, 30));
 		CollisionL.setText("<html><font color = 'WHITE'> COLLISION </font></html>");
 		CollisionL.setAlignmentX(CENTER_ALIGNMENT);
 		CollisionL.setAlignmentY(CENTER_ALIGNMENT);
@@ -64,7 +64,7 @@ public class StatusBar extends JPanel{
 		scorePane.setBackground(Color.black);
 		scoreLabel = new JLabel();
 		scoreLabel.setText("<html><font color='WHITE'>SCORE </font></html>");
-		scoreLabel.setFont(new Font("Trattatello", Font.BOLD, 30));
+		scoreLabel.setFont(new Font("Joystix", Font.BOLD, 30));
 		scorePane.add(scoreLabel);
 		add(scorePane);
 		
@@ -96,7 +96,7 @@ public class StatusBar extends JPanel{
 		JPanel collision = new JPanel(new FlowLayout());
 		collision.setBackground(Color.black);
 		collisionPane = new JLabel();
-		collisionPane.setFont(new Font("Trattatello", Font.BOLD, 30));
+		collisionPane.setFont(new Font("Joystix", Font.BOLD, 30));
 		updateCollision("NONE");
 		collision.add(collisionPane);
 		add(collision);
@@ -133,7 +133,7 @@ public class StatusBar extends JPanel{
 		lives--;
 		lvPane.removeAll();
 		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
-		livesPn.setFont(new Font("Trattatello", Font.BOLD, 30));
+		livesPn.setFont(new Font("Joystix", Font.BOLD, 30));
 		livesPn.setAlignmentX(CENTER_ALIGNMENT);
 		livesPn.setAlignmentY(CENTER_ALIGNMENT);
 		lvPane.add(livesPn);

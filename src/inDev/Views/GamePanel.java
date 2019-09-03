@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -91,6 +94,9 @@ public class GamePanel extends JPanel{
         
         pacMan.draw(dbg);;
         
-
+        if(GameController.pause) {
+        	Image image = new ImageIcon("ressources" + File.separator + "pause.png").getImage(); 
+			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * 30, maze.getSize() * 33, null);
+        }
     }  
 }
