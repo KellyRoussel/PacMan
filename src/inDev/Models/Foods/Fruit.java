@@ -33,6 +33,12 @@ public class Fruit implements Food{
 	    this.y = y;
 	}
 	
+	public Fruit() {
+	    x = 0;
+	    y = 0;
+	    isEaten = false;
+	}
+	
     private void loadImage() {
         ImageIcon ii = new ImageIcon("ressources" + File.separator + "fruit.png");
         image = ii.getImage(); 
