@@ -171,14 +171,13 @@ public class GameController implements Runnable{
     	int nRaw = 0;
     	int nColumn = 0;
     	
-    	pacMan.nextX();
-    	pacMan.nextY();
+    	pacMan.nextNextX();
+    	pacMan.nextNextY();
     	
     	int sz = maze.getDefaultSize();
-    	
     	if(sz != 0) {
     		//Pour savoir le tile suivant ou le pacman va se placer
-    		switch(pacMan.getDirection()) {
+    		switch(pacMan.getNextDirection()) {
 	    		case "Left":
 	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
 	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
@@ -198,6 +197,7 @@ public class GameController implements Runnable{
 	    		default:
 	    			break;
     		}
+    		
     		int tile = maze.getMaze()[nRaw][nColumn];
     		
     		if(tile == 0 || tile >= 30) {
@@ -232,13 +232,83 @@ public class GameController implements Runnable{
 	    		
 	    		statusBar.updateCollision("NONE");
 	    		pacMan.move(); 
+	    		pacMan.updateDirection();
 	    		pacMan.setInsideTile(nRaw, nColumn);
     			
 	    	}else{
 	    		//Mur 
-    			statusBar.updateCollision(pacMan.getDirection());
+	    		nRaw = 0;
+	        	nColumn = 0;
+	        	
+	        	pacMan.nextX();
+	        	pacMan.nextY();
+	        	
+	        	sz = maze.getDefaultSize();
+	        	
+	        	if(sz != 0) {
+	        		//Pour savoir le tile suivant ou le pacman va se placer
+	        		switch(pacMan.getDirection()) {
+	    	    		case "Left":
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
+	    	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
+	    	    			break;
+	    	    		case "Right":
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
+	    	    			break;
+	    	    		case "Up":
+	    	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
+	    	    			break;
+	    	    		case "Down":
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
+	    	    			break;
+	    	    		default:
+	    	    			break;
+	        		}
+	        		
+	        		tile = maze.getMaze()[nRaw][nColumn];
+	        		
+	        		if(tile == 0 || tile >= 30) {
+	        			//Tile vide
+	    	    		for(int i = 0; i < gumList.size(); i++) {
+	    	    			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
+	    	    				//Tile contenant une Gum
+	    	    				gumList.get(i).setEaten();
+	    	    				statusBar.incrementScore(GUM_GAIN);
+	    	        			statusBar.updateScore();
+	    	    			}
+	    	    		}
+	    	    		for(int i = 0; i < pacGumList.size(); i++) {
+	    	    			if(pacGumList.get(i).getX() == nRaw && pacGumList.get(i).getY() == nColumn && !pacGumList.get(i).isEaten()) {
+	    	    				//Tile contenant un PacGum
+	    	    				pacGumList.get(i).setEaten();
+	    	    				statusBar.incrementScore(PAC_GUM_GAIN);
+	    	        			statusBar.updateScore();
+	    	    			}
+	    	    		}
+	    	    		
+	    	    		for(int i = 0; i < fruitList.size(); i++) {
+	    	    			if(fruitList.get(i).getX() == nRaw && fruitList.get(i).getY() == nColumn && !fruitList.get(i).isEaten()) {
+	    	    				//Tile contenant un fruit
+	    	    				fruitList.get(i).setEaten();
+	    	    				if(statusBar.decrementLife() == false) {
+	    	    					gameOver = true;
+	    	    				}
+	    	        			statusBar.updateScore();
+	    	    			}
+	    	    		}
+	    	    		
+	    	    		statusBar.updateCollision("NONE");
+	    	    		pacMan.move(); 
+	    	    		pacMan.setInsideTile(nRaw, nColumn);
+	        		}
+	        		else
+	        			statusBar.updateCollision(pacMan.getDirection());
+	        	}
 	    	}
-	}
+    	}
     }	
     
 	public void startGame() {
