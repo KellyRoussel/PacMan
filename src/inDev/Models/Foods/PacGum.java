@@ -16,7 +16,7 @@ public class PacGum implements Food{
 	private Image image = null;
 	private int x;
 	private int y;
-	private boolean isEaten = false;
+	private boolean isEaten;
 	
 	public int getX() {
 		return x;
@@ -28,6 +28,7 @@ public class PacGum implements Food{
 
 	public PacGum(int x, int y) {
 	    loadImage();
+	    isEaten = false;
 	    this.x = x;
 	    this.y = y;
 	}

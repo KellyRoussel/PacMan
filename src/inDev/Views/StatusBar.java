@@ -20,17 +20,19 @@ import javax.swing.border.EmptyBorder;
 public class StatusBar extends JPanel{
 
 	
-	private int score = 0;
-	private int lives = 3;
+	private int score;
+	private int lives;
 	
 	public static final int HEIGHT = 150;
 	
-	private JLabel scoreLabel = null;
-	private JPanel fruitsPane = null; 
-	private JPanel lvPane = null;
-	private JLabel collisionPane = null;
+	private JLabel scoreLabel;
+	private JPanel fruitsPane; 
+	private JPanel lvPane;
+	private JLabel collisionPane;
 	
 	public StatusBar() {
+		score = 0;
+		lives = 3;
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, HEIGHT));
 		setBorder(new EmptyBorder(0, 20, 0, 20));
@@ -128,25 +130,32 @@ public class StatusBar extends JPanel{
 		
 	}
 
-	public void decrementLife() {
+	public boolean decrementLife() {
 		// TODO Auto-generated method stub
 		lives--;
 		lvPane.removeAll();
-		JLabel livesPn = new JLabel("<html><font color='WHITE'>LIVES </font></html>");
-		livesPn.setFont(new Font("Joystix", Font.BOLD, 30));
-		livesPn.setAlignmentX(CENTER_ALIGNMENT);
-		livesPn.setAlignmentY(CENTER_ALIGNMENT);
-		lvPane.add(livesPn);
+		lvPane.setBackground(Color.black);
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("ressources" + File.separator + "life.png"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(20, 20,Image.SCALE_SMOOTH);
 		
 		for(int i = 0; i < lives; i++) {
-			ImageIcon icon = new ImageIcon("ressources" + File.separator + "life.png");
+			ImageIcon icon = new ImageIcon(dimg);
 			JLabel thumb = new JLabel();
+			thumb.setPreferredSize(new Dimension(20, 20));
 			thumb.setBackground(Color.black);
 			thumb.setIcon(icon);
 			
 			lvPane.add(thumb);
 		}
+		
 		lvPane.repaint();
 		lvPane.validate();
+		
+		return lives != 0;
 	}
 }

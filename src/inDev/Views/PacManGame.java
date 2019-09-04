@@ -14,10 +14,9 @@ public class PacManGame extends JFrame{
 	public static final int DefaultWidth = 600;
 	public static final int DefaultHeight = 800;
 	
-	public static int actualWindowWidth = DefaultWidth;
-	public static int actualWindowHeight = DefaultHeight;
+	public static int actualWindowWidth;
+	public static int actualWindowHeight;
 	
-	private static GamePanel gp = null;
 	
 	private static PacManGame SINGLE_INSTANCE = new PacManGame();
 	
@@ -26,8 +25,10 @@ public class PacManGame extends JFrame{
     }
 	
 	public PacManGame() {
-		gp = new GamePanel();
-		new GameController(gp, this);
+		
+		actualWindowHeight = DefaultHeight;
+		actualWindowWidth = DefaultWidth;
+		new GameController(new GamePanel(), this);
 	}
 	
 	public static void resize() {
