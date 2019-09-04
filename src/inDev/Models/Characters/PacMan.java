@@ -13,9 +13,13 @@ import inDev.Views.PacManGame;
 
 public class PacMan implements Character{
 
-		private String direction = "Left";
-		private int style = 0;
-		private int counter = 0;
+		private String direction;
+		private String nextDirection;
+
+		
+
+		private int style;
+		private int counter;
 	    
 	    private int x;
 	    private int y;
@@ -24,16 +28,30 @@ public class PacMan implements Character{
 	    private int h;
 	    
 	    private Image image;
-	    private int nextX = 0;
-	    private int nextY = 0;
+	    
+	    private int nextX;
+	    private int nextY;
+	    
 	    private final int PAS = 2;
 		
-	    private int dx = -1 * PAS;
+	    private int dx;
 	    private int dy;
 	    
-	    private boolean undefinedPosition = true;
+	    private int nextDx;
+	    private int nextDy;
+	    
+	    private boolean undefinedPosition;
 
 	    public PacMan() {
+	    	nextX = 0; 
+	    	nextY = 0;
+	    	counter = 0;
+	    	style = 0;
+	    	undefinedPosition = true;
+	    	direction = "Left";
+	    	nextDirection = "Left";
+	    	dx = -PAS;
+	    	dy = 0;
 	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	 
@@ -42,12 +60,48 @@ public class PacMan implements Character{
 	    }
 
 	    public void nextX(){
-	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 20) % (Maze.getDefaultSize() * 30 - 20));
+	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 10) % (Maze.getDefaultSize() * 30 - 10));
 	    }
 	    
 	    public void nextY() {
 	    	setNextY((y + dy + Maze.getDefaultSize() * 33) % (Maze.getDefaultSize() * 33));
 	    }
+	    
+	    public void nextNextX(){
+	    	setNextX((x + nextDx + Maze.getDefaultSize() * 30 - 10) % (Maze.getDefaultSize() * 30 - 10));
+	    }
+	    
+	    public void nextNextY() {
+	    	setNextY((y + nextDy + Maze.getDefaultSize() * 33) % (Maze.getDefaultSize() * 33));
+	    }
+	    
+	    public String getNextDirection() {
+			return nextDirection;
+		}
+
+		public void setNextDirection(String nextDirection) {
+			
+			this.nextDirection = nextDirection;
+			if (nextDirection == "Left") {
+	        	nextDy = 0;
+	        	nextDx = -1 * PAS;
+	        }
+
+			if (nextDirection == "Right") {
+				nextDy = 0;
+				nextDx = PAS;
+	        }
+
+			if (nextDirection == "Up") {
+				nextDx = 0;
+	        	nextDy = -1 * PAS;
+	        }
+
+			if (nextDirection == "Down") {
+				nextDx = 0;
+	        	nextDy = PAS;
+	        }
+		}
 	    
 	    public void move() {
 	    	counter = (counter + 1) % 10;
@@ -86,29 +140,20 @@ public class PacMan implements Character{
 	    public void keyPressed(KeyEvent e) {
 
 	        int key = e.getKeyCode();
-	        
 	        if (key == KeyEvent.VK_LEFT) {
-	        	setDirection("Left");
-	        	dy = 0;
-	        	dx = -1 * PAS;
+	        	setNextDirection("Left");
 	        }
 
 	        if (key == KeyEvent.VK_RIGHT) {
-	        	setDirection("Right");
-	        	dy = 0;
-	        	dx = PAS;
+	        	setNextDirection("Right");
 	        }
 
 	        if (key == KeyEvent.VK_UP) {
-	        	setDirection("Up");
-	        	dx = 0;
-	        	dy = -1 * PAS;
+	        	setNextDirection("Up");
 	        }
 
 	        if (key == KeyEvent.VK_DOWN) {
-	        	setDirection("Down");
-	        	dx = 0;
-	         	dy = PAS;
+	        	setNextDirection("Down");
 	        }
 	    }
 	    public int shiftedX(int x, int size) {
@@ -203,6 +248,12 @@ public class PacMan implements Character{
 	    		default:
 	    			break;
 			}
+		}
+
+		public void updateDirection() {
+			direction = nextDirection;
+			dx = nextDx;
+			dy = nextDy;
 		}
 
 	}

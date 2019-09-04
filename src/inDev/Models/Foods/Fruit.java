@@ -13,10 +13,10 @@ public class Fruit implements Food{
 
 	
 	
-	private Image image = null;
+	private Image image;
 	private int x;
 	private int y;
-	private boolean isEaten = false;
+	private boolean isEaten;
 	
 	public int getX() {
 		return x;
@@ -28,6 +28,7 @@ public class Fruit implements Food{
 
 	public Fruit(int x, int y) {
 	    loadImage();
+	    isEaten = false;
 	    this.x = x;
 	    this.y = y;
 	}
