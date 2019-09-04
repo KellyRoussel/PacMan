@@ -59,6 +59,7 @@ public class GamePanel extends JPanel{
     public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList, ArrayList<Fruit> fruitList) {
     	if (GameController.resize) {
     		PacManGame.resize();
+    		PacManGame.updateMazeSize();
     		GameController.resize = false;
     	}
         dbImage = createImage(PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);

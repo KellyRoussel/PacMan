@@ -39,9 +39,9 @@ public class GameController implements Runnable{
 	
 	private Sound music;
 	
-	public static final int FPS = 10;
+	public static final int FPS =10;
 	public static final int GUM_GAIN = 4;
-	public static final int PAC_GUM_GAIN = 8;
+	public static final int PAC_GUM_GAIN = 100;
 	public static final int FRUIT_GAIN = 16;
 	
     private boolean running;
@@ -52,12 +52,8 @@ public class GameController implements Runnable{
     public static boolean resize;
 	public static boolean gameOver; 
 	
-
-
 	
-    public GameController(GamePanel gamePanel, PacManGame frame) {
-		// TODO Auto-generated constructor stub
-    	    	
+    public GameController(GamePanel gamePanel, PacManGame frame) {    	    	
     	init();
     	
     	this.gamePanel = gamePanel;
@@ -74,9 +70,56 @@ public class GameController implements Runnable{
     	
     	Sound background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
     	
-    			 	
     	//Lancer un listener sur le clavier
-        gamePanel.addKeyListener(new KeyAdapter() {
+        addListeners();
+        
+        //Lancer la musique
+        music = background;
+        background.loop();
+        soundOn = true;
+        
+        // Lancer le jeu
+        startGame();
+	}
+
+    private void init() {
+    	fullScreen = false;
+        resize = false;
+    	gameOver = false; 
+    	statusBar = new StatusBar();
+    	//Creer une instance de la labyrinthe
+        try {
+			maze = new Maze();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+        
+        PacManGame.updateMazeSize();
+        
+    	//Creer le PacMan        
+    	pacMan = new PacMan();
+        
+    	// Creer les Gums et PacGums
+    	
+    	gumList = new ArrayList<Gum>();
+    	pacGumList = new ArrayList<PacGum>();
+    	fruitList = new ArrayList<Fruit>();
+    	
+    	int [][] mazeMat = maze.getMaze();
+    	
+    	for(int i = 0; i < 33; i++)
+    		for(int j = 0; j < 30; j++) {
+    			if(mazeMat[i][j] == 30)
+    				gumList.add(new Gum(i, j));
+		    	if(mazeMat[i][j] == 40)
+					pacGumList.add(new PacGum(i, j));
+		    	if(mazeMat[i][j] == 50)
+		    		fruitList.add(new Fruit(i, j));
+    		}
+    }
+
+	private void addListeners() {
+		gamePanel.addKeyListener(new KeyAdapter() {
         	public void keyPressed(KeyEvent e) {
         		
         		int key = e.getKeyCode();
@@ -103,52 +146,7 @@ public class GameController implements Runnable{
         	
         	}
         });
-        
-        //Lancer la musique
-        music = background;
-        background.loop();
-        soundOn = true;
-        
-        // Lancer le jeu
-        startGame();
 	}
-    
-  
-    
-    public void init() {
-    	fullScreen = false;
-        resize = false;
-    	gameOver = false; 
-    	statusBar = new StatusBar();
-    	//Creer une instance de la labyrinthe
-        try {
-			maze = new Maze();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-        
-    	//Creer le PacMan        
-    	pacMan = new PacMan();
-        
-    	// Creer les Gums et PacGums
-    	
-    	gumList = new ArrayList<Gum>();
-    	pacGumList = new ArrayList<PacGum>();
-    	fruitList = new ArrayList<Fruit>();
-    	
-    	int [][] mazeMat = maze.getMaze();
-    	
-    	for(int i = 0; i < 33; i++)
-    		for(int j = 0; j < 30; j++) {
-    			if(mazeMat[i][j] == 30)
-    				gumList.add(new Gum(i, j));
-		    	if(mazeMat[i][j] == 40)
-					pacGumList.add(new PacGum(i, j));
-		    	if(mazeMat[i][j] == 50)
-		    		fruitList.add(new Fruit(i, j));
-    		}
-    }
-
     
 	@Override
 	public void run() {
@@ -197,6 +195,7 @@ public class GameController implements Runnable{
 	    		default:
 	    			break;
     		}
+    		
     		
     		int tile = maze.getMaze()[nRaw][nColumn];
     		
@@ -311,19 +310,19 @@ public class GameController implements Runnable{
     	}
     }	
     
-	public void startGame() {
+	private void startGame() {
 		new Thread(this).start();
 	}
 	
-	public void stop() {
+	private void stop() {
 		
 	}
 
-	public void pause() {
+	private void pause() {
 		
 	}
 	
-	public void resume() {
+	private void resume() {
 		
 	}
 

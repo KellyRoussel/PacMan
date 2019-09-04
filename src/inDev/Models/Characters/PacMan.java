@@ -38,7 +38,12 @@ public class PacMan implements Character{
 	    private int dy;
 	    
 	    private int nextDx;
-	    private int nextDy;
+	    
+	    public int getNextDx() {
+			return nextDx;
+		}
+
+		private int nextDy;
 	    
 	    private boolean undefinedPosition;
 
