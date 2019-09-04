@@ -60,7 +60,7 @@ public class PacMan implements Character{
 	    }
 
 	    public void nextX(){
-	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 20) % (Maze.getDefaultSize() * 30 - 20));
+	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 10) % (Maze.getDefaultSize() * 30 - 10));
 	    }
 	    
 	    public void nextY() {
@@ -68,7 +68,7 @@ public class PacMan implements Character{
 	    }
 	    
 	    public void nextNextX(){
-	    	setNextX((x + nextDx + Maze.getDefaultSize() * 30 - 20) % (Maze.getDefaultSize() * 30 - 20));
+	    	setNextX((x + nextDx + Maze.getDefaultSize() * 30 - 10) % (Maze.getDefaultSize() * 30 - 10));
 	    }
 	    
 	    public void nextNextY() {
@@ -140,7 +140,6 @@ public class PacMan implements Character{
 	    public void keyPressed(KeyEvent e) {
 
 	        int key = e.getKeyCode();
-	        System.out.println("DONE");
 	        if (key == KeyEvent.VK_LEFT) {
 	        	setNextDirection("Left");
 	        }

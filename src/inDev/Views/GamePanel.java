@@ -53,7 +53,6 @@ public class GamePanel extends JPanel{
 			 Toolkit.getDefaultToolkit().sync(); 
 		}
         catch (Exception e){ 
-        	System.out.println("Graphics context error: " + e);  
         }
 	}
 
@@ -64,7 +63,6 @@ public class GamePanel extends JPanel{
     	}
         dbImage = createImage(PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);
         if (dbImage == null) {
-          System.out.println("dbImage is null");
 		   return; }
 		else {
 			dbg = dbImage.getGraphics();
