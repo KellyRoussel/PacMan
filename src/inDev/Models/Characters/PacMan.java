@@ -13,7 +13,7 @@ import inDev.Views.PacManGame;
 
 public class PacMan implements Character{
 
-		private String direction = "Left";
+		private String direction;
 		private int style = 0;
 		private int counter = 0;
 	    
@@ -24,16 +24,26 @@ public class PacMan implements Character{
 	    private int h;
 	    
 	    private Image image;
-	    private int nextX = 0;
-	    private int nextY = 0;
+	    
+	    private int nextX;
+	    private int nextY;
+	    
 	    private final int PAS = 2;
 		
-	    private int dx = -1 * PAS;
+	    private int dx;
 	    private int dy;
 	    
-	    private boolean undefinedPosition = true;
+	    private boolean undefinedPosition;
 
 	    public PacMan() {
+	    	nextX = 0; 
+	    	nextY = 0;
+	    	counter = 0;
+	    	style = 0;
+	    	undefinedPosition = true;
+	    	direction = "Left";
+	    	dx = -PAS;
+	    	dy = 0;
 	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirection() + "_"+ style + ".png");
 	        image = ii.getImage(); 
 	 
@@ -86,7 +96,7 @@ public class PacMan implements Character{
 	    public void keyPressed(KeyEvent e) {
 
 	        int key = e.getKeyCode();
-	        
+	        System.out.println("DONE");
 	        if (key == KeyEvent.VK_LEFT) {
 	        	setDirection("Left");
 	        	dy = 0;

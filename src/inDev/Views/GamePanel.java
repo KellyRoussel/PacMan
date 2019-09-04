@@ -33,12 +33,13 @@ public class GamePanel extends JPanel{
 	
 	
     private Graphics dbg;
-    private Image dbImage = null;
-    public static int debutX = 0;
-	public static int debutY = 0;
+    private Image dbImage;
+    public static int debutX;
+	public static int debutY;
 	
     public GamePanel() {
-    	
+    	debutX = 0;
+    	debutY = 0;
     	setBackground(Color.black);
         setFocusable(true);
         
@@ -96,6 +97,10 @@ public class GamePanel extends JPanel{
         
         if(GameController.pause) {
         	Image image = new ImageIcon("ressources" + File.separator + "pause.png").getImage(); 
+			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * 30, maze.getSize() * 33, null);
+        }
+        if(GameController.gameOver) {
+        	Image image = new ImageIcon("ressources" + File.separator + "gameOver.png").getImage(); 
 			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * 30, maze.getSize() * 33, null);
         }
     }  

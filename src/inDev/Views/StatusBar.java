@@ -20,17 +20,19 @@ import javax.swing.border.EmptyBorder;
 public class StatusBar extends JPanel{
 
 	
-	private int score = 0;
-	private int lives = 3;
+	private int score;
+	private int lives;
 	
 	public static final int HEIGHT = 150;
 	
-	private JLabel scoreLabel = null;
-	private JPanel fruitsPane = null; 
-	private JPanel lvPane = null;
-	private JLabel collisionPane = null;
+	private JLabel scoreLabel;
+	private JPanel fruitsPane; 
+	private JPanel lvPane;
+	private JLabel collisionPane;
 	
 	public StatusBar() {
+		score = 0;
+		lives = 3;
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, HEIGHT));
 		setBorder(new EmptyBorder(0, 20, 0, 20));
@@ -128,7 +130,7 @@ public class StatusBar extends JPanel{
 		
 	}
 
-	public void decrementLife() {
+	public boolean decrementLife() {
 		// TODO Auto-generated method stub
 		lives--;
 		lvPane.removeAll();
@@ -153,5 +155,7 @@ public class StatusBar extends JPanel{
 		
 		lvPane.repaint();
 		lvPane.validate();
+		
+		return lives != 0;
 	}
 }
