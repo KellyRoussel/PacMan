@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import inDev.Models.Maze;
 import inDev.Models.Characters.PacMan;
 
 class ModelPacManTest {
@@ -108,20 +109,25 @@ class ModelPacManTest {
 	@Test
 	void testGetW() {
 		PacMan test = new PacMan();
-		int output = test.getW();
-		assertEquals(0, output);
+		test.setW(15);
+		
+		assertEquals(15, test.getW());
 	}
 
 	@Test
 	void testGetH() {
 		PacMan test = new PacMan();
-		int output = test.getH();
-		assertEquals(0, output);
+		test.setH(10);
+		
+		assertEquals(10, test.getH());
 	}
 
 	@Test
 	void testGetDirection() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		test.setDirection("Up");
+		
+		assertEquals("Up", test.getDirection());
 	}
 
 	@Test
@@ -131,12 +137,21 @@ class ModelPacManTest {
 
 	@Test
 	void testSetPosition() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		test.setPosition(10, 15);
+		
+		assertEquals(10, test.getX());
+		assertEquals(15, test.getY());
 	}
 
 	@Test
 	void testSetInsideTile() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		Maze testmaze = new Maze(5,6);
 	}
 
+	@Test
+	void testUpdateDirection() {
+		fail("Not yet implemented");
+	}
 }

@@ -14,13 +14,15 @@ import inDev.Views.GamePanel;
 public class Maze {
 	
 	private int [][] maze;
-	private static int size = 20; 
-	private static int defaultSize = 20; 
+	private static int size; 
+	private static int defaultSize; 
 
 	private Image [][] images;
 	
 	public Maze() throws FileNotFoundException {
 		
+		size = 20; 
+		defaultSize = 20; 
 		maze = new int[33][30];
 		images = new Image[33][30];
 		
@@ -44,6 +46,11 @@ public class Maze {
         }
 		
 		//AccessibleTiles(debutX, debutY);
+	}
+	
+	public Maze(int var_size, int var_defaultsize) {
+		size = var_size;
+		defaultSize = var_defaultsize;
 	}
 	
 		
