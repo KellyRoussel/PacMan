@@ -38,11 +38,6 @@ public class PacMan implements Character{
 	    private int dy;
 	    
 	    private int nextDx;
-	    
-	    public int getNextDx() {
-			return nextDx;
-		}
-
 		private int nextDy;
 	    
 	    private boolean undefinedPosition;
@@ -63,6 +58,18 @@ public class PacMan implements Character{
 	        setW(image.getWidth(null));
 	        setH(image.getHeight(null));
 	    }
+	    
+	    public int getNextDx() {
+			return nextDx;
+		}
+
+	    public int getNextDy() {
+			return nextDy;
+		}
+
+	    public int getPas() {
+			return PAS;
+		}
 
 	    public void nextX(){
 	    	setNextX((x + dx + Maze.getDefaultSize() * 30 - 10) % (Maze.getDefaultSize() * 30 - 10));
@@ -258,12 +265,6 @@ public class PacMan implements Character{
 	    			break;
 			}
 		}
-
-		public void updateDirection() {
-			direction = nextDirection;
-			dx = nextDx;
-			dy = nextDy;
-		}
 		
 		public int getDX() {
 			return dx;
@@ -271,6 +272,12 @@ public class PacMan implements Character{
 		
 		public int getDY() {
 			return dy;
+		}
+
+		public void updateDirection() {
+			direction = nextDirection;
+			dx = nextDx;
+			dy = nextDy;
 		}
 		
 		public void setNextDX(int var_nextDX) {

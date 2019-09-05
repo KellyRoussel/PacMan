@@ -40,20 +40,55 @@ class ModelPacManTest {
 	}
 
 	@Test
-	void testSetNextDirection() {
-		
-		//fail("Not yet implemented");
-		
+	void testSetNextDirectionLeft() {
 		//arrange
-		
-		PacMan pacman = new PacMan();
+		PacMan test = new PacMan();
 		
 		//act
-		pacman.setNextDirection("Up");
+		test.setNextDirection("Left");
 		
 		//assert
-		assertEquals(0, pacman.getNextDx());
+		assertEquals(0, test.getNextDx());
+		assertEquals(-1 * test.getPas(), test.getNextDy());
+	}
+	
+	@Test
+	void testSetNextDirectionRight() {
+		//arrange
+		PacMan test = new PacMan();
 		
+		//act
+		test.setNextDirection("Right");
+		
+		//assert
+		assertEquals(0, test.getNextDx());
+		assertEquals(test.getPas(), test.getNextDy());
+	}
+	
+	@Test
+	void testSetNextDirectionUp() {
+		//arrange
+		PacMan test = new PacMan();
+		
+		//act
+		test.setNextDirection("Up");
+		
+		//assert
+		assertEquals(0, test.getNextDx());
+		assertEquals(-1 * test.getPas(), test.getNextDy());
+	}
+	
+	@Test
+	void testSetNextDirectionDown() {
+		//arrange
+		PacMan test = new PacMan();
+		
+		//act
+		test.setNextDirection("Down");
+		
+		//assert
+		assertEquals(0, test.getNextDx());
+		assertEquals(test.getPas(), test.getNextDy());
 	}
 
 
@@ -124,7 +159,10 @@ class ModelPacManTest {
 
 	@Test
 	void testSetNextX() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		test.setNextX(10);
+		
+		assertEquals(10, test.getNextX());
 	}
 
 	@Test
@@ -137,7 +175,10 @@ class ModelPacManTest {
 
 	@Test
 	void testSetNextY() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		test.setNextY(10);
+		
+		assertEquals(10, test.getNextY());
 	}
 
 	@Test
