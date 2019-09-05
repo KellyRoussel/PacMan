@@ -66,13 +66,13 @@ public class PacManGame extends JFrame{
 	}
 	
 	public static void updateMazeSize() {
-		Maze.setSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.nRaw, PacManGame.actualWindowWidth / Maze.nColumn));
+		Maze.setSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), PacManGame.actualWindowWidth / Maze.getnColumn()));
 		
 		if (!GameController.fullScreen) {
-			Maze.setDefaultSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.nRaw, PacManGame.actualWindowWidth / Maze.nColumn));
+			Maze.setDefaultSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), PacManGame.actualWindowWidth / Maze.getnColumn()));
 		}
-		GamePanel.debutX = (actualWindowWidth - Maze.getSize() * Maze.nColumn) / 2;
-		GamePanel.debutY = (actualWindowHeight - Maze.getSize()  * Maze.nRaw - StatusBar.HEIGHT) / 2;
+		GamePanel.debutX = (actualWindowWidth - Maze.getSize() * Maze.getnColumn()) / 2;
+		GamePanel.debutY = (actualWindowHeight - Maze.getSize()  * Maze.getnRaw() - StatusBar.HEIGHT) / 2;
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {

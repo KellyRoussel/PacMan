@@ -96,7 +96,8 @@ public class GameController implements Runnable{
         
         PacManGame.updateMazeSize();
         
-    	//Creer le PacMan        
+    	//Creer le PacMan  
+        
     	pacMan = new PacMan();
         
     	// Creer les Gums et PacGums
@@ -107,8 +108,8 @@ public class GameController implements Runnable{
     	
     	int [][] mazeMat = maze.getMaze();
     	
-    	for(int i = 0; i < 33; i++)
-    		for(int j = 0; j < 30; j++) {
+    	for(int i = 0; i < maze.getnRaw(); i++)
+    		for(int j = 0; j < maze.getnColumn(); j++) {
     			if(mazeMat[i][j] == 30)
     				gumList.add(new Gum(i, j));
 		    	if(mazeMat[i][j] == 40)
@@ -177,20 +178,20 @@ public class GameController implements Runnable{
     		//Pour savoir le tile suivant ou le pacman va se placer
     		switch(pacMan.getNextDirection()) {
 	    		case "Left":
-	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
-	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
+	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % maze.getnRaw();
+	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % maze.getnColumn();
 	    			break;
 	    		case "Right":
-	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
-	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
+	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % maze.getnRaw();
+	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % maze.getnColumn();
 	    			break;
 	    		case "Up":
-	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
-	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
+	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % maze.getnRaw();
+	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % maze.getnColumn();
 	    			break;
 	    		case "Down":
-	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
-	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
+	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % maze.getnRaw();
+	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % maze.getnColumn();
 	    			break;
 	    		default:
 	    			break;
@@ -248,20 +249,20 @@ public class GameController implements Runnable{
 	        		//Pour savoir le tile suivant ou le pacman va se placer
 	        		switch(pacMan.getDirection()) {
 	    	    		case "Left":
-	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % 33;
-	    	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % 30;
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+ pacMan.getH()/2)/sz) % maze.getnRaw();
+	    	        		nColumn = (int) Math.floor(pacMan.getNextX()/sz) % maze.getnColumn();
 	    	    			break;
 	    	    		case "Right":
-	    	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % 33;
-	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % 30;
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.getH()/2)/sz) % maze.getnRaw();
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW())/sz) % maze.getnColumn();
 	    	    			break;
 	    	    		case "Up":
-	    	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % 33;
-	    	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % 30;
+	    	    			nRaw = (int) Math.floor(pacMan.getNextY()/sz) % maze.getnRaw();
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.getW()/2)/sz) % maze.getnColumn();
 	    	    			break;
 	    	    		case "Down":
-	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % 33;
-	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % 30;
+	    	    			nRaw = (int) Math.floor((pacMan.getNextY()+pacMan.getH())/sz) % maze.getnRaw();
+	    	        		nColumn = (int) Math.floor((pacMan.getNextX()+pacMan.getW()/2)/sz) % maze.getnColumn();
 	    	    			break;
 	    	    		default:
 	    	    			break;
