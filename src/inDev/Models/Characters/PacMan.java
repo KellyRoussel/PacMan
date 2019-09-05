@@ -219,6 +219,10 @@ public class PacMan implements Character{
 		public void setDirection(String direction) {
 			this.direction = direction;
 		}
+		
+		public void setUndefinedPosition(boolean Position) {
+			undefinedPosition = Position;
+		}
 
 		public boolean undefinedPosition() {
 			if(undefinedPosition ) {
@@ -260,5 +264,20 @@ public class PacMan implements Character{
 			dx = nextDx;
 			dy = nextDy;
 		}
-
+		
+		public int getDX() {
+			return dx;
+		}
+		
+		public int getDY() {
+			return dy;
+		}
+		
+		public void setNextDX(int var_nextDX) {
+			nextDx = var_nextDX;
+		}
+		
+		public void setNextDY(int var_nextDY) {
+			nextDy = var_nextDY;
+		}
 	}

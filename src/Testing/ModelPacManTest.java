@@ -166,10 +166,29 @@ class ModelPacManTest {
 		
 		assertEquals("Up", test.getDirection());
 	}
+	
+	@Test
+	void testSetUndefinedPosition() {
+		PacMan test = new PacMan();
+		test.setUndefinedPosition(true);
+		
+		assertEquals(true, test.undefinedPosition());
+	}
 
 	@Test
-	void testUndefinedPosition() {
-		fail("Not yet implemented");
+	void testUndefinedPositionTrue() {
+		PacMan test = new PacMan();
+		test.setUndefinedPosition(true);
+		
+		assertEquals(true, test.undefinedPosition());
+	}
+	
+	@Test
+	void testUndefinedPositionFalse() {
+		PacMan test = new PacMan();
+		test.setUndefinedPosition(false);
+		
+		assertEquals(false, test.undefinedPosition());
 	}
 
 	@Test
@@ -182,13 +201,65 @@ class ModelPacManTest {
 	}
 
 	@Test
-	void testSetInsideTile() {
+	void testSetInsideTileLeft() {
 		PacMan test = new PacMan();
 		Maze testmaze = new Maze(5,6);
+		
+		test.setDirection("Left");
+		int sz = testmaze.getDefaultSize();
+		test.setInsideTile(10, 15);
+		
+		assertEquals(10*sz,test.getY());
+	}
+	
+	@Test
+	void testSetInsideTileRight() {
+		PacMan test = new PacMan();
+		Maze testmaze = new Maze(5,6);
+		
+		test.setDirection("Right");
+		int sz = testmaze.getDefaultSize();
+		test.setInsideTile(10, 15);
+		
+		assertEquals(10*sz,test.getY());
+	}
+	
+	@Test
+	void testSetInsideTileUp() {
+		PacMan test = new PacMan();
+		Maze testmaze = new Maze(5,6);
+		
+		test.setDirection("Up");
+		int sz = testmaze.getDefaultSize();
+		test.setInsideTile(10, 15);
+		
+		assertEquals(15*sz,test.getX());
+	}
+	
+	@Test
+	void testSetInsideTileDown() {
+		PacMan test = new PacMan();
+		Maze testmaze = new Maze(5,6);
+		
+		test.setDirection("Down");
+		int sz = testmaze.getDefaultSize();
+		test.setInsideTile(10, 15);
+		
+		assertEquals(15*sz,test.getX());
 	}
 
 	@Test
 	void testUpdateDirection() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		
+		test.setNextDX(10);
+		test.setNextDY(10);
+		test.setNextDirection("Down");
+		
+		test.updateDirection();
+		
+		assertEquals("Down",test.getDirection());
+		assertEquals(10,test.getDX());
+		assertEquals(10,test.getDY());
 	}
 }
