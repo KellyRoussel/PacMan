@@ -200,7 +200,7 @@ public class PacMan implements Character{
 			return w;
 		}
 
-		private void setW(int w) {
+		public void setW(int w) {
 			this.w = w;
 		}
 
@@ -208,7 +208,7 @@ public class PacMan implements Character{
 			return h;
 		}
 
-		private void setH(int h) {
+		public void setH(int h) {
 			this.h = h;
 		}
 
@@ -216,7 +216,7 @@ public class PacMan implements Character{
 			return direction;
 		}
 
-		private void setDirection(String direction) {
+		public void setDirection(String direction) {
 			this.direction = direction;
 		}
 

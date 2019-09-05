@@ -26,7 +26,7 @@ public class Maze {
 
 	
 	public Maze() throws FileNotFoundException {
-	
+
 		
 		Scanner sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
 		
@@ -54,6 +54,23 @@ public class Maze {
 		defaultSize = size;
 	}
 	
+	public Maze(int var_size, int var_defaultsize) {
+		size = var_size;
+		defaultSize = var_defaultsize;
+	}
+	
+		
+	private void AccessibleTiles(int debutX, int debutY) {
+		if(debutX >= 0 && debutX < 33 && debutY >= 0 && debutY < 30 && (maze[debutX][debutY] == 0 ||maze[debutX][debutY] >= 30) && maze[debutX][debutY] != 120) {
+			maze[debutX][debutY] = 120;
+			AccessibleTiles(debutX + 1, debutY);
+			AccessibleTiles(debutX - 1, debutY);	
+			AccessibleTiles(debutX, debutY + 1);
+			AccessibleTiles(debutX, debutY - 1);
+		}
+	}
+
+>>>>>>> 96bb19d020b9ba64909ba5a265b99bc7387c0c8d
 	public void draw(Graphics g) {
 		for(int i = 0; i < nRaw; i++) {
 			for(int j = 0; j < nColumn; j++) {
