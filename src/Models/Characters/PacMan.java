@@ -91,7 +91,6 @@ public class PacMan implements Character{
 	    }
 	    
 	   public String getDirectionString() {
-	    	System.out.println(direction);
 			return directionString.get(direction);
 		}
 
@@ -147,10 +146,20 @@ public class PacMan implements Character{
 	        
 	        return x;
 	    }
+	    
+	    public void setX(int var_x) {
+	        
+	        x = var_x;
+	    }
 
 	    public int getY() {
 	        
 	        return y;
+	    }
+	    
+	    public void setY(int var_y) {
+	        
+	        y = var_y;
 	    }
 	    
 	    public int getWidth() {
@@ -256,6 +265,14 @@ public class PacMan implements Character{
 		
 		public int getDY() {
 			return dy;
+		}
+		
+		public void setDX(int var_dx) {
+			dx = var_dx;
+		}
+		
+		public void setDY(int var_dy) {
+			dy = var_dy;
 		}
 
 		public void updateDirection() {
