@@ -273,6 +273,14 @@ public class PacMan implements Character{
 		public int getDY() {
 			return dy;
 		}
+		
+		public void setDX(int var_dx) {
+			dx = var_dx;
+		}
+		
+		public void setDY(int var_dy) {
+			dy = var_dy;
+		}
 
 		public void updateDirection() {
 			direction = nextDirection;

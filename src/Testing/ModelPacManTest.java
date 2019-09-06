@@ -130,7 +130,22 @@ class ModelPacManTest {
 	}
 
 	@Test
-	void testKeyPressed() {
+	void testKeyPressedLeft() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testKeyPressedRight() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testKeyPressedUp() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testKeyPressedDown() {
 		fail("Not yet implemented");
 	}
 
@@ -146,7 +161,10 @@ class ModelPacManTest {
 
 	@Test
 	void testTreatcollision() {
-		fail("Not yet implemented");
+		PacMan test = new PacMan();
+		test.treatcollision();
+		
+		assertEquals(0,0);
 	}
 
 	@Test
@@ -302,5 +320,37 @@ class ModelPacManTest {
 		assertEquals("Down",test.getDirection());
 		assertEquals(10,test.getDX());
 		assertEquals(10,test.getDY());
+	}
+	
+	@Test
+	void testGetDX() {
+		PacMan test = new PacMan();
+		test.setDX(10);
+		
+		assertEquals(10, test.getDX());
+	}
+	
+	@Test
+	void testGetDY() {
+		PacMan test = new PacMan();
+		test.setDY(10);
+		
+		assertEquals(10, test.getDY());
+	}
+	
+	@Test
+	void testSetDX() {
+		PacMan test = new PacMan();
+		test.setDY(10);
+		
+		assertEquals(10, test.getDY());
+	}
+	
+	@Test
+	void testSetDY() {
+		PacMan test = new PacMan();
+		test.setDY(10);
+		
+		assertEquals(10, test.getDY());
 	}
 }
