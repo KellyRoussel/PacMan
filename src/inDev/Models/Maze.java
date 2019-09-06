@@ -14,8 +14,8 @@ import inDev.Views.GamePanel;
 public class Maze {
 	
 	private int [][] maze;
-	private static int size = 20; 
-	private static int defaultSize = 20; 
+	private static int size = 19; 
+	private static int defaultSize = 19; 
 
 	private Image [][] images;
 	
