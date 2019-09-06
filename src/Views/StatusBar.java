@@ -102,10 +102,6 @@ public class StatusBar extends JPanel{
 		updateCollision("NONE");
 		collision.add(collisionPane);
 		add(collision);
-		
-		/*fruitsPane = new JPanel();
-		fruitsPane.setBackground(Color.black);
-		add(fruitsPane);*/
 	
 	}
 		
@@ -157,5 +153,29 @@ public class StatusBar extends JPanel{
 		lvPane.validate();
 		
 		return lives != 0;
+	}
+	
+	public int getLives() {
+		return lives;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public JLabel getScoreLabel() {
+		return scoreLabel;
+	}
+	
+	public JPanel getFruitsPane() {
+		return fruitsPane;
+	}
+	
+	public JPanel getLvPanel() {
+		return lvPane;
+	}
+	
+	public JLabel getCollisionPanel() {
+		return collisionPane;
 	}
 }
