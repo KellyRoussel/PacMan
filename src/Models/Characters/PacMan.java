@@ -96,6 +96,7 @@ public class PacMan implements Character{
 	    }
 	    
 	   public String getDirectionString() {
+	    	System.out.println(direction);
 			return directionString.get(direction);
 		}
 

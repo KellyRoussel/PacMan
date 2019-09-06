@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import Controllers.GameController;
 import Models.Maze;
 
-public class PacManGame extends JFrame{
+public class MainGame extends JFrame{
 	
 	public static final int DefaultWidth = 600;
 	public static final int DefaultHeight = 800;
@@ -19,13 +19,13 @@ public class PacManGame extends JFrame{
 	public static int actualWindowHeight;
 	
 	
-	private static PacManGame SINGLE_INSTANCE = new PacManGame();
+	private static MainGame SINGLE_INSTANCE = new MainGame();
 	
-	public static PacManGame getInstance() {
+	public static MainGame getInstance() {
       return SINGLE_INSTANCE;
     }
 	
-	public PacManGame() {
+	public MainGame() {
 		
 		actualWindowHeight = DefaultHeight;
 		actualWindowWidth = DefaultWidth;
@@ -41,7 +41,7 @@ public class PacManGame extends JFrame{
 			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			Dimension screenDimension = env.getMaximumWindowBounds().getSize();
 
-			//La taille des extrémités de la fenetre
+			//La taille des extrÃ©mitÃ©s de la fenetre
 			Insets insets = SINGLE_INSTANCE.getInsets();
 			final int left = insets.left;
 			final int right = insets.right;
@@ -66,10 +66,10 @@ public class PacManGame extends JFrame{
 	}
 	
 	public static void updateMazeSize() {
-		Maze.setSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), PacManGame.actualWindowWidth / Maze.getnColumn()));
+		Maze.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), MainGame.actualWindowWidth / Maze.getnColumn()));
 		
 		if (!GameController.fullScreen) {
-			Maze.setDefaultSize(Math.min((PacManGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), PacManGame.actualWindowWidth / Maze.getnColumn()));
+			Maze.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), MainGame.actualWindowWidth / Maze.getnColumn()));
 		}
 		GamePanel.setDebutX((actualWindowWidth - Maze.getSize() * Maze.getnColumn()) / 2);
 		GamePanel.setDebutY((actualWindowHeight - Maze.getSize()  * Maze.getnRaw() - StatusBar.HEIGHT) / 2);
@@ -77,8 +77,8 @@ public class PacManGame extends JFrame{
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		EventQueue.invokeLater(() -> {
-			PacManGame.getInstance();
-			PacManGame.resize();
+			MainGame.getInstance();
+			MainGame.resize();
         });
 		
 	}

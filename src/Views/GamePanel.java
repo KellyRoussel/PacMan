@@ -59,11 +59,11 @@ public class GamePanel extends JPanel{
 
     public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList, ArrayList<Fruit> fruitList) {
     	if (GameController.resize) {
-    		PacManGame.resize();
-    		PacManGame.updateMazeSize();
+    		MainGame.resize();
+    		MainGame.updateMazeSize();
     		GameController.resize = false;
     	}
-        dbImage = createImage(PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);
+        dbImage = createImage(MainGame.actualWindowWidth, MainGame.actualWindowHeight);
         if (dbImage == null) {
 		   return; }
 		else {
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel{
 		}
           // clear the background
         dbg.setColor(Color.black);
-        dbg.fillRect (0, 0, PacManGame.actualWindowWidth, PacManGame.actualWindowHeight);
+        dbg.fillRect (0, 0, MainGame.actualWindowWidth, MainGame.actualWindowHeight);
         
         maze.draw(dbg, debutX, debutY);
         

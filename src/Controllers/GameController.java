@@ -20,13 +20,13 @@ import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
 import  Views.GamePanel;
-import  Views.PacManGame;
+import  Views.MainGame;
 import  Views.StatusBar;
 
 public class GameController implements Runnable{
 
 	
-	private PacManGame frame; 
+	private MainGame frame; 
 	
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
@@ -53,7 +53,7 @@ public class GameController implements Runnable{
 	public static boolean gameOver; 
 	
 	
-    public GameController(GamePanel gamePanel, PacManGame frame) {    	    	
+    public GameController(GamePanel gamePanel, MainGame frame) {    	    	
     	init();
     	
     	this.gamePanel = gamePanel;
@@ -89,14 +89,14 @@ public class GameController implements Runnable{
     	statusBar = new StatusBar();
     	//Creer une instance de la labyrinthe
         try {
-    		int height = PacManGame.actualWindowHeight - StatusBar.HEIGHT;
-    		int width = PacManGame.actualWindowWidth;
+    		int height = MainGame.actualWindowHeight - StatusBar.HEIGHT;
+    		int width = MainGame.actualWindowWidth;
 			maze = new Maze(height, width);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
         
-        PacManGame.updateMazeSize();
+        MainGame.updateMazeSize();
         
     	//Creer le PacMan  
         
@@ -188,6 +188,7 @@ public class GameController implements Runnable{
     		
     		int tile = maze.getMaze()[nRaw][nColumn];
     		
+    		System.out.println(tile);
     		
     		if(tile == 0 || tile >= 30) {
     			//Tile vide
