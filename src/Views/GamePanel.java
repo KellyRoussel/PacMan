@@ -58,6 +58,7 @@ public class GamePanel extends JPanel{
 	}
 
     public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList, ArrayList<Fruit> fruitList) {
+    	// Redimensionner la fenetre 
     	if (GameController.resize) {
     		MainGame.resize();
     		MainGame.updateMazeSize();
@@ -80,6 +81,7 @@ public class GamePanel extends JPanel{
         	pacMan.setPosition(p.x, p.y);
         }
         
+        // dessiner les gums
         for(int i = 0; i < gumList.size(); i++) {
         	if(!gumList.get(i).isEaten()) {
         		int x = Resizer.resizeX(gumList.get(i).getY() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutX);
@@ -87,6 +89,8 @@ public class GamePanel extends JPanel{
         		gumList.get(i).draw(dbg, x, y);
         	}
         }
+        
+     // dessiner les pac-gums
         for(int i = 0; i < pacGumList.size(); i++) {
         	if(!pacGumList.get(i).isEaten()) {
         		int x = Resizer.resizeX(pacGumList.get(i).getY() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutX);
@@ -94,6 +98,8 @@ public class GamePanel extends JPanel{
         		pacGumList.get(i).draw(dbg, x, y);
         	}
         }
+        
+        // dessiner les fruits
         for(int i = 0; i < fruitList.size(); i++) {
         	if(!fruitList.get(i).isEaten()) {
         		int x = Resizer.resizeX(fruitList.get(i).getY() * maze.getDefaultSize() + 2, maze.getSize(), maze.getDefaultSize(), debutX);
@@ -102,16 +108,19 @@ public class GamePanel extends JPanel{
         	}        
         }
         
-        //g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), Maze.getSize(), Maze.getSize(), null);
+        // redimensionner le PacMan
         int pacX = Resizer.resizeX(pacMan.getX(), maze.getSize(), maze.getDefaultSize(), debutX);
         int pacY = Resizer.resizeX(pacMan.getY(), maze.getSize(), maze.getDefaultSize(), debutY);
         
         pacMan.draw(dbg, pacX, pacY, maze.getSize());
         
+        // dessiner le "Pause" au cas de pause
         if(GameController.pause) {
         	Image image = new ImageIcon("ressources" + File.separator + "pause.png").getImage(); 
 			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);
         }
+        
+        // dessiner le "GameOver" au cas d echec
         if(GameController.gameOver) {
         	Image image = new ImageIcon("ressources" + File.separator + "gameOver.png").getImage(); 
 			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);

@@ -21,7 +21,7 @@ public class Maze {
 	
 	public Maze(int height, int width) throws FileNotFoundException {
 
-		
+		// Lire le fichier du maze.txt
 		Scanner sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
 		
 		String lineDimension = sc.nextLine();
@@ -30,8 +30,11 @@ public class Maze {
 		
 		nColumn =  Integer.parseInt(dimensions[0]);
 		nRaw =  Integer.parseInt(dimensions[1]);	
-				
+		
+		// creer la matrice du labyrinthe
 		maze = new int[nRaw][nColumn];
+		
+		// creer la matrice des images
 		images = new Image[nRaw][nColumn];
 		
 		for(int i = 0; i < nRaw; i++) {
@@ -48,10 +51,10 @@ public class Maze {
 	}
 	
 
+	// dessin du labyrinthe a partir de la matrice des images
 	public void draw(Graphics g, int debutX, int debutY) {
 		for(int i = 0; i < nRaw; i++) {
 			for(int j = 0; j < nColumn; j++) {
-				//g.drawImage(images[i][j], GamePanel.debutX + j * size, GamePanel.debutY + i * size,size,size, null);
 				g.drawImage(images[i][j], debutX + j * size, debutY + i * size,size,size, null);
 			}
         }
@@ -65,6 +68,7 @@ public class Maze {
 		
 	}
 	
+	// Definir la position initiale du PacMan
 	public Point getFirstPosition() {
 		for(int i = 0; i < nRaw; i++) {
 			for(int j = 0; j < nColumn; j++) {

@@ -41,7 +41,7 @@ public class MainGame extends JFrame{
 			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			Dimension screenDimension = env.getMaximumWindowBounds().getSize();
 
-			//La taille des extrémités de la fenetre
+			//La taille des extremites de la fenetre
 			Insets insets = SINGLE_INSTANCE.getInsets();
 			final int left = insets.left;
 			final int right = insets.right;
@@ -65,6 +65,7 @@ public class MainGame extends JFrame{
 		
 	}
 	
+	// redimensionner le labyrinthe
 	public static void updateMazeSize() {
 		Maze.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), MainGame.actualWindowWidth / Maze.getnColumn()));
 		

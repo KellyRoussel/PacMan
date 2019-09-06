@@ -59,6 +59,7 @@ public class GameController implements Runnable{
     	this.gamePanel = gamePanel;
     	this.frame = frame;
     	
+    	// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
 		JPanel mainPane = new JPanel(bl);
 		
@@ -96,6 +97,7 @@ public class GameController implements Runnable{
 			e1.printStackTrace();
 		}
         
+        //Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
         MainGame.updateMazeSize();
         
     	//Creer le PacMan  
@@ -127,22 +129,30 @@ public class GameController implements Runnable{
         		
         		int key = e.getKeyCode();
         		
+        		// Mettre le jeu en pause
         		if (key == KeyEvent.VK_P) {
     	        	pause = !pause;
         		}
+        		
+        		
         		if (key == KeyEvent.VK_M) {
+        			// Mettre le jeu en muet 
         			if (soundOn) {
         				music.stop();
+        				
+        			// Relancer le son
         			} else { music.loop(); }
         			soundOn = !soundOn;
         		}
         		
+        		// Redimensionner le jeu
         		if (key == KeyEvent.VK_F) {
         			resize = true;
         			fullScreen = !fullScreen;
         		}
         		
         		
+        		// Changer la direction du PacMan selon la fleche choisie.
         		if(!pause){
         			if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
 
@@ -154,6 +164,7 @@ public class GameController implements Runnable{
         });
 	}
     
+	//Boucle du jeu
 	@Override
 	public void run() {
     	running = true;

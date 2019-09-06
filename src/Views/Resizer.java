@@ -2,6 +2,7 @@ package Views;
 
 public class Resizer {
 	
+	
 	public static int resizeX(int x, int size, int defaultSize, int debutX) {
     	int nColumn = (x / defaultSize);
     	int nLeft = (x % defaultSize);
