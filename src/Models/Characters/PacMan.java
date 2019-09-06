@@ -88,11 +88,6 @@ public class PacMan implements Character{
 	        pacManFront.put(KeyEvent.VK_UP, new Point(0, w/2));	        
 	        pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	   
 	        
- 
-	        
-	        
-	        
-
 	    }
 	    
 	   public String getDirectionString() {
@@ -172,16 +167,6 @@ public class PacMan implements Character{
 	        
 	        return image;
 	    }
-
-	  
-	    
-	    /*public int shiftedX(int x, int size) {
-	    	int nColumn = (x / Maze.getDefaultSize());
-	    	int nLeft = (x % Maze.getDefaultSize());
-	    	nLeft = nLeft * size / Maze.getDefaultSize();
-	    	nLeft += nColumn * size;
-	    	return nLeft;
-	    }*/
 	    
 		@Override
 		public void draw(Graphics g, int x, int y, int mazeSize) {
