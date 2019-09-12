@@ -1,9 +1,27 @@
 package Models.Characters;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 
-public interface Character {
-	public void move();
-	public void treatcollision();
-	public void draw(Graphics g, int x, int y, int mazeSize);
+import Controllers.GameController;
+import Models.Sprite;
+
+public abstract class Character extends Sprite {
+	
+	protected Point position;
+
+	
+	public Character(int width, int height, Image image, Point initialPosition) {
+		super(width, height, image, initialPosition);
+		this.position = initialPosition;
+	}
+
+	
+
+	public abstract void move();	
+
+	public void returnInitialPosition() {
+		this.position = initialPosition;
+	}
 }

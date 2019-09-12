@@ -2,61 +2,32 @@ package Models.Foods;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 
 
-public class PacGum implements Food{
+public class PacGum extends Food{
 
 	
 	
-	private Image image = null;
-	private int x;
-	private int y;
-	private boolean isEaten;
-	
-	public int getX() {
-		return x;
-	}
+	private final int PACGUM_GAIN = 50;
 
-	public int getY() {
-		return y;
-	}
-
-	public PacGum(int x, int y) {
-	    loadImage();
-	    isEaten = false;
-	    this.x = x;
-	    this.y = y;
-	}
-	
-	public PacGum() {
-	    x = 0;
-	    y = 0;
-	    isEaten = false;
-	}
-	
-    private void loadImage() {
-        ImageIcon ii = new ImageIcon("ressources" + File.separator + "pacGum.png");
-        image = ii.getImage(); 
-    }
-	
-	@Override
-	public boolean isEaten() {
-		return isEaten;
+    public PacGum(int width, int height, Image image, Point position) {
+		super(width, height, image, position);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void draw(Graphics g, int x, int y) {
-        image = new ImageIcon("ressources" + File.separator + "pacGum.png").getImage(); 
-		g.drawImage(image, x, y, null);
-		
-	}
-
 	public void setEaten() {
-		isEaten = true;
+		
+		//// TODO
 	}
 
-
+	@Override
+	public int getGain() {
+		// TODO Auto-generated method stub
+		return PACGUM_GAIN;
+	}
 }

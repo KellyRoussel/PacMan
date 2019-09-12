@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import Controllers.GameController;
 import Models.Maze;
 import Models.Characters.PacMan;
+import Models.Foods.Food;
 import Models.Foods.Fruit;
 import Models.Foods.Gum;
 import Models.Foods.PacGum;
@@ -50,14 +51,14 @@ public class GamePanel extends JPanel{
         Graphics g;
         try {
 			 g = this.getGraphics(); 
-			 g.drawImage(dbImage, 0, 0, null);
+			 g.drawImage(dbImage, debutX, debutY, null);
 			 Toolkit.getDefaultToolkit().sync(); 
 		}
         catch (Exception e){ 
         }
 	}
 
-    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Gum> gumList, ArrayList<PacGum> pacGumList, ArrayList<Fruit> fruitList) {
+    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList) {
     	// Redimensionner la fenetre 
     	if (GameController.resize) {
     		MainGame.resize();
@@ -74,48 +75,27 @@ public class GamePanel extends JPanel{
         dbg.setColor(Color.black);
         dbg.fillRect (0, 0, MainGame.actualWindowWidth, MainGame.actualWindowHeight);
         
-        maze.draw(dbg, debutX, debutY);
+        maze.draw(dbg);
         
-        if(pacMan.undefinedPosition()){
-        	Point p = maze.getFirstPosition();
-        	pacMan.setPosition(p.x, p.y);
-        }
         
         // dessiner les gums
-        for(int i = 0; i < gumList.size(); i++) {
-        	if(!gumList.get(i).isEaten()) {
-        		int x = Resizer.resizeX(gumList.get(i).getY() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutX);
-        		int y = Resizer.resizeY(gumList.get(i).getX() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutY);
-        		gumList.get(i).draw(dbg, x, y);
-        	}
+        for(int i = 0; i < foodList.size(); i++) {
+    		//int x = Resizer.resizeX(gumList.get(i).getY() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutX);
+    		//int y = Resizer.resizeY(gumList.get(i).getX() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutY);
+    		foodList.get(i).draw(dbg);
         }
+        	
         
-     // dessiner les pac-gums
-        for(int i = 0; i < pacGumList.size(); i++) {
-        	if(!pacGumList.get(i).isEaten()) {
-        		int x = Resizer.resizeX(pacGumList.get(i).getY() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutX);
-        		int y = Resizer.resizeY(pacGumList.get(i).getX() * maze.getDefaultSize() + 5, maze.getSize(), maze.getDefaultSize(), debutY);
-        		pacGumList.get(i).draw(dbg, x, y);
-        	}
-        }
-        
-        // dessiner les fruits
-        for(int i = 0; i < fruitList.size(); i++) {
-        	if(!fruitList.get(i).isEaten()) {
-        		int x = Resizer.resizeX(fruitList.get(i).getY() * maze.getDefaultSize() + 2, maze.getSize(), maze.getDefaultSize(), debutX);
-        		int y = Resizer.resizeY(fruitList.get(i).getX() * maze.getDefaultSize() + 2, maze.getSize(), maze.getDefaultSize(), debutY);
-        		fruitList.get(i).draw(dbg, x, y);
-        	}        
-        }
+
         
         // redimensionner le PacMan
-        int pacX = Resizer.resizeX(pacMan.getX(), maze.getSize(), maze.getDefaultSize(), debutX);
-        int pacY = Resizer.resizeX(pacMan.getY(), maze.getSize(), maze.getDefaultSize(), debutY);
+        //int pacX = Resizer.resizeX(pacMan.getX(), maze.getSize(), maze.getDefaultSize(), debutX);
+        //int pacY = Resizer.resizeY(pacMan.getY(), maze.getSize(), maze.getDefaultSize(), debutY);
         
-        pacMan.draw(dbg, pacX, pacY, maze.getSize());
+        pacMan.draw(dbg);
         
         // dessiner le "Pause" au cas de pause
-        if(GameController.pause) {
+        /*if(GameController.pause) {
         	Image image = new ImageIcon("ressources" + File.separator + "pause.png").getImage(); 
 			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);
         }
@@ -124,7 +104,7 @@ public class GamePanel extends JPanel{
         if(GameController.gameOver) {
         	Image image = new ImageIcon("ressources" + File.separator + "gameOver.png").getImage(); 
 			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);
-        }
+        }*/
     }
 
 	public static int getDebutX() {

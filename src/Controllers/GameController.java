@@ -1,12 +1,16 @@
 ﻿package Controllers;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -16,6 +20,7 @@ import javax.swing.JPanel;
 import  Models.Maze;
 import  Models.Sound;
 import  Models.Characters.PacMan;
+import Models.Foods.Food;
 import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
@@ -33,16 +38,15 @@ public class GameController implements Runnable{
 	
 	private PacMan pacMan;
 	private Maze maze;
-	private ArrayList<Gum> gumList;
-	private ArrayList<PacGum> pacGumList;
-	private ArrayList<Fruit> fruitList;
+	private ArrayList<Food> foodList;
 	
 	private Sound music;
+	private static int size, defaultSize;
+	private static int score;
+	private static int lives;
 	
-	public static final int FPS =10;
-	public static final int GUM_GAIN = 4;
-	public static final int PAC_GUM_GAIN = 100;
-	public static final int FRUIT_GAIN = 16;
+	public static final int FPS = 10;
+	private static final int PM_INITIAL_POSITION = 60;
 	
     private boolean running;
     private boolean soundOn;
@@ -52,8 +56,12 @@ public class GameController implements Runnable{
     public static boolean resize;
 	public static boolean gameOver; 
 	
+	private static int [][] grille;
+	private static int nRow; 
+	private static int nColumn;
 	
     public GameController(GamePanel gamePanel, MainGame frame) {    	    	
+    	
     	init();
     	
     	this.gamePanel = gamePanel;
@@ -76,7 +84,7 @@ public class GameController implements Runnable{
         
         //Lancer la musique
         music = background;
-        background.loop();
+        //background.loop();
         soundOn = true;
         
         // Lancer le jeu
@@ -88,40 +96,80 @@ public class GameController implements Runnable{
         resize = false;
     	gameOver = false; 
     	statusBar = new StatusBar();
-    	//Creer une instance de la labyrinthe
-        try {
-    		int height = MainGame.actualWindowHeight - StatusBar.HEIGHT;
-    		int width = MainGame.actualWindowWidth;
-			maze = new Maze(height, width);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+    	
+    	Scanner sc = null;
+		try {
+			sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		String lineDimension = sc.nextLine();
+		String[] dimensions = lineDimension.split(",");
+		
+		
+		nColumn =  Integer.parseInt(dimensions[0]);
+		nRow =  Integer.parseInt(dimensions[1]);	
+		
+		int height = MainGame.actualWindowHeight - StatusBar.HEIGHT;
+		int width = MainGame.actualWindowWidth;
+		
+		size = Math.min(height / nRow, width / nColumn);
+		defaultSize = size;
+
+		// creer la matrice du labyrinthe
+		grille = new int[nRow][nColumn];
+		
+		Image [][] images = new Image[nRow][nColumn];
+		BufferedImage output = new BufferedImage(defaultSize * nColumn, defaultSize * nRow, BufferedImage.TYPE_INT_ARGB );
+        Graphics g = output.getGraphics();
+        
+		for(int i = 0; i < nRow; i++) {
+			String line = sc.nextLine();
+			String[] strings = line.split(",");
+			for(int j = 0; j < nColumn; j++) {
+				grille[i][j] = Integer.parseInt(strings[j]);
+				if(grille[i][j] < 30) {
+					images[i][j] = new ImageIcon("ressources" + File.separator + "maze" + GameController.getGrille()[i][j] + ".png").getImage();
+					g.drawImage(images[i][j], j * defaultSize, i * defaultSize,defaultSize,defaultSize, null);
+				}
+			}
+        }
+		
+		
+   
+	    //Creer une instance de la labyrinthe
+        maze = new Maze(defaultSize * nColumn, defaultSize * nRow, output, new Point(0, 0));
+	
         
         //Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
         MainGame.updateMazeSize();
         
     	//Creer le PacMan  
+        ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
         
-    	pacMan = new PacMan();
+    	pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION));
         
     	// Creer les Gums et PacGums
     	
-    	gumList = new ArrayList<Gum>();
-    	pacGumList = new ArrayList<PacGum>();
-    	fruitList = new ArrayList<Fruit>();
-    	
-    	int [][] mazeMat = maze.getMaze();
-    	
-    	for(int i = 0; i < maze.getnRaw(); i++)
-    		for(int j = 0; j < maze.getnColumn(); j++) {
-    			if(mazeMat[i][j] == 30)
-    				gumList.add(new Gum(i, j));
-		    	if(mazeMat[i][j] == 40)
-					pacGumList.add(new PacGum(i, j));
-		    	if(mazeMat[i][j] == 50)
-		    		fruitList.add(new Fruit(i, j));
+    	foodList = new ArrayList();
+    	    	    	
+    	for(int i = 0; i < nRow; i++)
+    		for(int j = 0; j < nColumn; j++) {
+    			if(grille[i][j] == 30)
+    				foodList.add(new Gum(defaultSize/3, defaultSize/3, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
+		    	if(grille[i][j] == 40)
+    				foodList.add(new PacGum(defaultSize/2, defaultSize/2, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
+		    	if(grille[i][j] == 50)
+    				foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
     		}
     }
+
+	private Image loadImage(String fileName) {
+		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
+         return icon.getImage();
+	}
 
 	private void addListeners() {
 		gamePanel.addKeyListener(new KeyAdapter() {
@@ -173,7 +221,7 @@ public class GameController implements Runnable{
     		if(! pause) {		
     			gameUpdate();
     		}
-    		gamePanel.gameRender(pacMan, maze, gumList, pacGumList, fruitList);
+    		gamePanel.gameRender(pacMan, maze, foodList);
     		gamePanel.paintScreen();
 
     		try {
@@ -184,108 +232,71 @@ public class GameController implements Runnable{
 
 	private void gameUpdate() {
 		
-    	int nRaw = 0;
-    	int nColumn = 0;
+    	int raw = 0;
+    	int column = 0;
     	
     	pacMan.nextNextX();
     	pacMan.nextNextY();
     	
-    	int sz = maze.getDefaultSize();
     	
-    	if(sz != 0) {
+    	if(defaultSize != 0) {
     		//Pour savoir le tile suivant ou le pacman va se placer
-    		nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/sz) % maze.getnRaw();
-    		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/sz) % maze.getnColumn();    		
+    		raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
+    		column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
     		
-    		int tile = maze.getMaze()[nRaw][nColumn];
+    		int tile = grille[raw][column];
     		
-    		System.out.println(tile);
     		
     		if(tile == 0 || tile >= 30) {
     			//Tile vide
-	    		for(int i = 0; i < gumList.size(); i++) {
-	    			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
+    			
+    			
+	    		for(int i = 0; i < foodList.size(); i++) {
+	    			if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
+	    				
 	    				//Tile contenant une Gum
-	    				gumList.get(i).setEaten();
-	    				statusBar.incrementScore(GUM_GAIN);
-	        			statusBar.updateScore();
-	    			}
-	    		}
-	    		for(int i = 0; i < pacGumList.size(); i++) {
-	    			if(pacGumList.get(i).getX() == nRaw && pacGumList.get(i).getY() == nColumn && !pacGumList.get(i).isEaten()) {
-	    				//Tile contenant un PacGum
-	    				pacGumList.get(i).setEaten();
-	    				statusBar.incrementScore(PAC_GUM_GAIN);
-	        			statusBar.updateScore();
-	    			}
-	    		}		
-	    		for(int i = 0; i < fruitList.size(); i++) {
-	    			if(fruitList.get(i).getX() == nRaw && fruitList.get(i).getY() == nColumn && !fruitList.get(i).isEaten()) {
-	    				//Tile contenant un fruit
-	    				fruitList.get(i).setEaten();
-	    				if(statusBar.decrementLife() == false) {
-	    					gameOver = true;
-	    				}
-	        			statusBar.updateScore();
+	    				score += foodList.get(i).getGain();
+	    				foodList.remove(i);
+	    				statusBar.updateScore();
 	    			}
 	    		}
 	    		
 	    		statusBar.updateCollision("NONE");
 	    		pacMan.move(); 
 	    		pacMan.updateDirection();
-	    		pacMan.setInsideTile(nRaw, nColumn);
+	    		pacMan.setInsideTile(raw, column);
     			
 	    	}else{
 	    		//Mur 
-	    		nRaw = 0;
-	        	nColumn = 0;
+	    		raw = 0;
+	        	column = 0;
 	        	
 	        	pacMan.nextX();
 	        	pacMan.nextY();
 	        	
-	        	sz = maze.getDefaultSize();
 	        	
-	        	if(sz != 0) {
+	        	if(defaultSize != 0) {
 	        		//Pour savoir le tile suivant ou le pacman va se placer
-	        		nRaw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/sz) % maze.getnRaw();
-	        		nColumn = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getDirection()).y)/sz) % maze.getnColumn();    		
+	        		raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/defaultSize) % nRow;
+	        		column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getDirection()).y)/defaultSize) % nColumn;    		
 
 	        		
-	        		tile = maze.getMaze()[nRaw][nColumn];
+	        		tile = grille[raw][column];
 	        		
 	        		if(tile == 0 || tile >= 30) {
 	        			//Tile vide
-	    	    		for(int i = 0; i < gumList.size(); i++) {
-	    	    			if(gumList.get(i).getX() == nRaw && gumList.get(i).getY() == nColumn && !gumList.get(i).isEaten()) {
+	        			for(int i = 0; i < foodList.size(); i++) {
+	    	    			if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
 	    	    				//Tile contenant une Gum
-	    	    				gumList.get(i).setEaten();
-	    	    				statusBar.incrementScore(GUM_GAIN);
-	    	        			statusBar.updateScore();
-	    	    			}
-	    	    		}
-	    	    		for(int i = 0; i < pacGumList.size(); i++) {
-	    	    			if(pacGumList.get(i).getX() == nRaw && pacGumList.get(i).getY() == nColumn && !pacGumList.get(i).isEaten()) {
-	    	    				//Tile contenant un PacGum
-	    	    				pacGumList.get(i).setEaten();
-	    	    				statusBar.incrementScore(PAC_GUM_GAIN);
-	    	        			statusBar.updateScore();
-	    	    			}
-	    	    		}
-	    	    		
-	    	    		for(int i = 0; i < fruitList.size(); i++) {
-	    	    			if(fruitList.get(i).getX() == nRaw && fruitList.get(i).getY() == nColumn && !fruitList.get(i).isEaten()) {
-	    	    				//Tile contenant un fruit
-	    	    				fruitList.get(i).setEaten();
-	    	    				if(statusBar.decrementLife() == false) {
-	    	    					gameOver = true;
-	    	    				}
-	    	        			statusBar.updateScore();
+	    	    				score += foodList.get(i).getGain();
+	    	    				foodList.remove(i);
+	    	    				statusBar.updateScore();
 	    	    			}
 	    	    		}
 	    	    		
 	    	    		statusBar.updateCollision("NONE");
 	    	    		pacMan.move(); 
-	    	    		pacMan.setInsideTile(nRaw, nColumn);
+	    	    		pacMan.setInsideTile(raw, column);
 	        		}
 	        		else
 	        			statusBar.updateCollision(pacMan.getDirectionString());
@@ -310,5 +321,71 @@ public class GameController implements Runnable{
 		
 	}
 
+	public static Point definePosition(int initialPositionValue) {
+		Point p = new Point();
+		for(int i = 0; i < nRow; i++)
+			for(int j = 0; j < nColumn; j++) {
+				if(grille[i][j] == initialPositionValue) {
+					p.x = j * GameController.getDefaultSize();
+					p.y = i * GameController.getDefaultSize();
+				}
+			}
+		return p;
+	}
+
+	public static int[][] getGrille() {
+		return grille;
+	}
+
+	public static void setGrille(int[][] grille) {
+		GameController.grille = grille;
+	}
+
+	public static int getnRow() {
+		return nRow;
+	}
+
+	public static void setnRow(int nRow) {
+		GameController.nRow = nRow;
+	}
+
+	public static int getnColumn() {
+		return nColumn;
+	}
+
+	public static void setnColumn(int nColumn) {
+		GameController.nColumn = nColumn;
+	}
 	
+	public static int getSize() {
+		return size;
+	}
+
+	public static void setSize(int size) {
+		GameController.size = size;
+	}
+
+	public static int getDefaultSize() {
+		return defaultSize;
+	}
+
+	public static void setDefaultSize(int defaultSize) {
+		GameController.defaultSize = defaultSize;
+	}
+
+	public static int getScore() {
+		return score;
+	}
+
+	public static void setScore(int score) {
+		GameController.score = score;
+	}
+
+	public static int getLives() {
+		return lives;
+	}
+
+	public static void setLives(int lives) {
+		GameController.lives = lives;
+	}	
 }

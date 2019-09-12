@@ -17,11 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Controllers.GameController;
+
 public class StatusBar extends JPanel{
 
 	
-	private int score;
-	private int lives;
 	
 	public static final int HEIGHT = 150;
 	
@@ -31,8 +31,6 @@ public class StatusBar extends JPanel{
 	private JLabel collisionPane;
 	
 	public StatusBar() {
-		score = 0;
-		lives = 3;
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, HEIGHT));
 		setBorder(new EmptyBorder(0, 20, 0, 20));
@@ -82,7 +80,7 @@ public class StatusBar extends JPanel{
 		}
 		Image dimg = img.getScaledInstance(20, 20,Image.SCALE_SMOOTH);
 		
-		for(int i = 0; i < lives; i++) {
+		for(int i = 0; i < GameController.getLives(); i++) {
 			ImageIcon icon = new ImageIcon(dimg);
 			JLabel thumb = new JLabel();
 			thumb.setPreferredSize(new Dimension(20, 20));
@@ -111,13 +109,8 @@ public class StatusBar extends JPanel{
 	}
 
 	public void updateScore() {
-		scoreLabel.setText("<html><font color = 'YELLOW'>" + score + "</font></html>");
-	}
-	
-	public void incrementScore(int value) {
-		score += value;
-	}
-	
+		scoreLabel.setText("<html><font color = 'YELLOW'>" + GameController.getScore() + "</font></html>");
+	}	
 	
 	public void load() {
 		
@@ -128,7 +121,6 @@ public class StatusBar extends JPanel{
 
 	public boolean decrementLife() {
 		// TODO Auto-generated method stub
-		lives--;
 		lvPane.removeAll();
 		lvPane.setBackground(Color.black);
 		BufferedImage img = null;
@@ -139,7 +131,7 @@ public class StatusBar extends JPanel{
 		}
 		Image dimg = img.getScaledInstance(20, 20,Image.SCALE_SMOOTH);
 		
-		for(int i = 0; i < lives; i++) {
+		for(int i = 0; i < GameController.getLives(); i++) {
 			ImageIcon icon = new ImageIcon(dimg);
 			JLabel thumb = new JLabel();
 			thumb.setPreferredSize(new Dimension(20, 20));
@@ -152,17 +144,9 @@ public class StatusBar extends JPanel{
 		lvPane.repaint();
 		lvPane.validate();
 		
-		return lives != 0;
+		return GameController.getLives() != 0;
 	}
-	
-	public int getLives() {
-		return lives;
-	}
-	
-	public int getScore() {
-		return score;
-	}
-	
+		
 	public JLabel getScoreLabel() {
 		return scoreLabel;
 	}

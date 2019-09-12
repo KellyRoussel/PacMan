@@ -2,61 +2,28 @@ package Models.Foods;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import javax.swing.ImageIcon;
 
 
-public class Gum implements Food{
+public class Gum extends Food{
 
-	
-	
-	private Image image;
-	private int x;
-	private int y;
-	private boolean isEaten;
-	
-	public int getX() {
-		return x;
+	private final int GUM_GAIN = 10;
+
+    public Gum(int width, int height, Image image, Point position) {
+		super(width, height, image, position);
+		// TODO Auto-generated constructor stub
 	}
 
-	public int getY() {
-		return y;
-	}
-
-	public Gum(int x, int y) {
-	    loadImage();
-	    isEaten = false;
-	    this.x = x;
-	    this.y = y;
-	}
-	
-	public Gum() {
-	    x = 0;
-	    y = 0;
-	    isEaten = false;
-	}
-	
-    private void loadImage() {
-        ImageIcon ii = new ImageIcon("ressources" + File.separator + "gum.png");
-        image = ii.getImage(); 
-    }
-	
 	@Override
-	public boolean isEaten() {
-		return isEaten;
-	}
-
-	
-	@Override
-	public void draw(Graphics g, int x, int y) {
-        image = new ImageIcon("ressources" + File.separator + "gum.png").getImage(); 
-		g.drawImage(image, x, y, null);
-		
-	}
-
 	public void setEaten() {
-		isEaten = true;
+		// TODO Auto-generated method stub
 	}
 
-
+	@Override
+	public int getGain() {
+		// TODO Auto-generated method stub
+		return GUM_GAIN;
+	}
 }

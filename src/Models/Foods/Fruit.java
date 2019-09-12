@@ -2,70 +2,27 @@ package Models.Foods;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import javax.swing.ImageIcon;
 import Models.Maze;
 
-public class Fruit implements Food{
+public class Fruit extends Food{
 
-	
-	
-	private Image image;
-	private int x;
-	private int y;
-	private boolean isEaten;
-	
-	public int getX() {
-		return x;
+	private final int FRUIT_GAIN = 100;
+	public Fruit(int width, int height, Image image, Point position) {
+		super(width, height, image, position);
+		// TODO Auto-generated constructor stub
 	}
-
-	public int getY() {
-		return y;
-	}
-
-	public Fruit(int x, int y) {
-	    loadImage();
-	    isEaten = false;
-	    this.x = x;
-	    this.y = y;
-	}
-	
-	public Fruit() {
-	    x = 0;
-	    y = 0;
-	    isEaten = false;
-	}
-	
-    private void loadImage() {
-        ImageIcon ii = new ImageIcon("ressources" + File.separator + "fruit.png");
-        image = ii.getImage(); 
-    }
-	
 	@Override
-	public boolean isEaten() {
-		return isEaten;
-	}
-
-	public int shiftedX(int x, int size) {
-    	int nColumn = (x / Maze.getDefaultSize());
-    	int nLeft = (x % Maze.getDefaultSize());
-    	nLeft = nLeft * size / Maze.getDefaultSize();
-    	nLeft += nColumn * size;
-    	return nLeft;
-    }
-	
-	@Override
-	public void draw(Graphics g, int x, int y) {
-        image = new ImageIcon("ressources" + File.separator + "fruit.png").getImage(); 
-
-		//g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), null);
-		g.drawImage(image, x, y, null);
-		
-	}
-
 	public void setEaten() {
-		isEaten = true;
+		// TODO Auto-generated method stub		
+		//// TODO
 	}
-
+	@Override
+	public int getGain() {
+		// TODO Auto-generated method stub
+		return FRUIT_GAIN;
+	}
 
 }

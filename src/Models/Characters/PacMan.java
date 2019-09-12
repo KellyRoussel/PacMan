@@ -10,50 +10,42 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import Controllers.GameController;
 import Models.Maze;
 
-public class PacMan implements Character{
+public class PacMan extends Character{
 
 		private int direction;
 		private int nextDirection;
-
 		
 
 		private int style;
 		private int counter;
 	    
-	    private int x;
-	    private int y;
-	    
 	    private int w;
 	    private int h;
 	    
-	    private Image image;
 	    
 	    private int nextX;
 	    private int nextY;
 	    
 	    private final int PAS = 2;
-		
+		private final int MARGE = 10;
 	    private int dx;
 	    private int dy;
 	    
 	    private int nextDx;
 		private int nextDy;
-	    
-	    private boolean undefinedPosition;
-	    
+	    	    
 	    private Map<Integer, Point> changes;
 	    private Map<Integer, Point> steps;
 	    public Map<Integer, Point> pacManFront;
 	    public Map<Integer, String> directionString;
 
-	    public PacMan() {
-	    	nextX = 0; 
-	    	nextY = 0;
+	    public PacMan(int width, int height, Image image, Point initialPosition) {
+	    	super(width, height, image, initialPosition);
+	
 	    	counter = 0;
-	    	style = 0;
-	    	undefinedPosition = true;
 	    	direction = KeyEvent.VK_LEFT;
 	    	nextDirection = direction;
 	    	dx = -PAS;
@@ -65,8 +57,7 @@ public class PacMan implements Character{
 	        directionString.put(KeyEvent.VK_UP, "Up");	        
 	        directionString.put(KeyEvent.VK_DOWN, "Down");	
 	        
-	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirectionString() + "_"+ style + ".png");
-	        image = ii.getImage(); 
+	    	
 	    	w = image.getWidth(null);
 	        h = image.getHeight(null);
 	    		        
@@ -107,19 +98,19 @@ public class PacMan implements Character{
 		}
 
 	    public void nextX(){
-	    	setNextX((x + dx + Maze.getDefaultSize() * Maze.getnColumn() - 10) % (Maze.getDefaultSize() * Maze.getnColumn() - 10));
+	    	setNextX((position.x + dx + GameController.getDefaultSize() * GameController.getnColumn() - MARGE) % (GameController.getDefaultSize() * GameController.getnColumn() - MARGE));
 	    }
 	    
 	    public void nextY() {
-	    	setNextY((y + dy + Maze.getDefaultSize() * Maze.getnRaw()) % (Maze.getDefaultSize() * Maze.getnRaw()));
+	    	setNextY((position.y + dy + GameController.getDefaultSize() * GameController.getnRow()) % (GameController.getDefaultSize() * GameController.getnRow()));
 	    }
 	    
 	    public void nextNextX(){
-	    	setNextX((x + nextDx + Maze.getDefaultSize() * Maze.getnColumn() - 10) % (Maze.getDefaultSize() * Maze.getnColumn() - 10));
+	    	setNextX((position.x + nextDx + GameController.getDefaultSize() * GameController.getnColumn() - MARGE) % (GameController.getDefaultSize() * GameController.getnColumn() - MARGE));
 	    }
 	    
 	    public void nextNextY() {
-	    	setNextY((y + nextDy + Maze.getDefaultSize() * Maze.getnRaw()) % (Maze.getDefaultSize() * Maze.getnRaw()));
+	    	setNextY((position.y + nextDy + GameController.getDefaultSize() * GameController.getnRow()) % (GameController.getDefaultSize() * GameController.getnRow()));
 	    }
 	    
 	    public int getNextDirection() {
@@ -135,31 +126,38 @@ public class PacMan implements Character{
 	    
 	    public void move() {
 	    	counter = (counter + 1) % 10;
-	    	if(counter == 0)
+	    	if(counter == 0) {
 	    		style = (style + 1) % 2;
-	    	
-	        x = nextX;
-	        y = nextY;
+	    		loadImage();
+	    	}
+	    	position.x = nextX;
+	    	position.y = nextY;
 	    }
 
-	    public int getX() {
+	    private void loadImage() {
+			// TODO Auto-generated method stub
+	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirectionString() + "_" + style + ".png");
+	    	image = ii.getImage();
+		}
+
+		public int getX() {
 	        
-	        return x;
+	        return position.x;
 	    }
 	    
 	    public void setX(int var_x) {
 	        
-	        x = var_x;
+	    	position.x = var_x;
 	    }
 
 	    public int getY() {
 	        
-	        return y;
+	        return position.y;
 	    }
 	    
 	    public void setY(int var_y) {
 	        
-	        y = var_y;
+	    	position.y = var_y;
 	    }
 	    
 	    public int getWidth() {
@@ -177,19 +175,13 @@ public class PacMan implements Character{
 	        return image;
 	    }
 	    
-		@Override
-		public void draw(Graphics g, int x, int y, int mazeSize) {
+		/*public void draw(Graphics g, int x, int y, int mazeSize) {
 	        image = new ImageIcon("ressources" + File.separator + getDirectionString() + "_"+ style + ".png").getImage(); 
 			
 	        //g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), Maze.getSize(), Maze.getSize(), null);
 	        g.drawImage(image, x, y, mazeSize, mazeSize, null);
-		}
+		}*/
 
-		@Override
-		public void treatcollision() {
-			// TODO Auto-generated method stub
-			
-		}
 
 		public int getNextX() {
 			return nextX;
@@ -231,32 +223,20 @@ public class PacMan implements Character{
 			this.direction = direction;
 		}
 		
-		public void setUndefinedPosition(boolean Position) {
-			undefinedPosition = Position;
-		}
-
-		public boolean undefinedPosition() {
-			if(undefinedPosition ) {
-				undefinedPosition = false;
-				return true;
-			}
-			return false;
-		}
-
 		public void setPosition(int x, int y) {
 			// TODO Auto-generated method stub
-			this.x = x;
-			this.y = y;
+			position.x = x;
+			position.y = y;
 		}
 
+		
 		public void setInsideTile(int nRaw, int nColumn) {
-			// TODO Auto-generated method stub
-			int sz = Maze.getDefaultSize();
+			// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
+			int sz = GameController.getDefaultSize();
 			if(changes.get(direction).x == 1)
-				x = nColumn * sz;
+				position.x = nColumn * sz;
 			if(changes.get(direction).y == 1)
-				y = nRaw * sz;
-
+				position.y = nRaw * sz;
 		}
 		
 		public int getDX() {

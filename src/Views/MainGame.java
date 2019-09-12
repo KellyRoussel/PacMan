@@ -67,13 +67,13 @@ public class MainGame extends JFrame{
 	
 	// redimensionner le labyrinthe
 	public static void updateMazeSize() {
-		Maze.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), MainGame.actualWindowWidth / Maze.getnColumn()));
+		GameController.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / GameController.getnRow(), MainGame.actualWindowWidth / GameController.getnColumn()));
 		
 		if (!GameController.fullScreen) {
-			Maze.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / Maze.getnRaw(), MainGame.actualWindowWidth / Maze.getnColumn()));
+			GameController.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / GameController.getnRow(), MainGame.actualWindowWidth / GameController.getnColumn()));
 		}
-		GamePanel.setDebutX((actualWindowWidth - Maze.getSize() * Maze.getnColumn()) / 2);
-		GamePanel.setDebutY((actualWindowHeight - Maze.getSize()  * Maze.getnRaw() - StatusBar.HEIGHT) / 2);
+		GamePanel.setDebutX((actualWindowWidth - GameController.getSize() * GameController.getnColumn()) / 2);
+		GamePanel.setDebutY((actualWindowHeight - GameController.getSize()  * GameController.getnRow() - StatusBar.HEIGHT) / 2);
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
