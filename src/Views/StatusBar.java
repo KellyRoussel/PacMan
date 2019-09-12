@@ -25,6 +25,7 @@ public class StatusBar extends JPanel{
 	
 	public static final int HEIGHT = 150;
 	
+	private JLabel levelLabel;
 	private JLabel scoreLabel;
 	private JPanel fruitsPane; 
 	private JPanel lvPane;
@@ -36,8 +37,15 @@ public class StatusBar extends JPanel{
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 		setLayout(new GridLayout(2, 3));
 		
+		JLabel levelL = new JLabel();
+		levelL.setFont(new Font("Joystix", Font.BOLD, 25));
+		levelL.setText("<html><font color = 'WHITE'> LEVEL </font></html>");
+		levelL.setAlignmentX(CENTER_ALIGNMENT);
+		levelL.setAlignmentY(CENTER_ALIGNMENT);
+		add(levelL);
+		
 		JLabel scoreL = new JLabel();
-		scoreL.setFont(new Font("Joystix", Font.BOLD, 30));
+		scoreL.setFont(new Font("Joystix", Font.BOLD, 25));
 		scoreL.setText("<html><font color = 'WHITE'> SCORE </font></html>");
 		scoreL.setAlignmentX(CENTER_ALIGNMENT);
 		scoreL.setAlignmentY(CENTER_ALIGNMENT);
@@ -45,26 +53,35 @@ public class StatusBar extends JPanel{
 		
 		
 		JLabel livesL = new JLabel();
-		livesL.setFont(new Font("Joystix", Font.BOLD, 30));
+		livesL.setFont(new Font("Joystix", Font.BOLD, 25));
 		livesL.setText("<html><font color = 'WHITE'> VIES </font></html>");
 		livesL.setAlignmentX(CENTER_ALIGNMENT);
 		livesL.setAlignmentY(CENTER_ALIGNMENT);
 		add(livesL);
 		
 		JLabel CollisionL = new JLabel();
-		CollisionL.setFont(new Font("Joystix", Font.BOLD, 30));
+		CollisionL.setFont(new Font("Joystix", Font.BOLD, 25));
 		CollisionL.setText("<html><font color = 'WHITE'> COLLISION </font></html>");
 		CollisionL.setAlignmentX(CENTER_ALIGNMENT);
 		CollisionL.setAlignmentY(CENTER_ALIGNMENT);
 		add(CollisionL);
 		
-		
+		// Creation du niveau		
+		JPanel levelPane = new JPanel(new FlowLayout());
+		levelPane.setBackground(Color.black);
+		levelLabel = new JLabel();
+		levelLabel.setText("<html><font color='YELLOW'> 1 </font></html>");
+		levelLabel.setFont(new Font("Joystix", Font.BOLD, 25));
+		levelPane.add(levelLabel);
+		add(levelPane);
+				
+				
 		// Creation du score		
 		JPanel scorePane = new JPanel(new FlowLayout());
 		scorePane.setBackground(Color.black);
 		scoreLabel = new JLabel();
 		scoreLabel.setText("<html><font color='WHITE'>SCORE </font></html>");
-		scoreLabel.setFont(new Font("Joystix", Font.BOLD, 30));
+		scoreLabel.setFont(new Font("Joystix", Font.BOLD, 25));
 		scorePane.add(scoreLabel);
 		add(scorePane);
 		
@@ -106,6 +123,10 @@ public class StatusBar extends JPanel{
 	public void updateCollision(String string) {
 		// TODO Auto-generated method stub
 		collisionPane.setText("<html><font color = 'YELLOW'>" + string + "</font></html>");
+	}
+	
+	public void updateLevel() {
+		levelLabel.setText("<html><font color = 'YELLOW'>" + GameController.getLevel() + "</font></html>");
 	}
 
 	public void updateScore() {

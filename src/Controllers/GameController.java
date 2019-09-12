@@ -42,6 +42,7 @@ public class GameController implements Runnable{
 	
 	private Sound music;
 	private static int size, defaultSize;
+	private static int level;
 	private static int score;
 	private static int lives;
 	
@@ -154,7 +155,11 @@ public class GameController implements Runnable{
     	// Creer les Gums et PacGums
     	
     	foodList = new ArrayList();
-    	    	    	
+    	fillFoodList();    	    	
+    	
+    }
+    
+    private void fillFoodList() {
     	for(int i = 0; i < nRow; i++)
     		for(int j = 0; j < nColumn; j++) {
     			if(grille[i][j] == 30)
@@ -259,6 +264,14 @@ public class GameController implements Runnable{
 	    				foodList.remove(i);
 	    				statusBar.updateScore();
 	    			}
+	    		}
+	    		if(foodList.size()==0) {
+	    			resume();
+	    			setLevel(level+1);
+	    			statusBar.updateLevel();
+	    			pacMan.returnInitialPosition();
+	    			//Renvoyer les fantomes à leur position initiale
+	    			fillFoodList();
 	    		}
 	    		
 	    		statusBar.updateCollision("NONE");
@@ -387,5 +400,13 @@ public class GameController implements Runnable{
 
 	public static void setLives(int lives) {
 		GameController.lives = lives;
+	}
+
+	public static int getLevel() {
+		return level;
+	}
+
+	public static void setLevel(int level) {
+		GameController.level = level;
 	}	
 }
