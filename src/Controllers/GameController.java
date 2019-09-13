@@ -49,7 +49,8 @@ public class GameController implements Runnable{
 
 	public static final int FPS = 10;
 	private static final int PM_INITIAL_POSITION = 60;
-<<<<<<< HEAD
+
+	private static final long JOIN_TIMER = 10;
 	private static final int PINK_INITIAL_POSITION = 26;
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
@@ -62,20 +63,14 @@ public class GameController implements Runnable{
 
 	public static int ghostOutside;
 	private int firstGhostToQuit;
-    
-    public static boolean pause;    
-=======
-
-	private static final long JOIN_TIMER = 10;
 	private final int SLEEP_TIMER = 10;
 
-	private boolean running;
-	private boolean soundOn;
+    public static boolean pause;    
+
+
 	private boolean wantSound = true;
 
-	public static boolean pause;  
 	public static boolean resume;
->>>>>>> 9178aa23a57cd0b9b8faf61b451739a50182c123
 	public static boolean fullScreen;
 	public static boolean resize;
 	public static boolean gameOver; 
@@ -185,7 +180,6 @@ public class GameController implements Runnable{
 		foodList = new ArrayList();
 		fillFoodList(); 
 	
-<<<<<<< HEAD
         
         //Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
         MainGame.updateMazeSize();
@@ -220,22 +214,8 @@ public class GameController implements Runnable{
     				foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
     		}
     }
-=======
 
-	}
-
-	private void fillFoodList() {
-		for(int i = 0; i < nRow; i++)
-			for(int j = 0; j < nColumn; j++) {
-				if(grille[i][j] == 30)
-					foodList.add(new Gum(defaultSize/3, defaultSize/3, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
-				if(grille[i][j] == 40)
-					foodList.add(new PacGum(defaultSize/2, defaultSize/2, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
-				if(grille[i][j] == 50)
-					foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
-			}
-	}
->>>>>>> 9178aa23a57cd0b9b8faf61b451739a50182c123
+	
 
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
@@ -286,36 +266,37 @@ public class GameController implements Runnable{
 	//Boucle du jeu
 	@Override
 	public void run() {
-<<<<<<< HEAD
-    	running = true;
-    	pause = false;
-    	while(running && !gameOver) {
-    		if(! pause) {		
-    			gameUpdate();
-    		}
+		running = true;
+		pause = false;
+		while(running && !gameOver) {
+			if(! pause) {		
+				gameUpdate();
+			}else if(resume) {
+				statusBar.updateState("RESUME");
+				resume();
+			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-    		gamePanel.paintScreen();
+			gamePanel.paintScreen();
 
-    		try {
-    			Thread.sleep(FPS);
-    		}catch(InterruptedException ex) {}
-    	}
+			try {
+				Thread.sleep(FPS);
+			}catch(InterruptedException ex) {}
+		}
     }
 
+    
+
 	private void gameUpdate() {
-		
-		
-		
-		
-    	int raw = 0;
-    	int column = 0;
-    	
-    	pacMan.nextNextX();
-    	pacMan.nextNextY();
-    	
-    	
-    	if(defaultSize != 0) {
-    		if(ghostOutside < 4) {
+
+		int raw = 0;
+		int column = 0;
+
+		pacMan.nextNextX();
+		pacMan.nextNextY();
+
+
+		if(defaultSize != 0) {
+			if(ghostOutside < 4) {
     			Ghost currentGhost = ghostList.get(firstGhostToQuit);
     			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
     				currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
@@ -341,109 +322,6 @@ public class GameController implements Runnable{
         			ghostList.get(i).move();
     			}
     		}
-    	
-    		//Pour savoir le tile suivant ou le pacman va se placer
-    		raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
-    		column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
-    		
-    		int tile = grille[raw][column];
-    		
-    		
-    		if(tile == 0 || tile >= 30) {
-    			//Tile vide
-    			
-    			
-	    		for(int i = 0; i < foodList.size(); i++) {
-	    			if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
-	    				
-	    				//Tile contenant une Gum
-	    				score += foodList.get(i).getGain();
-	    				foodList.remove(i);
-	    				statusBar.updateScore();
-	    			}
-	    		}
-	    		if(foodList.size()==0) {
-	    			resume();
-	    			setLevel(level+1);
-	    			statusBar.updateLevel();
-	    			pacMan.returnInitialPosition();
-	    			//Renvoyer les fantomes à leur position initiale
-	    			fillFoodList();
-	    		}
-	    		
-	    		statusBar.updateCollision("NONE");
-	    		pacMan.move(); 
-	    		pacMan.updateDirection();
-	    		pacMan.setInsideTile(raw, column);
-    			
-	    	}else{
-	    		//Mur 
-	    		raw = 0;
-	        	column = 0;
-	        	
-	        	pacMan.nextX();
-	        	pacMan.nextY();
-	        	
-	        	
-	        	if(defaultSize != 0) {
-	        		//Pour savoir le tile suivant ou le pacman va se placer
-	        		raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/defaultSize) % nRow;
-	        		column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getDirection()).y)/defaultSize) % nColumn;    		
-
-	        		
-	        		tile = grille[raw][column];
-	        		
-	        		if(tile == 0 || tile >= 30) {
-	        			//Tile vide
-	        			for(int i = 0; i < foodList.size(); i++) {
-	    	    			if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
-	    	    				//Tile contenant une Gum
-	    	    				score += foodList.get(i).getGain();
-	    	    				foodList.remove(i);
-	    	    				statusBar.updateScore();
-	    	    			}
-	    	    		}
-	    	    		
-	    	    		statusBar.updateCollision("NONE");
-	    	    		pacMan.move(); 
-	    	    		pacMan.setInsideTile(raw, column);
-	        		}
-	        		else
-	        			statusBar.updateCollision(pacMan.getDirectionString());
-	        	}
-	    	}
-    	}
-    }	
-    
-=======
-		running = true;
-		pause = false;
-		while(running && !gameOver) {
-			if(! pause) {		
-				gameUpdate();
-			}else if(resume) {
-				statusBar.updateState("RESUME");
-				resume();
-			}
-			gamePanel.gameRender(pacMan, maze, foodList);
-			gamePanel.paintScreen();
-
-			try {
-				Thread.sleep(FPS);
-			}catch(InterruptedException ex) {}
-		}
-	}
-
-	private void gameUpdate() {
-
-		int raw = 0;
-		int column = 0;
-
-		pacMan.nextNextX();
-		pacMan.nextNextY();
-
-
-		if(defaultSize != 0) {
 			//Pour savoir le tile suivant ou le pacman va se placer
 			raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
 			column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
@@ -521,7 +399,7 @@ public class GameController implements Runnable{
 		}
 	}	
 
->>>>>>> 9178aa23a57cd0b9b8faf61b451739a50182c123
+
 	private void startGame() {
 		new Thread(this).start();
 	}
