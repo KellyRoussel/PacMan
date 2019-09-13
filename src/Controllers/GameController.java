@@ -192,10 +192,10 @@ public class GameController implements Runnable{
 				int key = e.getKeyCode();
 
 				// Mettre le jeu en pause
-				if (key == KeyEvent.VK_P) {
+				if (key == KeyEvent.VK_P && !pause) {
 					pause();
 				}
-				if (key == KeyEvent.VK_R) {
+				if (key == KeyEvent.VK_R && pause) {
 					resume = true;
 				}
 
@@ -360,9 +360,9 @@ public class GameController implements Runnable{
 		music = background;
 		Models.TimerThread timerThread = new Models.TimerThread(3);
 		timerThread.start();
-		timerThread.setName("TIMER 1");
+		timerThread.setName(" RESUME TIMER");
 
-		System.out.println("Start Resume");
+		
 		synchronized(timerThread) {
 			try {
 				timerThread.wait(3 * 1000 + 500); //pendant ce temps le thread vas afficher les 75 secaondes
@@ -375,12 +375,12 @@ public class GameController implements Runnable{
 				e.printStackTrace();
 			}
 			statusBar.updateState("PLAY");
-			pause = false;
 			if(wantSound) {
 				unMute();
 			}
 		}
 		resume = false;
+		pause = false;
 	}
 
 	public static Point definePosition(int initialPositionValue) {
