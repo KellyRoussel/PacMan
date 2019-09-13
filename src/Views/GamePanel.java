@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 import Controllers.GameController;
 import Models.Maze;
+import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
 import Models.Foods.Fruit;
@@ -58,7 +59,7 @@ public class GamePanel extends JPanel{
         }
 	}
 
-    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList) {
+    public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList, ArrayList<Ghost> ghostList) {
     	// Redimensionner la fenetre 
     	if (GameController.resize) {
     		MainGame.resize();
@@ -93,6 +94,9 @@ public class GamePanel extends JPanel{
         //int pacY = Resizer.resizeY(pacMan.getY(), maze.getSize(), maze.getDefaultSize(), debutY);
         
         pacMan.draw(dbg);
+        
+        for(int i = 0; i < ghostList.size(); i++)
+        	ghostList.get(i).draw(dbg);
         
         // dessiner le "Pause" au cas de pause
         /*if(GameController.pause) {
