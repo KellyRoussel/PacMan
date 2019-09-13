@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import  Models.Maze;
 import  Models.Sound;
+import Models.Characters.Ghost;
 import  Models.Characters.PacMan;
 import Models.Foods.Food;
 import  Models.Foods.Fruit;
@@ -50,13 +51,25 @@ public class GameController implements Runnable{
 	private static final int PM_INITIAL_POSITION = 60;
 
 	private static final long JOIN_TIMER = 10;
+	private static final int PINK_INITIAL_POSITION = 26;
+	private static final int ORANGE_INITIAL_POSITION = 27;
+	private static final int RED_INITIAL_POSITION = 28;
+	private static final int TURQUOISE_INITIAL_POSITION = 29;
+	
+    private boolean running;
+    private boolean soundOn;
+
+	private ArrayList<Ghost> ghostList;
+
+	public static int ghostOutside;
+	private int firstGhostToQuit;
 	private final int SLEEP_TIMER = 10;
 
-	private boolean running;
-	private boolean soundOn;
+    public static boolean pause;    
+
+
 	private boolean wantSound = true;
 
-	public static boolean pause;  
 	public static boolean resume;
 	public static boolean fullScreen;
 	public static boolean resize;
@@ -143,7 +156,7 @@ public class GameController implements Runnable{
 			for(int j = 0; j < nColumn; j++) {
 				grille[i][j] = Integer.parseInt(strings[j]);
 				if(grille[i][j] < 30) {
-					images[i][j] = new ImageIcon("ressources" + File.separator + "maze" + GameController.getGrille()[i][j] + ".png").getImage();
+					images[i][j] = loadImage("maze" + GameController.getGrille()[i][j] + ".png");
 					g.drawImage(images[i][j], j * defaultSize, i * defaultSize,defaultSize,defaultSize, null);
 				}
 			}
@@ -168,20 +181,42 @@ public class GameController implements Runnable{
 		foodList = new ArrayList();
 		fillFoodList(); 
 	
+        
+        //Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
+        MainGame.updateMazeSize();
+        
+    	//Creer le PacMan          
+    	pacMan = new PacMan(defaultSize, defaultSize, loadImage("Left_0.png"), definePosition(PM_INITIAL_POSITION));
+        
+    	//Creer les fantomes
+    	ghostList = new ArrayList<Ghost>();
+    	ghostList.add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION), "pink"));    	
+    	ghostList.add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"), definePosition(ORANGE_INITIAL_POSITION), "orange"));    	    	
+    	ghostList.add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION), "red"));    	    	
+    	ghostList.add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"), definePosition(TURQUOISE_INITIAL_POSITION), "turquoise"));    	    	
+    	ghostOutside = 0;
+    	firstGhostToQuit = (int)(Math.random() * 4);
+    	
+    	// Creer les Gums et PacGums
+    	
+    	foodList = new ArrayList();
+    	fillFoodList();    	    	
+    	
+    }
+    
+    private void fillFoodList() {
+    	for(int i = 0; i < nRow; i++)
+    		for(int j = 0; j < nColumn; j++) {
+    			if(grille[i][j] == 30)
+    				foodList.add(new Gum(defaultSize/3, defaultSize/3, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
+		    	if(grille[i][j] == 40)
+    				foodList.add(new PacGum(defaultSize/2, defaultSize/2, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
+		    	if(grille[i][j] == 50)
+    				foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
+    		}
+    }
 
-	}
-
-	private void fillFoodList() {
-		for(int i = 0; i < nRow; i++)
-			for(int j = 0; j < nColumn; j++) {
-				if(grille[i][j] == 30)
-					foodList.add(new Gum(defaultSize/3, defaultSize/3, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
-				if(grille[i][j] == 40)
-					foodList.add(new PacGum(defaultSize/2, defaultSize/2, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
-				if(grille[i][j] == 50)
-					foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
-			}
-	}
+	
 
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
@@ -241,14 +276,16 @@ public class GameController implements Runnable{
 				statusBar.updateState("RESUME");
 				resume();
 			}
-			gamePanel.gameRender(pacMan, maze, foodList);
+    		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
 
 			try {
 				Thread.sleep(FPS);
 			}catch(InterruptedException ex) {}
 		}
-	}
+    }
+
+    
 
 	private void gameUpdate() {
 
@@ -260,6 +297,32 @@ public class GameController implements Runnable{
 
 
 		if(defaultSize != 0) {
+			if(ghostOutside < 4) {
+    			Ghost currentGhost = ghostList.get(firstGhostToQuit);
+    			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
+    				currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
+    				currentGhost.setRandomDirection();
+    			}
+    			ghostList.get(firstGhostToQuit).move();
+    			raw = currentGhost.getY() / GameController.getDefaultSize();
+    			column = currentGhost.getX() / GameController.getDefaultSize();
+    			if(GameController.getGrille()[raw][column] == 15 ||GameController.getGrille()[raw][column] == 2) {
+    				ghostOutside++;
+    				currentGhost.setOutside(true);
+    				firstGhostToQuit = (firstGhostToQuit + 1) % 4;
+    			}
+    		}
+    		
+    		for(int i = 0; i < ghostList.size(); i++) {
+    			if(ghostList.get(i).isOutside()) {
+    				Ghost currentGhost = ghostList.get(i);
+        			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
+        				currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
+        				currentGhost.setRandomDirection();
+        			}
+        			ghostList.get(i).move();
+    			}
+    		}
 			//Pour savoir le tile suivant ou le pacman va se placer
 			raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
 			column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
@@ -346,6 +409,7 @@ public class GameController implements Runnable{
 			}
 		}
 	}	
+
 
 	private void startGame() {
 		new Thread(this).start();
