@@ -96,6 +96,7 @@ public class GameController implements Runnable{
 		music.play();
 		soundOn = true;
 
+		
 		// Lancer le jeu
 		startGame();
 	}
@@ -164,7 +165,8 @@ public class GameController implements Runnable{
 		// Creer les Gums et PacGums
 
 		foodList = new ArrayList();
-		fillFoodList();    	    	
+		fillFoodList(); 
+	
 
 	}
 
@@ -286,10 +288,12 @@ public class GameController implements Runnable{
 					fillFoodList();
 				}
 
+				if(!resume) {
 				statusBar.updateCollision("NONE");
 				pacMan.move(); 
 				pacMan.updateDirection();
 				pacMan.setInsideTile(raw, column);
+				}
 
 			}else{
 				//Mur 
@@ -318,10 +322,12 @@ public class GameController implements Runnable{
 								statusBar.updateScore();
 							}
 						}
-
+						
+						if(!resume) {
 						statusBar.updateCollision("NONE");
 						pacMan.move(); 
 						pacMan.setInsideTile(raw, column);
+						}
 					}
 					else
 						statusBar.updateCollision(pacMan.getDirectionString());
@@ -365,7 +371,7 @@ public class GameController implements Runnable{
 		
 		synchronized(timerThread) {
 			try {
-				timerThread.wait(3 * 1000 + 500); //pendant ce temps le thread vas afficher les 75 secaondes
+				timerThread.wait(3 * 1000 + 500);
 				timerThread.join(JOIN_TIMER); 
 				if(timerThread.isAlive()) {	
 					timerThread.interrupt();
