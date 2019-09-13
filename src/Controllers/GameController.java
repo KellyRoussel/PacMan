@@ -48,9 +48,11 @@ public class GameController implements Runnable{
 	
 	public static final int FPS = 10;
 	private static final int PM_INITIAL_POSITION = 60;
+	private final int SLEEP_TIMER = 10;
 	
     private boolean running;
     private boolean soundOn;
+    private boolean wantSound = true;
     
     public static boolean pause;    
 	public static boolean fullScreen;
@@ -60,6 +62,8 @@ public class GameController implements Runnable{
 	private static int [][] grille;
 	private static int nRow; 
 	private static int nColumn;
+	private Sound background;
+	private Sound beginning;
 	
     public GameController(GamePanel gamePanel, MainGame frame) {    	    	
     	
@@ -78,14 +82,15 @@ public class GameController implements Runnable{
     	mainPane.add(statusBar, BorderLayout.SOUTH);
     	
     	
-    	Sound background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
+    	background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
+    	beginning = new Sound(GameController.class.getResource("/Sounds/beginning.wav"));
     	
     	//Lancer un listener sur le clavier
         addListeners();
         
         //Lancer la musique
-        music = background;
-        //background.loop();
+        music = beginning;
+        music.play();
         soundOn = true;
         
         // Lancer le jeu
@@ -184,18 +189,19 @@ public class GameController implements Runnable{
         		
         		// Mettre le jeu en pause
         		if (key == KeyEvent.VK_P) {
-    	        	pause = !pause;
+    	        	pause();
+        		}
+        		if (key == KeyEvent.VK_R) {
+        			statusBar.updateState("RESUME");
+    	        	resume();
         		}
         		
         		
         		if (key == KeyEvent.VK_M) {
         			// Mettre le jeu en muet 
-        			if (soundOn) {
-        				music.stop();
-        				
-        			// Relancer le son
-        			} else { music.loop(); }
-        			soundOn = !soundOn;
+        			if(soundOn || pause) {
+        				mute();
+        			}else {unMute();}
         		}
         		
         		// Redimensionner le jeu
@@ -326,12 +332,57 @@ public class GameController implements Runnable{
 		
 	}
 
-	private void pause() {
-		
+	public void pause() {
+		pause = true;
+		wantSound = soundOn;
+		mute();
+		statusBar.updateState("PAUSED");
 	}
 	
-	private void resume() {
+	private void mute() {
+		music.stop();
+		soundOn = false;
+	}
+	
+	private void unMute() {
+		music.loop();
+		soundOn = true;
+	}
+	
+	public void resume(){
 		
+		long timerCount = 0;
+		int currentTime = 0;
+		int previousTime = 0;
+		music = background;
+
+		//statusBar.updateStatus("RESUME");
+		System.out.println("Start Resume");
+		
+			try {
+				while(currentTime < 3) {
+						long counterStart = System.currentTimeMillis();
+						Thread.sleep(SLEEP_TIMER);								//sleep de 10ms pour vérifier ensuite le temps écoulé
+						timerCount += System.currentTimeMillis() - 	counterStart;
+						currentTime = (int)timerCount /1000; //tansition en miliseconde en secondes
+						
+						if(currentTime > previousTime) {
+							previousTime = currentTime;
+							System.out.println(currentTime); //call display currentTime on the screen
+						}
+					
+				}
+				System.out.println("stop pause");
+				statusBar.updateState("PLAY");
+				pause = false;
+				if(wantSound) {
+					unMute();
+				}
+			
+			}
+			catch(InterruptedException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public static Point definePosition(int initialPositionValue) {

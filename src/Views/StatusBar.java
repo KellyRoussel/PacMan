@@ -27,6 +27,7 @@ public class StatusBar extends JPanel{
 	
 	private JLabel levelLabel;
 	private JLabel scoreLabel;
+	private JLabel stateLabel;
 	private JPanel fruitsPane; 
 	private JPanel lvPane;
 	private JLabel collisionPane;
@@ -35,7 +36,7 @@ public class StatusBar extends JPanel{
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, HEIGHT));
 		setBorder(new EmptyBorder(0, 20, 0, 20));
-		setLayout(new GridLayout(2, 3));
+		setLayout(new GridLayout(2, 5));
 		
 		JLabel levelL = new JLabel();
 		levelL.setFont(new Font("Joystix", Font.BOLD, 25));
@@ -51,7 +52,6 @@ public class StatusBar extends JPanel{
 		scoreL.setAlignmentY(CENTER_ALIGNMENT);
 		add(scoreL);
 		
-		
 		JLabel livesL = new JLabel();
 		livesL.setFont(new Font("Joystix", Font.BOLD, 25));
 		livesL.setText("<html><font color = 'WHITE'> VIES </font></html>");
@@ -65,6 +65,13 @@ public class StatusBar extends JPanel{
 		CollisionL.setAlignmentX(CENTER_ALIGNMENT);
 		CollisionL.setAlignmentY(CENTER_ALIGNMENT);
 		add(CollisionL);
+		
+		JLabel stateL = new JLabel();
+		stateL.setFont(new Font("Joystix", Font.BOLD, 25));
+		stateL.setText("<html><font color = 'WHITE'> STATE </font></html>");
+		stateL.setAlignmentX(CENTER_ALIGNMENT);
+		stateL.setAlignmentY(CENTER_ALIGNMENT);
+		add(stateL);
 		
 		// Creation du niveau		
 		JPanel levelPane = new JPanel(new FlowLayout());
@@ -109,7 +116,7 @@ public class StatusBar extends JPanel{
 		
 		add(lvPane);
 		
-		// Creation du score
+		// Creation des collisions
 		JPanel collision = new JPanel(new FlowLayout());
 		collision.setBackground(Color.black);
 		collisionPane = new JLabel();
@@ -117,6 +124,15 @@ public class StatusBar extends JPanel{
 		updateCollision("NONE");
 		collision.add(collisionPane);
 		add(collision);
+		
+		// Creation du score		
+		JPanel statePane = new JPanel(new FlowLayout());
+		statePane.setBackground(Color.black);
+		stateLabel = new JLabel();
+		stateLabel.setText("<html><font color='YELLOW'>STATE </font></html>");
+		stateLabel.setFont(new Font("Joystix", Font.BOLD, 25));
+		statePane.add(stateLabel);
+		add(statePane);
 	
 	}
 		
@@ -131,7 +147,11 @@ public class StatusBar extends JPanel{
 
 	public void updateScore() {
 		scoreLabel.setText("<html><font color = 'YELLOW'>" + GameController.getScore() + "</font></html>");
-	}	
+	}
+	
+	public void updateState(String state) {
+		stateLabel.setText("<html><font color = 'YELLOW'>" + state + "</font></html>");
+	}
 	
 	public void load() {
 		
