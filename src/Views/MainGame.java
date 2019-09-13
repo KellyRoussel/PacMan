@@ -4,13 +4,15 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import javax.swing.JFrame;
 
 import Controllers.GameController;
 import Models.Maze;
 
-public class MainGame extends JFrame{
+public class MainGame extends JFrame implements WindowListener{
 	
 	public static final int DefaultWidth = 600;
 	public static final int DefaultHeight = 800;
@@ -20,6 +22,7 @@ public class MainGame extends JFrame{
 	
 	
 	private static MainGame SINGLE_INSTANCE = new MainGame();
+	private static GameController gameController;
 	
 	public static MainGame getInstance() {
       return SINGLE_INSTANCE;
@@ -29,7 +32,8 @@ public class MainGame extends JFrame{
 		
 		actualWindowHeight = DefaultHeight;
 		actualWindowWidth = DefaultWidth;
-		new GameController(new GamePanel(), this);
+		gameController = new GameController(new GamePanel(), this);
+		addWindowListener(this);
 	}
 	
 	public static void resize() {
@@ -81,6 +85,51 @@ public class MainGame extends JFrame{
 			MainGame.getInstance();
 			MainGame.resize();
         });
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		gameController.pause();
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		gameController.resume();
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		gameController.pause();
 		
 	}
 }

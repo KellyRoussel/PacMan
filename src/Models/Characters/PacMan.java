@@ -50,6 +50,8 @@ public class PacMan extends Character{
 	    	nextDirection = direction;
 	    	dx = -PAS;
 	    	dy = 0;
+	    	nextDx = -PAS;
+	    	nextDy = 0;
 	    	
 	        directionString = new HashMap<Integer, String>(); 
 	        directionString.put(KeyEvent.VK_LEFT, "Left");
