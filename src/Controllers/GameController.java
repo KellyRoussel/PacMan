@@ -96,6 +96,7 @@ public class GameController implements Runnable{
 		music.play();
 		soundOn = true;
 
+		level = 1;
 		
 		// Lancer le jeu
 		startGame();
@@ -280,12 +281,13 @@ public class GameController implements Runnable{
 					}
 				}
 				if(foodList.size()==0) {
-					resume = true;
 					setLevel(level+1);
 					statusBar.updateLevel();
 					pacMan.returnInitialPosition();
-					//Renvoyer les fantomes à leur position initiale
 					fillFoodList();
+					pause = true;
+					resume = true;
+					//Renvoyer les fantomes à leur position initiale
 				}
 
 				if(!resume) {
@@ -321,6 +323,15 @@ public class GameController implements Runnable{
 								foodList.remove(i);
 								statusBar.updateScore();
 							}
+						}
+						
+						if(foodList.size()==0) {
+							setLevel(level+1);
+							statusBar.updateLevel();
+							pacMan.returnInitialPosition();
+							fillFoodList();
+							pause = true;
+							resume = true;
 						}
 						
 						if(!resume) {

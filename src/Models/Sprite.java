@@ -9,6 +9,7 @@ public class Sprite {
 	protected int height;
 	protected int width;
 	protected Image image;
+	protected Point position;
 	
 	public Sprite(int width, int height, Image image, Point initialPosition) {
 		super();
@@ -16,11 +17,12 @@ public class Sprite {
 		this.height = height;
 		this.image = image;
 		this.initialPosition = initialPosition;
+		position = new Point(initialPosition.x, initialPosition.y);
 	}
 
 	
 	public void draw(Graphics g) {
-        g.drawImage(image, initialPosition.x, initialPosition.y, width, height, null);	
+        g.drawImage(image, position.x, position.y, width, height, null);	
 	}
 	
 	

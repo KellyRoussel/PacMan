@@ -8,13 +8,11 @@ import Controllers.GameController;
 import Models.Sprite;
 
 public abstract class Character extends Sprite {
-	
-	protected Point position;
+
 
 	
 	public Character(int width, int height, Image image, Point initialPosition) {
 		super(width, height, image, initialPosition);
-		this.position = initialPosition;
 	}
 
 	
@@ -22,6 +20,7 @@ public abstract class Character extends Sprite {
 	public abstract void move();	
 
 	public void returnInitialPosition() {
-		this.position = initialPosition;
+		position.x = initialPosition.x;
+		position.y = initialPosition.y;
 	}
 }

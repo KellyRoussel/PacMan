@@ -176,14 +176,6 @@ public class PacMan extends Character{
 	        
 	        return image;
 	    }
-	    
-		/*public void draw(Graphics g, int x, int y, int mazeSize) {
-	        image = new ImageIcon("ressources" + File.separator + getDirectionString() + "_"+ style + ".png").getImage(); 
-			
-	        //g.drawImage(image, GamePanel.debutX + shiftedX(x, Maze.getSize()), GamePanel.debutY + shiftedX(y, Maze.getSize()), Maze.getSize(), Maze.getSize(), null);
-	        g.drawImage(image, x, y, mazeSize, mazeSize, null);
-		}*/
-
 
 		public int getNextX() {
 			return nextX;
