@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,6 +26,7 @@ import Models.Foods.Food;
 import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
+import Threads.PhysicsThread;
 import  Views.GamePanel;
 import  Views.MainGame;
 import  Views.StatusBar;
@@ -51,6 +53,7 @@ public class GameController implements Runnable{
 	private static final int PM_INITIAL_POSITION = 60;
 
 	private static final long JOIN_TIMER = 10;
+	private static final long WAIT_TIMER = 10000;
 	private static final int PINK_INITIAL_POSITION = 26;
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
@@ -413,6 +416,34 @@ public class GameController implements Runnable{
 
 	private void startGame() {
 		new Thread(this).start();
+		
+		PhysicsThread tPhysics = new PhysicsThread();
+		tPhysics.setName("Physics");
+		tPhysics.start();
+			
+		synchronized(tPhysics)
+		{
+			try 
+			{
+				tPhysics.wait(WAIT_TIMER);
+					
+				tPhysics.stopThread();
+				tPhysics.join(JOIN_TIMER);
+				if (tPhysics.isAlive())
+				{
+					tPhysics.interrupt();
+					throw new InterruptedByTimeoutException();
+				}
+			} 
+			catch (InterruptedException | InterruptedByTimeoutException e) 
+			{
+				e.printStackTrace();
+			}
+				
+		}
+		
+		
+		
 	}
 
 	private void stop() {
