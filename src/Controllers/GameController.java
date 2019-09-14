@@ -360,12 +360,13 @@ public class GameController implements Runnable{
 						ghostList.get(i).returnInitialPosition();
 					}
 					pacMan.initPM();
+					pacMan.setNextDirection(KeyEvent.VK_LEFT);
+					pacMan.loadImage();
 					fillFoodList();
 					wantSound = soundOn;
 					music = beginning;
 					pause = true;
 					resume = true;
-					//Renvoyer les fantomes à leur position initiale
 				}
 
 				if(!resume) {
@@ -411,6 +412,8 @@ public class GameController implements Runnable{
 								ghostList.get(i).returnInitialPosition();
 							}
 							pacMan.initPM();
+							pacMan.setNextDirection(KeyEvent.VK_LEFT);
+							pacMan.loadImage();
 							fillFoodList();
 							wantSound = soundOn;
 							music = beginning;
