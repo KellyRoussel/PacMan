@@ -108,7 +108,7 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause();
+		gameController.pause = true;
 		
 	}
 
@@ -121,7 +121,9 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.resume();
+		System.out.println("WindowActivated");
+		gameController.pause = true;
+		gameController.resume = true;
 		
 	}
 

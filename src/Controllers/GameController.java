@@ -277,10 +277,6 @@ public class GameController implements Runnable{
 			if(! pause) {		
 				gameUpdate();
 			}else if(resume) {
-				statusBar.updateState("RESUME");
-				pause = false;
-				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-				gamePanel.paintScreen();
 				resume();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
@@ -301,7 +297,6 @@ public class GameController implements Runnable{
 
 		pacMan.nextNextX();
 		pacMan.nextNextY();
-
 
 		if(defaultSize != 0) {
 			if(!resume) {
@@ -444,10 +439,12 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
+		System.out.println("Passage fonction pause");
+		statusBar.updateState("PAUSED");
 		pause = true;
 		wantSound = soundOn;
 		mute();
-		statusBar.updateState("PAUSED");
+		
 	}
 
 	private void mute() {
@@ -461,6 +458,11 @@ public class GameController implements Runnable{
 	}
 
 	public void resume(){
+		pause = false;
+		statusBar.updateState("RESUME");
+		
+		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+		gamePanel.paintScreen();
 		
 		Models.TimerThread timerThread = new Models.TimerThread(3);
 		timerThread.start();
@@ -478,12 +480,14 @@ public class GameController implements Runnable{
 			catch(InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println(wantSound);
 			statusBar.updateState("PLAY");
 			if(wantSound) {
 				music = background;
 				unMute();
 			}
 		}
+		
 		resume = false;
 	}
 
