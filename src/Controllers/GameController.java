@@ -462,7 +462,6 @@ public class GameController implements Runnable{
 
 	public void resume(){
 		
-		
 		Models.TimerThread timerThread = new Models.TimerThread(3);
 		timerThread.start();
 		timerThread.setName(" RESUME TIMER");

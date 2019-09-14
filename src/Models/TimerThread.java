@@ -2,7 +2,7 @@ package Models;
 
 public class TimerThread extends Thread{
 	
-	private int SLEEP_TIMER = 10;
+	private int SLEEP_TIMER = 5;
 	private int iTimeDelayMS;
 	private long timerCount;
 	private volatile boolean isRunning = false;
@@ -25,6 +25,7 @@ public class TimerThread extends Thread{
 					
 					currentTime = (int)timerCount /1000;
 					if(currentTime > previousTime) {
+						
 						previousTime = currentTime;
 						System.out.println(currentTime);
 					
