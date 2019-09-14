@@ -34,6 +34,8 @@ import javax.sound.sampled.Clip;
 
 public class GamePanel extends JPanel{
 	
+	// la dimension des messages afficher selon etat du jeu
+	private static final int TEXT_MESSAGE_SIZE = 50;
 	
     private Graphics dbg;
     private Image dbImage;
@@ -101,12 +103,14 @@ public class GamePanel extends JPanel{
         
         // dessiner le "Pause" au cas de pause
         if(GameController.pause) {
-        	ToSprite.drawToSprite("Pause", 100, 100, 30, 30, dbg);
+        	String text = "Pause";
+        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
         if(GameController.gameOver) {
-        	ToSprite.drawToSprite("GameOver", 100, 100, 30, 30, dbg);
+        	String text = "GameOver";
+        	ToSprite.drawToSprite(text,(MainGame.actualWindowWidth-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
     }
 
