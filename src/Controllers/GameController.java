@@ -352,7 +352,7 @@ public class GameController implements Runnable{
 						statusBar.updateScore();
 					}
 				}
-				if(foodList.size()==200) {
+				if(foodList.size()==0) {
 					setLevel(level+1);
 					statusBar.updateLevel();
 					pacMan.returnInitialPosition();
@@ -364,8 +364,8 @@ public class GameController implements Runnable{
 					pacMan.loadImage();
 					fillFoodList();
 					wantSound = soundOn;
-					music = beginning;
 					pause = true;
+					mute();
 					resume = true;
 				}
 
@@ -404,7 +404,7 @@ public class GameController implements Runnable{
 							}
 						}
 						
-						if(foodList.size()==200) {
+						if(foodList.size()==0) {
 							setLevel(level+1);
 							statusBar.updateLevel();
 							pacMan.returnInitialPosition();
@@ -416,7 +416,7 @@ public class GameController implements Runnable{
 							pacMan.loadImage();
 							fillFoodList();
 							wantSound = soundOn;
-							music = beginning;
+							mute();							
 							pause = true;
 							resume = true;
 						}
