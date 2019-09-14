@@ -324,29 +324,19 @@ public class GameController implements Runnable{
 		if(defaultSize != 0) {
 			if(!resume) {
 			if(ghostOutside < 4) {
-    			Ghost currentGhost = ghostList.get(firstGhostToQuit);
-    			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
-    				currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
-    				currentGhost.setRandomDirection();
-    			}
-    			ghostList.get(firstGhostToQuit).move();
-    			raw = currentGhost.getY() / GameController.getDefaultSize();
-    			column = currentGhost.getX() / GameController.getDefaultSize();
+				updateGhostPosition(ghostList.get(firstGhostToQuit));
+    			raw = ghostList.get(firstGhostToQuit).getY() / GameController.getDefaultSize();
+    			column = ghostList.get(firstGhostToQuit).getX() / GameController.getDefaultSize();
     			if(GameController.getGrille()[raw][column] == 15 ||GameController.getGrille()[raw][column] == 2) {
     				ghostOutside++;
-    				currentGhost.setOutside(true);
+    				ghostList.get(firstGhostToQuit).setOutside(true);
     				firstGhostToQuit = (firstGhostToQuit + 1) % 4;
     			}
     		}
     		
     		for(int i = 0; i < ghostList.size(); i++) {
     			if(ghostList.get(i).isOutside()) {
-    				Ghost currentGhost = ghostList.get(i);
-        			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
-        				currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
-        				currentGhost.setRandomDirection();
-        			}
-        			ghostList.get(i).move();
+    				updateGhostPosition(ghostList.get(i));
     			}
     		}
 			}
@@ -367,8 +357,6 @@ public class GameController implements Runnable{
 				updatePositions(raw, column, true);
 			}
 			else{
-				//Mur 
-					//Pour savoir le tile suivant ou le pacman va se placer
 				pacMan.nextX();
 				pacMan.nextY();
 				raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/defaultSize) % nRow;
@@ -376,13 +364,20 @@ public class GameController implements Runnable{
 				tile = grille[raw][column];
 
 				if(tile == 0 || tile >= 30) {
-					//Tile vide
 					updatePositions(raw, column, false);
 				}
 				else
 					statusBar.updateCollision(pacMan.getDirectionString());
 			}
 		}
+	}
+
+	private void updateGhostPosition(Ghost currentGhost) {
+		if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
+			currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
+			currentGhost.setRandomDirection();
+		}
+		currentGhost.move();
 	}
 
 	private void updatePositions(int raw, int column, boolean flag) {
