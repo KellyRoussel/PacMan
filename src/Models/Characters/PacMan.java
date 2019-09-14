@@ -45,13 +45,7 @@ public class PacMan extends Character{
 	    public PacMan(int width, int height, Image image, Point initialPosition) {
 	    	super(width, height, image, initialPosition);
 	
-	    	counter = 0;
-	    	direction = KeyEvent.VK_LEFT;
-	    	nextDirection = direction;
-	    	dx = -PAS;
-	    	dy = 0;
-	    	nextDx = -PAS;
-	    	nextDy = 0;
+	    	initPM();
 	    	
 	        directionString = new HashMap<Integer, String>(); 
 	        directionString.put(KeyEvent.VK_LEFT, "Left");
@@ -82,6 +76,16 @@ public class PacMan extends Character{
 	        pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	   
 	        
 	    }
+
+		public void initPM() {
+			counter = 0;
+	    	direction = KeyEvent.VK_LEFT;
+	    	nextDirection = direction;
+	    	dx = -PAS;
+	    	dy = 0;
+	    	nextDx = -PAS;
+	    	nextDy = 0;
+		}
 	    
 	   public String getDirectionString() {
 			return directionString.get(direction);

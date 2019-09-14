@@ -66,10 +66,10 @@ public class ToSprite {
 	// extraire les sous images de l'image principale contenant tous les sprites
 	private static Image extractImage(int startPointX, int startPointY, String tileType, int tileNumber) throws IOException {
 		int size ;
-		BufferedImage image = ImageIO.read(new File("D:\\APP1\\PacMan\\ressources"+File.separator+"pacmanTiles.png"));
+		BufferedImage image = ImageIO.read(new File("ressources"+File.separator+"pacmanTiles.png"));
 		size = image.getWidth()/COLUMN_NUMBER;
 		BufferedImage out = image.getSubimage(startPointX * size, startPointY * size, size, size);
-		ImageIO.write(out, "png", new File("D:\\APP1\\PacMan\\ressources"+File.separator+tileType+tileNumber+".png"));
+		ImageIO.write(out, "png", new File("ressources"+File.separator+tileType+tileNumber+".png"));
 		return out;
 	}
 

@@ -102,8 +102,8 @@ public class GameController implements Runnable{
 		mainPane.add(statusBar, BorderLayout.SOUTH);
 
 
-		background = new Sound(GameController.class.getResource("/Sounds/loop.wav"));
-		beginning = new Sound(GameController.class.getResource("/Sounds/beginning.wav"));
+		background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
+		beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
 
 		//Lancer un listener sur le clavier
 		addListeners();
@@ -278,6 +278,9 @@ public class GameController implements Runnable{
 				gameUpdate();
 			}else if(resume) {
 				statusBar.updateState("RESUME");
+				pause = false;
+				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+				gamePanel.paintScreen();
 				resume();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
@@ -301,6 +304,7 @@ public class GameController implements Runnable{
 
 
 		if(defaultSize != 0) {
+			if(!resume) {
 			if(ghostOutside < 4) {
     			Ghost currentGhost = ghostList.get(firstGhostToQuit);
     			if(currentGhost.getUpdatedAvailableDirections()!= currentGhost.getAvailableDirections()) {
@@ -327,6 +331,7 @@ public class GameController implements Runnable{
         			ghostList.get(i).move();
     			}
     		}
+			}
 			//Pour savoir le tile suivant ou le pacman va se placer
 			raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
 			column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
@@ -347,11 +352,17 @@ public class GameController implements Runnable{
 						statusBar.updateScore();
 					}
 				}
-				if(foodList.size()==0) {
+				if(foodList.size()==200) {
 					setLevel(level+1);
 					statusBar.updateLevel();
 					pacMan.returnInitialPosition();
+					for(int i = 0; i < ghostList.size(); i++) {
+						ghostList.get(i).returnInitialPosition();
+					}
+					pacMan.initPM();
 					fillFoodList();
+					wantSound = soundOn;
+					music = beginning;
 					pause = true;
 					resume = true;
 					//Renvoyer les fantomes à leur position initiale
@@ -392,11 +403,17 @@ public class GameController implements Runnable{
 							}
 						}
 						
-						if(foodList.size()==0) {
+						if(foodList.size()==200) {
 							setLevel(level+1);
 							statusBar.updateLevel();
 							pacMan.returnInitialPosition();
+							for(int i = 0; i < ghostList.size(); i++) {
+								ghostList.get(i).returnInitialPosition();
+							}
+							pacMan.initPM();
 							fillFoodList();
+							wantSound = soundOn;
+							music = beginning;
 							pause = true;
 							resume = true;
 						}
@@ -441,12 +458,12 @@ public class GameController implements Runnable{
 	}
 
 	public void resume(){
-
-		music = background;
+		
+		
 		Models.TimerThread timerThread = new Models.TimerThread(3);
 		timerThread.start();
 		timerThread.setName(" RESUME TIMER");
-
+		
 		
 		synchronized(timerThread) {
 			try {
@@ -461,11 +478,11 @@ public class GameController implements Runnable{
 			}
 			statusBar.updateState("PLAY");
 			if(wantSound) {
+				music = background;
 				unMute();
 			}
 		}
 		resume = false;
-		pause = false;
 	}
 
 	public static Point definePosition(int initialPositionValue) {

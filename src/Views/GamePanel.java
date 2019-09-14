@@ -90,8 +90,6 @@ public class GamePanel extends JPanel{
         }
         	
         
-
-        
         // redimensionner le PacMan
         //int pacX = Resizer.resizeX(pacMan.getX(), maze.getSize(), maze.getDefaultSize(), debutX);
         //int pacY = Resizer.resizeY(pacMan.getY(), maze.getSize(), maze.getDefaultSize(), debutY);
@@ -107,12 +105,20 @@ public class GamePanel extends JPanel{
         	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
+        // dessiner le "Pause" au cas de pause
+        if(GameController.resume) {
+        	String text = "Resume";
+        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        }
+        
         // dessiner le "GameOver" au cas d echec
         if(GameController.gameOver) {
         	String text = "GameOver";
         	ToSprite.drawToSprite(text,(MainGame.actualWindowWidth-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
     }
+    
+
 
 	public static int getDebutX() {
 		return debutX;
