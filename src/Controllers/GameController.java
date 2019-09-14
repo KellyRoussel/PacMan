@@ -46,7 +46,7 @@ public class GameController implements Runnable{
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
-	private static int lives;
+	private static int lives = 3 ;
 
 	public static final int FPS = 5;
 	private static final int PM_INITIAL_POSITION = 60;
@@ -344,12 +344,12 @@ public class GameController implements Runnable{
 						//Tile contenant une Gum
 						score += foodList.get(i).getGain();
 						foodList.remove(i);
-						statusBar.updateScore();
+						//statusBar.updateScore();
 					}
 				}
 				if(foodList.size()==0) {
 					setLevel(level+1);
-					statusBar.updateLevel();
+					//statusBar.updateLevel();
 					pacMan.returnInitialPosition();
 					fillFoodList();
 					pause = true;
@@ -388,13 +388,13 @@ public class GameController implements Runnable{
 								//Tile contenant une Gum
 								score += foodList.get(i).getGain();
 								foodList.remove(i);
-								statusBar.updateScore();
+								//statusBar.updateScore();
 							}
 						}
 						
 						if(foodList.size()==0) {
 							setLevel(level+1);
-							statusBar.updateLevel();
+							//statusBar.updateLevel();
 							pacMan.returnInitialPosition();
 							fillFoodList();
 							pause = true;
