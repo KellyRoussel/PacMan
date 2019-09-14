@@ -77,7 +77,7 @@ public class MainGame extends JFrame implements WindowListener{
 			GameController.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / GameController.getnRow(), MainGame.actualWindowWidth / GameController.getnColumn()));
 		}
 		GamePanel.setDebutX((actualWindowWidth - GameController.getSize() * GameController.getnColumn()) / 2);
-		GamePanel.setDebutY((actualWindowHeight - GameController.getSize()  * GameController.getnRow() - StatusBar.HEIGHT) / 2);
+		//GamePanel.setDebutY((actualWindowHeight - GameController.getSize()  * GameController.getnRow() - 150) / 2);
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -85,7 +85,6 @@ public class MainGame extends JFrame implements WindowListener{
 			MainGame.getInstance();
 			MainGame.resize();
         });
-		
 	}
 
 	@Override
@@ -109,7 +108,7 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause();
+		gameController.pause = true;
 		
 	}
 
@@ -122,7 +121,9 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.resume();
+		System.out.println("WindowActivated");
+		gameController.pause = true;
+		gameController.resume = true;
 		
 	}
 

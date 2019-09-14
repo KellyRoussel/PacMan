@@ -36,12 +36,14 @@ public class GamePanel extends JPanel{
 	
 	// la dimension des messages afficher selon etat du jeu
 	private static final int TEXT_MESSAGE_SIZE = 50;
+	private static final int TEXT_STATUS_SIZE = 15;
 	
     private Graphics dbg;
     private Image dbImage;
     
     private static int debutX;
     private static int debutY;
+    
 	
     public GamePanel() {
     	debutX = 0;
@@ -63,13 +65,14 @@ public class GamePanel extends JPanel{
 	}
 
     public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList, ArrayList<Ghost> ghostList) {
+    	
     	// Redimensionner la fenetre 
     	if (GameController.resize) {
     		MainGame.resize();
     		MainGame.updateMazeSize();
     		GameController.resize = false;
     	}
-        dbImage = createImage(MainGame.actualWindowWidth, MainGame.actualWindowHeight);
+        dbImage = createImage(GameController.getSize()*30, GameController.getSize()*36);
         if (dbImage == null) {
 		   return; }
 		else {
@@ -77,7 +80,7 @@ public class GamePanel extends JPanel{
 		}
           // clear the background
         dbg.setColor(Color.black);
-        dbg.fillRect (0, 0, MainGame.actualWindowWidth, MainGame.actualWindowHeight);
+        dbg.fillRect (0, 0, GameController.getSize()*30, GameController.getSize()*36);
         
         maze.draw(dbg);
         
@@ -99,10 +102,28 @@ public class GamePanel extends JPanel{
         for(int i = 0; i < ghostList.size(); i++)
         	ghostList.get(i).draw(dbg);
         
+        //*******************************************************************************************************************************
+        //Status du jeu
+        // Affichage du score
+        ToSprite.drawToSprite("score",25 ,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        ToSprite.drawToSprite(GameController.getScore(), 135, GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        
+        // Affichage des vies
+        ToSprite.drawToSprite("lives",235,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        for(int i = 0 ; i < GameController.getLives() ; i ++ ) {
+        	ImageIcon liveIcon = new ImageIcon("ressources" + File.separator + "Left_0.png");
+        	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
+        }
+        
+        // Affichage du niveau
+        ToSprite.drawToSprite("level",445,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        ToSprite.drawToSprite(GameController.getLevel(), 527, GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        //*******************************************************************************************************************************
+        
         // dessiner le "Pause" au cas de pause
         if(GameController.pause) {
-        	String text = "Pause";
-        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	String text = "pause";
+        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "Pause" au cas de pause
@@ -113,12 +134,11 @@ public class GamePanel extends JPanel{
         
         // dessiner le "GameOver" au cas d echec
         if(GameController.gameOver) {
-        	String text = "GameOver";
+        	String text = "gameover";
         	ToSprite.drawToSprite(text,(MainGame.actualWindowWidth-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
     }
     
-
 
 	public static int getDebutX() {
 		return debutX;

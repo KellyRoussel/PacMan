@@ -153,7 +153,7 @@ public class PacMan extends Character{
 		    }
 	    }
 
-	    private void loadImage() {
+	    public void loadImage() {
 			// TODO Auto-generated method stub
 	    	ImageIcon ii = new ImageIcon("ressources" + File.separator + getDirectionString() + "_" + style + ".png");
 	    	image = ii.getImage();

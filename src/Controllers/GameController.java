@@ -46,7 +46,7 @@ public class GameController implements Runnable{
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
-	private static int lives;
+	private static int lives = 3 ;
 
 	public static final int FPS = 5;
 	private static final int PM_INITIAL_POSITION = 60;
@@ -301,10 +301,6 @@ public class GameController implements Runnable{
 			if(! pause) {		
 				gameUpdate();
 			}else if(resume) {
-				statusBar.updateState("RESUME");
-				pause = false;
-				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-				gamePanel.paintScreen();
 				resume();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
@@ -325,7 +321,6 @@ public class GameController implements Runnable{
 
 		pacMan.nextNextX();
 		pacMan.nextNextY();
-
 
 		if(defaultSize != 0) {
 			if(!resume) {
@@ -373,23 +368,24 @@ public class GameController implements Runnable{
 						//Tile contenant une Gum
 						score += foodList.get(i).getGain();
 						foodList.remove(i);
-						statusBar.updateScore();
+						//statusBar.updateScore();
 					}
 				}
-				if(foodList.size()==200) {
+				if(foodList.size()==0) {
 					setLevel(level+1);
-					statusBar.updateLevel();
+					//statusBar.updateLevel();
 					pacMan.returnInitialPosition();
 					for(int i = 0; i < ghostList.size(); i++) {
 						ghostList.get(i).returnInitialPosition();
 					}
 					pacMan.initPM();
+					pacMan.setNextDirection(KeyEvent.VK_LEFT);
+					pacMan.loadImage();
 					fillFoodList();
 					wantSound = soundOn;
-					music = beginning;
 					pause = true;
+					mute();
 					resume = true;
-					//Renvoyer les fantomes à leur position initiale
 				}
 
 				if(!resume) {
@@ -423,21 +419,23 @@ public class GameController implements Runnable{
 								//Tile contenant une Gum
 								score += foodList.get(i).getGain();
 								foodList.remove(i);
-								statusBar.updateScore();
+								//statusBar.updateScore();
 							}
 						}
 						
-						if(foodList.size()==200) {
+						if(foodList.size()==0) {
 							setLevel(level+1);
-							statusBar.updateLevel();
+							//statusBar.updateLevel();
 							pacMan.returnInitialPosition();
 							for(int i = 0; i < ghostList.size(); i++) {
 								ghostList.get(i).returnInitialPosition();
 							}
 							pacMan.initPM();
+							pacMan.setNextDirection(KeyEvent.VK_LEFT);
+							pacMan.loadImage();
 							fillFoodList();
 							wantSound = soundOn;
-							music = beginning;
+							mute();							
 							pause = true;
 							resume = true;
 						}
@@ -465,10 +463,12 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
+		System.out.println("Passage fonction pause");
+		statusBar.updateState("PAUSED");
 		pause = true;
 		wantSound = soundOn;
 		mute();
-		statusBar.updateState("PAUSED");
+		
 	}
 
 	private void mute() {
@@ -482,7 +482,11 @@ public class GameController implements Runnable{
 	}
 
 	public void resume(){
+		pause = false;
+		statusBar.updateState("RESUME");
 		
+		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+		gamePanel.paintScreen();
 		
 		Models.TimerThread timerThread = new Models.TimerThread(3);
 		timerThread.start();
@@ -500,12 +504,14 @@ public class GameController implements Runnable{
 			catch(InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println(wantSound);
 			statusBar.updateState("PLAY");
 			if(wantSound) {
 				music = background;
 				unMute();
 			}
 		}
+		
 		resume = false;
 	}
 
