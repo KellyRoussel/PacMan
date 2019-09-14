@@ -104,13 +104,18 @@ public class GamePanel extends JPanel{
         
         //*******************************************************************************************************************************
         //Status du jeu
+        // Affichage du score
         ToSprite.drawToSprite("score",25 ,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
         ToSprite.drawToSprite(GameController.getScore(), 135, GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        
+        // Affichage des vies
         ToSprite.drawToSprite("lives",235,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
         for(int i = 0 ; i < GameController.getLives() ; i ++ ) {
         	ImageIcon liveIcon = new ImageIcon("ressources" + File.separator + "Left_0.png");
         	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
         }
+        
+        // Affichage du niveau
         ToSprite.drawToSprite("level",445,GameController.getSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
         ToSprite.drawToSprite(GameController.getLevel(), 527, GameController.getSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
         //*******************************************************************************************************************************
@@ -119,6 +124,12 @@ public class GamePanel extends JPanel{
         if(GameController.pause) {
         	String text = "pause";
         	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        }
+        
+        // dessiner le "Pause" au cas de pause
+        if(GameController.resume) {
+        	String text = "Resume";
+        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
