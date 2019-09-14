@@ -18,7 +18,7 @@ public class PacMan extends Character{
 		private int direction;
 		private int nextDirection;
 		
-
+		private boolean insideTunnel;
 		private int style;
 		private int counter;
 	    
@@ -46,7 +46,7 @@ public class PacMan extends Character{
 	    	super(width, height, image, initialPosition);
 	
 	    	initPM();
-	    	
+	    
 	        directionString = new HashMap<Integer, String>(); 
 	        directionString.put(KeyEvent.VK_LEFT, "Left");
 	        directionString.put(KeyEvent.VK_RIGHT, "Right");	        
@@ -78,6 +78,7 @@ public class PacMan extends Character{
 	    }
 
 		public void initPM() {
+			insideTunnel = false;
 			counter = 0;
 	    	direction = KeyEvent.VK_LEFT;
 	    	nextDirection = direction;
@@ -138,6 +139,18 @@ public class PacMan extends Character{
 	    	}
 	    	position.x = nextX;
 	    	position.y = nextY;
+	    	if(direction == KeyEvent.VK_LEFT) {
+		    	if(GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize() + 1)))
+		    		insideTunnel = true;
+		    	else if(GameController.listTunnelRight.contains(new Point(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize())))
+		    		insideTunnel = false;
+		    }
+	    	if(direction == KeyEvent.VK_RIGHT) {
+		    	if(GameController.listTunnelRight.contains(new Point(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize() - 1)))
+		    		insideTunnel = true;
+		    	else if(GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize())))
+		    		insideTunnel = false;
+		    }
 	    }
 
 	    private void loadImage() {
@@ -254,9 +267,11 @@ public class PacMan extends Character{
 		}
 
 		public void updateDirection() {
-			direction = nextDirection;
-			dx = nextDx;
-			dy = nextDy;
+			if(!insideTunnel) {
+				direction = nextDirection;
+				dx = nextDx;
+				dy = nextDy;
+			}
 		}
 		
 		public void setNextDX(int var_nextDX) {
@@ -266,4 +281,14 @@ public class PacMan extends Character{
 		public void setNextDY(int var_nextDY) {
 			nextDy = var_nextDY;
 		}
+
+		public boolean isInsideTunnel() {
+			return insideTunnel;
+		}
+
+		public void setInsideTunnel(boolean insideTunnel) {
+			this.insideTunnel = insideTunnel;
+		}
+		
+		
 	}

@@ -82,6 +82,10 @@ public class GameController implements Runnable{
 	private Sound background;
 	private Sound beginning;
 
+	public static ArrayList<Point> listTunnelLeft;
+
+	public static ArrayList<Point> listTunnelRight;
+
 	public GameController(GamePanel gamePanel, MainGame frame) {    	    	
 
 		init();
@@ -165,8 +169,28 @@ public class GameController implements Runnable{
 				}
 			}
 		}
-
-
+		
+		listTunnelLeft = new ArrayList<Point>();
+		listTunnelRight = new ArrayList<Point>();
+		
+	
+		for(int i = 0; i < nRow; i++) {
+			if(grille[i][0] >= 30) {
+				int j = 0;
+				while(grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
+					j++;
+				listTunnelLeft.add(new Point(i, j));
+			}
+		}
+		
+		for(int i = 0; i < nRow; i++) {
+			if(grille[i][nColumn - 1] >= 30) {
+				int j = nColumn - 1;
+				while(grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
+					j--;
+				listTunnelRight.add(new Point(i, j));
+			}
+		}
 
 		//Creer une instance de la labyrinthe
 		maze = new Maze(defaultSize * nColumn, defaultSize * nRow, output, new Point(0, 0));
@@ -339,7 +363,7 @@ public class GameController implements Runnable{
 			int tile = grille[raw][column];
 
 
-			if(tile == 0 || tile >= 30) {
+			if(!pacMan.isInsideTunnel() && (tile == 0 || tile >= 30)) {
 				//Tile vide
 
 
