@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import  Models.Maze;
 import  Models.Sound;
+import Models.ToSprite;
 import Models.Characters.Ghost;
 import  Models.Characters.PacMan;
 import Models.Foods.Food;
@@ -85,6 +86,9 @@ public class GameController implements Runnable{
 
 		init();
 
+		// remplir les dictionnaires de mots_Images et chiffres_Images
+		ToSprite.fillMap();
+		
 		this.gamePanel = gamePanel;
 		this.frame = frame;
 

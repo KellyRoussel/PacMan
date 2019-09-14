@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 import Controllers.GameController;
 import Models.Maze;
+import Models.ToSprite;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
@@ -99,16 +100,14 @@ public class GamePanel extends JPanel{
         	ghostList.get(i).draw(dbg);
         
         // dessiner le "Pause" au cas de pause
-        /*if(GameController.pause) {
-        	Image image = new ImageIcon("ressources" + File.separator + "pause.png").getImage(); 
-			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);
+        if(GameController.pause) {
+        	ToSprite.drawToSprite("Pause", 100, 100, 30, 30, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
         if(GameController.gameOver) {
-        	Image image = new ImageIcon("ressources" + File.separator + "gameOver.png").getImage(); 
-			dbg.drawImage(image, GamePanel.debutX , GamePanel.debutY, maze.getSize() * maze.getnColumn(), maze.getSize() * maze.getnRaw(), null);
-        }*/
+        	ToSprite.drawToSprite("GameOver", 100, 100, 30, 30, dbg);
+        }
     }
 
 	public static int getDebutX() {
