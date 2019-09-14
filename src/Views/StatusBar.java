@@ -23,13 +23,13 @@ public class StatusBar extends JPanel{
 
 	
 	
-	public static final int HEIGHT = 150;
+	public static final int HEIGHT = 50;
 	
-	private JLabel levelLabel;
-	private JLabel scoreLabel;
+	//private JLabel levelLabel;
+	//private JLabel scoreLabel;
 	private JLabel stateLabel;
 	private JPanel fruitsPane; 
-	private JPanel lvPane;
+	//private JPanel lvPane;
 	private JLabel collisionPane;
 	
 	public StatusBar() {
@@ -38,26 +38,26 @@ public class StatusBar extends JPanel{
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 		setLayout(new GridLayout(2, 5));
 		
-		JLabel levelL = new JLabel();
+		/*JLabel levelL = new JLabel();
 		levelL.setFont(new Font("Joystix", Font.BOLD, 15));
 		levelL.setText("<html><font color = 'WHITE'> LEVEL </font></html>");
 		levelL.setAlignmentX(CENTER_ALIGNMENT);
 		levelL.setAlignmentY(CENTER_ALIGNMENT);
-		add(levelL);
+		add(levelL);*/
 		
-		JLabel scoreL = new JLabel();
+		/*JLabel scoreL = new JLabel();
 		scoreL.setFont(new Font("Joystix", Font.BOLD, 15));
 		scoreL.setText("<html><font color = 'WHITE'> SCORE </font></html>");
 		scoreL.setAlignmentX(CENTER_ALIGNMENT);
 		scoreL.setAlignmentY(CENTER_ALIGNMENT);
-		add(scoreL);
+		add(scoreL);*/
 		
-		JLabel livesL = new JLabel();
+		/*JLabel livesL = new JLabel();
 		livesL.setFont(new Font("Joystix", Font.BOLD, 15));
 		livesL.setText("<html><font color = 'WHITE'> VIES </font></html>");
 		livesL.setAlignmentX(CENTER_ALIGNMENT);
 		livesL.setAlignmentY(CENTER_ALIGNMENT);
-		add(livesL);
+		add(livesL);*/
 		
 		JLabel CollisionL = new JLabel();
 		CollisionL.setFont(new Font("Joystix", Font.BOLD, 15));
@@ -74,27 +74,26 @@ public class StatusBar extends JPanel{
 		add(stateL);
 		
 		// Creation du niveau		
-		JPanel levelPane = new JPanel(new FlowLayout());
+		/*JPanel levelPane = new JPanel(new FlowLayout());
 		levelPane.setBackground(Color.black);
 		levelLabel = new JLabel();
 		levelLabel.setText("<html><font color='YELLOW'> 1 </font></html>");
 		levelLabel.setFont(new Font("Joystix", Font.BOLD, 15));
 		levelPane.add(levelLabel);
-		add(levelPane);
+		add(levelPane);*/
 				
 				
 		// Creation du score		
-		JPanel scorePane = new JPanel(new FlowLayout());
+		/*JPanel scorePane = new JPanel(new FlowLayout());
 		scorePane.setBackground(Color.black);
 		scoreLabel = new JLabel();
 		scoreLabel.setText("<html><font color='WHITE'>SCORE </font></html>");
 		scoreLabel.setFont(new Font("Joystix", Font.BOLD, 15));
 		scorePane.add(scoreLabel);
-		add(scorePane);
+		add(scorePane);*/
 		
 		 // Creation des vies
-		
-		lvPane = new JPanel(new FlowLayout());
+		/*lvPane = new JPanel(new FlowLayout());
 		lvPane.setBackground(Color.black);
 		BufferedImage img = null;
 		try {
@@ -114,7 +113,7 @@ public class StatusBar extends JPanel{
 			lvPane.add(thumb);
 		}
 		
-		add(lvPane);
+		add(lvPane);*/
 		
 		// Creation des collisions
 		JPanel collision = new JPanel(new FlowLayout());
@@ -125,7 +124,7 @@ public class StatusBar extends JPanel{
 		collision.add(collisionPane);
 		add(collision);
 		
-		// Creation du score		
+		// Creation du state		
 		JPanel statePane = new JPanel(new FlowLayout());
 		statePane.setBackground(Color.black);
 		stateLabel = new JLabel();
@@ -141,13 +140,13 @@ public class StatusBar extends JPanel{
 		collisionPane.setText("<html><font color = 'YELLOW'>" + string + "</font></html>");
 	}
 	
-	public void updateLevel() {
+	/*public void updateLevel() {
 		levelLabel.setText("<html><font color = 'YELLOW'>" + GameController.getLevel() + "</font></html>");
 	}
 
 	public void updateScore() {
 		scoreLabel.setText("<html><font color = 'YELLOW'>" + GameController.getScore() + "</font></html>");
-	}
+	}*/
 	
 	public void updateState(String state) {
 		stateLabel.setText("<html><font color = 'YELLOW'>" + state + "</font></html>");
@@ -160,7 +159,7 @@ public class StatusBar extends JPanel{
 		
 	}
 
-	public boolean decrementLife() {
+	/*public boolean decrementLife() {
 		// TODO Auto-generated method stub
 		lvPane.removeAll();
 		lvPane.setBackground(Color.black);
@@ -186,19 +185,19 @@ public class StatusBar extends JPanel{
 		lvPane.validate();
 		
 		return GameController.getLives() != 0;
-	}
+	}*/
 		
-	public JLabel getScoreLabel() {
+	/*public JLabel getScoreLabel() {
 		return scoreLabel;
-	}
+	}*/
 	
 	public JPanel getFruitsPane() {
 		return fruitsPane;
 	}
 	
-	public JPanel getLvPanel() {
+	/*public JPanel getLvPanel() {
 		return lvPane;
-	}
+	}*/
 	
 	public JLabel getCollisionPanel() {
 		return collisionPane;
