@@ -269,9 +269,11 @@ public class GameController implements Runnable{
 
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
+					if(!resume) {
 					if(soundOn || pause) {
 						mute();
 					}else {unMute();}
+				}
 				}
 
 				// Redimensionner le jeu
@@ -470,9 +472,9 @@ public class GameController implements Runnable{
 		}
 			
 		}
-			
 			statusBar.updateState("PLAY");
 			if(wantSound) {
+				System.out.println("wantSound");
 				music = background;
 				unMute();}		
 		
