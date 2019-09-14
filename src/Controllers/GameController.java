@@ -71,6 +71,7 @@ public class GameController implements Runnable{
 
 	private boolean wantSound = true;
 
+	public static int RESUME;
 	public static boolean resume;
 	public static boolean fullScreen;
 	public static boolean resize;
@@ -463,7 +464,6 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
-		System.out.println("Passage fonction pause");
 		statusBar.updateState("PAUSED");
 		pause = true;
 		wantSound = soundOn;
@@ -485,32 +485,34 @@ public class GameController implements Runnable{
 		pause = false;
 		statusBar.updateState("RESUME");
 		
-		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-		gamePanel.paintScreen();
-		
-		Models.TimerThread timerThread = new Models.TimerThread(3);
-		timerThread.start();
-		timerThread.setName(" RESUME TIMER");
-		
-		
+		RESUME = 0;
+		while(RESUME <3) {
+			RESUME += 1;
+			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+			gamePanel.paintScreen();
+			
+			Models.TimerThread timerThread = new Models.TimerThread(1);
+			timerThread.start();
+			timerThread.setName(" RESUME TIMER");
+			
 		synchronized(timerThread) {
+				
 			try {
-				timerThread.wait(3 * 1000 + 500);
+				timerThread.wait(1 * 1000 + 500);
 				timerThread.join(JOIN_TIMER); 
-				if(timerThread.isAlive()) {	
-					timerThread.interrupt();
-				}
+				if(timerThread.isAlive()) {	timerThread.interrupt();}
 			}
 			catch(InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(wantSound);
+		}
+			
+		}
+			
 			statusBar.updateState("PLAY");
 			if(wantSound) {
 				music = background;
-				unMute();
-			}
-		}
+				unMute();}		
 		
 		resume = false;
 	}
