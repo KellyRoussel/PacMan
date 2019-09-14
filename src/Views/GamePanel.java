@@ -128,8 +128,8 @@ public class GamePanel extends JPanel{
         
         // dessiner le "Pause" au cas de pause
         if(GameController.resume) {
-        	String text = "Resume";
-        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	int text = GameController.RESUME;
+        	ToSprite.drawToSprite(text,(MainGame.DefaultWidth)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
