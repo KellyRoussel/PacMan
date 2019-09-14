@@ -319,8 +319,6 @@ public class GameController implements Runnable{
 		int raw = 0;
 		int column = 0;
 
-		pacMan.nextNextX();
-		pacMan.nextNextY();
 
 		if(defaultSize != 0) {
 			if(!resume) {
@@ -352,104 +350,73 @@ public class GameController implements Runnable{
     		}
 			}
 			//Pour savoir le tile suivant ou le pacman va se placer
-			raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
-			column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;    		
+			
 
-			int tile = grille[raw][column];
-
-
-			if(!pacMan.isInsideTunnel() && (tile == 0 || tile >= 30)) {
-				//Tile vide
-
-
-				for(int i = 0; i < foodList.size(); i++) {
-					if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
-
-						//Tile contenant une Gum
-						score += foodList.get(i).getGain();
-						foodList.remove(i);
-						//statusBar.updateScore();
-					}
-				}
-				if(foodList.size()==0) {
-					setLevel(level+1);
-					//statusBar.updateLevel();
-					pacMan.returnInitialPosition();
-					for(int i = 0; i < ghostList.size(); i++) {
-						ghostList.get(i).returnInitialPosition();
-					}
-					pacMan.initPM();
-					pacMan.setNextDirection(KeyEvent.VK_LEFT);
-					pacMan.loadImage();
-					fillFoodList();
-					wantSound = soundOn;
-					pause = true;
-					mute();
-					resume = true;
-				}
-
-				if(!resume) {
-				statusBar.updateCollision("NONE");
-				pacMan.move(); 
-				pacMan.updateDirection();
-				pacMan.setInsideTile(raw, column);
-				}
-
-			}else{
+			int tile = -1;
+			if(!pacMan.isInsideTunnel()) {
+				pacMan.nextNextX();
+				pacMan.nextNextY();
+				raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getNextDirection()).x)/defaultSize) % nRow;
+				column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getNextDirection()).y)/defaultSize) % nColumn;
+				tile = grille[raw][column];
+			}
+			    			
+			
+			if(tile == 0 || tile >= 30) {
+				updatePositions(raw, column, true);
+			}
+			else{
 				//Mur 
-				raw = 0;
-				column = 0;
-
+					//Pour savoir le tile suivant ou le pacman va se placer
 				pacMan.nextX();
 				pacMan.nextY();
+				raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/defaultSize) % nRow;
+				column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getDirection()).y)/defaultSize) % nColumn;    		
+				tile = grille[raw][column];
 
-
-				if(defaultSize != 0) {
-					//Pour savoir le tile suivant ou le pacman va se placer
-					raw = (int) Math.floor((pacMan.getNextY() + pacMan.pacManFront.get(pacMan.getDirection()).x)/defaultSize) % nRow;
-					column = (int) Math.floor((pacMan.getNextX() + pacMan.pacManFront.get(pacMan.getDirection()).y)/defaultSize) % nColumn;    		
-
-
-					tile = grille[raw][column];
-
-					if(tile == 0 || tile >= 30) {
-						//Tile vide
-						for(int i = 0; i < foodList.size(); i++) {
-							if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
-								//Tile contenant une Gum
-								score += foodList.get(i).getGain();
-								foodList.remove(i);
-								//statusBar.updateScore();
-							}
-						}
-						
-						if(foodList.size()==0) {
-							setLevel(level+1);
-							//statusBar.updateLevel();
-							pacMan.returnInitialPosition();
-							for(int i = 0; i < ghostList.size(); i++) {
-								ghostList.get(i).returnInitialPosition();
-							}
-							pacMan.initPM();
-							pacMan.setNextDirection(KeyEvent.VK_LEFT);
-							pacMan.loadImage();
-							fillFoodList();
-							wantSound = soundOn;
-							mute();							
-							pause = true;
-							resume = true;
-						}
-						
-						if(!resume) {
-						statusBar.updateCollision("NONE");
-						pacMan.move(); 
-						pacMan.setInsideTile(raw, column);
-						}
-					}
-					else
-						statusBar.updateCollision(pacMan.getDirectionString());
+				if(tile == 0 || tile >= 30) {
+					//Tile vide
+					updatePositions(raw, column, false);
 				}
+				else
+					statusBar.updateCollision(pacMan.getDirectionString());
 			}
+		}
+	}
+
+	private void updatePositions(int raw, int column, boolean flag) {
+		for(int i = 0; i < foodList.size(); i++) {
+			if(foodList.get(i).getInitialPosition().x / defaultSize == column && foodList.get(i).getInitialPosition().y / defaultSize == raw) {
+
+				//Tile contenant une Gum
+				score += foodList.get(i).getGain();
+				foodList.remove(i);
+				//statusBar.updateScore();
+			}
+		}
+		if(foodList.size()==0) {
+			setLevel(level+1);
+			//statusBar.updateLevel();
+			pacMan.returnInitialPosition();
+			for(int i = 0; i < ghostList.size(); i++) {
+				ghostList.get(i).returnInitialPosition();
+			}
+			pacMan.initPM();
+			pacMan.setNextDirection(KeyEvent.VK_LEFT);
+			pacMan.loadImage();
+			fillFoodList();
+			wantSound = soundOn;
+			pause = true;
+			mute();
+			resume = true;
+		}
+
+		if(!resume) {
+			statusBar.updateCollision("NONE");
+			pacMan.move(); 
+			if(flag)
+				pacMan.updateDirection();
+			pacMan.setInsideTile(raw, column);
 		}
 	}	
 
