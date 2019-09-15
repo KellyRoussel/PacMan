@@ -71,10 +71,10 @@ public class MainGame extends JFrame implements WindowListener{
 	
 	// redimensionner le labyrinthe
 	public static void updateMazeSize() {
-		GameController.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / GameController.getnRow(), MainGame.actualWindowWidth / GameController.getnColumn()));
+		GameController.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / (GameController.getnRow() + 3), MainGame.actualWindowWidth / GameController.getnColumn()));
 		
 		if (!GameController.fullScreen) {
-			GameController.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / GameController.getnRow(), MainGame.actualWindowWidth / GameController.getnColumn()));
+			GameController.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / (GameController.getnRow() + 3), MainGame.actualWindowWidth / GameController.getnColumn()));
 		}
 		GamePanel.setDebutX((actualWindowWidth - GameController.getSize() * GameController.getnColumn()) / 2);
 		//GamePanel.setDebutY((actualWindowHeight - GameController.getSize()  * GameController.getnRow() - 150) / 2);
