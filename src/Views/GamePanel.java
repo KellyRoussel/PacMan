@@ -78,7 +78,7 @@ public class GamePanel extends JPanel{
     		MainGame.updateMazeSize();
     		GameController.resize = false;
     	}
-        dbImage = createImage(GameController.getDefaultSize()*30, GameController.getDefaultSize()*36);
+        dbImage = createImage(GameController.getDefaultSize()*GameController.getnColumn(), GameController.getDefaultSize()*(GameController.getnRow() + 3));
         if (dbImage == null) {
 		   return; }
 		else {
@@ -86,7 +86,7 @@ public class GamePanel extends JPanel{
 		}
           // clear the background
         dbg.setColor(Color.black);
-        dbg.fillRect (0, 0, GameController.getDefaultSize()*30, GameController.getDefaultSize()*36);
+        dbg.fillRect (0, 0, GameController.getDefaultSize()*GameController.getnColumn(), GameController.getDefaultSize()*(GameController.getnRow() + 3));
         
         maze.draw(dbg);
         
@@ -109,19 +109,19 @@ public class GamePanel extends JPanel{
         //*******************************************************************************************************************************
         //Status du jeu
         // Affichage du score
-        chiffre_lettre.drawToSprite("score",25 ,GameController.getDefaultSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
-        chiffre_lettre.drawToSprite(GameController.getScore(), 135, GameController.getDefaultSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        chiffre_lettre.drawToSprite("score",25 ,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        chiffre_lettre.drawToSprite(GameController.getScore(), 135, GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
         
         // Affichage des vies
-        chiffre_lettre.drawToSprite("lives",235,GameController.getDefaultSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        chiffre_lettre.drawToSprite("lives",235,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
         for(int i = 0 ; i < GameController.getLives() ; i ++ ) {
         	ImageIcon liveIcon = new ImageIcon("ressources" + File.separator + "Left_0.png");
-        	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), GameController.getDefaultSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
+        	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
         }
         
         // Affichage du niveau
-        chiffre_lettre.drawToSprite("level",445,GameController.getDefaultSize()*33,TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
-        chiffre_lettre.drawToSprite(GameController.getLevel(), 527, GameController.getDefaultSize()*33, TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        chiffre_lettre.drawToSprite("level",445,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        chiffre_lettre.drawToSprite(GameController.getLevel(), 527, GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
         //*******************************************************************************************************************************
         
         // dessiner le "Pause" au cas de pause
