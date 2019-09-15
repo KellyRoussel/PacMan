@@ -2,6 +2,7 @@ package Models.Characters;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public class PacMan extends Character {
 	private Map<Integer, Point> steps;
 	public Map<Integer, Point> pacManFront;
 	public Map<Integer, String> directionString;
+	
+	private Rectangle pacManRectangle;
 
 	private static boolean isDead = false;
 	private static int deadAnimationCounter;
@@ -72,7 +75,16 @@ public class PacMan extends Character {
 		pacManFront.put(KeyEvent.VK_RIGHT, new Point(h / 2, w));
 		pacManFront.put(KeyEvent.VK_UP, new Point(0, w / 2));
 		pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w / 2));
+		
+		pacManRectangle = new Rectangle(position.x,position.y,width,height);
 
+	}
+	
+	public void returnInitialPosition() {
+		position.x = initialPosition.x;
+		position.y = initialPosition.y;
+		
+		pacManRectangle.setLocation(initialPosition.x,initialPosition.y);
 	}
 
 	public void initPM() {
@@ -85,6 +97,18 @@ public class PacMan extends Character {
 		nextDx = -PAS;
 		nextDy = 0;
 	}
+	
+	public double getRectangleX(){
+    	return pacManRectangle.getX();
+    }
+    
+    public double getRectangleY(){
+    	return pacManRectangle.getY();
+    }
+    
+    public Rectangle getRectangle(){
+    	return pacManRectangle;
+    }
 
 	public String getDirectionString() {
 		return directionString.get(direction);
@@ -142,6 +166,9 @@ public class PacMan extends Character {
 			}
 			position.x = nextX;
 			position.y = nextY;
+			
+			pacManRectangle.setLocation(nextX,nextY);
+			
 			if (direction == KeyEvent.VK_LEFT) {
 				if (GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(),
 						position.x / GameController.getDefaultSize() + 1)))
@@ -258,6 +285,8 @@ public class PacMan extends Character {
 		// TODO Auto-generated method stub
 		position.x = x;
 		position.y = y;
+		
+		pacManRectangle.setLocation(x,y);
 	}
 
 	public void setInsideTile(int nRaw, int nColumn) {
@@ -311,5 +340,9 @@ public class PacMan extends Character {
 
 	public static boolean isDead() {
 		return isDead;
+	}
+	
+	public static void setIsDead(boolean dead) {
+		isDead = dead;
 	}
 }

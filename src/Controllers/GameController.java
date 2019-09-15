@@ -26,6 +26,7 @@ import Models.Foods.Food;
 import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
+import Threads.PhysicsThread;
 import  Views.GamePanel;
 import  Views.MainGame;
 import  Views.StatusBar;
@@ -64,7 +65,7 @@ public class GameController implements Runnable{
 
 	public static int ghostOutside;
 	private int firstGhostToQuit;
-	private final int SLEEP_TIMER = 10;
+	private final int SLEEP_TIMER = 1;
 
     public static boolean pause;    
 
@@ -82,6 +83,7 @@ public class GameController implements Runnable{
 	private static int nColumn;
 	private Sound background;
 	private Sound beginning;
+	private Sound death;
 
 	public static ArrayList<Point> listTunnelLeft;
 
@@ -106,6 +108,7 @@ public class GameController implements Runnable{
 
 		background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
 		beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
+		death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
 
 		//Lancer un listener sur le clavier
 		addListeners();
@@ -242,8 +245,6 @@ public class GameController implements Runnable{
     		}
     }
 
-	
-
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
 		return icon.getImage();
@@ -312,8 +313,6 @@ public class GameController implements Runnable{
 		}
     }
 
-    
-
 	private void gameUpdate() {
 
 		int raw = 0;
@@ -369,6 +368,10 @@ public class GameController implements Runnable{
 					statusBar.updateCollision(pacMan.getDirectionString());
 			}
 		}
+		
+		if(pacMan.isDead()) {
+			StartNewLife();
+		}
 	}
 
 	private void updateGhostPosition(Ghost currentGhost) {
@@ -413,11 +416,43 @@ public class GameController implements Runnable{
 				pacMan.updateDirection();
 			pacMan.setInsideTile(raw, column);
 		}
-	}	
+	}
+	
+	private void StartNewLife() 
+	{
+		pause = true;
+		/*while(pause) {
+			lives--;
+			music = death;
+			music.play();
+			pacMan.deadAnimate();
+			//statusBar.updateLevel();
+			pacMan.returnInitialPosition();
+			for(int i = 0; i < ghostList.size(); i++) {
+				ghostList.get(i).returnInitialPosition();
+			}
+			pacMan.initPM();
+			pacMan.setNextDirection(KeyEvent.VK_LEFT);
+			pacMan.loadImage();
+			fillFoodList();
+			wantSound = soundOn;
+
+			mute();
+			resume = true;
+			pacMan.setIsDead(false);
+			
+		}*/
+	}
 
 
 	private void startGame() {
 		new Thread(this).start();
+		
+		System.out.println("Physics comming threw");
+		
+		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
+		tPhysics.setName("Physics");
+		tPhysics.start();
 	}
 
 	private void stop() {
