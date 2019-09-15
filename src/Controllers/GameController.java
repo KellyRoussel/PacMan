@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -40,6 +41,7 @@ public class GameController implements Runnable{
 	private StatusBar statusBar;
 
 	private PacMan pacMan;
+	private Rectangle pacManRectangle;
 	private Maze maze;
 	private ArrayList<Food> foodList;
 
@@ -53,7 +55,7 @@ public class GameController implements Runnable{
 	private static final int PM_INITIAL_POSITION = 60;
 
 	private static final long JOIN_TIMER = 10;
-	private static final long WAIT_TIMER = 10000;
+	private static final long WAIT_TIMER = 1000;
 	private static final int PINK_INITIAL_POSITION = 26;
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
@@ -180,7 +182,6 @@ public class GameController implements Runnable{
 		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION));
 
 		// Creer les Gums et PacGums
-
 		foodList = new ArrayList();
 		fillFoodList(); 
 	
@@ -190,6 +191,7 @@ public class GameController implements Runnable{
         
     	//Creer le PacMan          
     	pacMan = new PacMan(defaultSize, defaultSize, loadImage("Left_0.png"), definePosition(PM_INITIAL_POSITION));
+    	
         
     	//Creer les fantomes
     	ghostList = new ArrayList<Ghost>();
@@ -270,9 +272,19 @@ public class GameController implements Runnable{
 	//Boucle du jeu
 	@Override
 	public void run() {
+		int cpt = 0;
+		
 		running = true;
 		pause = false;
 		while(running && !gameOver) {
+			cpt = 0;
+			System.out.println("Pacman Rectangle X : " + pacMan.getRectangleX() + " - Rectangle Y : " + pacMan.getRectangleY());
+			for(Ghost x : ghostList) 
+			{
+				cpt++;
+				System.out.println("Ghost " + cpt + " Rectangle X : " + x.getRectangleX() + " - Rectangle Y : " + x.getRectangleY());
+			}
+			
 			if(! pause) {		
 				gameUpdate();
 			}else if(resume) {
@@ -417,11 +429,13 @@ public class GameController implements Runnable{
 	private void startGame() {
 		new Thread(this).start();
 		
+		System.out.println("science bitch");
+		
 		PhysicsThread tPhysics = new PhysicsThread();
 		tPhysics.setName("Physics");
 		tPhysics.start();
 			
-		synchronized(tPhysics)
+		/*synchronized(tPhysics)
 		{
 			try 
 			{
@@ -440,10 +454,7 @@ public class GameController implements Runnable{
 				e.printStackTrace();
 			}
 				
-		}
-		
-		
-		
+		}*/
 	}
 
 	private void stop() {

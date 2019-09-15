@@ -1,34 +1,12 @@
 package Threads;
 
 import java.awt.Rectangle;
-import java.util.List;
+import java.util.ArrayList;
 
 public class PhysicsThread extends Thread
 {
 	private volatile boolean isRunning;
 	private final int SLEEP_TIMER = 100; //ms
-	
-	private int x1;
-	private int x2;
-	private int y1;
-	private int y2;
-
-	private int width;
-	private int height;
-	
-	private Rectangle Pacman;
-	private static List<Rectangle> fantome;
-	private static List<Rectangle> pacgum;
-	
-	public PhysicsThread()
-	{
-		x1 = 1;
-		x2 = 10;
-		y1 = 1;
-		y2 = 10;
-		width = 5;
-		height = 5;
-	}
 	
 	public synchronized boolean catchCollisionRectangle(Rectangle R1, Rectangle R2) {
 		if(R1.intersects(R2)) {
@@ -37,9 +15,13 @@ public class PhysicsThread extends Thread
 		return false;
 	}
 	
-	public synchronized boolean catchCollisionRectangleList(Rectangle R1, Rectangle R2) {
-		if(R1.intersects(R2)) {
-			return true;
+	public synchronized boolean catchCollisionRectangleVSList(Rectangle R1, ArrayList<Rectangle> R2) {
+		
+		for(Rectangle x : R2) 
+		{
+			if(R1.intersects(x)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -56,16 +38,21 @@ public class PhysicsThread extends Thread
 	public void run()
 	{
 		isRunning = true;
-		R1 = new Rectangle(x1, y1, width, height);
-		R2 = new Rectangle(x2, y2, width, height);
 
 		System.out.println("START - " + this.getName());
 
 		while(isRunning)
 		{
-			try 
+			try {
+				Thread.sleep(5000);
+				System.out.println("Running");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*try 
 			{
-				if(catchCollisionRectangle(R1,R2)) {
+				if(catchCollisionRectangle(Pacman,Pacman)) {
 					System.out.println(this.getName() + " Collision detected");
 				}
 				else
@@ -76,7 +63,7 @@ public class PhysicsThread extends Thread
 			} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		System.out.println("STOP - " + this.getName());
 	}

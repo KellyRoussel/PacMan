@@ -3,6 +3,7 @@ package Models.Characters;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class Ghost extends Character{
     
     private int availableDirections;
     
+    private Rectangle ghostRectangle;
+    
 	public Ghost(int width, int height, Image image, Point initialPosition, String color) {
 		super(width, height, image, initialPosition);
 		// TODO Auto-generated constructor stub
@@ -86,7 +89,9 @@ public class Ghost extends Character{
         ghostFront.put(KeyEvent.VK_LEFT, new Point(h/2, 0));
         ghostFront.put(KeyEvent.VK_RIGHT, new Point(h/2, w));	        
         ghostFront.put(KeyEvent.VK_UP, new Point(0, w/2));	        
-        ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	 
+        ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
+        
+        ghostRectangle = new Rectangle(position.x,position.y,width,height);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();
@@ -94,11 +99,21 @@ public class Ghost extends Character{
 
 	
     
-   public int getAvailableDirections() {
+    public int getAvailableDirections() {
 		return availableDirections;
 	}
 
-
+    public double getRectangleX(){
+   		return ghostRectangle.getX();
+    }
+   
+    public double getRectangleY(){
+   		return ghostRectangle.getY();
+    }
+   
+    public Rectangle getRectangle(){
+   		return ghostRectangle;
+    }
 
 	public void setAvailableDirections(int availableDirections) {
 		this.availableDirections = availableDirections;
@@ -149,6 +164,8 @@ public class Ghost extends Character{
     	position.x += dx;
     	position.y += dy;
     	setInsideTile(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize());
+    	
+    	ghostRectangle.setLocation(position.x,position.y);
     }
 
     private void loadImage() {
@@ -192,8 +209,6 @@ public class Ghost extends Character{
         return image;
     }
     
-
-
 	public int getNextX() {
 		return nextX;
 	}
@@ -238,6 +253,8 @@ public class Ghost extends Character{
 		// TODO Auto-generated method stub
 		position.x = x;
 		position.y = y;
+		
+		ghostRectangle.setLocation(x,y);
 	}
 
 	
