@@ -1,17 +1,13 @@
 package Models.Characters;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
-
 import Controllers.GameController;
-import Models.Maze;
 import Models.ToSprite;
 
 public class PacMan extends Character {
@@ -42,7 +38,7 @@ public class PacMan extends Character {
 	public Map<Integer, Point> pacManFront;
 	public Map<Integer, String> directionString;
 
-	private static boolean dead = false;
+	private static boolean isDead = false;
 	private static int deadAnimationCounter;
 
 	public PacMan(int width, int height, Image image, Point initialPosition) {
@@ -138,7 +134,7 @@ public class PacMan extends Character {
 	}
 
 	public void move() {
-		if (!dead) {
+		if (!isDead) {
 			counter = (counter + 1) % 10;
 			if (counter == 0) {
 				style = (style + 1) % 2;
@@ -172,10 +168,12 @@ public class PacMan extends Character {
 	}
 
 	public void deadAnimate() {
-		dead = true;
-		if (deadAnimationCounter < 60) {
+		isDead = true;
+		// l image de l animation change après 5 Frames 
+		// il existe 12 images de l animation
+		if (deadAnimationCounter < 12 * 5) {
 			ToSprite pacMan_tiles_to_sprite = new ToSprite(8, "pacmanTilesSheet");
-			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 5) % 8, 4 + deadAnimationCounter / 40,
+			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 5) % 8, 4 + deadAnimationCounter / (8 * 5),
 					"PacManDead", deadAnimationCounter));
 			deadAnimationCounter++;
 		}
@@ -311,4 +309,7 @@ public class PacMan extends Character {
 		this.insideTunnel = insideTunnel;
 	}
 
+	public static boolean isDead() {
+		return isDead;
+	}
 }

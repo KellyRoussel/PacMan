@@ -60,8 +60,6 @@ public class GameController implements Runnable{
     private boolean running;
     private boolean soundOn;
     
-    private static ToSprite chiffre_lettre = new ToSprite(16,"pacmanTiles");
-
 	private ArrayList<Ghost> ghostList;
 
 	public static int ghostOutside;
@@ -92,9 +90,6 @@ public class GameController implements Runnable{
 	public GameController(GamePanel gamePanel, MainGame frame) {    	    	
 
 		init();
-
-		// remplir les dictionnaires de mots_Images et chiffres_Images
-		chiffre_lettre.fillMap();
 		
 		this.gamePanel = gamePanel;
 		this.frame = frame;
@@ -239,11 +234,11 @@ public class GameController implements Runnable{
     	for(int i = 0; i < nRow; i++)
     		for(int j = 0; j < nColumn; j++) {
     			if(grille[i][j] == 30)
-    				foodList.add(new Gum(defaultSize/3, defaultSize/3, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
+    				foodList.add(new Gum((defaultSize*3)/4, (defaultSize*3)/4, loadImage("gum.png"), new Point(j * defaultSize, i * defaultSize)));
 		    	if(grille[i][j] == 40)
-    				foodList.add(new PacGum(defaultSize/2, defaultSize/2, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
+    				foodList.add(new PacGum(defaultSize, defaultSize, loadImage("pacGum.png"), new Point(j * defaultSize, i * defaultSize)));
 		    	if(grille[i][j] == 50)
-    				foodList.add(new Fruit(defaultSize/2, defaultSize/2, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
+    				foodList.add(new Fruit(defaultSize, defaultSize, loadImage("fruit.png"), new Point(j * defaultSize, i * defaultSize)));
     		}
     }
 
@@ -558,12 +553,4 @@ public class GameController implements Runnable{
 	public static void setLevel(int level) {
 		GameController.level = level;
 	}	
-	
-	public static ToSprite getChiffre_lettre() {
-		return chiffre_lettre;
-	}
-
-	public static void setChiffre_lettre(ToSprite chiffre_lettre) {
-		GameController.chiffre_lettre = chiffre_lettre;
-	}
 }
