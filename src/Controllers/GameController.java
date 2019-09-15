@@ -59,6 +59,8 @@ public class GameController implements Runnable{
 	
     private boolean running;
     private boolean soundOn;
+    
+    private static ToSprite chiffre_lettre = new ToSprite(16,"pacmanTiles");
 
 	private ArrayList<Ghost> ghostList;
 
@@ -92,7 +94,7 @@ public class GameController implements Runnable{
 		init();
 
 		// remplir les dictionnaires de mots_Images et chiffres_Images
-		ToSprite.fillMap();
+		chiffre_lettre.fillMap();
 		
 		this.gamePanel = gamePanel;
 		this.frame = frame;
@@ -556,4 +558,12 @@ public class GameController implements Runnable{
 	public static void setLevel(int level) {
 		GameController.level = level;
 	}	
+	
+	public static ToSprite getChiffre_lettre() {
+		return chiffre_lettre;
+	}
+
+	public static void setChiffre_lettre(ToSprite chiffre_lettre) {
+		GameController.chiffre_lettre = chiffre_lettre;
+	}
 }
