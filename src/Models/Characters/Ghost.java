@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Arc2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,8 @@ public class Ghost extends Character{
     public Map<Integer, String> directionString;
     
     private Rectangle ghostRectangle;
+    private Rectangle pacManAdvancedLowerShape;
+    private Arc2D.Float pacManAdvancedTopShape;
     
     private int availableDirections;
     
@@ -92,6 +95,9 @@ public class Ghost extends Character{
         ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
         
         ghostRectangle = new Rectangle(position.x,position.y,width,height);
+        
+        pacManAdvancedLowerShape = new Rectangle(position.x,position.y + height/2,width,height/2);
+        pacManAdvancedTopShape = new Arc2D.Float(position.x,position.y,width,height/2, 0, 180, Arc2D.CHORD);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();

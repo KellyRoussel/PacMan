@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class PacMan extends Character {
 	public Map<Integer, String> directionString;
 	
 	private Rectangle pacManRectangle;
+	private Ellipse2D.Float pacManAdvancedFullShape;
 
 	private static boolean isDead = false;
 	private static boolean resurrection = false;
@@ -78,6 +80,7 @@ public class PacMan extends Character {
 		pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w / 2));
 		
 		pacManRectangle = new Rectangle(position.x,position.y,width,height);
+		pacManAdvancedFullShape = new Ellipse2D.Float(position.x,position.y,width,height);
 
 	}
 	

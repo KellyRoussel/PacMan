@@ -6,6 +6,7 @@ import java.util.List;
 
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
+import Models.Foods.Food;
 
 public class PhysicsThread extends Thread
 {
@@ -28,18 +29,41 @@ public class PhysicsThread extends Thread
 		return false;
 	}
 
-	public synchronized boolean catchCollisionRectangleVSList(PacMan var_pacMan, List<Ghost> var_ghost) {
+	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> var_ghost) {
 
 		Rectangle pacmanRectangle = var_pacMan.getRectangle();
 
 		for(Ghost x : var_ghost) 
+		{
+			if(pacmanRectangle.intersects(x.getRectangle())) 
+			{
+				if(advancedCatchCollisionTactics()) 
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	private synchronized boolean advancedCatchCollisionTactics()
+	{
+		return true;
+	}
+	
+	/*public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_pacgum) {
+
+		Rectangle pacmanRectangle = var_pacMan.getRectangle();
+
+		for(PacGum x : var_pacgum) 
 		{
 			if(pacmanRectangle.intersects(x.getRectangle())) {
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 
 	public void stopThread() {
 		isRunning = false;
@@ -59,10 +83,14 @@ public class PhysicsThread extends Thread
 		{
 			try {
 				Thread.sleep(SLEEP_TIMER);
-				if(catchCollisionRectangleVSList(pacMan,ghost)) {
+				if(catchCollisionPacManGhost(pacMan,ghost)) {
 					System.out.println("collision detected");
 					pacMan.setIsDead(true);
 				}
+				/*if(catchCollisionPacManPacGum(pacMan,pacgum)) {
+					System.out.println("collision detected");
+					pacMan.setIsDead(true);
+				}*/
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
