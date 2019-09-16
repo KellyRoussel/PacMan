@@ -512,6 +512,43 @@ public class GameController implements Runnable{
 		
 		resume = false;
 	}
+	
+	
+	public void DeathPause(){
+		pause = false;
+		statusBar.updateState("RESUME");
+		
+		RESUME = 0;
+		while(RESUME <3) {
+			RESUME += 1;
+			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+			gamePanel.paintScreen();
+			
+			Models.TimerThread timerThread = new Models.TimerThread(1);
+			timerThread.start();
+			timerThread.setName(" RESUME TIMER");
+			
+		synchronized(timerThread) {
+				
+			try {
+				timerThread.wait(1 * 1000 + 500);
+				timerThread.join(JOIN_TIMER); 
+				if(timerThread.isAlive()) {	timerThread.interrupt();}
+			}
+			catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		}
+			statusBar.updateState("PLAY");
+			if(wantSound) {
+				System.out.println("wantSound");
+				music = background;
+				unMute();}		
+		
+		resume = false;
+	}
 
 	public static Point definePosition(int initialPositionValue) {
 		Point p = new Point();
