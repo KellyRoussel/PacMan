@@ -103,9 +103,10 @@ public class GamePanel extends JPanel{
         
         pacMan.draw(dbg);
         
+        if(!pacMan.isDead()) {
         for(int i = 0; i < ghostList.size(); i++)
         	ghostList.get(i).draw(dbg);
-        
+        }
         //*******************************************************************************************************************************
         //Status du jeu
         // Affichage du score
@@ -125,7 +126,7 @@ public class GamePanel extends JPanel{
         //*******************************************************************************************************************************
         
         // dessiner le "Pause" au cas de pause
-        if(GameController.pause) {
+        if(GameController.pause && !pacMan.isResurrection()) {
         	String text = "pause";
         	chiffre_lettre.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }

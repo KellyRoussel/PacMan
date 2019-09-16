@@ -42,6 +42,7 @@ public class PacMan extends Character {
 	private Rectangle pacManRectangle;
 
 	private static boolean isDead = false;
+	private static boolean resurrection = false;
 	private static int deadAnimationCounter;
 
 	public PacMan(int width, int height, Image image, Point initialPosition) {
@@ -203,7 +204,13 @@ public class PacMan extends Character {
 			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 5) % 8, 4 + deadAnimationCounter / (8 * 5),
 					"PacManDead", deadAnimationCounter));
 			deadAnimationCounter++;
+		}else {
+			setIsDead(false);
+			setResurrection(true);
+			deadAnimationCounter = 0;
 		}
+		
+		
 	}
 
 	public int getX() {
@@ -344,5 +351,13 @@ public class PacMan extends Character {
 	
 	public synchronized static void setIsDead(boolean dead) {
 		isDead = dead;
+	}
+
+	public static boolean isResurrection() {
+		return resurrection;
+	}
+
+	public static void setResurrection(boolean resurrection) {
+		PacMan.resurrection = resurrection;
 	}
 }

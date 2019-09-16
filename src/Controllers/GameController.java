@@ -302,7 +302,10 @@ public class GameController implements Runnable{
 			if(! pause) {		
 				gameUpdate();
 			}else if(resume) {
+				System.out.println("resuuuume");
 				resume();
+			}else if(pacMan.isDead()) {
+				pacMan.deadAnimate();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
@@ -370,7 +373,12 @@ public class GameController implements Runnable{
 		}
 		
 		if(pacMan.isDead()) {
-			StartNewLife();
+			pacMan.deadAnimate();
+			//ghostList.clear();	
+			music.stop();
+		}
+		if(pacMan.isResurrection()) {
+			startNewLife();
 		}
 	}
 
@@ -412,41 +420,35 @@ public class GameController implements Runnable{
 		if(!resume) {
 			statusBar.updateCollision("NONE");
 			pacMan.move(); 
+			
 			if(flag)
 				pacMan.updateDirection();
 			pacMan.setInsideTile(raw, column);
 		}
 	}
 	
-	private void StartNewLife() 
+	private void startNewLife() 
 	{
-		pause = true;
-		if(pacMan.isDead()) {
-			DeathPause();
 			lives--;
-			music = death;
-			music.play();
-			pacMan.deadAnimate();
 			pacMan.returnInitialPosition();
-			for(int i = 0; i < ghostList.size(); i++) {
+			for(int i = 0; i < 4; i++) {
 				ghostList.get(i).returnInitialPosition();
 			}
 			pacMan.initPM();
 			pacMan.setNextDirection(KeyEvent.VK_LEFT);
 			pacMan.loadImage();
-			fillFoodList();
-			wantSound = soundOn;
-			resume = true;
-			pacMan.setIsDead(false);
 			
-		}
+			pause = true;
+			resume = true;
+			
+			pacMan.setIsDead(false);
 	}
 
 
 	private void startGame() {
 		new Thread(this).start();
 		
-		System.out.println("Physics comming threw");
+		//System.out.println("Physics coming threw");
 		
 		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
 		tPhysics.setName("Physics");
@@ -504,20 +506,18 @@ public class GameController implements Runnable{
 		}
 			statusBar.updateState("PLAY");
 			if(wantSound) {
-				System.out.println("wantSound");
+				//System.out.println("wantSound");
 				music = background;
 				unMute();}		
 		
 		resume = false;
+		if(pacMan.isResurrection()) {
+			pacMan.setResurrection(false);
+		}
 	}
 	
 	
-	public void DeathPause(){
-		statusBar.updateState("PAUSED");
-		pause = true;
-		wantSound = soundOn;
-	}
-
+	
 	public static Point definePosition(int initialPositionValue) {
 		Point p = new Point();
 		for(int i = 0; i < nRow; i++)
