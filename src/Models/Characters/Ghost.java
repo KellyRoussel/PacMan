@@ -96,8 +96,8 @@ public class Ghost extends Character{
         
         ghostRectangle = new Rectangle(position.x,position.y,width,height);
         
-        pacManAdvancedLowerShape = new Rectangle(position.x,position.y,width,height/2);
-        pacManAdvancedTopShape = new Arc2D.Float();
+        pacManAdvancedLowerShape = new Rectangle(position.x,position.y + height/2,width,height/2);
+        pacManAdvancedTopShape = new Arc2D.Float(position.x,position.y,width,height/2, 0, 180, Arc2D.CHORD);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();
