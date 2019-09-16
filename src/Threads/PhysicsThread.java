@@ -10,7 +10,7 @@ import Models.Characters.PacMan;
 public class PhysicsThread extends Thread
 {
 	private volatile boolean isRunning;
-	private final int SLEEP_TIMER = 1; //ms
+	private final int SLEEP_TIMER = 10; //ms
 	
 	private final PacMan pacMan;
 	private final List<Ghost> ghost;
@@ -58,7 +58,7 @@ public class PhysicsThread extends Thread
 		while(isRunning)
 		{
 			try {
-				Thread.sleep(100);
+				Thread.sleep(SLEEP_TIMER);
 				if(catchCollisionRectangleVSList(pacMan,ghost)) {
 					System.out.println("collision detected");
 					pacMan.setIsDead(true);

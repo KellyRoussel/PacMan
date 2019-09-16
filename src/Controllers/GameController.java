@@ -421,7 +421,7 @@ public class GameController implements Runnable{
 	private void StartNewLife() 
 	{
 		pause = true;
-		/*while(pause) {
+		if(pacMan.isDead()) {
 			lives--;
 			music = death;
 			music.play();
@@ -441,7 +441,7 @@ public class GameController implements Runnable{
 			resume = true;
 			pacMan.setIsDead(false);
 			
-		}*/
+		}
 	}
 
 
@@ -515,7 +515,7 @@ public class GameController implements Runnable{
 	
 	
 	public void DeathPause(){
-		pause = false;
+		/*pause = false;
 		statusBar.updateState("RESUME");
 		
 		RESUME = 0;
@@ -547,7 +547,7 @@ public class GameController implements Runnable{
 				music = background;
 				unMute();}		
 		
-		resume = false;
+		resume = false;*/
 	}
 
 	public static Point definePosition(int initialPositionValue) {
