@@ -35,7 +35,7 @@ import  Views.StatusBar;
 public class GameController implements Runnable{
 
 
-	private MainGame frame; 
+	public MainGame frame; 
 
 	private JPanel mainPane;
 	private GamePanel gamePanel;
@@ -466,9 +466,8 @@ public class GameController implements Runnable{
 		}
 		
 	}
-
 	private void stop() {
-
+		
 	}
 
 	public void pause() {

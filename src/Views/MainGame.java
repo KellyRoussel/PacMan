@@ -37,8 +37,15 @@ public class MainGame extends JFrame implements WindowListener{
 		gameController = new GameController(new GamePanel(), this);
 		menuPane = new GameMenu(gameController);
 		audioPane = new AudioPanel(gameController);
+	
 		this.setContentPane(menuPane);
 		addWindowListener(this);
+	}
+	
+	public void displayMenu() {
+		setContentPane(menuPane);
+		menuPane.requestFocus();
+		revalidate();
 	}
 	
 	public static void resize() {
