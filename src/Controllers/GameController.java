@@ -276,7 +276,6 @@ public class GameController implements Runnable{
 					fullScreen = !fullScreen;
 				}
 				if(key == KeyEvent.VK_ESCAPE) {
-					System.out.println("ESCAPE");
 					pause = true;
 					frame.setContentPane(frame.menuPane);
 					frame.setVisible(true);
@@ -302,7 +301,6 @@ public class GameController implements Runnable{
 		pause = true;
 		while(running && !gameOver) {
 			if(! pause) {	
-				System.out.println("PASSE DANS PAS PAUSE");
 				gameUpdate();
 			}else if(resume) {
 				resume();
@@ -448,7 +446,6 @@ public class GameController implements Runnable{
 
 
 	public void startGame() {
-		System.out.println("Start Game");
 		resume = true;
 		
 		frame.setContentPane(mainPane);
@@ -493,7 +490,6 @@ public class GameController implements Runnable{
 	}
 
 	public void resume(){
-		System.out.println("Resume");
 		pause = false;
 		statusBar.updateState("RESUME");
 		

@@ -39,7 +39,6 @@ public class GameMenu extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Vous avez cliqué");
 		String cmd = e.getActionCommand();
 		switch(cmd) {
 		case "Start Game":

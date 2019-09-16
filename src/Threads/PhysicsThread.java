@@ -84,7 +84,6 @@ public class PhysicsThread extends Thread
 			try {
 				Thread.sleep(SLEEP_TIMER);
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
-					System.out.println("collision detected");
 					pacMan.setIsDead(true);
 				}
 				/*if(catchCollisionPacManPacGum(pacMan,pacgum)) {
