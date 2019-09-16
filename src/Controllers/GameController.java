@@ -27,6 +27,7 @@ import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
 import Threads.PhysicsThread;
+import Views.GameMenu;
 import  Views.GamePanel;
 import  Views.MainGame;
 import  Views.StatusBar;
@@ -36,6 +37,7 @@ public class GameController implements Runnable{
 
 	private MainGame frame; 
 
+	private JPanel mainPane;
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
 
@@ -98,10 +100,7 @@ public class GameController implements Runnable{
 
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
-		JPanel mainPane = new JPanel(bl);
-
-		frame.setContentPane(mainPane);
-
+		mainPane = new JPanel(bl);
 		mainPane.add(gamePanel,BorderLayout.CENTER);
 		mainPane.add(statusBar, BorderLayout.SOUTH);
 
@@ -110,18 +109,16 @@ public class GameController implements Runnable{
 		beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
 		death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
 
-		//Lancer un listener sur le clavier
-		addListeners();
 
 		//Lancer la musique
-		music = beginning;
-		music.play();
-		soundOn = true;
+//		music = beginning;
+//		music.play();
+//		soundOn = true;
 
 		level = 1;
 		
 		// Lancer le jeu
-		startGame();
+		//startGame();
 	}
 
 	private void init() {
@@ -129,7 +126,6 @@ public class GameController implements Runnable{
 		resize = false;
 		gameOver = false; 
 		statusBar = new StatusBar();
-		resume = true;
 
 		Scanner sc = null;
 		try {
@@ -251,7 +247,7 @@ public class GameController implements Runnable{
 	}
 
 	private void addListeners() {
-		gamePanel.addKeyListener(new KeyAdapter() {
+		mainPane.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 
 				int key = e.getKeyCode();
@@ -279,12 +275,18 @@ public class GameController implements Runnable{
 					resize = true;
 					fullScreen = !fullScreen;
 				}
+				if(key == KeyEvent.VK_ESCAPE) {
+					System.out.println("ESCAPE");
+					pause = true;
+					frame.setContentPane(frame.menuPane);
+					frame.setVisible(true);
+					frame.menuPane.requestFocus();
+				}
 
 
 				// Changer la direction du PacMan selon la fleche choisie.
 				if(!pause){
 					if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
-
 						pacMan.setNextDirection(key);
 					}
 				}
@@ -297,14 +299,15 @@ public class GameController implements Runnable{
 	@Override
 	public void run() {
 		running = true;
-		pause = false;
+		pause = true;
 		while(running && !gameOver) {
-			if(! pause) {		
+			if(! pause) {	
+				System.out.println("PASSE DANS PAS PAUSE");
 				gameUpdate();
 			}else if(resume) {
-				System.out.println("resuuuume");
 				resume();
 			}else if(pacMan.isDead()) {
+				
 				pacMan.deadAnimate();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
@@ -373,8 +376,7 @@ public class GameController implements Runnable{
 		}
 		
 		if(pacMan.isDead()) {
-			pacMan.deadAnimate();
-			//ghostList.clear();	
+			pacMan.deadAnimate();	
 			music.stop();
 		}
 		if(pacMan.isResurrection()) {
@@ -445,14 +447,27 @@ public class GameController implements Runnable{
 	}
 
 
-	private void startGame() {
+	public void startGame() {
+		System.out.println("Start Game");
+		resume = true;
+		
+		frame.setContentPane(mainPane);
+		mainPane.requestFocus();
+		frame.revalidate();
+		
+		if(!running) {
 		new Thread(this).start();
+		
+		//Lancer un listener sur le clavier
+		addListeners();
 		
 		//System.out.println("Physics coming threw");
 		
 		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
 		tPhysics.setName("Physics");
 		tPhysics.start();
+		}
+		
 	}
 
 	private void stop() {
@@ -478,6 +493,7 @@ public class GameController implements Runnable{
 	}
 
 	public void resume(){
+		System.out.println("Resume");
 		pause = false;
 		statusBar.updateState("RESUME");
 		
@@ -506,7 +522,6 @@ public class GameController implements Runnable{
 		}
 			statusBar.updateState("PLAY");
 			if(wantSound) {
-				//System.out.println("wantSound");
 				music = background;
 				unMute();}		
 		
@@ -528,6 +543,12 @@ public class GameController implements Runnable{
 				}
 			}
 		return p;
+	}
+	
+	public void changeVolume() {
+		frame.setContentPane(frame.audioPane);
+		frame.audioPane.requestFocus();
+		frame.revalidate();
 	}
 
 	public static int[][] getGrille() {

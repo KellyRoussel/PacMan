@@ -44,7 +44,7 @@ public class GamePanel extends JPanel{
     private static int debutX;
     private static int debutY;
     
-    // ToSprite Instance qui cree les tiles des nombres et les chiffres
+    // ToSprite Instance qui creer les tiles des nombres et les chiffres
     private static ToSprite chiffre_lettre = new ToSprite(16,"pacmanTiles");
 
     public GamePanel() {
