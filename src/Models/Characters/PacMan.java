@@ -342,7 +342,7 @@ public class PacMan extends Character {
 		return isDead;
 	}
 	
-	public static void setIsDead(boolean dead) {
+	public synchronized static void setIsDead(boolean dead) {
 		isDead = dead;
 	}
 }
