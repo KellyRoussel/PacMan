@@ -277,9 +277,7 @@ public class GameController implements Runnable{
 				}
 				if(key == KeyEvent.VK_ESCAPE) {
 					pause = true;
-					frame.setContentPane(frame.menuPane);
-					frame.setVisible(true);
-					frame.menuPane.requestFocus();
+					frame.displayMenu();
 				}
 
 
@@ -446,7 +444,6 @@ public class GameController implements Runnable{
 
 
 	public void startGame() {
-		resume = true;
 		
 		frame.setContentPane(mainPane);
 		mainPane.requestFocus();
@@ -464,7 +461,7 @@ public class GameController implements Runnable{
 		tPhysics.setName("Physics");
 		tPhysics.start();
 		}
-		
+		resume = true;
 	}
 	private void stop() {
 		
