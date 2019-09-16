@@ -3,6 +3,7 @@ package Models.Foods;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -20,11 +21,14 @@ public class PacGum extends Food{
 	private static int animationCounter ;
 	
 	private final int PACGUM_GAIN = 50;
+	
+	private Rectangle PacGumRectangle;
 
 	public PacGum(int width, int height, Image image, Point position) {
 			super(width, height, image, position);
 			initialisePacGumImages();
-			// TODO Auto-generated constructor stub
+
+			PacGumRectangle = new Rectangle(position.x,position.y,width,height);
 		}
 	 
 	@Override
@@ -42,6 +46,18 @@ public class PacGum extends Food{
 			pacGumImages.add(pacGum_to_tile.extractImage(13 + i, 0, "pacGum", i));
 		}
 	}
+	
+	public double getRectangleX(){
+   		return PacGumRectangle.getX();
+    }
+   
+    public double getRectangleY(){
+   		return PacGumRectangle.getY();
+    }
+   
+    public Rectangle getRectangle(){
+   		return PacGumRectangle;
+    }
     
 	@Override
 	public void setEaten() {
@@ -54,4 +70,6 @@ public class PacGum extends Food{
 		// TODO Auto-generated method stub
 		return PACGUM_GAIN;
 	}
+	
+	
 }
