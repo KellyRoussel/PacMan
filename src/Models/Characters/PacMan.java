@@ -80,7 +80,7 @@ public class PacMan extends Character {
 		pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w / 2));
 		
 		pacManRectangle = new Rectangle(position.x,position.y,width,height);
-		pacManAdvancedFullShape = new Ellipse2D.Float(position.x,position.y,width,height);
+		pacManAdvancedFullShape = new Ellipse2D.Float(position.x,position.y,w,h);
 
 	}
 	
@@ -89,6 +89,7 @@ public class PacMan extends Character {
 		position.y = initialPosition.y;
 		
 		pacManRectangle.setLocation(initialPosition.x,initialPosition.y);
+		pacManAdvancedFullShape.setFrame(initialPosition.x,initialPosition.y,w,h);
 	}
 
 	public void initPM() {
@@ -112,6 +113,18 @@ public class PacMan extends Character {
     
     public Rectangle getRectangle(){
     	return pacManRectangle;
+    }
+    
+    public double getEllipseX(){
+    	return pacManAdvancedFullShape.getX();
+    }
+    
+    public double getEllipseY(){
+    	return pacManAdvancedFullShape.getY();
+    }
+    
+    public Ellipse2D.Float getEllipse(){
+    	return pacManAdvancedFullShape;
     }
 
 	public String getDirectionString() {
@@ -172,6 +185,7 @@ public class PacMan extends Character {
 			position.y = nextY;
 			
 			pacManRectangle.setLocation(nextX,nextY);
+			pacManAdvancedFullShape.setFrame(nextX,nextY,w,h);
 			
 			if (direction == KeyEvent.VK_LEFT) {
 				if (GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(),
@@ -297,6 +311,7 @@ public class PacMan extends Character {
 		position.y = y;
 		
 		pacManRectangle.setLocation(x,y);
+		pacManAdvancedFullShape.setFrame(x,y,w,h);
 	}
 
 	public void setInsideTile(int nRaw, int nColumn) {

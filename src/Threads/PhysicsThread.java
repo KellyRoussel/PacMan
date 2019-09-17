@@ -1,6 +1,8 @@
 package Threads;
 
 import java.awt.Rectangle;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,24 +34,33 @@ public class PhysicsThread extends Thread
 	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> var_ghost) {
 
 		Rectangle pacmanRectangle = var_pacMan.getRectangle();
+		Ellipse2D.Float pacmanEllipse = var_pacMan.getEllipse();
 
 		for(Ghost x : var_ghost) 
 		{
+			Rectangle ghostRectangle = x.getRectangle();
+			Rectangle ghostRectangleLow = x.getAdvancedLowerRectangle();
+			Arc2D ghostArcTop = x.getAdvancedTopArc();
+			
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
-				if(advancedCatchCollisionTactics()) 
+				return true;
+				/*if(advancedCatchCollisionTactics(pacmanEllipse, ghostRectangleLow, ghostArcTop))
 				{
 					return true;
-				}
-				return false;
+				}*/
 			}
 		}
 		return false;
 	}
 	
-	private synchronized boolean advancedCatchCollisionTactics()
+	private synchronized boolean advancedCatchCollisionTactics(Ellipse2D.Float var_pacman, Rectangle var_ghostbottom,Arc2D ghostArcTop)
 	{
-		return true;
+		if(var_pacman.intersects(var_ghostbottom))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/*public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_pacgum) {

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import javax.swing.ImageIcon;
 import Controllers.GameController;
 import Models.Characters.Strategies.GhostStrategy;
 
-public class Ghost extends Character{
+public class Ghost  extends Character{
 	
 
 	public static boolean state = true;
@@ -50,8 +51,8 @@ public class Ghost extends Character{
     public Map<Integer, String> directionString;
     
     private Rectangle ghostRectangle;
-    private Rectangle pacManAdvancedLowerShape;
-    private Arc2D.Float pacManAdvancedTopShape;
+    private Rectangle ghostAdvancedLowerShape;
+    private Arc2D.Float ghostAdvancedTopShape;
     
     private int availableDirections;
     
@@ -95,9 +96,8 @@ public class Ghost extends Character{
         ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
         
         ghostRectangle = new Rectangle(position.x,position.y,width,height);
-        
-        pacManAdvancedLowerShape = new Rectangle(position.x,position.y + height/2,width,height/2);
-        pacManAdvancedTopShape = new Arc2D.Float(position.x,position.y,width,height/2, 0, 180, Arc2D.CHORD);
+        ghostAdvancedLowerShape = new Rectangle(position.x,position.y + h/2,w,h/2);
+        ghostAdvancedTopShape = new Arc2D.Float(position.x,position.y,w,h/2, 0, 180, Arc2D.CHORD);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();
@@ -108,6 +108,8 @@ public class Ghost extends Character{
 		position.y = initialPosition.y;
 		
 		ghostRectangle.setLocation(initialPosition.x,initialPosition.y);
+		ghostAdvancedLowerShape.setLocation(initialPosition.x,initialPosition.y+ h/2);
+		ghostAdvancedTopShape.setFrame(initialPosition.x,initialPosition.y,w,h/2);
 	}
 
 	public double getRectangleX(){
@@ -120,6 +122,30 @@ public class Ghost extends Character{
    
     public Rectangle getRectangle(){
    		return ghostRectangle;
+    }
+    
+    public double getAdvancedLowerRectangleX(){
+   		return ghostAdvancedLowerShape.getX();
+    }
+   
+    public double getAdvancedLowerRectangleY(){
+   		return ghostAdvancedLowerShape.getY();
+    }
+   
+    public Rectangle getAdvancedLowerRectangle(){
+   		return ghostAdvancedLowerShape;
+    }
+    
+    public double getAdvancedTopArcX(){
+    	return ghostAdvancedTopShape.getX();
+    }
+    
+    public double getAdvancedTopArcY(){
+    	return ghostAdvancedTopShape.getY();
+    }
+    
+    public Arc2D.Float getAdvancedTopArc(){
+    	return ghostAdvancedTopShape;
     }
     
    public int getAvailableDirections() {
@@ -175,6 +201,8 @@ public class Ghost extends Character{
     	setInsideTile(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize());
     	
     	ghostRectangle.setLocation(position.x,position.y);
+    	ghostAdvancedLowerShape.setLocation(position.x,position.y+ h/2);
+		ghostAdvancedTopShape.setFrame(position.x,position.y,w,h/2);
     }
 
     private void loadImage() {
@@ -266,6 +294,8 @@ public class Ghost extends Character{
 		position.y = y;
 		
 		ghostRectangle.setLocation(x,y);
+		ghostAdvancedLowerShape.setLocation(x,y+ h/2);
+		ghostAdvancedTopShape.setFrame(x,y,w,h/2);
 	}
 
 	
