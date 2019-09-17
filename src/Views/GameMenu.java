@@ -63,6 +63,7 @@ public class GameMenu extends JPanel implements ActionListener{
 		add(startGame);
 		startGame.setBounds(220 , 450, 150, 50);
 		startGame.setBackground(Color.white);
+		startGame.setActionCommand("Start Game");
 		
 		audio = new JButton ("Audio");
 		audio.setFont(defaultFont);
@@ -71,14 +72,15 @@ public class GameMenu extends JPanel implements ActionListener{
 		add(audio);
 		audio.setBounds(220 , 520, 150, 50);
 		audio.setBackground(Color.white);
+		audio.setActionCommand("Audio");
 		
 		exit = new JButton("Exit");
 		exit.setFont(defaultFont);
 		exit.setAlignmentX(CENTER_ALIGNMENT);
 		exit.setAlignmentY(CENTER_ALIGNMENT);
-		add(exit);
-		exit.setBounds(220 , 590, 150, 50);
+		exit.setBounds(220 , 660, 150, 50);
 		exit.setBackground(Color.white);
+		exit.setActionCommand("Exit");
 		
 		
 		help = new JButton("Help");
@@ -86,8 +88,9 @@ public class GameMenu extends JPanel implements ActionListener{
 		help.setAlignmentX(CENTER_ALIGNMENT);
 		help.setAlignmentY(CENTER_ALIGNMENT);
 		add(help);
-		help.setBounds(220 , 660, 150, 50);
+		help.setBounds(220 , 590, 150, 50);
 		help.setBackground(Color.white);
+		help.setActionCommand("Help");
 		
 		//Des essais pour styliser les boutons
 //		help.setForeground(Color.white);
@@ -98,6 +101,7 @@ public class GameMenu extends JPanel implements ActionListener{
 		
 		startGame.addActionListener(this);
 		audio.addActionListener(this);
+		exit.addActionListener(this);
 		
 	}
 
@@ -111,10 +115,22 @@ public class GameMenu extends JPanel implements ActionListener{
 		case "Audio":
 			gameController.changeVolume();
 			break;
+		case "Exit":
+			gameController.stop();
+			break;
 		default:
 			break;
 		}
 			
 	}
+
+	public void gameRunning() {
+		startGame.setText("Resume");
+		add(exit);
+	}
 	
+	public void noMoreRunning() {
+		startGame.setText("Start Game");
+		remove(exit);
+	}
 }

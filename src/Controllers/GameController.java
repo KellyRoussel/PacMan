@@ -50,7 +50,7 @@ public class GameController implements Runnable{
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
-	private static int lives = 3 ;
+	private static int lives;
 
 	public static final int FPS = 10;
 	private static final int PM_INITIAL_POSITION = 60;
@@ -61,7 +61,11 @@ public class GameController implements Runnable{
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	
+<<<<<<< HEAD
     public static boolean running;
+=======
+    public boolean running;
+>>>>>>> 2f043f917b51af44435ddbdb2687a99eab2e72f6
     private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
@@ -73,6 +77,8 @@ public class GameController implements Runnable{
     public static boolean pause;    
 
 
+    private Thread gameThread; 
+    
 	private boolean wantSound = true;
 
 	public static int RESUME;
@@ -96,11 +102,13 @@ public class GameController implements Runnable{
 
 	public GameController(GamePanel gamePanel, MainGame frame) {    	    	
 
+		
 		init();
 		
 		this.gamePanel = gamePanel;
 		this.frame = frame;
 
+		
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
 		mainPane = new JPanel(bl);
@@ -118,7 +126,7 @@ public class GameController implements Runnable{
 //		music.play();
 //		soundOn = true;
 
-		level = 1;
+		
 		
 		// Lancer le jeu
 		//startGame();
@@ -129,6 +137,9 @@ public class GameController implements Runnable{
 		resize = false;
 		gameOver = false; 
 		statusBar = new StatusBar();
+		score = 0;
+		lives = 3;
+		level = 1;
 
 		Scanner sc = null;
 		try {
@@ -446,6 +457,7 @@ public class GameController implements Runnable{
 		mainPane.requestFocus();
 		frame.revalidate();
 		
+<<<<<<< HEAD
 		if(!running) {
 			new Thread(this).start();
 			
@@ -462,11 +474,41 @@ public class GameController implements Runnable{
 			tRender = new RenderThread(pacMan, gamePanel, maze, foodList, ghostList, statusBar);
 			tRender.setName("Render");
 			tRender.start();
+=======
+		if(gameThread == null || !gameThread.isAlive()) {
+		
+		gameThread = new Thread(this);
+		init();
+		gameThread.start();
+		
+		//Lancer un listener sur le clavier
+		addListeners();
+		
+		//System.out.println("Physics coming threw");
+		
+		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
+		tPhysics.setName("Physics");
+		tPhysics.start();
+		frame.menuPane.gameRunning();
+>>>>>>> 2f043f917b51af44435ddbdb2687a99eab2e72f6
 		}
+		
 		resume = true;
 	}
-	private void stop() {
-		
+	
+	
+	public void stop() {
+		running = false;
+		try {
+			gameThread.join(500);
+			if (gameThread.isAlive()){
+				gameThread.interrupt();
+			}
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
+		frame.menuPane.noMoreRunning();
+		frame.displayMenu();
 	}
 
 	public void pause() {
