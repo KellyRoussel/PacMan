@@ -23,7 +23,7 @@ public class MainGame extends JFrame implements WindowListener{
 	
 	private static MainGame SINGLE_INSTANCE = new MainGame();
 	private static GameController gameController;
-	public GameMenu menuPane;
+	public static GameMenu menuPane;
 	public AudioPanel audioPane;
 	
 	public static MainGame getInstance() {
@@ -37,7 +37,6 @@ public class MainGame extends JFrame implements WindowListener{
 		gameController = new GameController(new GamePanel(), this);
 		menuPane = new GameMenu(gameController);
 		audioPane = new AudioPanel(gameController);
-	
 		this.setContentPane(menuPane);
 		addWindowListener(this);
 	}
@@ -97,6 +96,7 @@ public class MainGame extends JFrame implements WindowListener{
 			MainGame.getInstance();
 			MainGame.resize();
         });
+		
 	}
 
 	@Override

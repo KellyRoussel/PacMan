@@ -49,7 +49,7 @@ public class GameController implements Runnable{
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
-	private static int lives = 3 ;
+	private static int lives;
 
 	public static final int FPS = 5;
 	private static final int PM_INITIAL_POSITION = 60;
@@ -60,7 +60,7 @@ public class GameController implements Runnable{
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	
-    private boolean running;
+    public boolean running;
     private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
@@ -72,6 +72,8 @@ public class GameController implements Runnable{
     public static boolean pause;    
 
 
+    private Thread gameThread; 
+    
 	private boolean wantSound = true;
 
 	public static int RESUME;
@@ -93,11 +95,13 @@ public class GameController implements Runnable{
 
 	public GameController(GamePanel gamePanel, MainGame frame) {    	    	
 
+		
 		init();
 		
 		this.gamePanel = gamePanel;
 		this.frame = frame;
 
+		
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
 		mainPane = new JPanel(bl);
@@ -115,7 +119,7 @@ public class GameController implements Runnable{
 //		music.play();
 //		soundOn = true;
 
-		level = 1;
+		
 		
 		// Lancer le jeu
 		//startGame();
@@ -126,6 +130,9 @@ public class GameController implements Runnable{
 		resize = false;
 		gameOver = false; 
 		statusBar = new StatusBar();
+		score = 0;
+		lives = 3;
+		level = 1;
 
 		Scanner sc = null;
 		try {
@@ -449,8 +456,11 @@ public class GameController implements Runnable{
 		mainPane.requestFocus();
 		frame.revalidate();
 		
-		if(!running) {
-		new Thread(this).start();
+		if(gameThread == null || !gameThread.isAlive()) {
+		
+		gameThread = new Thread(this);
+		init();
+		gameThread.start();
 		
 		//Lancer un listener sur le clavier
 		addListeners();
@@ -460,11 +470,25 @@ public class GameController implements Runnable{
 		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
 		tPhysics.setName("Physics");
 		tPhysics.start();
+		frame.menuPane.gameRunning();
 		}
+		
 		resume = true;
 	}
-	private void stop() {
-		
+	
+	
+	public void stop() {
+		running = false;
+		try {
+			gameThread.join(500);
+			if (gameThread.isAlive()){
+				gameThread.interrupt();
+			}
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
+		frame.menuPane.noMoreRunning();
+		frame.displayMenu();
 	}
 
 	public void pause() {
