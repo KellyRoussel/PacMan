@@ -27,6 +27,7 @@ import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
 import Threads.PhysicsThread;
+import Threads.RenderThread;
 import Views.GameMenu;
 import  Views.GamePanel;
 import  Views.MainGame;
@@ -51,16 +52,16 @@ public class GameController implements Runnable{
 	private static int score;
 	private static int lives = 3 ;
 
-	public static final int FPS = 5;
+	public static final int FPS = 10;
 	private static final int PM_INITIAL_POSITION = 60;
 
-	private static final long JOIN_TIMER = 10;
+	public static final long JOIN_TIMER = 10;
 	private static final int PINK_INITIAL_POSITION = 26;
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	
-    private boolean running;
+    public static boolean running;
     private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
@@ -86,6 +87,8 @@ public class GameController implements Runnable{
 	private Sound background;
 	private Sound beginning;
 	private Sound death;
+
+	private RenderThread tRender;
 
 	public static ArrayList<Point> listTunnelLeft;
 
@@ -302,13 +305,7 @@ public class GameController implements Runnable{
 				gameUpdate();
 			}else if(resume) {
 				resume();
-			}else if(pacMan.isDead()) {
-				
-				pacMan.deadAnimate();
 			}
-    		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-			gamePanel.paintScreen();
-
 			try {
 				Thread.sleep(FPS);
 			}catch(InterruptedException ex) {}
@@ -450,16 +447,21 @@ public class GameController implements Runnable{
 		frame.revalidate();
 		
 		if(!running) {
-		new Thread(this).start();
-		
-		//Lancer un listener sur le clavier
-		addListeners();
-		
-		//System.out.println("Physics coming threw");
-		
-		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
-		tPhysics.setName("Physics");
-		tPhysics.start();
+			new Thread(this).start();
+			
+			//Lancer un listener sur le clavier
+			addListeners();
+			
+			//System.out.println("Physics coming threw");
+			
+			PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
+			tPhysics.setName("Physics");
+			tPhysics.start();
+			
+			
+			tRender = new RenderThread(pacMan, gamePanel, maze, foodList, ghostList, statusBar);
+			tRender.setName("Render");
+			tRender.start();
 		}
 		resume = true;
 	}
@@ -468,7 +470,7 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
-		statusBar.updateState("PAUSED");
+		tRender.pause();
 		pause = true;
 		wantSound = soundOn;
 		mute();
@@ -487,35 +489,13 @@ public class GameController implements Runnable{
 
 	public void resume(){
 		pause = false;
-		statusBar.updateState("RESUME");
 		
-		RESUME = 0;
-		while(RESUME <3) {
-			RESUME += 1;
-			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-			gamePanel.paintScreen();
-			
-			Models.TimerThread timerThread = new Models.TimerThread(1);
-			timerThread.start();
-			timerThread.setName(" RESUME TIMER");
-			
-		synchronized(timerThread) {
-				
-			try {
-				timerThread.wait(1 * 1000 + 500);
-				timerThread.join(JOIN_TIMER); 
-				if(timerThread.isAlive()) {	timerThread.interrupt();}
-			}
-			catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-			
-		}
-			statusBar.updateState("PLAY");
-			if(wantSound) {
-				music = background;
-				unMute();}		
+		if(tRender != null)
+			tRender.res();
+		
+		if(wantSound) {
+			music = background;
+			unMute();}		
 		
 		resume = false;
 		if(pacMan.isResurrection()) {
