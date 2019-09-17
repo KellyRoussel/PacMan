@@ -102,6 +102,7 @@ public class GameMenu extends JPanel implements ActionListener{
 		startGame.addActionListener(this);
 		audio.addActionListener(this);
 		exit.addActionListener(this);
+		help.addActionListener(this);
 		
 	}
 
@@ -118,7 +119,13 @@ public class GameMenu extends JPanel implements ActionListener{
 		case "Exit":
 			gameController.stop();
 			break;
-		default:
+		case "Help":
+			System.out.println("help");
+			gameController.frame.setContentPane(gameController.frame.helpPane);
+			gameController.frame.helpPane.requestFocus();
+			gameController.frame.revalidate();
+			break;
+			default:
 			break;
 		}
 			

@@ -554,6 +554,7 @@ public class GameController implements Runnable{
 	}
 
 	public static void setGrille(int[][] grille) {
+		
 		GameController.grille = grille;
 	}
 
