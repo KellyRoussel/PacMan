@@ -61,11 +61,8 @@ public class GameController implements Runnable{
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	
-<<<<<<< HEAD
     public static boolean running;
-=======
-    public boolean running;
->>>>>>> 2f043f917b51af44435ddbdb2687a99eab2e72f6
+
     private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
@@ -457,24 +454,7 @@ public class GameController implements Runnable{
 		mainPane.requestFocus();
 		frame.revalidate();
 		
-<<<<<<< HEAD
-		if(!running) {
-			new Thread(this).start();
-			
-			//Lancer un listener sur le clavier
-			addListeners();
-			
-			//System.out.println("Physics coming threw");
-			
-			PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
-			tPhysics.setName("Physics");
-			tPhysics.start();
-			
-			
-			tRender = new RenderThread(pacMan, gamePanel, maze, foodList, ghostList, statusBar);
-			tRender.setName("Render");
-			tRender.start();
-=======
+
 		if(gameThread == null || !gameThread.isAlive()) {
 		
 		gameThread = new Thread(this);
@@ -489,8 +469,12 @@ public class GameController implements Runnable{
 		PhysicsThread tPhysics = new PhysicsThread(pacMan,ghostList);
 		tPhysics.setName("Physics");
 		tPhysics.start();
+		
+		tRender = new RenderThread(pacMan, gamePanel, maze, foodList, ghostList, statusBar);
+		tRender.setName("Render");
+		tRender.start();
+		
 		frame.menuPane.gameRunning();
->>>>>>> 2f043f917b51af44435ddbdb2687a99eab2e72f6
 		}
 		
 		resume = true;
