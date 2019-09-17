@@ -21,7 +21,7 @@ public class MainGame extends JFrame implements WindowListener{
 	public static int actualWindowHeight;
 	
 	
-	private static MainGame SINGLE_INSTANCE = new MainGame();
+	public static MainGame SINGLE_INSTANCE = new MainGame();
 	private static GameController gameController;
 	public static GameMenu menuPane;
 	public AudioPanel audioPane;
@@ -143,7 +143,7 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause();
+		gameController.pause = true;
 		
 	}
 }

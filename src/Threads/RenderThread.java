@@ -83,7 +83,7 @@ public class RenderThread extends Thread{
 			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
 			
-			Models.TimerThread timerThread = new Models.TimerThread(1);
+			Threads.TimerThread timerThread = new Threads.TimerThread(1);
 			timerThread.start();
 			timerThread.setName(" RESUME TIMER");
 			

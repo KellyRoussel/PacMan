@@ -1,4 +1,4 @@
-package Models;
+package Threads;
 
 public class TimerThread extends Thread{
 	
@@ -11,6 +11,11 @@ public class TimerThread extends Thread{
 		iTimeDelayMS = iTimeInSec * 1000;
 		
 	}
+	
+	public void stopThread() {
+		isRunning = false;		
+	}
+	
 	public void run() {
 		isRunning = true;
 		int currentTime = 0;
@@ -21,9 +26,9 @@ public class TimerThread extends Thread{
 			try {
 					long counterStart = System.currentTimeMillis();
 					Thread.sleep(SLEEP_TIMER);								
-					timerCount += System.currentTimeMillis() - 	counterStart;
+					setTimerCount(getTimerCount() + System.currentTimeMillis() - 	counterStart);
 					
-					currentTime = (int)timerCount /1000;
+					currentTime = (int)getTimerCount() /1000;
 					if(currentTime > previousTime) {
 						
 						previousTime = currentTime;
@@ -43,7 +48,15 @@ public class TimerThread extends Thread{
 	
 
 	private boolean verifStop() {
-		return isRunning & timerCount <= iTimeDelayMS;
+		return isRunning & getTimerCount() <= iTimeDelayMS;
+	}
+
+	public long getTimerCount() {
+		return timerCount;
+	}
+
+	public void setTimerCount(long timerCount) {
+		this.timerCount = timerCount;
 	}
 	
 }
