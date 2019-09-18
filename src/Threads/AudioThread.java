@@ -88,7 +88,7 @@ import javax.sound.sampled.FloatControl;
 					if (isDead.get()) {
 						if(!SoundMuted.get()) {
 							// si le clip deadPacmanSoundClip est deja lance une fois au moins
-							if(!firstTimeDead) {
+							if(!firstTimeDead && !deadPacmanSoundClip.isRunning()) {
 								restart(deadPacmanSoundClip ,deadPacmanSoundfilePath ,false);
 								//stop(musicBackgroundClip);
 							}

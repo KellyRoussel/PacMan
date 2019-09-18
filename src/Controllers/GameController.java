@@ -412,7 +412,8 @@ public class GameController implements Runnable{
 		
 		if(getPacMan().isDead()) {
 			tAudio.setIsDead(true);
-			getPacMan().deadAnimate();		
+			getPacMan().deadAnimate();
+			//getPacMan().setIsDead(false);
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
