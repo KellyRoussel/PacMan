@@ -106,7 +106,7 @@ import javax.sound.sampled.FloatControl;
 					if (isEaten.get()) {
 						if(!SoundMuted.get()) {
 							// si le clip eatedGumSoundClip est deja lance une fois au moins
-							if(!firstTimeEat) {
+							if(!firstTimeEat && !eatedGumSoundClip.isRunning()) {
 								restart(eatedGumSoundClip ,eatGumSoundfilePath ,false);
 							}
 							// la premiere lance du clip eatedGumSoundClip

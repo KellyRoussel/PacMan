@@ -407,8 +407,8 @@ public class GameController implements Runnable{
 		}
 		
 		if(getPacMan().isDead()) {
-			getPacMan().deadAnimate();	
 			tAudio.setIsDead(true);
+			getPacMan().deadAnimate();		
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -426,11 +426,10 @@ public class GameController implements Runnable{
 	private void updatePositions(int raw, int column, boolean flag) {
 		for(int i = 0; i < getFoodList().size(); i++) {
 			if(getFoodList().get(i).getInitialPosition().x / defaultSize == column && getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
-
+				tAudio.setIsEaten(true);
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
-				tAudio.setIsEaten(true);
 				//statusBar.updateScore();
 			}
 		}
@@ -485,8 +484,6 @@ public class GameController implements Runnable{
 
 	
 	public void startGame() {
-		
-		
 		frame.setContentPane(getMainPane());
 		getMainPane().requestFocus();
 		frame.revalidate();
@@ -509,10 +506,9 @@ public class GameController implements Runnable{
 			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
 			tRender.setName("Render");
 			tRender.start();
-
-			tAudio.start();
 			
 			frame.menuPane.gameRunning();
+			tAudio.start();
 		}
 		System.out.println("haa");
 		resume = true;
@@ -521,7 +517,8 @@ public class GameController implements Runnable{
 	
 	public void stop() {
 		running = false;
-		tAudio.setIsRunning(false);
+		//******************************************************
+		//tAudio.setIsRunning(false);
 		try {
 			gameThread.join(500);
 			if (gameThread.isAlive()){
@@ -536,11 +533,9 @@ public class GameController implements Runnable{
 
 	public void pause() {
 		while(tRender == null) {}
+		tAudio.setIsPause(true);
 		tRender.pause();
 		pause = true;
-		//wantSound = soundOn;
-		//mute();
-		tAudio.setIsPause(true);
 	}
 
 	/*private void mute() {
@@ -556,12 +551,12 @@ public class GameController implements Runnable{
 	public void resume(){
 		pause = false;
 		while(tRender == null) {}
+		tAudio.setIsPause(false);
 		tRender.res();
 		
 		/*if(wantSound) {
 			music = getBackground();
 			unMute();}	*/	
-		tAudio.setIsPause(false);
 		resume = false;
 		if(getPacMan().isResurrection()) {
 			getPacMan().setResurrection(false);
