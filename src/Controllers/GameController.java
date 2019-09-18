@@ -410,9 +410,11 @@ public class GameController implements Runnable{
 			}
 		}
 		
-		if(getPacMan().isDead()) {
-			tAudio.setIsDead(true);
-			getPacMan().deadAnimate();
+		if(getPacMan().isDead() && pacMan.getDeadAnimationCounter() == 0) {
+		
+				tAudio.setIsDead(true);
+				getPacMan().deadAnimate();
+			
 			//getPacMan().setIsDead(false);
 		}
 		if(getPacMan().isResurrection()) {
@@ -453,7 +455,7 @@ public class GameController implements Runnable{
 			//wantSound = soundOn;
 			pause = true;
 			//mute();
-			tAudio.setMuteOnOff(true);
+			//tAudio.setMuteOnOff(true);
 			resume = true;
 		}
 
@@ -468,6 +470,7 @@ public class GameController implements Runnable{
 	
 	private void startNewLife() 
 	{
+			getPacMan().setIsDead(false);
 			lives--;
 			if(lives == 0) {
 				gameOver = true;
@@ -484,7 +487,7 @@ public class GameController implements Runnable{
 				pause = true;
 				resume = true;
 				
-				getPacMan().setIsDead(false);
+				
 			}
 	}
 

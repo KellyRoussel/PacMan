@@ -86,6 +86,8 @@ import javax.sound.sampled.FloatControl;
 					}
 					// si le pacman est mort et le son n est pas en mode mute
 					if (isDead.get()) {
+						System.out.println("dead");
+						isDead.compareAndExchange(true, false);
 						if(!SoundMuted.get()) {
 							// si le clip deadPacmanSoundClip est deja lance une fois au moins
 							if(!firstTimeDead && !deadPacmanSoundClip.isRunning()) {
@@ -99,7 +101,7 @@ import javax.sound.sampled.FloatControl;
 								firstTimeDead = false;
 							}
 						}
-						isDead.compareAndExchange(true, false);
+						
 					}
 					
 					// si le pacman mange une gomme et le son n est pas en mode mute
