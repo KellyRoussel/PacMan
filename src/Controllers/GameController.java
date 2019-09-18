@@ -504,6 +504,7 @@ public class GameController implements Runnable{
 			tRender.setName("Render");
 			tRender.start();
 			
+			
 			frame.menuPane.gameRunning();
 		}
 		System.out.println("haa");
