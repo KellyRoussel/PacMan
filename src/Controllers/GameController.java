@@ -311,12 +311,36 @@ public class GameController implements Runnable{
 	public void run() {
 		running = true;
 		pause = true;
-		while(running && !gameOver) {
-			if(! pause) {	
-				gameUpdate();
+		while(running) {
+			if(gameOver) {
+				try {
+					Thread.sleep(3000);
+					gameOver = false;
+					setLevel(1);
+					setLives(3);
+					setScore(0);
+					//statusBar.updateLevel();
+					getPacMan().returnInitialPosition();
+					for(int i = 0; i < getGhostList().size(); i++) {
+						getGhostList().get(i).returnInitialPosition();
+					}
+					getPacMan().initPM();
+					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+					getPacMan().loadImage();
+					fillFoodList();
+					wantSound = soundOn;
+					pause = true;
+					mute();
+					resume = true;
+				}catch(InterruptedException ex) {}
 			}
-			if(resume) {
-				resume();
+			else {
+				if(! pause) {	
+					gameUpdate();
+				}
+				if(resume) {
+					resume();
+				}
 			}
 			try {
 				Thread.sleep(FPS);
@@ -434,18 +458,23 @@ public class GameController implements Runnable{
 	private void startNewLife() 
 	{
 			lives--;
-			getPacMan().returnInitialPosition();
-			for(int i = 0; i < 4; i++) {
-				getGhostList().get(i).returnInitialPosition();
+			if(lives == 0) {
+				gameOver = true;
 			}
-			getPacMan().initPM();
-			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
-			getPacMan().loadImage();
-			
-			pause = true;
-			resume = true;
-			
-			getPacMan().setIsDead(false);
+			else {		
+				getPacMan().returnInitialPosition();
+				for(int i = 0; i < 4; i++) {
+					getGhostList().get(i).returnInitialPosition();
+				}
+				getPacMan().initPM();
+				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+				getPacMan().loadImage();
+				
+				pause = true;
+				resume = true;
+				
+				getPacMan().setIsDead(false);
+			}
 	}
 
 	

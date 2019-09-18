@@ -61,7 +61,7 @@ public class RenderThread extends Thread{
 		long pastTime;
 		long currentTime;
 		long timeloop;
-		while(GameController.running && !GameController.gameOver) {
+		while(GameController.running) {
 			pastTime = System.currentTimeMillis();
 			if(!GameController.pause){
 				if(pacMan.isDead()) {
