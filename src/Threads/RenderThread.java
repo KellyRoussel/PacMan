@@ -74,9 +74,10 @@ public class RenderThread extends Thread{
 			try {
 				currentTime = System.currentTimeMillis();
 				timeloop = currentTime - pastTime;
-				if(timeloop < 0) {
+				if(timeloop <= 0) {
 					timeloop = 10;
 				}
+				timeloop = 10;
 				Thread.sleep(timeloop);
 				statusBar.updateFPS("" + (1000/timeloop));
 			}catch(InterruptedException ex) {}

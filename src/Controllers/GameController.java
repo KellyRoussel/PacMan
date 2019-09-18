@@ -314,7 +314,8 @@ public class GameController implements Runnable{
 		while(running && !gameOver) {
 			if(! pause) {	
 				gameUpdate();
-			}else if(resume) {
+			}
+			if(resume) {
 				resume();
 			}
 			try {
@@ -447,38 +448,36 @@ public class GameController implements Runnable{
 			getPacMan().setIsDead(false);
 	}
 
-
+	
 	public void startGame() {
 		
-		statusBar.updateState("PLAY");
 		
 		frame.setContentPane(getMainPane());
 		getMainPane().requestFocus();
 		frame.revalidate();
 		
-
 		if(gameThread == null || !gameThread.isAlive()) {
 		
-		gameThread = new Thread(this);
-		init();
-		gameThread.start();
-		
-		//Lancer un listener sur le clavier
-		addListeners();
-		
-		//System.out.println("Physics coming threw");
-		
-		PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
-		tPhysics.setName("Physics");
-		tPhysics.start();
-		
-		tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
-		tRender.setName("Render");
-		tRender.start();
-		
-		frame.menuPane.gameRunning();
+			gameThread = new Thread(this);
+			init();
+			gameThread.start();
+			
+			//Lancer un listener sur le clavier
+			addListeners();
+			
+			//System.out.println("Physics coming threw");
+			
+			PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
+			tPhysics.setName("Physics");
+			tPhysics.start();
+			
+			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
+			tRender.setName("Render");
+			tRender.start();
+			
+			frame.menuPane.gameRunning();
 		}
-		
+		System.out.println("haa");
 		resume = true;
 	}
 	
@@ -517,9 +516,8 @@ public class GameController implements Runnable{
 
 	public void resume(){
 		pause = false;
-		
-		if(tRender != null)
-			tRender.res();
+		while(tRender == null) {}
+		tRender.res();
 		
 		if(wantSound) {
 			music = getBackground();
