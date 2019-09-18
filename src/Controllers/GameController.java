@@ -26,6 +26,7 @@ import Models.Foods.Food;
 import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
+import Threads.AudioThread;
 import Threads.PhysicsThread;
 import Threads.RenderThread;
 import Views.GameMenu;
@@ -46,7 +47,7 @@ public class GameController implements Runnable{
 	private Maze maze;
 	private ArrayList<Food> foodList;
 
-	private Sound music;
+	//private Sound music;
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
@@ -66,7 +67,7 @@ public class GameController implements Runnable{
     public BufferedImage output;
     public Graphics g;
 
-    private boolean soundOn;
+    //private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
 
@@ -80,7 +81,7 @@ public class GameController implements Runnable{
 
     private Thread gameThread; 
     
-	private boolean wantSound = true;
+	//private boolean wantSound = true;
 
 	public static int RESUME;
 	public static boolean resume;
@@ -91,11 +92,12 @@ public class GameController implements Runnable{
 	private static int [][] grille;
 	private static int nRow; 
 	private static int nColumn;
-	private Sound background;
-	private Sound beginning;
-	private Sound death;
+	//private Sound background;
+	//private Sound beginning;
+	//private Sound death;
 
 	private RenderThread tRender;
+	private AudioThread tAudio;
 
 	public static ArrayList<Point> listTunnelLeft;
 
@@ -117,9 +119,9 @@ public class GameController implements Runnable{
 		getMainPane().add(statusBar, BorderLayout.SOUTH);
 
 
-		background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
-		beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
-		death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
+		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
+		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
+		//death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
 
 
 		//Lancer la musique
@@ -278,9 +280,9 @@ public class GameController implements Runnable{
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
 					if(!resume) {
-					if(soundOn || pause) {
+					/*if(soundOn || pause) {
 						mute();
-					}else {unMute();}
+					}else {unMute();}*/
 				}
 				}
 
@@ -328,9 +330,9 @@ public class GameController implements Runnable{
 					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 					getPacMan().loadImage();
 					fillFoodList();
-					wantSound = soundOn;
+					//wantSound = soundOn;
 					pause = true;
-					mute();
+					//mute();
 					resume = true;
 				}catch(InterruptedException ex) {}
 			}
@@ -404,7 +406,7 @@ public class GameController implements Runnable{
 		
 		if(getPacMan().isDead()) {
 			getPacMan().deadAnimate();	
-			music.stop();
+			//music.stop();
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -440,9 +442,9 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
-			wantSound = soundOn;
+			//wantSound = soundOn;
 			pause = true;
-			mute();
+			//mute();
 			resume = true;
 		}
 
@@ -504,6 +506,9 @@ public class GameController implements Runnable{
 			tRender.setName("Render");
 			tRender.start();
 			
+			tAudio = new AudioThread();
+			tAudio.setName("Audio");
+			tAudio.start();
 			
 			frame.menuPane.gameRunning();
 		}
@@ -529,12 +534,12 @@ public class GameController implements Runnable{
 	public void pause() {
 		tRender.pause();
 		pause = true;
-		wantSound = soundOn;
-		mute();
+		//wantSound = soundOn;
+		//mute();
 		
 	}
 
-	private void mute() {
+	/*private void mute() {
 		music.stop();
 		soundOn = false;
 	}
@@ -542,16 +547,16 @@ public class GameController implements Runnable{
 	private void unMute() {
 		music.loop();
 		soundOn = true;
-	}
+	}*/
 
 	public void resume(){
 		pause = false;
 		while(tRender == null) {}
 		tRender.res();
 		
-		if(wantSound) {
+		/*if(wantSound) {
 			music = getBackground();
-			unMute();}		
+			unMute();}	*/	
 		
 		resume = false;
 		if(getPacMan().isResurrection()) {
@@ -682,23 +687,23 @@ public class GameController implements Runnable{
 	/**
 	 * @return the background
 	 */
-	public Sound getBackground() {
+	/*public Sound getBackground() {
 		return background;
 	}
 
 	/**
 	 * @return the beginning
 	 */
-	public Sound getBeginning() {
+	/*public Sound getBeginning() {
 		return beginning;
-	}
+	}*/
 
 	/**
 	 * @return the death
 	 */
-	public Sound getDeath() {
+	/*public Sound getDeath() {
 		return death;
-	}
+	}*/
 
 	/**
 	 * @return the mainPane

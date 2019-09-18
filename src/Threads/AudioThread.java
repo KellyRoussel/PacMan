@@ -13,7 +13,7 @@ public class AudioThread extends Thread {
 	// champs pour la musique du jeu
 	private volatile static AtomicBoolean isMusicPaused = new AtomicBoolean(true);
 	private static float MusicVolume = 0.5f;
-	private static AtomicBoolean MusicMuted = new AtomicBoolean(true);
+	private static AtomicBoolean MusicMuted = new AtomicBoolean(false);
 
 	// champs pour les sons du jeu
 	private static float SoundVolume = 0.8f;
@@ -26,13 +26,15 @@ public class AudioThread extends Thread {
 
 	// les clips du jeu
 	private Clip musicBackgroundClip;
-	private final static String MusicfilePath = File.separator+"Sounds" + File.separator + "loop.wav";
+	private final static String MusicfilePath = "Ressources" + File.separator + "loop.wav";
 	private Clip deadPacmanSoundClip;
-	private final static String deadPacmanSoundfilePath = File.separator+"Sounds" + File.separator + "pacman_death.wav";
+	private final static String deadPacmanSoundfilePath = "Ressources" + File.separator + "pacman_death.wav";
 	private Clip eatedGumSoundClip;
-	private final static String eatGumSoundfilePath = File.separator + "Sounds" + File.separator + "pacman_chomp.wav";
+	private final static String eatGumSoundfilePath = "Ressources" + File.separator + "pacman_chomp.wav";
 	private Clip startGameSoundClip;
-	private final static String startGameSoundfilePath = File.separator + "Sounds" + File.separator + "pacman_death.wav";
+	private final static String startGameSoundfilePath = "Ressources" + File.separator + "pacman_death.wav";
+	
+	private static final long SLEEP_TIMER = 50;
 
 	// Contexte du thread
 	private AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -129,6 +131,12 @@ public class AudioThread extends Thread {
 				pause(eatedGumSoundClip);
 				pause(startGameSoundClip);
 				pause(deadPacmanSoundClip);
+			}
+			try {
+				Thread.sleep(SLEEP_TIMER);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
