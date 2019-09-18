@@ -213,7 +213,6 @@ public class PacMan extends Character {
 	}
 
 	public void deadAnimate() {
-		isDead = true;
 		// l image de l animation change après 5 Frames 
 		// il existe 12 images de l animation
 		if (deadAnimationCounter < 12 * 7) {
