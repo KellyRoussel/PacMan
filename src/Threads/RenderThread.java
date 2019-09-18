@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 
 import Controllers.GameController;
 import Models.Maze;
-import Models.Sound;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;

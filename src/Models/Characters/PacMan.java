@@ -216,9 +216,9 @@ public class PacMan extends Character {
 		isDead = true;
 		// l image de l animation change après 5 Frames 
 		// il existe 12 images de l animation
-		if (deadAnimationCounter < 12 * 5) {
+		if (deadAnimationCounter < 12 * 7) {
 			ToSprite pacMan_tiles_to_sprite = new ToSprite(8, "pacmanTilesSheet");
-			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 5) % 8, 4 + deadAnimationCounter / (8 * 5),
+			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 7) % 8, 4 + deadAnimationCounter / (8 * 7),
 					"PacManDead", deadAnimationCounter));
 			deadAnimationCounter++;
 		}else {

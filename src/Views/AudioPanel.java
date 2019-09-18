@@ -40,7 +40,7 @@ public class AudioPanel extends JPanel implements ActionListener {
 		setLayout(null);
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, 800));
-		musicVal = 50;
+		musicVal = 70;
 		soundVal = 50;
 
 		musicLabel = new JLabel();
