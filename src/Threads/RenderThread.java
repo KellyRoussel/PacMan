@@ -60,7 +60,7 @@ public class RenderThread extends Thread{
 	public void run() {
 		long pastTime;
 		long currentTime;
-		long fps;
+		long timeloop;
 		while(GameController.running && !GameController.gameOver) {
 			pastTime = System.currentTimeMillis();
 			if(!GameController.pause){
@@ -73,12 +73,12 @@ public class RenderThread extends Thread{
 
 			try {
 				currentTime = System.currentTimeMillis();
-				fps = currentTime - pastTime;
-				if(fps < 0) {
-					fps = 10;
+				timeloop = currentTime - pastTime;
+				if(timeloop < 0) {
+					timeloop = 10;
 				}
-				Thread.sleep(fps);
-				statusBar.updateFPS("" + fps);
+				Thread.sleep(timeloop);
+				statusBar.updateFPS("" + (1000/timeloop));
 			}catch(InterruptedException ex) {}
 		}
     }
