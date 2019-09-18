@@ -30,7 +30,7 @@ public class StatusBar extends JPanel{
 	private JLabel stateLabel;
 	private JPanel fruitsPane; 
 	//private JPanel lvPane;
-	private JLabel collisionPane;
+	private JLabel fpsPane;
 	
 	public StatusBar() {
 		setBackground(Color.black);
@@ -61,7 +61,7 @@ public class StatusBar extends JPanel{
 		
 		JLabel CollisionL = new JLabel();
 		CollisionL.setFont(new Font("Joystix", Font.BOLD, 15));
-		CollisionL.setText("<html><font color = 'WHITE'> COLLISION </font></html>");
+		CollisionL.setText("<html><font color = 'WHITE'> FPS </font></html>");
 		CollisionL.setAlignmentX(CENTER_ALIGNMENT);
 		CollisionL.setAlignmentY(CENTER_ALIGNMENT);
 		add(CollisionL);
@@ -115,14 +115,14 @@ public class StatusBar extends JPanel{
 		
 		add(lvPane);*/
 		
-		// Creation des collisions
-		JPanel collision = new JPanel(new FlowLayout());
-		collision.setBackground(Color.black);
-		collisionPane = new JLabel();
-		collisionPane.setFont(new Font("Joystix", Font.BOLD, 15));
-		updateCollision("NONE");
-		collision.add(collisionPane);
-		add(collision);
+		// Creation du fps 
+		JPanel fps = new JPanel(new FlowLayout());
+		fps.setBackground(Color.black);
+		fpsPane = new JLabel();
+		fpsPane.setFont(new Font("Joystix", Font.BOLD, 15));
+		updateFPS("" + 10);
+		fps.add(fpsPane);
+		add(fps);
 		
 		// Creation du state		
 		JPanel statePane = new JPanel(new FlowLayout());
@@ -135,9 +135,9 @@ public class StatusBar extends JPanel{
 	
 	}
 		
-	public void updateCollision(String string) {
+	public void updateFPS(String string) {
 		// TODO Auto-generated method stub
-		collisionPane.setText("<html><font color = 'YELLOW'>" + string + "</font></html>");
+		fpsPane.setText("<html><font color = 'YELLOW'>" + string + "</font></html>");
 	}
 	
 	/*public void updateLevel() {
@@ -200,6 +200,6 @@ public class StatusBar extends JPanel{
 	}*/
 	
 	public JLabel getCollisionPanel() {
-		return collisionPane;
+		return fpsPane;
 	}
 }

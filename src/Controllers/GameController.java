@@ -374,8 +374,6 @@ public class GameController implements Runnable{
 				if(tile == 0 || tile >= 30) {
 					updatePositions(raw, column, false);
 				}
-				else
-					statusBar.updateCollision(getPacMan().getDirectionString());
 			}
 		}
 		
@@ -424,7 +422,6 @@ public class GameController implements Runnable{
 		}
 
 		if(!resume) {
-			statusBar.updateCollision("NONE");
 			getPacMan().move(); 
 			
 			if(flag)
@@ -452,6 +449,8 @@ public class GameController implements Runnable{
 
 
 	public void startGame() {
+		
+		statusBar.updateState("PLAY");
 		
 		frame.setContentPane(getMainPane());
 		getMainPane().requestFocus();

@@ -53,9 +53,16 @@ public class RenderThread extends Thread{
 		this.statusBar = statusBar;
 	}
 	//Boucle du jeu
+	
+	
+	
 	@Override
 	public void run() {
+		long pastTime;
+		long currentTime;
+		long fps;
 		while(GameController.running && !GameController.gameOver) {
+			pastTime = System.currentTimeMillis();
 			if(!GameController.pause){
 				if(pacMan.isDead()) {
 					pacMan.deadAnimate();
@@ -65,7 +72,13 @@ public class RenderThread extends Thread{
 			gamePanel.paintScreen();
 
 			try {
-				Thread.sleep(GameController.FPS);
+				currentTime = System.currentTimeMillis();
+				fps = currentTime - pastTime;
+				if(fps < 0) {
+					fps = 10;
+				}
+				Thread.sleep(fps);
+				statusBar.updateFPS("" + fps);
 			}catch(InterruptedException ex) {}
 		}
     }
