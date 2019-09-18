@@ -1,103 +1,318 @@
 package Threads;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import Models.Audio.AudioPlayer;
-import Models.Audio.MusicPlayer;
-import Models.Audio.SoundPlayer;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.BooleanControl;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
-public class AudioThread extends Thread{
-	
-	private ArrayList<SoundPlayer> soundList = new ArrayList<SoundPlayer>();
-	
-	private MusicPlayer gameMusic;
-	private SoundPlayer gumEatenSound;
-	private SoundPlayer startGameSound;
-	private SoundPlayer deadPacmanSound;
-	
-	private static AtomicInteger musicVolume;   // valeur permise 0 10 .. 100
-	private static AtomicInteger soundVolume;	// valeur permise 0 10 .. 100
-	private static AtomicBoolean isSoundMute = new AtomicBoolean(false);
-	private static AtomicBoolean isMusicMute = new AtomicBoolean(false);
+public class AudioThread extends Thread {
 
-	public void AudioThread() {
-		//initialiser la musique du jeu
-		gameMusic = new MusicPlayer("Ressources" + File.separator + "loop.wav");
-		
-		//initialiser les sons et les stocker dans la liste soundList
-		gumEatenSound = new SoundPlayer("Ressources" + File.separator + "pacman_chomp.wav");
-		soundList.add(gumEatenSound);
-		startGameSound = new SoundPlayer("Ressources"+File.separator +"beginning.wav");
-		soundList.add(startGameSound);
-		deadPacmanSound = new SoundPlayer("Ressources"+File.separator +"pacman_death.wav");
-		soundList.add(deadPacmanSound);
-		
+	// champs pour la musique du jeu
+	private volatile static AtomicBoolean isMusicPaused = new AtomicBoolean(true);
+	private static float MusicVolume = 0.5f;
+	private static AtomicBoolean MusicMuted = new AtomicBoolean(true);
+
+	// champs pour les sons du jeu
+	private static float SoundVolume = 0.8f;
+	private static AtomicBoolean SoundMuted = new AtomicBoolean(false);
+	
+	// champs qui sont a true si le clip correspondant aux sons est lance pour la premiere fois
+	private static boolean firstTimeDead = true;
+	private static boolean firstTimeEat = true;
+	private static boolean firstTimeStart = true;
+
+	// les clips du jeu
+	private Clip musicBackgroundClip;
+	private final static String MusicfilePath = File.separator+"Sounds" + File.separator + "loop.wav";
+	private Clip deadPacmanSoundClip;
+	private final static String deadPacmanSoundfilePath = File.separator+"Sounds" + File.separator + "pacman_death.wav";
+	private Clip eatedGumSoundClip;
+	private final static String eatGumSoundfilePath = File.separator + "Sounds" + File.separator + "pacman_chomp.wav";
+	private Clip startGameSoundClip;
+	private final static String startGameSoundfilePath = File.separator + "Sounds" + File.separator + "pacman_death.wav";
+
+	// Contexte du thread
+	private AtomicBoolean isRunning = new AtomicBoolean(true);
+	private AtomicBoolean isEaten 	= new AtomicBoolean(false);
+	private AtomicBoolean isDead 	= new AtomicBoolean(false);
+	private AtomicBoolean isStart 	= new AtomicBoolean(false);
+	private AtomicBoolean isPause 	= new AtomicBoolean(false);
+
+	public AudioThread() {
+		// initialiser tous les clips
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(MusicfilePath).getAbsoluteFile());
+			musicBackgroundClip = AudioSystem.getClip();
+			musicBackgroundClip.open(audioInputStream);
+			musicBackgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+			AudioInputStream audioInputStream1  = AudioSystem.getAudioInputStream(new File(deadPacmanSoundfilePath).getAbsoluteFile());
+			deadPacmanSoundClip = AudioSystem.getClip();
+			deadPacmanSoundClip.open(audioInputStream1);
+
+			AudioInputStream audioInputStream2 = AudioSystem.getAudioInputStream(new File(eatGumSoundfilePath).getAbsoluteFile());
+			eatedGumSoundClip = AudioSystem.getClip();
+			eatedGumSoundClip.open(audioInputStream2);
+
+			AudioInputStream audioInputStream3 = AudioSystem.getAudioInputStream(new File(startGameSoundfilePath).getAbsoluteFile());
+			startGameSoundClip = AudioSystem.getClip();
+			startGameSoundClip.open(audioInputStream3);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
+		play(musicBackgroundClip, true);
+		while (isRunning.get()) {
+			// Au cas de pause
+			if (!isPause.get()) {
+				// resume la musique d arriere plan
+				resumeAudio(musicBackgroundClip, MusicfilePath, true);
+				
+				// si le pacman est mort et le son n est pas en mode mute
+				if (isDead.get() && !SoundMuted.get()) {
+					// si le clip deadPacmanSoundClip est deja lance une fois au moins
+					if(!firstTimeDead) {
+						restart(deadPacmanSoundClip ,deadPacmanSoundfilePath ,false);
+					}
+					// la premiere lance du clip deadPacmanSoundClip
+					else {
+						play(deadPacmanSoundClip, false);
+						firstTimeDead = false;
+					}
+					isDead.compareAndExchange(true, false);
+				}
+				
+				// si le pacman mange une gomme et le son n est pas en mode mute
+				if (isEaten.get() && !SoundMuted.get()) {
+					// si le clip eatedGumSoundClip est deja lance une fois au moins
+					if(!firstTimeEat) {
+						restart(eatedGumSoundClip ,eatGumSoundfilePath ,false);
+					}
+					// la premiere lance du clip eatedGumSoundClip
+					else {
+						play(eatedGumSoundClip, false);
+						firstTimeEat = false;
+					}
+					isEaten.compareAndExchange(true, false);
+				}
+				
+				// a la lance du jeu
+				if (isStart.get() && !SoundMuted.get()) {
+					// si le clip eatedGumSoundClip est deja lance une fois au moins
+					if(!firstTimeStart) {
+						restart(startGameSoundClip ,startGameSoundfilePath ,false);
+					}
+					// la premiere lance du clip eatedGumSoundClip
+					else {
+						play(startGameSoundClip, false);
+						firstTimeStart = false;
+					}
+					isStart.compareAndExchange(true, false);
+				}
+				/*if (MuteOnOffMusic.get()) {
+					muteOnOff(musicBackgroundClip, true);
+					MuteOnOffMusic.compareAndExchange(true, false);
+				}
+				if (MuteOnOffSound.get()) {
+					muteOnOff(eatedGumSoundClip, false);
+					muteOnOff(startGameSoundClip, false);
+					muteOnOff(deadPacmanSoundClip, false);
+					MuteOnOffSound.compareAndExchange(true, false);
+				}*/
+			} else {
+				pause(musicBackgroundClip);
+				pause(eatedGumSoundClip);
+				pause(startGameSoundClip);
+				pause(deadPacmanSoundClip);
+			}
+		}
 		
+		if (!isRunning.get()) {
+			stop(musicBackgroundClip);
+			stop(eatedGumSoundClip);
+			stop(startGameSoundClip);
+			stop(deadPacmanSoundClip);
+		}
 	}
+
+	public synchronized void play(Clip clip, boolean isMusic) {
+		// regler le volume
+		changeVolume(clip, isMusic);
+		// gestion du mode mute
+		muteOnOff(clip,isMusic);
+		// start the clip
+		clip.start();
+		// changer le status en played
+		if(isMusic) {
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			isMusicPaused.compareAndSet(true, false);
+		}
+	}
+
+	// methode to mettre l audio en pause
+	public synchronized void pause(Clip clip) {
+		if (isMusicPaused.get()) {
+			// audio deja en pause
+			return;
+		}
+		clip.stop();
+		isMusicPaused.compareAndExchange(false, true);
+	}
+
+	// methode pour relancer l audio si en pause
+	public synchronized void resumeAudio(Clip clip, String filePath, boolean isMusic) {
+		if (!isMusicPaused.get()) {
+			// audio deja lance
+			return;
+		}
+		clip.close();
+		resetAudioStream(clip, filePath, isMusic);
+		this.play(clip, isMusic);
+	}
+
 	
-	public ArrayList<SoundPlayer> getSoundList() {
-		return soundList;
+	 // methode pour relancer l audio depuis le début 
+	 public synchronized void restart(Clip clip, String filePath ,boolean isMusic){	
+		 stop(clip);
+		 resetAudioStream(clip ,filePath ,isMusic); 
+		 play(clip,isMusic); 
+	 }
+	 
+
+	// Methode pour stopper l audio
+	public synchronized void stop(Clip clip) {
+		try {
+			clip.stop();
+			clip.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-
-	public void setSoundList(ArrayList<SoundPlayer> soundList) {
-		this.soundList = soundList;
+	// réinitialiser l audio stream
+	public synchronized void resetAudioStream(Clip clip, String filePath, boolean isMusic) {
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+			clip.open(audioInputStream);
+			if (isMusic) {
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			}
+			muteOnOff(clip,isMusic);
+			this.play(clip, isMusic);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-
-	public MusicPlayer getGameMusic() {
-		return gameMusic;
+	// valeur du volume de 0 a 1
+	public synchronized void changeVolume(Clip clip, boolean isMusic) {
+		if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			// determination du gain
+			float range = gainControl.getMaximum() - gainControl.getMinimum();
+			float gain;
+			if (isMusic) {
+				gain = (range * MusicVolume) + gainControl.getMinimum();
+			} else {
+				gain = (range * SoundVolume) + gainControl.getMinimum();
+			}
+			gainControl.setValue(gain);
+		}
 	}
 
-
-	public void setGameMusic(MusicPlayer gameMusic) {
-		this.gameMusic = gameMusic;
+	// gestion de mode mute 
+	public synchronized void muteOnOff(Clip clip, boolean isMusic) {
+		BooleanControl muteControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
+		if (isMusic) {
+			muteControl.setValue(MusicMuted.get());
+		} else {
+			muteControl.setValue(SoundMuted.get());
+		}
 	}
 
-
-	public static int getMusicVolume() {
-		return musicVolume.get();
+	// Getters et Setters
+	public static boolean isMusicPaused() {
+		return isMusicPaused.get();
 	}
 
-
-	public static void setMusicVolume(int musicVolume) {
-		AudioThread.musicVolume = new AtomicInteger(musicVolume);
+	public static void setMusicPaused(boolean isMusicPaused) {
+		AudioThread.isMusicPaused = new AtomicBoolean(isMusicPaused);
 	}
 
-
-	public static int getSoundVolume() {
-		return soundVolume.get();
+	public static float getMusicVolume() {
+		return MusicVolume;
 	}
 
-
-	public static void setSoundVolume(int soundVolume) {
-		AudioThread.soundVolume = new AtomicInteger(soundVolume);
+	public static void setMusicVolume(float musicVolume) {
+		MusicVolume = musicVolume;
 	}
 
-
-	public static boolean getIsSoundMute() {
-		return isSoundMute.get();
+	public static boolean isMusicMuted() {
+		return MusicMuted.get();
 	}
 
-
-	public static void setIsSoundMute(boolean isSoundMute) {
-		AudioThread.isSoundMute = new AtomicBoolean(isSoundMute);
+	public static void setMusicMuted(boolean musicMuted) {
+		MusicMuted = new AtomicBoolean(musicMuted);
 	}
 
-
-	public static boolean getIsMusicMute() {
-		return isMusicMute.get();
+	public static float getSoundVolume() {
+		return SoundVolume;
 	}
 
-
-	public static void setIsMusicMute(boolean isMusicMute) {
-		AudioThread.isMusicMute = new AtomicBoolean(isMusicMute);
+	public static void setSoundVolume(float soundVolume) {
+		SoundVolume = soundVolume;
 	}
-	
+
+	public static boolean isSoundMuted() {
+		return SoundMuted.get();
+	}
+
+	public static void setSoundMuted(boolean soundMuted) {
+		SoundMuted = new AtomicBoolean(soundMuted);
+	}
+
+	public boolean getIsRunning() {
+		return isRunning.get();
+	}
+
+	public void setIsRunning(boolean isRunning) {
+		this.isRunning = new AtomicBoolean(isRunning);
+	}
+
+	public boolean getIsEaten() {
+		return isEaten.get();
+	}
+
+	public void setIsEaten(boolean isEaten) {
+		this.isEaten = new AtomicBoolean(isEaten);
+	}
+
+	public boolean getIsDead() {
+		return isDead.get();
+	}
+
+	public void setIsDead(boolean isDead) {
+		this.isDead = new AtomicBoolean(isDead);
+	}
+
+	public boolean getIsStart() {
+		return isStart.get();
+	}
+
+	public void setIsStart(boolean isStart) {
+		this.isStart = new AtomicBoolean(isStart);
+	}
+
+	public boolean getIsPause() {
+		return isPause.get();
+	}
+
+	public void setIsPause(boolean isPause) {
+		this.isPause = new AtomicBoolean(isPause);
+	}
 }
