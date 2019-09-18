@@ -111,7 +111,6 @@ public class GameMenu extends JPanel implements ActionListener{
 		String cmd = e.getActionCommand();
 		switch(cmd) {
 		case "Start Game":
-			gameController.resume();
 			gameController.startGame();	
 			break;
 		case "Audio":

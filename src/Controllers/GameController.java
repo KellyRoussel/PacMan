@@ -26,6 +26,7 @@ import Models.Foods.Food;
 import  Models.Foods.Fruit;
 import  Models.Foods.Gum;
 import  Models.Foods.PacGum;
+import Threads.AudioThread;
 import Threads.PhysicsThread;
 import Threads.RenderThread;
 import Views.GameMenu;
@@ -46,7 +47,7 @@ public class GameController implements Runnable{
 	private Maze maze;
 	private ArrayList<Food> foodList;
 
-	private Sound music;
+	//private Sound music;
 	private static int size, defaultSize;
 	private static int level;
 	private static int score;
@@ -66,7 +67,7 @@ public class GameController implements Runnable{
     public BufferedImage output;
     public Graphics g;
 
-    private boolean soundOn;
+    //private boolean soundOn;
     
 	private ArrayList<Ghost> ghostList;
 
@@ -80,7 +81,7 @@ public class GameController implements Runnable{
 
     private Thread gameThread; 
     
-	private boolean wantSound = true;
+	//private boolean wantSound = true;
 
 	public static int RESUME;
 	public static boolean resume;
@@ -91,11 +92,12 @@ public class GameController implements Runnable{
 	private static int [][] grille;
 	private static int nRow; 
 	private static int nColumn;
-	private Sound background;
-	private Sound beginning;
-	private Sound death;
+	//private Sound background;
+	//private Sound beginning;
+	//private Sound death;
 
 	private RenderThread tRender;
+	private AudioThread tAudio;
 
 	public static ArrayList<Point> listTunnelLeft;
 
@@ -116,10 +118,12 @@ public class GameController implements Runnable{
 		getMainPane().add(gamePanel,BorderLayout.CENTER);
 		getMainPane().add(statusBar, BorderLayout.SOUTH);
 
+		tAudio = new AudioThread();
+		tAudio.setName("Audio");
 
-		background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
-		beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
-		death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
+		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
+		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
+		//death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
 
 
 		//Lancer la musique
@@ -278,9 +282,7 @@ public class GameController implements Runnable{
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
 					if(!resume) {
-					if(soundOn || pause) {
-						mute();
-					}else {unMute();}
+					tAudio.setMuteOnOff(true);
 				}
 				}
 
@@ -311,11 +313,38 @@ public class GameController implements Runnable{
 	public void run() {
 		running = true;
 		pause = true;
-		while(running && !gameOver) {
-			if(! pause) {	
-				gameUpdate();
-			}else if(resume) {
-				resume();
+		while(running) {
+			if(gameOver) {
+				try {
+					Thread.sleep(3000);
+					gameOver = false;
+					setLevel(1);
+					setLives(3);
+					setScore(0);
+					//statusBar.updateLevel();
+					getPacMan().returnInitialPosition();
+					for(int i = 0; i < getGhostList().size(); i++) {
+						getGhostList().get(i).returnInitialPosition();
+					}
+					getPacMan().initPM();
+					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+					getPacMan().loadImage();
+					fillFoodList();
+					//wantSound = soundOn;
+					pause = true;
+					//mute();
+					resume = true;
+				}catch(InterruptedException ex) {}
+			}
+			else {
+				if(!pause) {	
+					gameUpdate();
+				}
+				else
+					pause();
+				if(resume) {
+					resume();
+				}
 			}
 			try {
 				Thread.sleep(FPS);
@@ -378,8 +407,8 @@ public class GameController implements Runnable{
 		}
 		
 		if(getPacMan().isDead()) {
-			getPacMan().deadAnimate();	
-			music.stop();
+			tAudio.setIsDead(true);
+			getPacMan().deadAnimate();		
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -397,7 +426,7 @@ public class GameController implements Runnable{
 	private void updatePositions(int raw, int column, boolean flag) {
 		for(int i = 0; i < getFoodList().size(); i++) {
 			if(getFoodList().get(i).getInitialPosition().x / defaultSize == column && getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
-
+				tAudio.setIsEaten(true);
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
@@ -415,9 +444,10 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
-			wantSound = soundOn;
+			//wantSound = soundOn;
 			pause = true;
-			mute();
+			//mute();
+			tAudio.setMuteOnOff(true);
 			resume = true;
 		}
 
@@ -433,58 +463,62 @@ public class GameController implements Runnable{
 	private void startNewLife() 
 	{
 			lives--;
-			getPacMan().returnInitialPosition();
-			for(int i = 0; i < 4; i++) {
-				getGhostList().get(i).returnInitialPosition();
+			if(lives == 0) {
+				gameOver = true;
 			}
-			getPacMan().initPM();
-			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
-			getPacMan().loadImage();
-			
-			pause = true;
-			resume = true;
-			
-			getPacMan().setIsDead(false);
+			else {		
+				getPacMan().returnInitialPosition();
+				for(int i = 0; i < 4; i++) {
+					getGhostList().get(i).returnInitialPosition();
+				}
+				getPacMan().initPM();
+				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+				getPacMan().loadImage();
+				
+				pause = true;
+				resume = true;
+				
+				getPacMan().setIsDead(false);
+			}
 	}
 
-
+	
 	public void startGame() {
-		
-		statusBar.updateState("PLAY");
-		
 		frame.setContentPane(getMainPane());
 		getMainPane().requestFocus();
 		frame.revalidate();
 		
-
 		if(gameThread == null || !gameThread.isAlive()) {
 		
-		gameThread = new Thread(this);
-		init();
-		gameThread.start();
-		
-		//Lancer un listener sur le clavier
-		addListeners();
-		
-		//System.out.println("Physics coming threw");
-		
-		PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
-		tPhysics.setName("Physics");
-		tPhysics.start();
-		
-		tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
-		tRender.setName("Render");
-		tRender.start();
-		
-		frame.menuPane.gameRunning();
+			gameThread = new Thread(this);
+			init();
+			gameThread.start();
+			
+			//Lancer un listener sur le clavier
+			addListeners();
+			
+			//System.out.println("Physics coming threw");
+			
+			PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
+			tPhysics.setName("Physics");
+			tPhysics.start();
+			
+			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
+			tRender.setName("Render");
+			tRender.start();
+			
+			frame.menuPane.gameRunning();
+			tAudio.start();
 		}
-		
+		System.out.println("haa");
 		resume = true;
 	}
 	
 	
 	public void stop() {
 		running = false;
+		//******************************************************
+		//tAudio.setIsRunning(false);
 		try {
 			gameThread.join(500);
 			if (gameThread.isAlive()){
@@ -498,14 +532,13 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
+		while(tRender == null) {}
+		tAudio.setIsPause(true);
 		tRender.pause();
 		pause = true;
-		wantSound = soundOn;
-		mute();
-		
 	}
 
-	private void mute() {
+	/*private void mute() {
 		music.stop();
 		soundOn = false;
 	}
@@ -513,18 +546,17 @@ public class GameController implements Runnable{
 	private void unMute() {
 		music.loop();
 		soundOn = true;
-	}
+	}*/
 
 	public void resume(){
 		pause = false;
+		while(tRender == null) {}
+		tAudio.setIsPause(false);
+		tRender.res();
 		
-		if(tRender != null)
-			tRender.res();
-		
-		if(wantSound) {
+		/*if(wantSound) {
 			music = getBackground();
-			unMute();}		
-		
+			unMute();}	*/	
 		resume = false;
 		if(getPacMan().isResurrection()) {
 			getPacMan().setResurrection(false);
@@ -654,23 +686,23 @@ public class GameController implements Runnable{
 	/**
 	 * @return the background
 	 */
-	public Sound getBackground() {
+	/*public Sound getBackground() {
 		return background;
 	}
 
 	/**
 	 * @return the beginning
 	 */
-	public Sound getBeginning() {
+	/*public Sound getBeginning() {
 		return beginning;
-	}
+	}*/
 
 	/**
 	 * @return the death
 	 */
-	public Sound getDeath() {
+	/*public Sound getDeath() {
 		return death;
-	}
+	}*/
 
 	/**
 	 * @return the mainPane

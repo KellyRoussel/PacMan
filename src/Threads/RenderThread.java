@@ -61,7 +61,7 @@ public class RenderThread extends Thread{
 		long pastTime;
 		long currentTime;
 		long timeloop;
-		while(GameController.running && !GameController.gameOver) {
+		while(GameController.running) {
 			pastTime = System.currentTimeMillis();
 			if(!GameController.pause){
 				if(pacMan.isDead()) {
@@ -74,7 +74,7 @@ public class RenderThread extends Thread{
 			try {
 				currentTime = System.currentTimeMillis();
 				timeloop = currentTime - pastTime;
-				if(timeloop < 0) {
+				if(timeloop <= 0) {
 					timeloop = 10;
 				}
 				Thread.sleep(timeloop);
