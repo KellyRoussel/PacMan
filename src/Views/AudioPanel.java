@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
 import Controllers.GameController;
 import Threads.AudioThread;
@@ -19,15 +20,20 @@ public class AudioPanel extends JPanel implements ActionListener {
 	private GameController gameController;
 
 	private JLabel musicLabel;
+	private JLabel muteMusicLabel;
+	private JToggleButton muteMusicButton;
 	private JLabel soundLabel;
+	private JToggleButton muteSoundButton;
+	private JLabel muteSoundLabel;
 	private JLabel musicValue;
 	private JLabel soundValue;
 	private JButton musicPlus;
 	private JButton musicMinus;
 	private JButton soundPlus;
 	private JButton soundMinus;
-	private JButton exit;
+	private JButton back;
 
+	
 	private int musicVal;
 	private int soundVal;
 
@@ -48,6 +54,12 @@ public class AudioPanel extends JPanel implements ActionListener {
 		musicLabel.setText("<html><font color = 'WHITE'> MUSIC </font></html>");
 		musicLabel.setAlignmentX(CENTER_ALIGNMENT);
 		musicLabel.setAlignmentY(CENTER_ALIGNMENT);
+		
+		muteMusicLabel = new JLabel();
+		muteMusicLabel.setFont(defaultFont);
+		muteMusicLabel.setText("<html><font color = 'WHITE'> MUTE MUSIC </font></html>");
+		muteMusicLabel.setAlignmentX(CENTER_ALIGNMENT);
+		muteMusicLabel.setAlignmentY(CENTER_ALIGNMENT);
 
 		soundLabel = new JLabel();
 		soundLabel.setFont(defaultFont);
@@ -55,6 +67,12 @@ public class AudioPanel extends JPanel implements ActionListener {
 		soundLabel.setAlignmentX(CENTER_ALIGNMENT);
 		soundLabel.setAlignmentY(CENTER_ALIGNMENT);
 
+		muteSoundLabel = new JLabel();
+		muteSoundLabel.setFont(defaultFont);
+		muteSoundLabel.setText("<html><font color = 'WHITE'> MUTE SOUND </font></html>");
+		muteSoundLabel.setAlignmentX(CENTER_ALIGNMENT);
+		muteSoundLabel.setAlignmentY(CENTER_ALIGNMENT);
+		
 		musicValue = new JLabel();
 		musicValue.setFont(defaultFont);
 		musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
@@ -71,11 +89,23 @@ public class AudioPanel extends JPanel implements ActionListener {
 		musicPlus.setFont(defaultFont);
 		musicPlus.setAlignmentX(CENTER_ALIGNMENT);
 		musicPlus.setAlignmentY(CENTER_ALIGNMENT);
+		
+		muteMusicButton = new JToggleButton("M");
+		muteMusicButton.setFont(defaultFont);
+		muteMusicButton.setAlignmentX(CENTER_ALIGNMENT);
+		muteMusicButton.setAlignmentY(CENTER_ALIGNMENT);
+		muteMusicButton.setBackground(Color.white);
 
 		musicMinus = new JButton("-");
 		musicMinus.setFont(defaultFont);
 		musicMinus.setAlignmentX(CENTER_ALIGNMENT);
 		musicMinus.setAlignmentY(CENTER_ALIGNMENT);
+		
+		muteSoundButton = new JToggleButton("S");
+		muteSoundButton.setFont(defaultFont);
+		muteSoundButton.setAlignmentX(CENTER_ALIGNMENT);
+		muteSoundButton.setAlignmentY(CENTER_ALIGNMENT);
+		muteSoundButton.setBackground(Color.white);
 
 		soundPlus = new JButton("+");
 		soundPlus.setFont(defaultFont);
@@ -87,56 +117,72 @@ public class AudioPanel extends JPanel implements ActionListener {
 		soundMinus.setAlignmentX(CENTER_ALIGNMENT);
 		soundMinus.setAlignmentY(CENTER_ALIGNMENT);
 
-		exit = new JButton("EXIT");
-		exit.setFont(new Font("Joystix", Font.BOLD, 15));
-		exit.setAlignmentX(CENTER_ALIGNMENT);
-		exit.setAlignmentY(CENTER_ALIGNMENT);
+		back = new JButton("BACK");
+		back.setFont(new Font("Joystix", Font.BOLD, 15));
+		back.setAlignmentX(CENTER_ALIGNMENT);
+		back.setAlignmentY(CENTER_ALIGNMENT);
 
 		add(musicLabel);
-		musicLabel.setLocation(70, 260);
+		musicLabel.setLocation(70, 100);
 		musicLabel.setSize(100, 30);
+		
+		add(muteMusicLabel);
+		muteMusicLabel.setLocation(70, 240);
+		muteMusicLabel.setSize(200, 30);
+		
+		add(muteMusicButton);
+		muteMusicButton.setBounds(350, 240, 60, 50);
+		muteMusicButton.setBackground(Color.white);
 
 		add(musicPlus);
-		musicPlus.setBounds(450, 250, 60, 50);
+		musicPlus.setBounds(450, 100, 60, 50);
 		musicPlus.setBackground(Color.white);
 		musicPlus.setActionCommand("music+");
 		musicPlus.addActionListener(this);
 
 		add(musicValue);
-		musicValue.setLocation(375, 255);
+		musicValue.setLocation(375, 100);
 		musicValue.setSize(100, 30);
 
 		add(musicMinus);
-		musicMinus.setBounds(260, 250, 60, 50);
+		musicMinus.setBounds(260, 100, 60, 50);
 		musicMinus.setBackground(Color.white);
 		musicMinus.setActionCommand("music-");
 		musicMinus.addActionListener(this);
 
 		add(soundLabel);
-		soundLabel.setLocation(70, 450);
-		soundLabel.setSize(100, 30);
+		soundLabel.setLocation(70, 400);
+		soundLabel.setSize(150, 30);
+		
+		add(muteSoundLabel);
+		muteSoundLabel.setLocation(70, 550);
+		muteSoundLabel.setSize(300, 30);
+		
+		add(muteSoundButton);
+		muteSoundButton.setBounds(350, 550, 60, 50);
+		muteSoundButton.setBackground(Color.white);
 
 		add(soundPlus);
-		soundPlus.setBounds(450, 450, 60, 50);
+		soundPlus.setBounds(450, 400, 60, 50);
 		soundPlus.setBackground(Color.white);
 		soundPlus.addActionListener(this);
 		soundPlus.setActionCommand("sound+");
 
 		add(soundMinus);
-		soundMinus.setBounds(260, 450, 60, 50);
+		soundMinus.setBounds(260, 400, 60, 50);
 		soundMinus.setBackground(Color.white);
 		soundMinus.addActionListener(this);
 		soundMinus.setActionCommand("sound-");
 
 		add(soundValue);
-		soundValue.setLocation(370, 455);
-		soundValue.setSize(100, 30);
+		soundValue.setLocation(370, 400);
+		soundValue.setSize(150, 30);
 
-		add(exit);
-		exit.setBounds(450, 650, 70, 40);
-		exit.setBackground(Color.white);
-		exit.addActionListener(this);
-		exit.setActionCommand("exit");
+		add(back);
+		back.setBounds(450, 650, 100, 40);
+		back.setBackground(Color.white);
+		back.addActionListener(this);
+		back.setActionCommand("back");
 
 	}
 
@@ -172,7 +218,7 @@ public class AudioPanel extends JPanel implements ActionListener {
 				soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
 			}
 			break;
-		case "exit":
+		case "back":
 			gameController.frame.displayMenu();
 			break;
 		default:

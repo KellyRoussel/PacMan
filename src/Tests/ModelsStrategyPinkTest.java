@@ -1,16 +1,16 @@
-package Testing;
+package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import Models.Characters.Strategies.StrBlue;
+import Models.Characters.Strategies.Normal.StrategyPink;
 
-class ModelStrBlueTest {
+class ModelStrategyPinkTest {
 
 	@Test
 	void testMeet() {
-		StrBlue test = new StrBlue();
+		StrategyPink test = new StrategyPink();
 		test.meet();
 		assertEquals(0, 0);
 	}

@@ -246,7 +246,7 @@ public class GameController implements Runnable{
     	
     	foodList = new ArrayList();
     	fillFoodList();    	    	
-    	
+
     }
     
     private void fillFoodList() {

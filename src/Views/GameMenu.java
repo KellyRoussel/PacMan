@@ -81,6 +81,7 @@ public class GameMenu extends JPanel implements ActionListener{
 		exit.setBounds(220 , 660, 150, 50);
 		exit.setBackground(Color.white);
 		exit.setActionCommand("Exit");
+		add(exit);
 		
 		
 		help = new JButton("Help");
@@ -117,10 +118,9 @@ public class GameMenu extends JPanel implements ActionListener{
 			gameController.changeVolume();
 			break;
 		case "Exit":
-			gameController.stop();
+			gameController.frame.dispose();
 			break;
 		case "Help":
-			System.out.println("help");
 			gameController.frame.setContentPane(gameController.frame.helpPane);
 			gameController.frame.helpPane.requestFocus();
 			gameController.frame.revalidate();
@@ -133,11 +133,9 @@ public class GameMenu extends JPanel implements ActionListener{
 
 	public void gameRunning() {
 		startGame.setText("Resume");
-		add(exit);
 	}
 	
 	public void noMoreRunning() {
 		startGame.setText("Start Game");
-		remove(exit);
 	}
 }

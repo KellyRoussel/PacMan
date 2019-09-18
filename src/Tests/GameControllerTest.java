@@ -1,9 +1,10 @@
-package Testing;
+package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,34 +18,40 @@ class GameControllerTest {
 
 	private GameController gameController;
 	private GamePanel gamePanel;
+	private int nRow;
+	private int nColumn;
+	private int [][] grille;
+	private MainGame mainGame = new MainGame();
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		
-		gameController = new GameController(gamePanel, MainGame.SINGLE_INSTANCE);
+		gamePanel = new GamePanel();
+		gameController = new GameController(gamePanel, mainGame);
 		assertNotNull(gameController, "GameController init failed");
 		assertNotNull(gameController.getMainPane(), "MainPane init failed");
-		assertNotNull(gameController.gettAudio(), "tAudio init failed");
+		//assertNotNull(gameController.gettAudio(), "tAudio init failed");
 //		assertNotNull(gameController.getBeginning());
 //		assertNotNull(gameController.getDeath());
 		
 		assertFalse(gameController.fullScreen, "FullScreen should be false");
 		assertFalse(gameController.resize, "Resize should be false");
 		assertFalse(gameController.gameOver, "GameOver should be false");
-		assertNotNull(gameController.getStatusBar(), " StatusBar init failed"); 
+		//assertNotNull(gameController.getStatusBar(), " StatusBar init failed"); 
 		assertEquals(0, gameController.getScore(), "Score should be 0");
 		assertEquals(3, gameController.getLives(), "Lives should be 3");
 		assertEquals(1, gameController.getLevel(), "Level should be 1");
 	
-		int nRow = gameController.getnRow();
-		int nColumn = gameController.getnColumn();
+		nRow = gameController.getnRow();
+		nColumn = gameController.getnColumn();
 		
 		assertNotEquals(0, nColumn, "nColumn should not be 0");
 		assertNotEquals(0, nRow , "nRow should not be 0");
 		assertNotEquals(0, gameController.getSize(), "size should not be 0");
 		assertNotEquals(0, gameController.getDefaultSize(), "nColumn should not be 0");
 		
-		assertNotNull(gameController.getGrille(), "Grille init failed");
+		grille = gameController.getGrille();
+		assertNotNull(grille , "Grille init failed");
 		assertNotNull(gameController.images, "Images init failed");
 		assertNotNull(gameController.output, "Output init failed");
 		assertNotNull(gameController.g, "g init failed");
@@ -68,6 +75,16 @@ class GameControllerTest {
 		assertEquals(4, ghostList.size(), "There should be 4 ghosts");
 		
 		assertTrue(gameController.getFirstGhostToQuit() < 4, "FirstGhostToQuit should be less than 4");
+		assertTrue(true);
+	}
+	
+	
+	@Test
+	public void fillFoodListTest() {
+		for(int i = 0; i < nRow; i++)
+    		for(int j = 0; j < nColumn; j++) {
+    			assertNotNull(grille[i][j], "Grille filling failed");
+    		}
 	}
 	
 
