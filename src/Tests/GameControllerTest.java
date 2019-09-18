@@ -57,9 +57,10 @@ class GameControllerTest {
 		assertNotNull(gameController.g, "g init failed");
 		for(int i = 0; i < nRow; i++) {
 			for(int j = 0; j < nColumn; j++) {
+		if(grille[i][j]<30) {
 				assertNotNull(gameController.images[i][j], "Image missing");
+		}
 			}
-			
 			}
 		assertNotNull(gameController.listTunnelLeft, "listTunnelLeft init failed");
 		assertNotNull(gameController.listTunnelRight, "listTunnelRight init failed");
