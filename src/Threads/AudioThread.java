@@ -137,6 +137,9 @@ import javax.sound.sampled.FloatControl;
 					}
 				} else {
 					pause(musicBackgroundClip);
+					/*pause(eatedGumSoundClip);
+					pause(startGameSoundClip);
+					pause(deadPacmanSoundClip);*/
 				}
 				try {
 					Thread.sleep(SLEEP_TIMER);
