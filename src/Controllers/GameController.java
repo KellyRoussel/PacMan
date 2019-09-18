@@ -337,9 +337,11 @@ public class GameController implements Runnable{
 				}catch(InterruptedException ex) {}
 			}
 			else {
-				if(! pause) {	
+				if(!pause) {	
 					gameUpdate();
 				}
+				else
+					pause();
 				if(resume) {
 					resume();
 				}
@@ -532,11 +534,11 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
+		while(tRender == null) {}
 		tRender.pause();
 		pause = true;
 		//wantSound = soundOn;
 		//mute();
-		
 	}
 
 	/*private void mute() {
