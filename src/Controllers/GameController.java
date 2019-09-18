@@ -115,14 +115,28 @@ public class GameController implements Runnable{
 		BorderLayout bl = new BorderLayout();
 		mainPane = new JPanel(bl);
 		getMainPane().add(gamePanel,BorderLayout.CENTER);
-		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
+		getMainPane().add(statusBar, BorderLayout.SOUTH);
 
 		tAudio = new AudioThread();
-		gettAudio().setName("Audio");
-		gettAudio().start();
+		tAudio.setName("Audio");
+		tAudio.start();
 		
-		gettAudio().setIsPause(true);
+		tAudio.setIsPause(true);
 
+		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
+		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
+		//death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
+
+
+		//Lancer la musique
+//		music = beginning;
+//		music.play();
+//		soundOn = true;
+
+		
+		
+		// Lancer le jeu
+		//startGame();
 	}
 
 	private void init() {
@@ -270,7 +284,7 @@ public class GameController implements Runnable{
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
 					if(!resume) {
-					gettAudio().setMuteOnOff(true);
+					tAudio.setMuteOnOff(true);
 				}
 				}
 
@@ -319,7 +333,7 @@ public class GameController implements Runnable{
 					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 					getPacMan().loadImage();
 					fillFoodList();
-					gettAudio().setIsStart(true);
+					tAudio.setIsStart(true);
 					//wantSound = soundOn;
 					pause = true;
 					//mute();
@@ -397,14 +411,9 @@ public class GameController implements Runnable{
 		}
 		
 		if(getPacMan().isDead()) {
-<<<<<<< HEAD
-			gettAudio().setIsDead(true);
-			getPacMan().deadAnimate();		
-=======
 			tAudio.setIsDead(true);
 			getPacMan().deadAnimate();
 			//getPacMan().setIsDead(false);
->>>>>>> d50543fad5664535e837ebdbe9d8a7835f33114b
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -422,7 +431,7 @@ public class GameController implements Runnable{
 	private void updatePositions(int raw, int column, boolean flag) {
 		for(int i = 0; i < getFoodList().size(); i++) {
 			if(getFoodList().get(i).getInitialPosition().x / defaultSize == column && getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
-				gettAudio().setIsEaten(true);
+				tAudio.setIsEaten(true);
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
@@ -440,11 +449,11 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
-			gettAudio().setIsStart(true);
+			tAudio.setIsStart(true);
 			//wantSound = soundOn;
 			pause = true;
 			//mute();
-			gettAudio().setMuteOnOff(true);
+			tAudio.setMuteOnOff(true);
 			resume = true;
 		}
 
@@ -488,7 +497,7 @@ public class GameController implements Runnable{
 		
 		if(gameThread == null || !gameThread.isAlive()) {
 		
-			gettAudio().setIsStart(true);
+			tAudio.setIsStart(true);
 			gameThread = new Thread(this);
 			init();
 			gameThread.start();
@@ -502,7 +511,7 @@ public class GameController implements Runnable{
 			tPhysics.setName("Physics");
 			tPhysics.start();
 			
-			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), getStatusBar());
+			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
 			tRender.setName("Render");
 			tRender.start();
 			
@@ -532,7 +541,7 @@ public class GameController implements Runnable{
 
 	public void pause() {
 		while(tRender == null) {}
-		gettAudio().setIsPause(true);
+		tAudio.setIsPause(true);
 		tRender.pause();
 		pause = true;
 	}
@@ -551,7 +560,7 @@ public class GameController implements Runnable{
 		
 		pause = false;
 		while(tRender == null) {}
-		gettAudio().setIsPause(false);
+		tAudio.setIsPause(false);
 		tRender.res();
 		
 		/*if(wantSound) {
@@ -709,19 +718,5 @@ public class GameController implements Runnable{
 	 */
 	public JPanel getMainPane() {
 		return mainPane;
-	}
-
-	/**
-	 * @return the statusBar
-	 */
-	public StatusBar getStatusBar() {
-		return statusBar;
-	}
-
-	/**
-	 * @return the tAudio
-	 */
-	public AudioThread gettAudio() {
-		return tAudio;
 	}	
 }
