@@ -118,6 +118,8 @@ public class GameController implements Runnable{
 		getMainPane().add(gamePanel,BorderLayout.CENTER);
 		getMainPane().add(statusBar, BorderLayout.SOUTH);
 
+		tAudio = new AudioThread();
+		tAudio.setName("Audio");
 
 		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
 		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
@@ -280,9 +282,7 @@ public class GameController implements Runnable{
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
 					if(!resume) {
-					/*if(soundOn || pause) {
-						mute();
-					}else {unMute();}*/
+					tAudio.setMuteOnOff(true);
 				}
 				}
 
@@ -408,7 +408,7 @@ public class GameController implements Runnable{
 		
 		if(getPacMan().isDead()) {
 			getPacMan().deadAnimate();	
-			//music.stop();
+			tAudio.setIsDead(true);
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -430,6 +430,7 @@ public class GameController implements Runnable{
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
+				tAudio.setIsEaten(true);
 				//statusBar.updateScore();
 			}
 		}
@@ -447,6 +448,7 @@ public class GameController implements Runnable{
 			//wantSound = soundOn;
 			pause = true;
 			//mute();
+			tAudio.setMuteOnOff(true);
 			resume = true;
 		}
 
@@ -507,9 +509,7 @@ public class GameController implements Runnable{
 			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
 			tRender.setName("Render");
 			tRender.start();
-			
-			tAudio = new AudioThread();
-			tAudio.setName("Audio");
+
 			tAudio.start();
 			
 			frame.menuPane.gameRunning();
@@ -521,6 +521,7 @@ public class GameController implements Runnable{
 	
 	public void stop() {
 		running = false;
+		tAudio.setIsRunning(false);
 		try {
 			gameThread.join(500);
 			if (gameThread.isAlive()){
@@ -539,6 +540,7 @@ public class GameController implements Runnable{
 		pause = true;
 		//wantSound = soundOn;
 		//mute();
+		tAudio.setIsPause(true);
 	}
 
 	/*private void mute() {
@@ -559,7 +561,7 @@ public class GameController implements Runnable{
 		/*if(wantSound) {
 			music = getBackground();
 			unMute();}	*/	
-		
+		tAudio.setIsPause(false);
 		resume = false;
 		if(getPacMan().isResurrection()) {
 			getPacMan().setResurrection(false);
