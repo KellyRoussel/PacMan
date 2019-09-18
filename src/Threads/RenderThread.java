@@ -77,7 +77,7 @@ public class RenderThread extends Thread{
 				if(timeloop <= 0) {
 					timeloop = 10;
 				}
-				Thread.sleep(timeloop);
+				Thread.sleep(30);
 				statusBar.updateFPS("" + (1000/timeloop));
 			}catch(InterruptedException ex) {}
 		}

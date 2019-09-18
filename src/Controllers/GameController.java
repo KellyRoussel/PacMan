@@ -53,7 +53,7 @@ public class GameController implements Runnable{
 	private static int score;
 	private static int lives;
 
-	public static final int FPS = 10;
+	public static final int FPS = 30;
 	private static final int PM_INITIAL_POSITION = 60;
 
 	public static final long JOIN_TIMER = 10;

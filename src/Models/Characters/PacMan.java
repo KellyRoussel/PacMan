@@ -214,7 +214,7 @@ public class PacMan extends Character {
 
 	public void deadAnimate() {
 		isDead = true;
-		// l image de l animation change après 5 Frames 
+		// l image de l animation change aprï¿½s 5 Frames 
 		// il existe 12 images de l animation
 		if (deadAnimationCounter < 12 * 5) {
 			ToSprite pacMan_tiles_to_sprite = new ToSprite(8, "pacmanTilesSheet");
