@@ -96,8 +96,8 @@ public class Ghost  extends Character{
         ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
         
         ghostRectangle = new Rectangle(position.x,position.y,width,height);
-        ghostAdvancedLowerShape = new Rectangle(position.x,position.y + h/2,w,h/2);
-        ghostAdvancedTopShape = new Arc2D.Float(position.x,position.y,w,h/2, 0, 180, Arc2D.CHORD);
+        ghostAdvancedLowerShape = new Rectangle(position.x,position.y + (height/2),width,height/2);
+        ghostAdvancedTopShape = new Arc2D.Float(position.x,position.y,width,height/2, 0, 180, Arc2D.CHORD);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();
@@ -108,7 +108,7 @@ public class Ghost  extends Character{
 		position.y = initialPosition.y;
 		
 		ghostRectangle.setLocation(initialPosition.x,initialPosition.y);
-		ghostAdvancedLowerShape.setLocation(initialPosition.x,initialPosition.y+ h/2);
+		ghostAdvancedLowerShape.setLocation(initialPosition.x,initialPosition.y + (h/2));
 		ghostAdvancedTopShape.setFrame(initialPosition.x,initialPosition.y,w,h/2);
 	}
 
@@ -201,7 +201,7 @@ public class Ghost  extends Character{
     	setInsideTile(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize());
     	
     	ghostRectangle.setLocation(position.x,position.y);
-    	ghostAdvancedLowerShape.setLocation(position.x,position.y+ h/2);
+    	ghostAdvancedLowerShape.setLocation(position.x,position.y);
 		ghostAdvancedTopShape.setFrame(position.x,position.y,w,h/2);
     }
 
@@ -294,7 +294,7 @@ public class Ghost  extends Character{
 		position.y = y;
 		
 		ghostRectangle.setLocation(x,y);
-		ghostAdvancedLowerShape.setLocation(x,y+ h/2);
+		ghostAdvancedLowerShape.setLocation(x,y+(h/2));
 		ghostAdvancedTopShape.setFrame(x,y,w,h/2);
 	}
 
