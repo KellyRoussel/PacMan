@@ -23,15 +23,15 @@ class GameControllerTest {
 		
 		gameController = new GameController(gamePanel, MainGame.SINGLE_INSTANCE);
 		assertNotNull(gameController, "GameController init failed");
-		assertNotNull(gameController.getMainPane());
-//		assertNotNull(gameController.getBackground());
+		assertNotNull(gameController.getMainPane(), "MainPane init failed");
+		assertNotNull(gameController.gettAudio(), "tAudio init failed");
 //		assertNotNull(gameController.getBeginning());
 //		assertNotNull(gameController.getDeath());
 		
 		assertFalse(gameController.fullScreen, "FullScreen should be false");
 		assertFalse(gameController.resize, "Resize should be false");
 		assertFalse(gameController.gameOver, "GameOver should be false");
-		//assertNotNull(gameController.statusBar, " StatusBar init failed"); 
+		assertNotNull(gameController.getStatusBar(), " StatusBar init failed"); 
 		assertEquals(0, gameController.getScore(), "Score should be 0");
 		assertEquals(3, gameController.getLives(), "Lives should be 3");
 		assertEquals(1, gameController.getLevel(), "Level should be 1");

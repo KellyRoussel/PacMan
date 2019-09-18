@@ -115,28 +115,14 @@ public class GameController implements Runnable{
 		BorderLayout bl = new BorderLayout();
 		mainPane = new JPanel(bl);
 		getMainPane().add(gamePanel,BorderLayout.CENTER);
-		getMainPane().add(statusBar, BorderLayout.SOUTH);
+		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
 
 		tAudio = new AudioThread();
-		tAudio.setName("Audio");
-		tAudio.start();
+		gettAudio().setName("Audio");
+		gettAudio().start();
 		
-		tAudio.setIsPause(true);
+		gettAudio().setIsPause(true);
 
-		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
-		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
-		//death = new Sound(GameController.class.getResource("/Sounds"+File.separator+"pacman_death.wav"));
-
-
-		//Lancer la musique
-//		music = beginning;
-//		music.play();
-//		soundOn = true;
-
-		
-		
-		// Lancer le jeu
-		//startGame();
 	}
 
 	private void init() {
@@ -284,7 +270,7 @@ public class GameController implements Runnable{
 				if (key == KeyEvent.VK_M) {
 					// Mettre le jeu en muet 
 					if(!resume) {
-					tAudio.setMuteOnOff(true);
+					gettAudio().setMuteOnOff(true);
 				}
 				}
 
@@ -333,7 +319,7 @@ public class GameController implements Runnable{
 					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 					getPacMan().loadImage();
 					fillFoodList();
-					tAudio.setIsStart(true);
+					gettAudio().setIsStart(true);
 					//wantSound = soundOn;
 					pause = true;
 					//mute();
@@ -411,7 +397,7 @@ public class GameController implements Runnable{
 		}
 		
 		if(getPacMan().isDead()) {
-			tAudio.setIsDead(true);
+			gettAudio().setIsDead(true);
 			getPacMan().deadAnimate();		
 		}
 		if(getPacMan().isResurrection()) {
@@ -430,7 +416,7 @@ public class GameController implements Runnable{
 	private void updatePositions(int raw, int column, boolean flag) {
 		for(int i = 0; i < getFoodList().size(); i++) {
 			if(getFoodList().get(i).getInitialPosition().x / defaultSize == column && getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
-				tAudio.setIsEaten(true);
+				gettAudio().setIsEaten(true);
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
@@ -448,11 +434,11 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
-			tAudio.setIsStart(true);
+			gettAudio().setIsStart(true);
 			//wantSound = soundOn;
 			pause = true;
 			//mute();
-			tAudio.setMuteOnOff(true);
+			gettAudio().setMuteOnOff(true);
 			resume = true;
 		}
 
@@ -496,7 +482,7 @@ public class GameController implements Runnable{
 		
 		if(gameThread == null || !gameThread.isAlive()) {
 		
-			tAudio.setIsStart(true);
+			gettAudio().setIsStart(true);
 			gameThread = new Thread(this);
 			init();
 			gameThread.start();
@@ -510,7 +496,7 @@ public class GameController implements Runnable{
 			tPhysics.setName("Physics");
 			tPhysics.start();
 			
-			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
+			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), getStatusBar());
 			tRender.setName("Render");
 			tRender.start();
 			
@@ -540,7 +526,7 @@ public class GameController implements Runnable{
 
 	public void pause() {
 		while(tRender == null) {}
-		tAudio.setIsPause(true);
+		gettAudio().setIsPause(true);
 		tRender.pause();
 		pause = true;
 	}
@@ -559,7 +545,7 @@ public class GameController implements Runnable{
 		
 		pause = false;
 		while(tRender == null) {}
-		tAudio.setIsPause(false);
+		gettAudio().setIsPause(false);
 		tRender.res();
 		
 		/*if(wantSound) {
@@ -717,5 +703,19 @@ public class GameController implements Runnable{
 	 */
 	public JPanel getMainPane() {
 		return mainPane;
+	}
+
+	/**
+	 * @return the statusBar
+	 */
+	public StatusBar getStatusBar() {
+		return statusBar;
+	}
+
+	/**
+	 * @return the tAudio
+	 */
+	public AudioThread gettAudio() {
+		return tAudio;
 	}	
 }
