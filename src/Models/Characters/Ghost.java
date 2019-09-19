@@ -107,17 +107,17 @@ public class Ghost  extends Character{
         ghostFront.put(KeyEvent.VK_UP, new Point(0, w/2));	        
         ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
         
-        ghostRectangle = new Rectangle(position.x,position.y,width,height);
-        ghostAdvancedLowerShape = new Rectangle(position.x,position.y + (height/2),width,height/2);
-        ghostAdvancedTopShape = new Arc2D.Float(position.x,position.y,width,height/2, 0, 180, Arc2D.CHORD);
+        ghostRectangle = new Rectangle(getPosition().x,getPosition().y,width,height);
+        ghostAdvancedLowerShape = new Rectangle(getPosition().x,getPosition().y + (height/2),width,height/2);
+        ghostAdvancedTopShape = new Arc2D.Float(getPosition().x,getPosition().y,width,height/2, 0, 180, Arc2D.CHORD);
         
         availableDirections = getUpdatedAvailableDirections();
     	setRandomDirection();
 	}
 	
 	public void returnInitialPosition() {
-		position.x = initialPosition.x;
-		position.y = initialPosition.y;
+		getPosition().x = initialPosition.x;
+		getPosition().y = initialPosition.y;
 		
 		ghostRectangle.setLocation(initialPosition.x,initialPosition.y);
 		ghostAdvancedLowerShape.setLocation(initialPosition.x,initialPosition.y + (h/2));
@@ -171,8 +171,8 @@ public class Ghost  extends Character{
 	public int getUpdatedAvailableDirections() {
 		
 			
-		   int raw = position.y / defaultSize;
-		   int column = position.x / defaultSize;
+		   int raw = getPosition().y / defaultSize;
+		   int column = getPosition().x / defaultSize;
 		   int counter = 0;
 		   counter += (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15)? KeyEvent.VK_UP : 0;
 		   counter += (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1)? 0 : KeyEvent.VK_DOWN;
@@ -193,11 +193,11 @@ public class Ghost  extends Character{
 	}
 
     public void nextX(){
-    	setNextX((position.x + dx + defaultSize * nColumn - MARGE) % (defaultSize * nColumn - MARGE));
+    	setNextX((getPosition().x + dx + defaultSize * nColumn - MARGE) % (defaultSize * nColumn - MARGE));
     }
     
     public void nextY() {
-    	setNextY((position.y + dy + defaultSize * nRow) % (defaultSize * nRow));
+    	setNextY((getPosition().y + dy + defaultSize * nRow) % (defaultSize * nRow));
     }
     
  
@@ -208,13 +208,13 @@ public class Ghost  extends Character{
     		style = (style + 1) % 2;
     		loadImage();
     	}
-    	position.x += dx;
-    	position.y += dy;
-    	setInsideTile(position.y / defaultSize, position.x / defaultSize);
+    	getPosition().x += dx;
+    	getPosition().y += dy;
+    	setInsideTile(getPosition().y / defaultSize, getPosition().x / defaultSize);
     	
-    	ghostRectangle.setLocation(position.x,position.y);
-    	ghostAdvancedLowerShape.setLocation(position.x,position.y);
-		ghostAdvancedTopShape.setFrame(position.x,position.y,w,h/2);
+    	ghostRectangle.setLocation(getPosition().x,getPosition().y);
+    	ghostAdvancedLowerShape.setLocation(getPosition().x,getPosition().y);
+		ghostAdvancedTopShape.setFrame(getPosition().x,getPosition().y,w,h/2);
     }
 
     private void loadImage() {
@@ -225,22 +225,22 @@ public class Ghost  extends Character{
 
 	public int getX() {
         
-        return position.x;
+        return getPosition().x;
     }
     
     public void setX(int var_x) {
         
-    	position.x = var_x;
+    	getPosition().x = var_x;
     }
 
     public int getY() {
         
-        return position.y;
+        return getPosition().y;
     }
     
     public void setY(int var_y) {
         
-    	position.y = var_y;
+    	getPosition().y = var_y;
     }
     
     public int getWidth() {
@@ -302,8 +302,8 @@ public class Ghost  extends Character{
 	
 	public void setPosition(int x, int y) {
 		// TODO Auto-generated method stub
-		position.x = x;
-		position.y = y;
+		getPosition().x = x;
+		getPosition().y = y;
 		
 		ghostRectangle.setLocation(x,y);
 		ghostAdvancedLowerShape.setLocation(x,y+(h/2));
@@ -315,9 +315,9 @@ public class Ghost  extends Character{
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
 		int sz = defaultSize;
 		if(changes.get(direction).x == 1)
-			position.x = nColumn * sz;
+			getPosition().x = nColumn * sz;
 		if(changes.get(direction).y == 1)
-			position.y = nRaw * sz;
+			getPosition().y = nRaw * sz;
 	}
 	
 	public int getDX() {
@@ -341,8 +341,8 @@ public class Ghost  extends Character{
 	public void setRandomDirection() {
 		// TODO Auto-generated method stub
 		List<Integer> availables = new ArrayList<>();
-		int raw = position.y / defaultSize;
-		int column = position.x / defaultSize;
+		int raw = getPosition().y / defaultSize;
+		int column = getPosition().x / defaultSize;
 		
 		if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);

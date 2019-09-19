@@ -20,7 +20,7 @@ public abstract class Character extends Sprite {
 	public abstract void move();	
 
 	public void returnInitialPosition() {
-		position.x = initialPosition.x;
-		position.y = initialPosition.y;
+		getPosition().x = initialPosition.x;
+		getPosition().y = initialPosition.y;
 	}
 }

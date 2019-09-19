@@ -22,7 +22,7 @@ public class Sprite {
 
 	
 	public void draw(Graphics g) {
-        g.drawImage(image, position.x, position.y, width, height, null);	
+        g.drawImage(image, getPosition().x, getPosition().y, width, height, null);	
 	}
 	
 	
@@ -58,6 +58,14 @@ public class Sprite {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+
+	/**
+	 * @return the position
+	 */
+	public Point getPosition() {
+		return position;
 	}
 	
 	

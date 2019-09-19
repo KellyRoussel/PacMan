@@ -34,7 +34,7 @@ public class PacGum extends Food{
 	@Override
 	public void draw(Graphics g) {
     	// apres chaque 100 frames on change l image du pacGum
-    	g.drawImage(pacGumImages.get(animationCounter/100), position.x, position.y, width, height, null);
+    	g.drawImage(pacGumImages.get(animationCounter/100), getPosition().x, getPosition().y, width, height, null);
     	// les valeurs du animationCounter seront 0..199
     	animationCounter = (animationCounter+1) % 200;
     }
