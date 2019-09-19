@@ -84,10 +84,9 @@ public class RenderThread extends Thread{
 		pause = true;
 		int counter = 0;
 		while(running) {
-			if(!pause){
-				if(pacMan.isDead()) {
-					pacMan.deadAnimate();
-				}
+			if(pacMan.isDead()) {
+				System.out.println("haa");
+				pacMan.deadAnimate();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
