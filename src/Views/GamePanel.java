@@ -136,13 +136,13 @@ public class GamePanel extends JPanel{
         // dessiner le "Pause" au cas de pause
         if(gameController.isResume()) {
         	int text = gameController.getRESUME();
-        	chiffre_lettre.drawToSprite(text,(MainGame.getDefaultwidth())/2,debutY+(MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	chiffre_lettre.drawToSprite(text,(MainGame.getDefaultwidth()-TEXT_MESSAGE_SIZE)/2,debutY+(MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
         if(gameController.isGameOver()) {
         	String text = "gameover";
-        	chiffre_lettre.drawToSprite(text,(MainGame.getActualWindowWidth()-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	chiffre_lettre.drawToSprite(text,(MainGame.getDefaultwidth()-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
     }
     

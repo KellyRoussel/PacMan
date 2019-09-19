@@ -479,6 +479,15 @@ public class GameController implements Runnable {
 			init();
 			getGameThread().start();
 
+			// lancer l'audio thread
+			if(!isAudioThreadStarted) {
+				gettAudio().setName("Audio");
+				gettAudio().start();
+				isAudioThreadStarted = true;
+			}
+			
+			gettAudio().setIsStart(true);
+			
 			// Lancer un listener sur le clavier
 			addListeners();
 
@@ -492,14 +501,6 @@ public class GameController implements Runnable {
 					getStatusBar());
 			gettRender().setName("Render");
 			gettRender().start();
-
-			if(!isAudioThreadStarted) {
-				gettAudio().setName("Audio");
-				gettAudio().start();
-				isAudioThreadStarted = true;
-			}
-			
-			gettAudio().setIsStart(true);
 
 			getFrame().getMenuPane().gameRunning();
 			pause = false;
