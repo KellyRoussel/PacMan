@@ -222,7 +222,7 @@ public class AudioPanel extends JPanel {
 				}
 				break;
 			case 4: //Back
-				gameController.frame.displayMenu();
+				gameController.getFrame().displayMenu();
 				break;
 			default:
 				break;
@@ -249,12 +249,7 @@ public class AudioPanel extends JPanel {
 				break;
 			}
 			break;
-<<<<<<< HEAD
-		case "exit":
-			gameController.getFrame().displayMenu();
-			break;
-		default:
-=======
+
 		case KeyEvent.VK_RIGHT:
 			int k = cursor.getNumPosition();
 			switch(k) {
@@ -275,7 +270,6 @@ public class AudioPanel extends JPanel {
 			default:
 				break;
 			}
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 			break;
 		}
 	}

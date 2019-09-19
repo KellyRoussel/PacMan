@@ -100,27 +100,7 @@ public class HelpPanel extends JPanel {
 		resume.setSize(400, 200);
 
 		add(movements);
-<<<<<<< HEAD
-		movements.setLocation(100, 470);
-		movements.setSize(400,200);
-		
-		add(exit);
-		exit.setBounds(450 , 650, 70,  40 );
-		exit.setBackground(Color.white);
-		exit.addActionListener(this);
-		exit.setActionCommand("exit");
-	}
-		
-		public void actionPerformed(ActionEvent e) {
-			String cmd = e.getActionCommand();
-			switch(cmd) {
-			case "exit":
-				gameController.getFrame().displayMenu();
-				break;
-			default:
-				break;
-			}
-=======
+
 		movements.setLocation(100, 500);
 		movements.setSize(400, 200);
 
@@ -128,7 +108,6 @@ public class HelpPanel extends JPanel {
 		back.setLocation(450, 650);
 		back.setSize(100, 40);
 		backPosition = new Point(400, 650);
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		
 		cursor = new Cursor(backPosition, 1, gameController);
 		cursor.addPossiblePosition(backPosition);
@@ -143,7 +122,7 @@ public class HelpPanel extends JPanel {
 
 	public static void moveInMenu(int key) {
 	if(key == KeyEvent.VK_ENTER) {
-		gameController.frame.displayMenu();
+		gameController.getFrame().displayMenu();
 	}
 	}
 }

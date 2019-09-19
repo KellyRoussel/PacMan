@@ -36,14 +36,10 @@ public class RenderThread extends Thread{
 	private ArrayList<Food> foodList;
 	private ArrayList<Ghost> ghostList;
 	private StatusBar statusBar;
-<<<<<<< HEAD
 	private boolean pause;
 	private boolean running;
 	private long date = 0;
-=======
-	Threads.TimerThread timerThread;
-	
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
+	private TimerThread timerThread;
 	
 	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
@@ -100,23 +96,24 @@ public class RenderThread extends Thread{
 				
 				long currentTime = System.currentTimeMillis();
 				int sleeptime = (int)(1000L / GameController.getFPS());
-				System.out.println(sleeptime);
 				if(date != 0)
 					GameController.setFPS((int)(1000 / (currentTime - date - sleeptime)));
 
 				date = currentTime;
 				
 				
-				if(counter == 0)
-					statusBar.updateFPS("" + GameController.getFPS());
-				counter++;
-				counter = counter % 10;
+				
 				
 				if(GameController.getFPS() > 60)
 					GameController.setFPS(60);
 				else if(GameController.getFPS() < 30)
 					GameController.setFPS(30);
 			
+				if(counter == 0)
+					statusBar.updateFPS("" + GameController.getFPS());
+				counter++;
+				counter = counter % 10;
+				
 				Thread.sleep(1000L / (long)GameController.getFPS());
 				
 			}catch(InterruptedException ex) {}

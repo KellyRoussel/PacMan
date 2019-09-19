@@ -82,13 +82,13 @@ public class Cursor implements KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		Container c = MainGame.getInstance().getContentPane();
-		if(c == MainGame.getInstance().menuPane) {
+		if(c == MainGame.getInstance().getMenuPane()) {
 			GameMenu.moveInMenu(key);
 		}
-		else if(c == MainGame.getInstance().audioPane) {
+		else if(c == MainGame.getInstance().getAudioPane()) {
 			AudioPanel.moveInMenu(key);
 		}
-		else if(c == MainGame.getInstance().helpPane) {
+		else if(c == MainGame.getInstance().getHelpPane()) {
 			HelpPanel.moveInMenu(key);
 		}
 

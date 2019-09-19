@@ -120,17 +120,9 @@ public class GameMenu extends JPanel{
 			cursor.nextPosition();
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 			break;
-<<<<<<< HEAD
-		case "Help":
-			System.out.println("help");
-			gameController.getFrame().setContentPane(gameController.getFrame().getHelpPane());
-			gameController.getFrame().getHelpPane().requestFocus();
-			gameController.getFrame().revalidate();
-=======
 		case KeyEvent.VK_UP:
 			cursor.previousPosition();
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);		
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 			break;
 		case KeyEvent.VK_ENTER:
 			int n = cursor.getNumPosition();
@@ -142,12 +134,12 @@ public class GameMenu extends JPanel{
 				gameController.changeVolume();
 				break;
 			case 2: //Help
-				gameController.frame.setContentPane(gameController.frame.helpPane);
-				gameController.frame.requestFocus();
-				gameController.frame.revalidate();
+				gameController.getFrame().setContentPane(gameController.getFrame().getHelpPane());
+				gameController.getFrame().requestFocus();
+				gameController.getFrame().revalidate();
 				break;
 			case 3: //Exit
-				if(gameController.gameThread != null && gameController.gameThread.isAlive()) {
+				if(gameController.getGameThread() != null && gameController.getGameThread().isAlive()) {
 					gameController.stop();
 				}
 //				if(gameController.tRender != null && gameController.tRender.isAlive()) {
@@ -156,10 +148,10 @@ public class GameMenu extends JPanel{
 //				if(gameController.tAudio != null && gameController.tAudio.isAlive()) {
 //					gameController.tAudio.stop();
 //				}
-				if(gameController.tPhysics != null && gameController.tPhysics.isAlive()) {
-					gameController.tPhysics.stopThread();
+				if(gameController.gettPhysics() != null && gameController.gettPhysics().isAlive()) {
+					gameController.gettPhysics().stopThread();
 				}
-				gameController.frame.dispose();
+				gameController.getFrame().dispose();
 				break;
 			default:
 				break;

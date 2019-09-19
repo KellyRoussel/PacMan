@@ -81,43 +81,19 @@ public class GameController implements Runnable{
 	private static long timeUpdate = 10;
 	private static int FPS = 30;
 
-<<<<<<< HEAD
     private Thread gameThread; 
 	private RenderThread tRender;
 	private AudioThread tAudio;
 	private ArrayList<Point> listTunnelLeft;
 	private ArrayList<Point> listTunnelRight;
+
+	private PhysicsThread tPhysics;
 	
 	
 	public GameController(MainGame frame) {    	
 		
 		GamePanel gamePanel = new GamePanel(this);
-=======
-    public Thread gameThread; 
-    
-	//private boolean wantSound = true;
 
-	public static int RESUME;
-	public static boolean resume;
-	public static boolean fullScreen;
-	public static boolean resize;
-	public static boolean gameOver; 
-
-	private static int [][] grille;
-	private static int nRow; 
-	private static int nColumn;
-
-	public PhysicsThread tPhysics;
-	public RenderThread tRender;
-	public AudioThread tAudio;
-
-	public static ArrayList<Point> listTunnelLeft;
-
-	public static ArrayList<Point> listTunnelRight;
-
-	public GameController(GamePanel gamePanel, MainGame frame) {    	
-
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		init();
 		
 		this.gamePanel = gamePanel;
@@ -343,30 +319,7 @@ public class GameController implements Runnable{
 			long pastTime = System.currentTimeMillis();
 			if(isGameOver()) {
 				try {
-<<<<<<< HEAD
 					Thread.sleep(3000);					
-=======
-					Thread.sleep(3000);
-					gameOver = false;
-					setLevel(1);
-					setLives(3);
-					setScore(0);
-					
-					//statusBar.updateLevel();
-					getPacMan().returnInitialPosition();
-					for(int i = 0; i < getGhostList().size(); i++) {
-						getGhostList().get(i).returnInitialPosition();
-					}
-					getPacMan().initPM();
-					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
-					getPacMan().loadImage();
-					fillFoodList();
-					tAudio.setIsStart(true);
-					//wantSound = soundOn;
-					pause = true;
-					//mute();
-					resume = true;
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 				}catch(InterruptedException ex) {}
 			}
 			else {
@@ -488,13 +441,8 @@ public class GameController implements Runnable{
 			//wantSound = soundOn;
 			setPause(true);
 			//mute();
-<<<<<<< HEAD
-			tAudio.setMuteOnOff(true);
-			setResume(true);
-=======
 			//tAudio.setMuteOnOff(true);
 			resume = true;
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		}
 
 		if(!isResume()) {
@@ -536,38 +484,31 @@ public class GameController implements Runnable{
 		getFrame().revalidate();
 		
 		
-		if(gameThread == null || !gameThread.isAlive()) {
+		if(getGameThread() == null || !getGameThread().isAlive()) {
 		
 			tAudio.setIsStart(true);
-			gameThread = new Thread(this);
+			setGameThread(new Thread(this));
 			init();
-			gameThread.start();
+			getGameThread().start();
 			
 			//Lancer un listener sur le clavier
 			addListeners();
 			
 			//System.out.println("Physics coming threw");
 			
-			tPhysics = new PhysicsThread(getPacMan(),getGhostList());
-			tPhysics.setName("Physics");
-			tPhysics.start();
+			settPhysics(new PhysicsThread(getPacMan(),getGhostList()));
+			gettPhysics().setName("Physics");
+			gettPhysics().start();
 			
 			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
 			tRender.setName("Render");
 			tRender.start();
 			
-<<<<<<< HEAD
 			getFrame().getMenuPane().gameRunning();
-			tAudio.start();
+			pause = false;
+			resume = true;
 		}
-		System.out.println("haa");
 		setResume(true);
-=======
-			frame.menuPane.gameRunning();
-			
-		}
-		resume = true;
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	}
 	
 	
@@ -577,9 +518,9 @@ public class GameController implements Runnable{
 		//******************************************************
 		//tAudio.setIsRunning(false);
 		try {
-			gameThread.join(500);
-			if (gameThread.isAlive()){
-				gameThread.interrupt();
+			getGameThread().join(500);
+			if (getGameThread().isAlive()){
+				getGameThread().interrupt();
 			}
 		}catch (InterruptedException e){
 			e.printStackTrace();
@@ -606,12 +547,7 @@ public class GameController implements Runnable{
 	}*/
 
 	public void resume(){
-<<<<<<< HEAD
 		setPause(false);
-=======
-		
-		pause = false;
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		while(tRender == null) {}
 		tAudio.setIsPause(false);
 		tRender.res();
@@ -640,15 +576,10 @@ public class GameController implements Runnable{
 	}
 	
 	public void changeVolume() {
-<<<<<<< HEAD
+
 		getFrame().setContentPane(getFrame().getAudioPane());
 		getFrame().getAudioPane().requestFocus();
 		getFrame().revalidate();
-=======
-		frame.setContentPane(frame.audioPane);
-		frame.requestFocus();
-		frame.revalidate();
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	}
 
 	public int[][] getGrille() {
@@ -846,6 +777,22 @@ public class GameController implements Runnable{
 
 	public static void setFPS(int fPS) {
 		FPS = fPS;
+	}
+
+	public Thread getGameThread() {
+		return gameThread;
+	}
+
+	public void setGameThread(Thread gameThread) {
+		this.gameThread = gameThread;
+	}
+
+	public PhysicsThread gettPhysics() {
+		return tPhysics;
+	}
+
+	public void settPhysics(PhysicsThread tPhysics) {
+		this.tPhysics = tPhysics;
 	}	
 	
 	

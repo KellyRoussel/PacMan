@@ -33,7 +33,7 @@ public class MainGame extends JFrame implements WindowListener{
 	
 	public MainGame() {
 		
-<<<<<<< HEAD
+
 		setActualWindowHeight(DefaultHeight);
 		setActualWindowWidth(getDefaultwidth());
 		gameController = new GameController(this);
@@ -41,28 +41,15 @@ public class MainGame extends JFrame implements WindowListener{
 		setAudioPane(new AudioPanel(gameController));
 		setHelpPane(new HelpPanel(gameController));
 		this.setContentPane(getMenuPane());
-=======
-		actualWindowHeight = DefaultHeight;
-		actualWindowWidth = DefaultWidth;
-		gameController = new GameController(new GamePanel(), this);
-		menuPane = new GameMenu(gameController);
-		audioPane = new AudioPanel(gameController);
-		helpPane = new HelpPanel(gameController);
-		this.setContentPane(menuPane);
 		this.addKeyListener(menuPane.cursor);
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
+
 		addWindowListener(this);
 		this.setFocusable(true);
 	}
 	
 	public void displayMenu() {
-<<<<<<< HEAD
-		setContentPane(getMenuPane());
-		getMenuPane().requestFocus();
-=======
 		setContentPane(menuPane);
 		this.requestFocus();
->>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		revalidate();
 	}
 	
