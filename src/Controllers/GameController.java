@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 
 
 import  Models.Maze;
-import  Models.Sound;
 import Models.ToSprite;
 import Models.Characters.Ghost;
 import  Models.Characters.PacMan;
@@ -82,6 +81,7 @@ public class GameController implements Runnable{
 	private static long timeUpdate = 10;
 	private static int FPS = 30;
 
+<<<<<<< HEAD
     private Thread gameThread; 
 	private RenderThread tRender;
 	private AudioThread tAudio;
@@ -92,6 +92,32 @@ public class GameController implements Runnable{
 	public GameController(MainGame frame) {    	
 		
 		GamePanel gamePanel = new GamePanel(this);
+=======
+    public Thread gameThread; 
+    
+	//private boolean wantSound = true;
+
+	public static int RESUME;
+	public static boolean resume;
+	public static boolean fullScreen;
+	public static boolean resize;
+	public static boolean gameOver; 
+
+	private static int [][] grille;
+	private static int nRow; 
+	private static int nColumn;
+
+	public PhysicsThread tPhysics;
+	public RenderThread tRender;
+	public AudioThread tAudio;
+
+	public static ArrayList<Point> listTunnelLeft;
+
+	public static ArrayList<Point> listTunnelRight;
+
+	public GameController(GamePanel gamePanel, MainGame frame) {    	
+
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		init();
 		
 		this.gamePanel = gamePanel;
@@ -107,6 +133,9 @@ public class GameController implements Runnable{
 
 		tAudio = new AudioThread();
 		tAudio.setName("Audio");
+		tAudio.start();
+		
+		tAudio.setIsPause(true);
 
 		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
 		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
@@ -235,7 +264,7 @@ public class GameController implements Runnable{
     	
     	foodList = new ArrayList();
     	fillFoodList();    	    	
-    	
+
     }
     
     private void fillFoodList() {
@@ -314,7 +343,30 @@ public class GameController implements Runnable{
 			long pastTime = System.currentTimeMillis();
 			if(isGameOver()) {
 				try {
+<<<<<<< HEAD
 					Thread.sleep(3000);					
+=======
+					Thread.sleep(3000);
+					gameOver = false;
+					setLevel(1);
+					setLives(3);
+					setScore(0);
+					
+					//statusBar.updateLevel();
+					getPacMan().returnInitialPosition();
+					for(int i = 0; i < getGhostList().size(); i++) {
+						getGhostList().get(i).returnInitialPosition();
+					}
+					getPacMan().initPM();
+					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+					getPacMan().loadImage();
+					fillFoodList();
+					tAudio.setIsStart(true);
+					//wantSound = soundOn;
+					pause = true;
+					//mute();
+					resume = true;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 				}catch(InterruptedException ex) {}
 			}
 			else {
@@ -391,9 +443,12 @@ public class GameController implements Runnable{
 			}
 		}
 		
-		if(getPacMan().isDead()) {
-			tAudio.setIsDead(true);
-			getPacMan().deadAnimate();		
+		if(getPacMan().isDead() && pacMan.getDeadAnimationCounter() == 0) {
+		
+				tAudio.setIsDead(true);
+				getPacMan().deadAnimate();
+			
+			//getPacMan().setIsDead(false);
 		}
 		if(getPacMan().isResurrection()) {
 			startNewLife();
@@ -429,11 +484,17 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
+			tAudio.setIsStart(true);
 			//wantSound = soundOn;
 			setPause(true);
 			//mute();
+<<<<<<< HEAD
 			tAudio.setMuteOnOff(true);
 			setResume(true);
+=======
+			//tAudio.setMuteOnOff(true);
+			resume = true;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		}
 
 		if(!isResume()) {
@@ -447,6 +508,7 @@ public class GameController implements Runnable{
 	
 	private void startNewLife() 
 	{
+			getPacMan().setIsDead(false);
 			lives--;
 			if(lives == 0) {
 				setGameOver(true);
@@ -463,7 +525,7 @@ public class GameController implements Runnable{
 				setPause(true);
 				setResume(true);
 				
-				getPacMan().setIsDead(false);
+				
 			}
 	}
 
@@ -473,8 +535,10 @@ public class GameController implements Runnable{
 		getMainPane().requestFocus();
 		getFrame().revalidate();
 		
+		
 		if(gameThread == null || !gameThread.isAlive()) {
 		
+			tAudio.setIsStart(true);
 			gameThread = new Thread(this);
 			init();
 			gameThread.start();
@@ -484,7 +548,7 @@ public class GameController implements Runnable{
 			
 			//System.out.println("Physics coming threw");
 			
-			PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
+			tPhysics = new PhysicsThread(getPacMan(),getGhostList());
 			tPhysics.setName("Physics");
 			tPhysics.start();
 			
@@ -492,11 +556,18 @@ public class GameController implements Runnable{
 			tRender.setName("Render");
 			tRender.start();
 			
+<<<<<<< HEAD
 			getFrame().getMenuPane().gameRunning();
 			tAudio.start();
 		}
 		System.out.println("haa");
 		setResume(true);
+=======
+			frame.menuPane.gameRunning();
+			
+		}
+		resume = true;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	}
 	
 	
@@ -535,7 +606,12 @@ public class GameController implements Runnable{
 	}*/
 
 	public void resume(){
+<<<<<<< HEAD
 		setPause(false);
+=======
+		
+		pause = false;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		while(tRender == null) {}
 		tAudio.setIsPause(false);
 		tRender.res();
@@ -564,9 +640,15 @@ public class GameController implements Runnable{
 	}
 	
 	public void changeVolume() {
+<<<<<<< HEAD
 		getFrame().setContentPane(getFrame().getAudioPane());
 		getFrame().getAudioPane().requestFocus();
 		getFrame().revalidate();
+=======
+		frame.setContentPane(frame.audioPane);
+		frame.requestFocus();
+		frame.revalidate();
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	}
 
 	public int[][] getGrille() {

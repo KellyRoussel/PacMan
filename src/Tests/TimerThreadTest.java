@@ -1,4 +1,4 @@
-package Testing;
+package Tests;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;

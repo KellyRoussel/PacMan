@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 
 import Controllers.GameController;
 import Models.Maze;
-import Models.Sound;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
@@ -30,20 +29,22 @@ import Views.StatusBar;
 
 public class RenderThread extends Thread{
 
-	
-	
+
 	private PacMan pacMan;
 	private GamePanel gamePanel;
 	private Maze maze;
 	private ArrayList<Food> foodList;
 	private ArrayList<Ghost> ghostList;
 	private StatusBar statusBar;
+<<<<<<< HEAD
 	private boolean pause;
 	private boolean running;
 	private long date = 0;
+=======
+	Threads.TimerThread timerThread;
 	
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	
-
 	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
 		super();
@@ -136,7 +137,7 @@ public class RenderThread extends Thread{
 			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
 			
-			Threads.TimerThread timerThread = new Threads.TimerThread(1);
+			timerThread = new Threads.TimerThread(1);
 			timerThread.start();
 			timerThread.setName(" RESUME TIMER");
 			

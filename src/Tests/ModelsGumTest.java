@@ -1,31 +1,30 @@
-package Testing;
+package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import Models.Foods.PacGum;
+import Models.Foods.Gum;
 
-class ModelPacGumTest {
+class ModelGumTest {
 
 	@Test
 	void testGetX() {
-		//re-do
-		PacGum test = new PacGum();
-		int output = test.getX();
-		assertEquals(0, output);
-	}
-
-	@Test
-	void testGetY() {
-		PacGum test = new PacGum();
+		Gum test = new Gum();
 		int output = test.getY();
 		assertEquals(0, output);
 	}
 
 	@Test
-	void testPacGum() {
-		PacGum test = new PacGum();
+	void testGetY() {
+		Gum test = new Gum();
+		int output = test.getY();
+		assertEquals(0, output);
+	}
+
+	@Test
+	void testGum() {
+		Gum test = new Gum();
 		int outputX = test.getX();
 		int outputY = test.getY();
 		boolean outputIsEaten = test.isEaten();
@@ -34,13 +33,28 @@ class ModelPacGumTest {
 		assertEquals(0, outputY);
 		assertEquals(false, outputIsEaten);
 	}
+
+	@Test
+	void testIsEaten() {
+		Gum test = new Gum();
+		boolean output = test.isEaten();
+		assertEquals(false, output);
+	}
+
+	@Test
+	void testSetEaten() {
+		Gum test = new Gum();
+		test.setEaten();
+		boolean output = test.isEaten();
+		assertEquals(true, output);
+	}
 	
 	@Test
-	void testPacGumXY() {
+	void testGumXY() {
 		int X = 1;
 		int Y = 1;
 		
-		PacGum test = new PacGum(X,Y);
+		Gum test = new Gum(X,Y);
 		int outputX = test.getX();
 		int outputY = test.getY();
 		
@@ -48,20 +62,4 @@ class ModelPacGumTest {
 		assertEquals(1, outputY);
 	}
 
-	@Test
-	void testIsEaten() {
-		PacGum test = new PacGum();
-		boolean output = test.isEaten();
-		assertEquals(false, output);
-	}
-
-	@Test
-	void testSetEaten() {
-		PacGum test = new PacGum();
-		test.setEaten();
-		boolean output = test.isEaten();
-		assertEquals(true, output);
-	}
-
 }
-

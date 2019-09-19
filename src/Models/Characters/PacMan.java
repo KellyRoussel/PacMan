@@ -28,7 +28,11 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
+<<<<<<< HEAD
 	private final int PAS = 4;
+=======
+	private final int PAS = 2;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;
@@ -231,14 +235,18 @@ public class PacMan extends Character {
 	}
 
 	public void deadAnimate() {
+<<<<<<< HEAD
 		isDead = true;
 		// l image de l animation change aprï¿½s 5 Frames 
+=======
+		// l image de l animation change après 5 Frames 
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 		// il existe 12 images de l animation
-		if (deadAnimationCounter < 12 * 5) {
+		if (getDeadAnimationCounter() < 12 * 2) {
 			ToSprite pacMan_tiles_to_sprite = new ToSprite(8, "pacmanTilesSheet");
-			setImage(pacMan_tiles_to_sprite.extractImage((deadAnimationCounter / 5) % 8, 4 + deadAnimationCounter / (8 * 5),
-					"PacManDead", deadAnimationCounter));
-			deadAnimationCounter++;
+			setImage(pacMan_tiles_to_sprite.extractImage((getDeadAnimationCounter() / 2) % 8, 4 + getDeadAnimationCounter() / (8 * 2),
+					"PacManDead", getDeadAnimationCounter()));
+			deadAnimationCounter = getDeadAnimationCounter() + 1;
 		}else {
 			setIsDead(false);
 			setResurrection(true);
@@ -403,5 +411,12 @@ public class PacMan extends Character {
 
 	public void setPacManFront(Map<Integer, Point> pacManFront) {
 		this.pacManFront = pacManFront;
+	}
+
+	/**
+	 * @return the deadAnimationCounter
+	 */
+	public static int getDeadAnimationCounter() {
+		return deadAnimationCounter;
 	}
 }

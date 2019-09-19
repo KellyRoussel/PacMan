@@ -12,7 +12,7 @@ import javax.sound.sampled.FloatControl;
 
 		// champs pour la musique du jeu
 		private volatile static AtomicBoolean isMusicPaused = new AtomicBoolean(true);
-		private static float MusicVolume = 0.5f;
+		private static float MusicVolume = 0.7f;
 		private static AtomicBoolean MusicMuted = new AtomicBoolean(false);
 
 		// champs pour les sons du jeu
@@ -32,7 +32,7 @@ import javax.sound.sampled.FloatControl;
 		private Clip eatedGumSoundClip;
 		private final static String eatGumSoundfilePath = "Ressources" + File.separator + "pacman_chomp.wav";
 		private Clip startGameSoundClip;
-		private final static String startGameSoundfilePath = "Ressources" + File.separator + "pacman_death.wav";
+		private final static String startGameSoundfilePath = "Ressources" + File.separator + "beginning.wav";
 		
 		private static final long SLEEP_TIMER = 50; //ms
 
@@ -48,10 +48,10 @@ import javax.sound.sampled.FloatControl;
 		public AudioThread() {
 			// initialiser tous les clips
 			try {
+				//play(startGameSoundClip, false);
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(MusicfilePath).getAbsoluteFile());
 				musicBackgroundClip = AudioSystem.getClip();
 				musicBackgroundClip.open(audioInputStream);
-				musicBackgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
 
 				AudioInputStream audioInputStream1  = AudioSystem.getAudioInputStream(new File(deadPacmanSoundfilePath).getAbsoluteFile());
 				deadPacmanSoundClip = AudioSystem.getClip();
@@ -86,20 +86,22 @@ import javax.sound.sampled.FloatControl;
 					}
 					// si le pacman est mort et le son n est pas en mode mute
 					if (isDead.get()) {
+						System.out.println("dead");
+						isDead.compareAndExchange(true, false);
 						if(!SoundMuted.get()) {
 							// si le clip deadPacmanSoundClip est deja lance une fois au moins
-							if(!firstTimeDead) {
+							if(!firstTimeDead && !deadPacmanSoundClip.isRunning()) {
 								restart(deadPacmanSoundClip ,deadPacmanSoundfilePath ,false);
 								//stop(musicBackgroundClip);
 							}
 							// la premiere lance du clip deadPacmanSoundClip
 							else {
 								play(deadPacmanSoundClip, false);
-								stop(musicBackgroundClip);
+								//stop(musicBackgroundClip);
 								firstTimeDead = false;
 							}
 						}
-						isDead.compareAndExchange(true, false);
+						
 					}
 					
 					// si le pacman mange une gomme et le son n est pas en mode mute
@@ -249,6 +251,7 @@ import javax.sound.sampled.FloatControl;
 			}
 		}
 
+		
 		// Getters et Setters
 		public static boolean isMusicPaused() {
 			return isMusicPaused.get();

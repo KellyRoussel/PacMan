@@ -39,7 +39,11 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
+<<<<<<< HEAD
     private final int PAS = 4;
+=======
+    private final int PAS = 2;
+>>>>>>> f87069a4a07123ecb4bc54032692e768bf6a380f
 	private final int MARGE = 10;
     
 	private int dx;

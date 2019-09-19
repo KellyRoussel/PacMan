@@ -78,11 +78,14 @@ public class PhysicsThread extends Thread
 
 	public void stopThread() {
 		isRunning = false;
-		/*synchronized(oBuffer)
-		{
-			//Reveiller l'ensemble des threads en attentes (wait)
-			oBuffer.notifyAll();
-		}*/
+			try {
+				this.join(500);
+				if (this.isAlive()){
+					this.interrupt();
+				}
+			}catch (InterruptedException e){
+				e.printStackTrace();
+			}
 	}
 
 	public void run()
