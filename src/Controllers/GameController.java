@@ -82,7 +82,7 @@ public class GameController implements Runnable {
 	private RenderThread tRender;
 	private static boolean isAudioThreadStarted = false;
 	private AudioThread tAudio = new AudioThread();
-	ArrayList<Point> listTunnelLeft;
+	private ArrayList<Point> listTunnelLeft;
 	private ArrayList<Point> listTunnelRight;
 
 	private PhysicsThread tPhysics;
