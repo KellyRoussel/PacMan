@@ -208,18 +208,21 @@ public class AudioPanel extends JPanel {
 			int n = cursor.getNumPosition();
 			switch(n) {
 			case 1: //MusicMute
-				if(muteMusicButton.isSelected()) {
+				if(AudioThread.isMusicMuted()) {
 					muteMusicButton.setSelected(false);
 				}else {
 					muteMusicButton.setSelected(true);
 				}
+				AudioThread.setMuteOnOffMusic(true);
 				break;
 			case 3: //SoundMute
-				if(muteSoundButton.isSelected()) {
+				if(AudioThread.isSoundMuted()) {
 					muteSoundButton.setSelected(false);
+
 				}else {
-					muteSoundButton.setSelected(true);
+					muteSoundButton.setSelected(true);		
 				}
+				AudioThread.setMuteOnOffSound(true);
 				break;
 			case 4: //Back
 				gameController.getFrame().displayMenu();

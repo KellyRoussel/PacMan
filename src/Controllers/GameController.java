@@ -92,11 +92,10 @@ public class GameController implements Runnable{
 	
 	public GameController(MainGame frame) {    	
 		
-		GamePanel gamePanel = new GamePanel(this);
+		this.gamePanel = new GamePanel(this);
 
 		init();
 		
-		this.gamePanel = gamePanel;
 		this.setFrame(frame);
 
 		statusBar = new StatusBar();
@@ -104,14 +103,14 @@ public class GameController implements Runnable{
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
 		mainPane = new JPanel(bl);
-		getMainPane().add(gamePanel,BorderLayout.CENTER);
-		getMainPane().add(statusBar, BorderLayout.SOUTH);
+		getMainPane().add(getGamePanel(),BorderLayout.CENTER);
+		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
 
 		tAudio = new AudioThread();
-		tAudio.setName("Audio");
-		tAudio.start();
+		gettAudio().setName("Audio");
+		gettAudio().start();
 		
-		tAudio.setIsPause(true);
+		gettAudio().setIsPause(true);
 
 		//background = new Sound(GameController.class.getResource("/Sounds"+File.separator+"loop.wav"));
 		//beginning = new Sound(GameController.class.getResource("/Sounds"+File.separator+"beginning.wav"));
@@ -131,11 +130,9 @@ public class GameController implements Runnable{
 
 	private void init() {
 	    setRESUME(0);
-		setResume(false);
-		setFullScreen(false);
-		setGameOver(false);  
+		setResume(false); 
 		grille = null;
-		running = false;
+		setRunning(false);
 		setFullScreen(false);
 		setResize(false);
 		setGameOver(false); 
@@ -157,10 +154,8 @@ public class GameController implements Runnable{
 
 		nColumn =  Integer.parseInt(dimensions[0]);
 		nRow =  Integer.parseInt(dimensions[1]);	
-
 		int height = MainGame.getActualWindowHeight() - StatusBar.HEIGHT;
 		int width = MainGame.getActualWindowWidth();
-
 		size = Math.min(height / nRow, width / nColumn);
 		defaultSize = size;
 
@@ -169,7 +164,7 @@ public class GameController implements Runnable{
 
 		images = new Image[nRow][nColumn];
 		output = new BufferedImage(defaultSize * nColumn, defaultSize * nRow, BufferedImage.TYPE_INT_ARGB );
-		g = output.getGraphics();
+		g = getOutput().getGraphics();
 
 		for(int i = 0; i < nRow; i++) {
 			String line = sc.nextLine();
@@ -177,14 +172,14 @@ public class GameController implements Runnable{
 			for(int j = 0; j < nColumn; j++) {
 				grille[i][j] = Integer.parseInt(strings[j]);
 				if(grille[i][j] < 30) {
-					images[i][j] = loadImage("maze" + grille[i][j] + ".png");
-					g.drawImage(images[i][j], j * defaultSize, i * defaultSize,defaultSize,defaultSize, null);
+					getImages()[i][j] = loadImage("maze" + grille[i][j] + ".png");
+					getG().drawImage(getImages()[i][j], j * defaultSize, i * defaultSize,defaultSize,defaultSize, null);
 				}
 			}
 		}
 		
-		listTunnelLeft = new ArrayList<Point>();
-		listTunnelRight = new ArrayList<Point>();
+		setListTunnelLeft(new ArrayList<Point>());
+		setListTunnelRight(new ArrayList<Point>());
 		
 	
 		for(int i = 0; i < nRow; i++) {
@@ -192,7 +187,7 @@ public class GameController implements Runnable{
 				int j = 0;
 				while(grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
 					j++;
-				listTunnelLeft.add(new Point(i, j));
+				getListTunnelLeft().add(new Point(i, j));
 			}
 		}
 		
@@ -201,12 +196,12 @@ public class GameController implements Runnable{
 				int j = nColumn - 1;
 				while(grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
 					j--;
-				listTunnelRight.add(new Point(i, j));
+				getListTunnelRight().add(new Point(i, j));
 			}
 		}
 
 		//Creer une instance de la labyrinthe
-		maze = new Maze(defaultSize * nColumn, defaultSize * nRow, output, new Point(0, 0));
+		maze = new Maze(defaultSize * nColumn, defaultSize * nRow, getOutput(), new Point(0, 0));
 
 
 		//Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
@@ -225,14 +220,14 @@ public class GameController implements Runnable{
         //Creer le PacMan  
       	ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
          
-		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow);
+		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow);
         
     	//Creer les fantomes
     	ghostList = new ArrayList<Ghost>();
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"), definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"), definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"), definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"), definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));    	    	
     	ghostOutside = 0;
     	firstGhostToQuit = (int)(Math.random() * 4);
     	
@@ -278,14 +273,14 @@ public class GameController implements Runnable{
 					if (key == KeyEvent.VK_M) {
 						// Mettre la musique en muet 
 						if(!isResume()) {
-						tAudio.setMuteOnOffMusic(true);
+						gettAudio().setMuteOnOffMusic(true);
 					}
 					}
 					
 					if (key == KeyEvent.VK_S) {
 						// Mettre le son en muet 
 						if(!isResume()) {
-						tAudio.setMuteOnOffSound(true);
+						gettAudio().setMuteOnOffSound(true);
 					}
 					}
 	
@@ -320,9 +315,9 @@ public class GameController implements Runnable{
 	//Boucle du jeu
 	@Override
 	public void run() {
-		running = true;
+		setRunning(true);
 		setPause(true);
-		while(running) {
+		while(isRunning()) {
 			long pastTime = System.currentTimeMillis();
 			if(isGameOver()) {
 				try {
@@ -405,7 +400,7 @@ public class GameController implements Runnable{
 		
 		if(getPacMan().isDead() && pacMan.getDeadAnimationCounter() == 0) {
 		
-				tAudio.setIsDead(true);
+				gettAudio().setIsDead(true);
 				getPacMan().deadAnimate();
 			
 			//getPacMan().setIsDead(false);
@@ -426,7 +421,7 @@ public class GameController implements Runnable{
 	private void updatePositions(int raw, int column, boolean flag) {
 		for(int i = 0; i < getFoodList().size(); i++) {
 			if(getFoodList().get(i).getInitialPosition().x / defaultSize == column && getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
-				tAudio.setIsEaten(true);
+				gettAudio().setIsEaten(true);
 				//Tile contenant une Gum
 				score += getFoodList().get(i).getGain();
 				getFoodList().remove(i);
@@ -444,7 +439,7 @@ public class GameController implements Runnable{
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
 			fillFoodList();
-			tAudio.setIsStart(true);
+			gettAudio().setIsStart(true);
 			//wantSound = soundOn;
 			setPause(true);
 			//mute();
@@ -493,7 +488,7 @@ public class GameController implements Runnable{
 		
 		if(getGameThread() == null || !getGameThread().isAlive()) {
 		
-			tAudio.setIsStart(true);
+			gettAudio().setIsStart(true);
 			setGameThread(new Thread(this));
 			init();
 			getGameThread().start();
@@ -507,9 +502,9 @@ public class GameController implements Runnable{
 			gettPhysics().setName("Physics");
 			gettPhysics().start();
 			
-			tRender = new RenderThread(getPacMan(), gamePanel, getMaze(), getFoodList(), getGhostList(), statusBar);
-			tRender.setName("Render");
-			tRender.start();
+			tRender = new RenderThread(getPacMan(), getGamePanel(), getMaze(), getFoodList(), getGhostList(), getStatusBar());
+			gettRender().setName("Render");
+			gettRender().start();
 			
 			getFrame().getMenuPane().gameRunning();
 			pause = false;
@@ -520,11 +515,12 @@ public class GameController implements Runnable{
 	
 	
 	public void stop() {
-		running = false;
-		tRender.setRunning(false);
+		setRunning(false);
+		gettRender().setRunning(false);
 		//******************************************************
 		//tAudio.setIsRunning(false);
 		try {
+			
 			getGameThread().join(500);
 			if (getGameThread().isAlive()){
 				getGameThread().interrupt();
@@ -537,9 +533,9 @@ public class GameController implements Runnable{
 	}
 
 	public void pause() {
-		while(tRender == null) {}
-		tAudio.setIsPause(true);
-		tRender.pause();
+		while(gettRender() == null) {}
+		gettAudio().setIsPause(true);
+		gettRender().pause();
 		setPause(true);
 	}
 
@@ -555,9 +551,9 @@ public class GameController implements Runnable{
 
 	public void resume(){
 		setPause(false);
-		while(tRender == null) {}
-		tAudio.setIsPause(false);
-		tRender.res();
+		while(gettRender() == null) {}
+		gettAudio().setIsPause(false);
+		gettRender().res();
 		
 		/*if(wantSound) {
 			music = getBackground();
@@ -585,7 +581,7 @@ public class GameController implements Runnable{
 	public void changeVolume() {
 
 		getFrame().setContentPane(getFrame().getAudioPane());
-		getFrame().getAudioPane().requestFocus();
+		getFrame().requestFocus();
 		getFrame().revalidate();
 	}
 
@@ -802,12 +798,103 @@ public class GameController implements Runnable{
 		this.tPhysics = tPhysics;
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * @return the gamePanel
+	 */
+	public GamePanel getGamePanel() {
+		return gamePanel;
+	}
+
+	/**
+	 * @return the tAudio
+	 */
+	public AudioThread gettAudio() {
+		return tAudio;
+	}
+
+	/**
+	 * @return the running
+	 */
+	public boolean isRunning() {
+		return running;
+	}
+
+	/**
+	 * @return the statusBar
+	 */
+	public StatusBar getStatusBar() {
+		return statusBar;
+	}
+
+	/**
+	 * @return the images
+	 */
+	public Image [][] getImages() {
+		return images;
+	}
+
+	/**
+	 * @return the output
+	 */
+	public BufferedImage getOutput() {
+		return output;
+	}
+
+	/**
+	 * @return the g
+	 */
+	public Graphics getG() {
+		return g;
+	}
+
+	/**
+	 * @return the listTunnelLeft
+	 */
+	public ArrayList<Point> getListTunnelLeft() {
+		return listTunnelLeft;
+	}
+
+	/**
+	 * @return the listTunnelRight
+	 */
+	public ArrayList<Point> getListTunnelRight() {
+		return listTunnelRight;
+	}
+
+	/**
+	 * @param listTunnelRight the listTunnelRight to set
+	 */
+	public void setListTunnelRight(ArrayList<Point> listTunnelRight) {
+		this.listTunnelRight = listTunnelRight;
+	}
+
+	/**
+	 * @param listTunnelLeft the listTunnelLeft to set
+	 */
+	public void setListTunnelLeft(ArrayList<Point> listTunnelLeft) {
+		this.listTunnelLeft = listTunnelLeft;
+	}
+
+	/**
+	 * @return the tRender
+	 */
+>>>>>>> 15cf157afc30f6c49fed534ec3d4bfa654154177
 	public RenderThread gettRender() {
 		return tRender;
 	}
 
+<<<<<<< HEAD
 	public void settRender(RenderThread tRender) {
 		this.tRender = tRender;
+=======
+	/**
+	 * @param running the running to set
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
+>>>>>>> 15cf157afc30f6c49fed534ec3d4bfa654154177
 	}	
 	
 	

@@ -97,8 +97,8 @@ public class PacMan extends Character {
 		getPacManFront().put(KeyEvent.VK_UP, new Point(0, w / 2));
 		getPacManFront().put(KeyEvent.VK_DOWN, new Point(h, w / 2));
 		
-		pacManRectangle = new Rectangle(position.x,position.y,width,height);
-		pacManAdvancedFullShape = new Ellipse2D.Float(position.x,position.y,w,h);
+		pacManRectangle = new Rectangle(getPosition().x,getPosition().y,width,height);
+		pacManAdvancedFullShape = new Ellipse2D.Float(getPosition().x,getPosition().y,w,h);
 
 	}
 	
@@ -107,8 +107,8 @@ public class PacMan extends Character {
 	}
 	
 	public void returnInitialPosition() {
-		position.x = initialPosition.x;
-		position.y = initialPosition.y;
+		getPosition().x = initialPosition.x;
+		getPosition().y = initialPosition.y;
 		
 		pacManRectangle.setLocation(initialPosition.x,initialPosition.y);
 		pacManAdvancedFullShape.setFrame(initialPosition.x,initialPosition.y,w,h);
@@ -166,22 +166,22 @@ public class PacMan extends Character {
 	}
 
 	public void nextX() {
-		setNextX((position.x + dx + defaultSize * nColumn - MARGE)
+		setNextX((getPosition().x + dx + defaultSize * nColumn - MARGE)
 				% (defaultSize * nColumn - MARGE));
 	}
 
 	public void nextY() {
-		setNextY((position.y + dy + defaultSize * nRow)
+		setNextY((getPosition().y + dy + defaultSize * nRow)
 				% (defaultSize * nRow));
 	}
 
 	public void nextNextX() {
-		setNextX((position.x + nextDx + defaultSize * nColumn - MARGE)
+		setNextX((getPosition().x + nextDx + defaultSize * nColumn - MARGE)
 				% (defaultSize * nColumn - MARGE));
 	}
 
 	public void nextNextY() {
-		setNextY((position.y + nextDy + defaultSize * nRow)
+		setNextY((getPosition().y + nextDy + defaultSize * nRow)
 				% (defaultSize * nRow));
 	}
 
@@ -203,26 +203,26 @@ public class PacMan extends Character {
 				style = (style + 1) % 2;
 			}
 			loadImage();
-			position.x = nextX;
-			position.y = nextY;
+			getPosition().x = nextX;
+			getPosition().y = nextY;
 			
 			pacManRectangle.setLocation(nextX,nextY);
 			pacManAdvancedFullShape.setFrame(nextX,nextY,w,h);
 			
 			if (direction == KeyEvent.VK_LEFT) {
-				if (listTunnelLeft.contains(new Point(position.y / defaultSize,
-						position.x / defaultSize + 1)))
+				if (listTunnelLeft.contains(new Point(getPosition().y / defaultSize,
+						getPosition().x / defaultSize + 1)))
 					insideTunnel = true;
-				else if (listTunnelRight.contains(new Point(position.y / defaultSize,
-						position.x / defaultSize)))
+				else if (listTunnelRight.contains(new Point(getPosition().y / defaultSize,
+						getPosition().x / defaultSize)))
 					insideTunnel = false;
 			}
 			if (direction == KeyEvent.VK_RIGHT) {
-				if (listTunnelRight.contains(new Point(position.y / defaultSize,
-						position.x / defaultSize - 1)))
+				if (listTunnelRight.contains(new Point(getPosition().y / defaultSize,
+						getPosition().x / defaultSize - 1)))
 					insideTunnel = true;
-				else if (listTunnelLeft.contains(new Point(position.y / defaultSize,
-						position.x / defaultSize)))
+				else if (listTunnelLeft.contains(new Point(getPosition().y / defaultSize,
+						getPosition().x / defaultSize)))
 					insideTunnel = false;
 			}
 		}
@@ -255,22 +255,22 @@ public class PacMan extends Character {
 
 	public int getX() {
 
-		return position.x;
+		return getPosition().x;
 	}
 
 	public void setX(int var_x) {
 
-		position.x = var_x;
+		getPosition().x = var_x;
 	}
 
 	public int getY() {
 
-		return position.y;
+		return getPosition().y;
 	}
 
 	public void setY(int var_y) {
 
-		position.y = var_y;
+		getPosition().y = var_y;
 	}
 
 	public int getWidth() {
@@ -330,8 +330,8 @@ public class PacMan extends Character {
 
 	public void setPosition(int x, int y) {
 		// TODO Auto-generated method stub
-		position.x = x;
-		position.y = y;
+		getPosition().x = x;
+		getPosition().y = y;
 		
 		pacManRectangle.setLocation(x,y);
 		pacManAdvancedFullShape.setFrame(x,y,w,h);
@@ -341,9 +341,9 @@ public class PacMan extends Character {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
 		int sz = defaultSize;
 		if (changes.get(direction).x == 1)
-			position.x = nColumn * sz;
+			getPosition().x = nColumn * sz;
 		if (changes.get(direction).y == 1)
-			position.y = nRaw * sz;
+			getPosition().y = nRaw * sz;
 	}
 
 	public int getDX() {
