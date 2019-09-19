@@ -95,7 +95,7 @@ public class RenderThread extends Thread{
 				
 				long currentTime = System.currentTimeMillis();
 				int sleeptime = (int)(1000L / GameController.getFPS());
-				if(date != 0)
+				if(date != 0 && (currentTime - date - sleeptime) != 0)
 					GameController.setFPS((int)(1000 / (currentTime - date - sleeptime)));
 
 				date = currentTime;
