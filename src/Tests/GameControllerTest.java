@@ -1,11 +1,14 @@
 package Tests;
 
+import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +40,7 @@ class GameControllerTest {
 		assertNotNull(gameController.getStatusBar(), " StatusBar init failed"); 
 
 		// partie init()
-		assertEquals(0, gameController.getRESUME(), "RESUME should be 0");
+		
 		assertFalse(gameController.isResume(), "Resume should be false");
 		assertFalse(gameController.isFullScreen(), "FullScreen should be false");
 		assertFalse(gameController.isGameOver(), "GameOver should be false");
@@ -88,6 +91,7 @@ class GameControllerTest {
 	}
 	
 	
+	
 	@Test
 	public void fillFoodListTest() {
 		for(int i = 0; i < nRow; i++)
@@ -114,6 +118,7 @@ class GameControllerTest {
 		assertTrue(gameController.isResume(), "resume should be true");
 		gameController.stop();
 		
+		
 		//Si on reprend un jeu 
 		gameController.setGameThread(new Thread(gameController));
 		gameController.getGameThread().start();
@@ -126,15 +131,56 @@ class GameControllerTest {
 	}
 	
 	@Test
-	public void updatePositionsTest() {
-		gameController.setGameThread(new Thread(gameController));
+	public void StartNewLifeTest() {
+		gameController.startNewLife();
+		assertFalse(gameController.getPacMan().isDead(), "Pacman wasn't set alive");
+		assertEquals(2, gameController.getLives());
+		assertTrue(gameController.isPause());
+		assertTrue(gameController.isResume());
+	}
+	
+	@Test
+	public void GameOverTest() {
+		gameController.setLives(1);
+		gameController.startNewLife();
+		assertTrue(gameController.isGameOver());
+	}
+	
+
+	
+	@Test
+	public void pauseTest() {
 		gameController.startGame();
+		gameController.pause();
+		assertTrue(gameController.gettAudio().getIsPause());
+		assertTrue(gameController.gettRender().isPause(), "Render Thread wasn't set to pause");
+		assertTrue(gameController.isPause());
+	}
+	
+	@Test
+	public void changeVolumeTest() {
+		gameController.changeVolume();
+		assertEquals(gameController.getFrame().getAudioPane(),gameController.getFrame().getContentPane());
+	}
+	
+	@Test
+	public void updatePositionsTest() {
+		
+		//Si foodList n'est pas vide
+		int size1 = gameController.getFoodList().size();
+		int score1 = gameController.getScore();
+		gameController.updatePositions(2,2,true);
+		int size2 = gameController.getFoodList().size();
+		int score2 = gameController.getScore();
+		assertTrue(size2 == size1 - 1, "Size 1 should be greater than size 2");
+		assertTrue(score2 > score1, "Score 2 should be greater than score 1");
+		
+		//Si foodList est vide
 		gameController.getFoodList().clear();
-//		gameController.getGameThread().start();
-//		gameController.setRunning(true);
-//		gameController.setPause(false);
-		System.out.println("Food size " + gameController.getFoodList().size());
+		gameController.updatePositions(1,1,true);
+		
 		assertTrue(gameController.getLevel()> 1, "level should be greater than 1");
+	
 		assertEquals(gameController.getPacMan().getPosition(), gameController.getPacMan().getInitialPosition(), "PacMan should be at InitialPosition");
 		for(int i = 0; i < gameController.getGhostList().size(); i++) {
 			assertEquals(gameController.getGhostList().get(i).getPosition(), gameController.getGhostList().get(i).getInitialPosition(), "Ghost should be at InitialPosition");
@@ -143,6 +189,25 @@ class GameControllerTest {
 		assertTrue(gameController.gettAudio().isAlive(), "tAudio should be started");
 		assertTrue(gameController.isPause(), "Game should be paused");
 		assertTrue(gameController.isResume(), "Resume should be true");
+		
+	}
+	
+	@Test
+	public void testGameUpdate() {
+		//Les fantomes sont tous sortis
+		Point position1;
+		Point position2;
+		gameController.setGhostOutside(4);
+		for (int i = 0; i < gameController.getGhostList().size(); i++) {
+			gameController.getGhostList().get(i).setOutside(true);
+			position1 = gameController.getGhostList().get(i).getPosition();
+			gameController.gameUpdate();
+			position2 = gameController.getGhostList().get(i).getPosition();
+			//assertNotEquals(position1, position2);
+		}
+		
+		
+		
 		
 	}
 	

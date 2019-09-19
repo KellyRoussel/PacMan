@@ -18,9 +18,9 @@ public class AudioPanel extends JPanel {
 
 	private JLabel musicLabel;
 	private JLabel muteMusicLabel;
-	private static JToggleButton muteMusicButton;
+	public static JToggleButton muteMusicButton;
 	private JLabel soundLabel;
-	private static JToggleButton muteSoundButton;
+	public static JToggleButton muteSoundButton;
 	private JLabel muteSoundLabel;
 	private static JLabel musicValue;
 	private static JLabel soundValue;
@@ -208,7 +208,7 @@ public class AudioPanel extends JPanel {
 			int n = cursor.getNumPosition();
 			switch(n) {
 			case 1: //MusicMute
-				if(AudioThread.isMusicMuted()) {
+				if(muteMusicButton.isSelected()) {
 					muteMusicButton.setSelected(false);
 				}else {
 					muteMusicButton.setSelected(true);
@@ -216,7 +216,7 @@ public class AudioPanel extends JPanel {
 				AudioThread.setMuteOnOffMusic(true);
 				break;
 			case 3: //SoundMute
-				if(AudioThread.isSoundMuted()) {
+				if(muteSoundButton.isSelected()) {
 					muteSoundButton.setSelected(false);
 
 				}else {
