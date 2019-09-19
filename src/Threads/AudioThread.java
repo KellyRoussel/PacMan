@@ -168,6 +168,19 @@ import javax.sound.sampled.FloatControl;
 			}
 			System.out.println("Stop AUDIO Thread");
 		}
+		
+		// mettre le thread en stop
+		public void stopThread() {
+			isRunning.compareAndExchange(true, false);	
+			try {
+				this.join(500);
+				if (this.isAlive()){
+					this.interrupt();
+				}
+			}catch (InterruptedException e){
+				e.printStackTrace();
+			}
+		}
 
 		// methode pour lancer l audio 
 		public synchronized void play(Clip clip, boolean isMusic) {
