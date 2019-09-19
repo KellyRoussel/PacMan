@@ -263,7 +263,7 @@ public class GameController implements Runnable {
 						// Mettre la musique en muet
 						if (!isResume()) {
 							gettAudio().setMuteOnOffMusic(true);
-							frame.getAudioPane().muteMusicButton.setSelected(gettAudio().isMusicMuted());
+		
 						}
 					}
 
@@ -271,7 +271,7 @@ public class GameController implements Runnable {
 						// Mettre le son en muet
 						if (!isResume()) {
 							gettAudio().setMuteOnOffSound(true);
-							frame.getAudioPane().muteSoundButton.setSelected(gettAudio().isSoundMuted());
+							
 						}
 					}
 
@@ -560,7 +560,8 @@ public class GameController implements Runnable {
 	}
 
 	public void changeVolume() {
-
+		frame.getAudioPane().muteMusicButton.setSelected(gettAudio().isMusicMuted());
+		frame.getAudioPane().muteSoundButton.setSelected(gettAudio().isSoundMuted());
 		getFrame().setContentPane(getFrame().getAudioPane());
 		getFrame().requestFocus();
 		getFrame().revalidate();
@@ -843,7 +844,7 @@ public class GameController implements Runnable {
 
 	public void settRender(RenderThread tRender) {
 		this.tRender = tRender;
-
+	}
 	/**
 	 * @param running the running to set
 	 */
@@ -878,8 +879,6 @@ public class GameController implements Runnable {
 	 */
 	public void setGhostOutside(int ghostOutside) {
 		this.ghostOutside = ghostOutside;
-	}
-
 	}	
 	
 
