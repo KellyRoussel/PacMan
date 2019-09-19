@@ -40,6 +40,7 @@ public class GamePanel extends JPanel{
 	
     private Graphics dbg;
     private Image dbImage;
+	private GameController gameController;
     
     private static int debutX;
     private static int debutY;
@@ -47,7 +48,8 @@ public class GamePanel extends JPanel{
     // ToSprite Instance qui creer les tiles des nombres et les chiffres
     private static ToSprite chiffre_lettre = new ToSprite(16,"pacmanTiles");
 
-    public GamePanel() {
+    public GamePanel(GameController gameController) {
+    	this.gameController = gameController;
     	debutX = 0;
     	debutY = 0;
     	setBackground(Color.black);
@@ -62,8 +64,8 @@ public class GamePanel extends JPanel{
         Graphics g;
         try {
 			 g = this.getGraphics(); 
-			 double ratio = (double) GameController.getSize()/ (double) GameController.getDefaultSize();
-			 g.drawImage(dbImage, debutX, debutY, (int)((double)GameController.getDefaultSize()*GameController.getnColumn() * ratio), (int)((double)GameController.getDefaultSize() * 36 * ratio), null);
+			 double ratio = (double) gameController.getSize()/ (double) gameController.getDefaultSize();
+			 g.drawImage(dbImage, debutX, debutY, (int)((double)gameController.getDefaultSize()*gameController.getnColumn() * ratio), (int)((double)gameController.getDefaultSize() * 36 * ratio), null);
 			 Toolkit.getDefaultToolkit().sync(); 
 		}
         catch (Exception e){ 
@@ -73,12 +75,12 @@ public class GamePanel extends JPanel{
     public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList, ArrayList<Ghost> ghostList) {
     	
     	// Redimensionner la fenetre 
-    	if (GameController.resize) {
+    	if (gameController.isResize()) {
     		MainGame.resize();
     		MainGame.updateMazeSize();
-    		GameController.resize = false;
+    		gameController.setResize(false);
     	}
-        dbImage = createImage(GameController.getDefaultSize()*GameController.getnColumn(), GameController.getDefaultSize()*(GameController.getnRow() + 3));
+        dbImage = createImage(gameController.getDefaultSize()*gameController.getnColumn(), gameController.getDefaultSize()*(gameController.getnRow() + 3));
         if (dbImage == null) {
 		   return; }
 		else {
@@ -86,7 +88,7 @@ public class GamePanel extends JPanel{
 		}
           // clear the background
         dbg.setColor(Color.black);
-        dbg.fillRect (0, 0, GameController.getDefaultSize()*GameController.getnColumn(), GameController.getDefaultSize()*(GameController.getnRow() + 3));
+        dbg.fillRect (0, 0, gameController.getDefaultSize()*gameController.getnColumn(), gameController.getDefaultSize()*(gameController.getnRow() + 3));
         
         maze.draw(dbg);
         
@@ -110,37 +112,37 @@ public class GamePanel extends JPanel{
         //*******************************************************************************************************************************
         //Status du jeu
         // Affichage du score
-        chiffre_lettre.drawToSprite("score",25 ,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
-        chiffre_lettre.drawToSprite(GameController.getScore(), 135, GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        chiffre_lettre.drawToSprite("score",25 ,gameController.getDefaultSize()*gameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        chiffre_lettre.drawToSprite(gameController.getScore(), 135, gameController.getDefaultSize()*gameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
         
         // Affichage des vies
-        chiffre_lettre.drawToSprite("lives",235,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
-        for(int i = 0 ; i < GameController.getLives() ; i ++ ) {
+        chiffre_lettre.drawToSprite("lives",235,gameController.getDefaultSize()*gameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        for(int i = 0 ; i < gameController.getLives() ; i ++ ) {
         	ImageIcon liveIcon = new ImageIcon("ressources" + File.separator + "Left_0.png");
-        	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
+        	dbg.drawImage(liveIcon.getImage(),335+i*(TEXT_STATUS_SIZE+5), gameController.getDefaultSize()*gameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, null);
         }
         
         // Affichage du niveau
-        chiffre_lettre.drawToSprite("level",445,GameController.getDefaultSize()*GameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
-        chiffre_lettre.drawToSprite(GameController.getLevel(), 527, GameController.getDefaultSize()*GameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
+        chiffre_lettre.drawToSprite("level",445,gameController.getDefaultSize()*gameController.getnRow(),TEXT_STATUS_SIZE,TEXT_STATUS_SIZE,dbg);
+        chiffre_lettre.drawToSprite(gameController.getLevel(), 527, gameController.getDefaultSize()*gameController.getnRow(), TEXT_STATUS_SIZE, TEXT_STATUS_SIZE, dbg);
         //*******************************************************************************************************************************
         
         // dessiner le "Pause" au cas de pause
-        if(GameController.pause && !pacMan.isResurrection()) {
+        if(gameController.isPause() && !pacMan.isResurrection()) {
         	String text = "pause";
-        	chiffre_lettre.drawToSprite(text,(MainGame.DefaultWidth-text.length()*TEXT_MESSAGE_SIZE)/2,(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	chiffre_lettre.drawToSprite(text,(MainGame.getDefaultwidth()-text.length()*TEXT_MESSAGE_SIZE)/2,(MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "Pause" au cas de pause
-        if(GameController.resume) {
-        	int text = GameController.RESUME;
-        	chiffre_lettre.drawToSprite(text,(MainGame.DefaultWidth)/2,debutY+(MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        if(gameController.isResume()) {
+        	int text = gameController.getRESUME();
+        	chiffre_lettre.drawToSprite(text,(MainGame.getDefaultwidth())/2,debutY+(MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
         
         // dessiner le "GameOver" au cas d echec
-        if(GameController.gameOver) {
+        if(gameController.isGameOver()) {
         	String text = "gameover";
-        	chiffre_lettre.drawToSprite(text,(MainGame.actualWindowWidth-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.actualWindowHeight-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
+        	chiffre_lettre.drawToSprite(text,(MainGame.getActualWindowWidth()-text.length()*TEXT_MESSAGE_SIZE)/2, (MainGame.getActualWindowHeight()-150-TEXT_MESSAGE_SIZE)/2, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, dbg);
         }
     }
     

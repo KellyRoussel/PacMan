@@ -21,7 +21,7 @@ import Models.Characters.Strategies.GhostStrategy;
 public class Ghost  extends Character{
 	
 
-	public static boolean state = true;
+	private boolean state = true;
 	private String color;
 	private GhostStrategy stategy;
 	
@@ -39,7 +39,7 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 1;
+    private final int PAS = 4;
 	private final int MARGE = 10;
     
 	private int dx;
@@ -47,18 +47,30 @@ public class Ghost  extends Character{
         	    
     private Map<Integer, Point> changes;
     private Map<Integer, Point> steps;
-    public Map<Integer, Point> ghostFront;
-    public Map<Integer, String> directionString;
-    
+    private Map<Integer, Point> ghostFront;
+    private Map<Integer, String> directionString;
     private Rectangle ghostRectangle;
     private Rectangle ghostAdvancedLowerShape;
     private Arc2D.Float ghostAdvancedTopShape;
-    
     private int availableDirections;
+	private int defaultSize;
+	private int[][] grille;
+	private ArrayList<Point> listTunnelLeft;
+	private ArrayList<Point> listTunnelRight;
+	private int nColumn;
+	private int nRow;
     
-	public Ghost(int width, int height, Image image, Point initialPosition, String color) {
+	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow) {
 		super(width, height, image, initialPosition);
 		// TODO Auto-generated constructor stub
+		
+		this.defaultSize = defaultSize;
+		this.grille = grille;
+		this.listTunnelLeft = listTunnelLeft;
+		this.listTunnelRight = listTunnelRight;
+		this.nColumn = nColumn;
+		this.nRow = nRow;
+		
 		counter = 0;
     	direction = KeyEvent.VK_LEFT;
     	dx = -PAS;
@@ -159,13 +171,13 @@ public class Ghost  extends Character{
 	public int getUpdatedAvailableDirections() {
 		
 			
-		   int raw = position.y / GameController.getDefaultSize();
-		   int column = position.x / GameController.getDefaultSize();
+		   int raw = position.y / defaultSize;
+		   int column = position.x / defaultSize;
 		   int counter = 0;
-		   counter += (GameController.getGrille()[raw - 1][column] > 25 || GameController.getGrille()[raw - 1][column] < 1 ||  GameController.getGrille()[raw - 1][column] == 2 || GameController.getGrille()[raw - 1][column] == 15)? KeyEvent.VK_UP : 0;
-		   counter += (GameController.getGrille()[raw + 1][column] <= 25 && GameController.getGrille()[raw + 1][column] >= 1)? 0 : KeyEvent.VK_DOWN;
-		   counter += (GameController.listTunnelLeft.contains(new Point(raw, column)) || (GameController.getGrille()[raw][column - 1] <= 25 && GameController.getGrille()[raw][column - 1] >= 1))? 0 : KeyEvent.VK_LEFT;
-		   counter += (column + 1 >= 30 || GameController.listTunnelRight.contains(new Point(raw, column)) || (GameController.getGrille()[raw][column + 1] <= 25 && GameController.getGrille()[raw][column + 1] >= 1))? 0 : KeyEvent.VK_RIGHT;
+		   counter += (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15)? KeyEvent.VK_UP : 0;
+		   counter += (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1)? 0 : KeyEvent.VK_DOWN;
+		   counter += (listTunnelLeft.contains(new Point(raw, column)) || (grille[raw][column - 1] <= 25 && grille[raw][column - 1] >= 1))? 0 : KeyEvent.VK_LEFT;
+		   counter += (column + 1 >= 30 || listTunnelRight.contains(new Point(raw, column)) || (grille[raw][column + 1] <= 25 && grille[raw][column + 1] >= 1))? 0 : KeyEvent.VK_RIGHT;
 		   return counter;
 		}
 	
@@ -181,11 +193,11 @@ public class Ghost  extends Character{
 	}
 
     public void nextX(){
-    	setNextX((position.x + dx + GameController.getDefaultSize() * GameController.getnColumn() - MARGE) % (GameController.getDefaultSize() * GameController.getnColumn() - MARGE));
+    	setNextX((position.x + dx + defaultSize * nColumn - MARGE) % (defaultSize * nColumn - MARGE));
     }
     
     public void nextY() {
-    	setNextY((position.y + dy + GameController.getDefaultSize() * GameController.getnRow()) % (GameController.getDefaultSize() * GameController.getnRow()));
+    	setNextY((position.y + dy + defaultSize * nRow) % (defaultSize * nRow));
     }
     
  
@@ -198,7 +210,7 @@ public class Ghost  extends Character{
     	}
     	position.x += dx;
     	position.y += dy;
-    	setInsideTile(position.y / GameController.getDefaultSize(), position.x / GameController.getDefaultSize());
+    	setInsideTile(position.y / defaultSize, position.x / defaultSize);
     	
     	ghostRectangle.setLocation(position.x,position.y);
     	ghostAdvancedLowerShape.setLocation(position.x,position.y);
@@ -301,7 +313,7 @@ public class Ghost  extends Character{
 	
 	public void setInsideTile(int nRaw, int nColumn) {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
-		int sz = GameController.getDefaultSize();
+		int sz = defaultSize;
 		if(changes.get(direction).x == 1)
 			position.x = nColumn * sz;
 		if(changes.get(direction).y == 1)
@@ -329,34 +341,34 @@ public class Ghost  extends Character{
 	public void setRandomDirection() {
 		// TODO Auto-generated method stub
 		List<Integer> availables = new ArrayList<>();
-		int raw = position.y / GameController.getDefaultSize();
-		int column = position.x / GameController.getDefaultSize();
+		int raw = position.y / defaultSize;
+		int column = position.x / defaultSize;
 		
-		if((GameController.getGrille()[raw - 1][column] > 25 || GameController.getGrille()[raw - 1][column] < 1 ||  GameController.getGrille()[raw - 1][column] == 2 || GameController.getGrille()[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
+		if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);
 		
-		if((GameController.getGrille()[raw + 1][column] > 25 || GameController.getGrille()[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
+		if((grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
 			availables.add(KeyEvent.VK_DOWN);
 		
-		if(column - 1 >= 0 && (GameController.getGrille()[raw][column - 1] > 25 || GameController.getGrille()[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !GameController.listTunnelLeft.contains(new Point(raw, column))) 
+		if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !listTunnelLeft.contains(new Point(raw, column))) 
 			availables.add(KeyEvent.VK_LEFT);
 		
-		if(column + 1 < GameController.getnColumn() && (GameController.getGrille()[raw][column + 1] > 25 || GameController.getGrille()[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction && !GameController.listTunnelRight.contains(new Point(raw, column))) {
+		if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction && !listTunnelRight.contains(new Point(raw, column))) {
 			availables.add(KeyEvent.VK_RIGHT);
 		}
 			
 		
 		if(availables.size() == 0) {
-			if((GameController.getGrille()[raw - 1][column] > 25 || GameController.getGrille()[raw - 1][column] < 1 ||  GameController.getGrille()[raw - 1][column] == 2 || GameController.getGrille()[raw - 1][column] == 15))
+			if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
 				availables.add(KeyEvent.VK_UP);
 			
-			if((GameController.getGrille()[raw + 1][column] > 25 || GameController.getGrille()[raw + 1][column] < 1))
+			if((grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
 				availables.add(KeyEvent.VK_DOWN);
 			
-			if(column - 1 >= 0 && (GameController.getGrille()[raw][column - 1] > 25 || GameController.getGrille()[raw][column - 1] < 1) && !GameController.listTunnelLeft.contains(new Point(raw, column)))
+			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column)))
 				availables.add(KeyEvent.VK_LEFT);
 			
-			if(column + 1 < GameController.getnColumn() && (GameController.getGrille()[raw][column + 1] > 25 || GameController.getGrille()[raw][column + 1] < 1) && !GameController.listTunnelRight.contains(new Point(raw, column)))
+			if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && !listTunnelRight.contains(new Point(raw, column)))
 				availables.add(KeyEvent.VK_RIGHT);
 		}
 		

@@ -14,18 +14,18 @@ import Models.Maze;
 
 public class MainGame extends JFrame implements WindowListener{
 	
-	public static final int DefaultWidth = 600;
-	public static final int DefaultHeight = 800;
+	private static final int DefaultWidth = 600;
+	private static final int DefaultHeight = 800;
 	
-	public static int actualWindowWidth;
-	public static int actualWindowHeight;
+	private static int actualWindowWidth;
+	private static int actualWindowHeight;
 	
 	
-	public static MainGame SINGLE_INSTANCE = new MainGame();
+	private static MainGame SINGLE_INSTANCE = new MainGame();
 	private static GameController gameController;
-	public static GameMenu menuPane;
-	public AudioPanel audioPane;
-	public HelpPanel helpPane;
+	private static GameMenu menuPane;
+	private AudioPanel audioPane;
+	private HelpPanel helpPane;
 	
 	public static MainGame getInstance() {
       return SINGLE_INSTANCE;
@@ -33,25 +33,31 @@ public class MainGame extends JFrame implements WindowListener{
 	
 	public MainGame() {
 		
-		actualWindowHeight = DefaultHeight;
-		actualWindowWidth = DefaultWidth;
-		gameController = new GameController(new GamePanel(), this);
-		menuPane = new GameMenu(gameController);
-		audioPane = new AudioPanel(gameController);
-		helpPane = new HelpPanel(gameController);
-		this.setContentPane(menuPane);
+		setActualWindowHeight(DefaultHeight);
+		setActualWindowWidth(getDefaultwidth());
+		gameController = new GameController(this);
+		setMenuPane(new GameMenu(gameController));
+		setAudioPane(new AudioPanel(gameController));
+		setHelpPane(new HelpPanel(gameController));
+		this.setContentPane(getMenuPane());
 		addWindowListener(this);
 	}
 	
 	public void displayMenu() {
-		setContentPane(menuPane);
-		menuPane.requestFocus();
+		setContentPane(getMenuPane());
+		getMenuPane().requestFocus();
 		revalidate();
+	}
+	
+	public void displayNewMenu() {
+		gameController = new GameController(this);
+		setMenuPane(new GameMenu(gameController));
+		displayMenu();
 	}
 	
 	public static void resize() {
 		int mazeSize;
-		if (GameController.fullScreen) {
+		if (gameController.isFullScreen()) {
 			SINGLE_INSTANCE.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
 			//La taille de l'ecran
@@ -66,30 +72,32 @@ public class MainGame extends JFrame implements WindowListener{
 			final int bottom = insets.bottom;
 			
 			//La taille du Panel alors sera la taille de l'ecran - celle de la fenetre
-			actualWindowWidth = screenDimension.width - left - right;
-			actualWindowHeight = screenDimension.height - top - bottom;
+			setActualWindowWidth(screenDimension.width - left - right);
+			setActualWindowHeight(screenDimension.height - top - bottom);
 			
 			
 		}
 		else {
 			SINGLE_INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			SINGLE_INSTANCE.setSize(DefaultWidth, DefaultHeight);
+			SINGLE_INSTANCE.setSize(getDefaultwidth(), DefaultHeight);
 			SINGLE_INSTANCE.setResizable(false);
 			SINGLE_INSTANCE.setVisible(true);
-			actualWindowWidth = DefaultWidth;
-			actualWindowHeight = DefaultHeight;
+			setActualWindowWidth(getDefaultwidth());
+			setActualWindowHeight(DefaultHeight);
 		}		
 		
 	}
 	
 	// redimensionner le labyrinthe
 	public static void updateMazeSize() {
-		GameController.setSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / (GameController.getnRow() + 3), MainGame.actualWindowWidth / GameController.getnColumn()));
-		
-		if (!GameController.fullScreen) {
-			GameController.setDefaultSize(Math.min((MainGame.actualWindowHeight - StatusBar.HEIGHT) / (GameController.getnRow() + 3), MainGame.actualWindowWidth / GameController.getnColumn()));
+		if(gameController != null) {
+			gameController.setSize(Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (gameController.getnRow() + 3), MainGame.getActualWindowWidth() / gameController.getnColumn()));
+			
+			if (!gameController.isFullScreen()) {
+				gameController.setDefaultSize(Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (gameController.getnRow() + 3), MainGame.getActualWindowWidth() / gameController.getnColumn()));
+			}
+			GamePanel.setDebutX((getActualWindowWidth() - gameController.getSize() * gameController.getnColumn()) / 2);
 		}
-		GamePanel.setDebutX((actualWindowWidth - GameController.getSize() * GameController.getnColumn()) / 2);
 		//GamePanel.setDebutY((actualWindowHeight - GameController.getSize()  * GameController.getnRow() - 150) / 2);
 	}
 	
@@ -122,7 +130,7 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause = true;
+		gameController.setPause(true);
 		
 	}
 
@@ -135,15 +143,59 @@ public class MainGame extends JFrame implements WindowListener{
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause = true;
-		gameController.resume = true;
+		gameController.setPause(true);
+		gameController.setResume(true);
 		
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.pause = true;
+		gameController.setPause(true);
 		
+	}
+
+	public static GameMenu getMenuPane() {
+		return menuPane;
+	}
+
+	public static void setMenuPane(GameMenu menuPane) {
+		MainGame.menuPane = menuPane;
+	}
+
+	public AudioPanel getAudioPane() {
+		return audioPane;
+	}
+
+	public void setAudioPane(AudioPanel audioPane) {
+		this.audioPane = audioPane;
+	}
+
+	public static int getActualWindowHeight() {
+		return actualWindowHeight;
+	}
+
+	public static void setActualWindowHeight(int actualWindowHeight) {
+		MainGame.actualWindowHeight = actualWindowHeight;
+	}
+
+	public static int getActualWindowWidth() {
+		return actualWindowWidth;
+	}
+
+	public static void setActualWindowWidth(int actualWindowWidth) {
+		MainGame.actualWindowWidth = actualWindowWidth;
+	}
+
+	public HelpPanel getHelpPane() {
+		return helpPane;
+	}
+
+	public void setHelpPane(HelpPanel helpPane) {
+		this.helpPane = helpPane;
+	}
+
+	public static int getDefaultwidth() {
+		return DefaultWidth;
 	}
 }

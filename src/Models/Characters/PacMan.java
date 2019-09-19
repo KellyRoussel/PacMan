@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
@@ -27,7 +28,7 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
-	private final int PAS = 1;
+	private final int PAS = 4;
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;
@@ -37,21 +38,38 @@ public class PacMan extends Character {
 
 	private Map<Integer, Point> changes;
 	private Map<Integer, Point> steps;
-	public Map<Integer, Point> pacManFront;
-	public Map<Integer, String> directionString;
+	private Map<Integer, Point> pacManFront;
+	private Map<Integer, String> directionString;
 	
 	private Rectangle pacManRectangle;
 	private Ellipse2D.Float pacManAdvancedFullShape;
 
-	private static boolean isDead = false;
-	private static boolean resurrection = false;
-	private static int deadAnimationCounter;
+	private boolean isDead = false;
+	private boolean resurrection = false;
+	private int deadAnimationCounter;
+	
+	private int defaultSize;
+	private int[][] grille;
+	private ArrayList<Point> listTunnelLeft;
+	private ArrayList<Point> listTunnelRight;
+	private int nColumn;
+	private int nRow;
 
-	public PacMan(int width, int height, Image image, Point initialPosition) {
+	
+	
+	
+	public PacMan(int width, int height, Image image, Point initialPosition, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow) {
 		super(width, height, image, initialPosition);
 
 		initPM();
-
+		
+		this.defaultSize = defaultSize;
+		this.grille = grille;
+		this.listTunnelLeft = listTunnelLeft;
+		this.listTunnelRight = listTunnelRight;
+		this.nColumn = nColumn;
+		this.nRow = nRow;
+		
 		directionString = new HashMap<Integer, String>();
 		directionString.put(KeyEvent.VK_LEFT, "Left");
 		directionString.put(KeyEvent.VK_RIGHT, "Right");
@@ -73,11 +91,11 @@ public class PacMan extends Character {
 		steps.put(KeyEvent.VK_UP, new Point(0, -PAS));
 		steps.put(KeyEvent.VK_DOWN, new Point(0, PAS));
 
-		pacManFront = new HashMap<Integer, Point>();
-		pacManFront.put(KeyEvent.VK_LEFT, new Point(h / 2, 0));
-		pacManFront.put(KeyEvent.VK_RIGHT, new Point(h / 2, w));
-		pacManFront.put(KeyEvent.VK_UP, new Point(0, w / 2));
-		pacManFront.put(KeyEvent.VK_DOWN, new Point(h, w / 2));
+		setPacManFront(new HashMap<Integer, Point>());
+		getPacManFront().put(KeyEvent.VK_LEFT, new Point(h / 2, 0));
+		getPacManFront().put(KeyEvent.VK_RIGHT, new Point(h / 2, w));
+		getPacManFront().put(KeyEvent.VK_UP, new Point(0, w / 2));
+		getPacManFront().put(KeyEvent.VK_DOWN, new Point(h, w / 2));
 		
 		pacManRectangle = new Rectangle(position.x,position.y,width,height);
 		pacManAdvancedFullShape = new Ellipse2D.Float(position.x,position.y,w,h);
@@ -144,23 +162,23 @@ public class PacMan extends Character {
 	}
 
 	public void nextX() {
-		setNextX((position.x + dx + GameController.getDefaultSize() * GameController.getnColumn() - MARGE)
-				% (GameController.getDefaultSize() * GameController.getnColumn() - MARGE));
+		setNextX((position.x + dx + defaultSize * nColumn - MARGE)
+				% (defaultSize * nColumn - MARGE));
 	}
 
 	public void nextY() {
-		setNextY((position.y + dy + GameController.getDefaultSize() * GameController.getnRow())
-				% (GameController.getDefaultSize() * GameController.getnRow()));
+		setNextY((position.y + dy + defaultSize * nRow)
+				% (defaultSize * nRow));
 	}
 
 	public void nextNextX() {
-		setNextX((position.x + nextDx + GameController.getDefaultSize() * GameController.getnColumn() - MARGE)
-				% (GameController.getDefaultSize() * GameController.getnColumn() - MARGE));
+		setNextX((position.x + nextDx + defaultSize * nColumn - MARGE)
+				% (defaultSize * nColumn - MARGE));
 	}
 
 	public void nextNextY() {
-		setNextY((position.y + nextDy + GameController.getDefaultSize() * GameController.getnRow())
-				% (GameController.getDefaultSize() * GameController.getnRow()));
+		setNextY((position.y + nextDy + defaultSize * nRow)
+				% (defaultSize * nRow));
 	}
 
 	public int getNextDirection() {
@@ -179,8 +197,8 @@ public class PacMan extends Character {
 			counter = (counter + 1) % 10;
 			if (counter == 0) {
 				style = (style + 1) % 2;
-				loadImage();
 			}
+			loadImage();
 			position.x = nextX;
 			position.y = nextY;
 			
@@ -188,19 +206,19 @@ public class PacMan extends Character {
 			pacManAdvancedFullShape.setFrame(nextX,nextY,w,h);
 			
 			if (direction == KeyEvent.VK_LEFT) {
-				if (GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(),
-						position.x / GameController.getDefaultSize() + 1)))
+				if (listTunnelLeft.contains(new Point(position.y / defaultSize,
+						position.x / defaultSize + 1)))
 					insideTunnel = true;
-				else if (GameController.listTunnelRight.contains(new Point(position.y / GameController.getDefaultSize(),
-						position.x / GameController.getDefaultSize())))
+				else if (listTunnelRight.contains(new Point(position.y / defaultSize,
+						position.x / defaultSize)))
 					insideTunnel = false;
 			}
 			if (direction == KeyEvent.VK_RIGHT) {
-				if (GameController.listTunnelRight.contains(new Point(position.y / GameController.getDefaultSize(),
-						position.x / GameController.getDefaultSize() - 1)))
+				if (listTunnelRight.contains(new Point(position.y / defaultSize,
+						position.x / defaultSize - 1)))
 					insideTunnel = true;
-				else if (GameController.listTunnelLeft.contains(new Point(position.y / GameController.getDefaultSize(),
-						position.x / GameController.getDefaultSize())))
+				else if (listTunnelLeft.contains(new Point(position.y / defaultSize,
+						position.x / defaultSize)))
 					insideTunnel = false;
 			}
 		}
@@ -316,7 +334,7 @@ public class PacMan extends Character {
 
 	public void setInsideTile(int nRaw, int nColumn) {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
-		int sz = GameController.getDefaultSize();
+		int sz = defaultSize;
 		if (changes.get(direction).x == 1)
 			position.x = nColumn * sz;
 		if (changes.get(direction).y == 1)
@@ -363,19 +381,27 @@ public class PacMan extends Character {
 		this.insideTunnel = insideTunnel;
 	}
 
-	public static boolean isDead() {
+	public boolean isDead() {
 		return isDead;
 	}
 	
-	public synchronized static void setIsDead(boolean dead) {
+	public synchronized void setIsDead(boolean dead) {
 		isDead = dead;
 	}
 
-	public static boolean isResurrection() {
+	public boolean isResurrection() {
 		return resurrection;
 	}
 
-	public static void setResurrection(boolean resurrection) {
-		PacMan.resurrection = resurrection;
+	public void setResurrection(boolean resurrection) {
+		this.resurrection = resurrection;
+	}
+
+	public Map<Integer, Point> getPacManFront() {
+		return pacManFront;
+	}
+
+	public void setPacManFront(Map<Integer, Point> pacManFront) {
+		this.pacManFront = pacManFront;
 	}
 }

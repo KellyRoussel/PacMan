@@ -172,7 +172,7 @@ public class AudioPanel extends JPanel implements ActionListener{
 			}
 			break;
 		case "exit":
-			gameController.frame.displayMenu();
+			gameController.getFrame().displayMenu();
 			break;
 		default:
 			break;

@@ -28,9 +28,9 @@ class GameControllerTest {
 		assertNotNull(gameController.getBeginning());
 		assertNotNull(gameController.getDeath());
 		
-		assertFalse(gameController.fullScreen, "FullScreen should be false");
-		assertFalse(gameController.resize, "Resize should be false");
-		assertFalse(gameController.gameOver, "GameOver should be false");
+		assertFalse(gameController.isFullScreen(), "FullScreen should be false");
+		assertFalse(gameController.isResize(), "Resize should be false");
+		assertFalse(gameController.isGameOver(), "GameOver should be false");
 		//assertNotNull(gameController.statusBar, " StatusBar init failed"); 
 		assertEquals(0, gameController.getScore(), "Score should be 0");
 		assertEquals(3, gameController.getLives(), "Lives should be 3");

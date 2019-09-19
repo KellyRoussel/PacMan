@@ -100,7 +100,7 @@ public class HelpPanel  extends JPanel implements ActionListener{
 			String cmd = e.getActionCommand();
 			switch(cmd) {
 			case "exit":
-				gameController.frame.displayMenu();
+				gameController.getFrame().displayMenu();
 				break;
 			default:
 				break;

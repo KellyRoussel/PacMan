@@ -37,7 +37,7 @@ import  Views.StatusBar;
 public class GameController implements Runnable{
 
 
-	public MainGame frame; 
+	private MainGame frame; 
 
 	private JPanel mainPane;
 	private GamePanel gamePanel;
@@ -48,67 +48,54 @@ public class GameController implements Runnable{
 	private ArrayList<Food> foodList;
 
 	//private Sound music;
-	private static int size, defaultSize;
-	private static int level;
-	private static int score;
-	private static int lives;
+	private int size, defaultSize;
+	private int level;
+	private int score;
+	private int lives;
 
-	public static final int FPS = 30;
 	private static final int PM_INITIAL_POSITION = 60;
-
-	public static final long JOIN_TIMER = 10;
+	private static final long JOIN_TIMER = 10;
 	private static final int PINK_INITIAL_POSITION = 26;
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	
-    public static boolean running;
-    public Image [][] images;
-    public BufferedImage output;
-    public Graphics g;
-
-    //private boolean soundOn;
-    
+	private Image [][] images;
+	private BufferedImage output;
+	private Graphics g;    
 	private ArrayList<Ghost> ghostList;
-
-	public static int ghostOutside;
+	private boolean running;
+    private int ghostOutside;
+	private boolean pause;    
+    private static int RESUME;
+    private boolean resume;
+	private boolean fullScreen;
+	private boolean resize;
+	private boolean gameOver; 
+	private int [][] grille;
+	private int nRow; 
+	private int nColumn;	
 	private int firstGhostToQuit;
 	private final int SLEEP_TIMER = 1;
-
-    public static boolean pause;    
-
-    
+	private int ghostCounter = 0;
+	
+	private static long timeUpdate = 10;
+	private static int FPS = 30;
 
     private Thread gameThread; 
-    
-	//private boolean wantSound = true;
-
-	public static int RESUME;
-	public static boolean resume;
-	public static boolean fullScreen;
-	public static boolean resize;
-	public static boolean gameOver; 
-
-	private static int [][] grille;
-	private static int nRow; 
-	private static int nColumn;
-	//private Sound background;
-	//private Sound beginning;
-	//private Sound death;
-
 	private RenderThread tRender;
 	private AudioThread tAudio;
-
-	public static ArrayList<Point> listTunnelLeft;
-
-	public static ArrayList<Point> listTunnelRight;
-
-	public GameController(GamePanel gamePanel, MainGame frame) {    	
-
+	private ArrayList<Point> listTunnelLeft;
+	private ArrayList<Point> listTunnelRight;
+	
+	
+	public GameController(MainGame frame) {    	
+		
+		GamePanel gamePanel = new GamePanel(this);
 		init();
 		
 		this.gamePanel = gamePanel;
-		this.frame = frame;
+		this.setFrame(frame);
 
 		statusBar = new StatusBar();
 		
@@ -138,9 +125,15 @@ public class GameController implements Runnable{
 	}
 
 	private void init() {
-		fullScreen = false;
-		resize = false;
-		gameOver = false; 
+	    setRESUME(0);
+		setResume(false);
+		setFullScreen(false);
+		setGameOver(false);  
+		grille = null;
+		running = false;
+		setFullScreen(false);
+		setResize(false);
+		setGameOver(false); 
 		score = 0;
 		lives = 3;
 		level = 1;
@@ -160,8 +153,8 @@ public class GameController implements Runnable{
 		nColumn =  Integer.parseInt(dimensions[0]);
 		nRow =  Integer.parseInt(dimensions[1]);	
 
-		int height = MainGame.actualWindowHeight - StatusBar.HEIGHT;
-		int width = MainGame.actualWindowWidth;
+		int height = MainGame.getActualWindowHeight() - StatusBar.HEIGHT;
+		int width = MainGame.getActualWindowWidth();
 
 		size = Math.min(height / nRow, width / nColumn);
 		defaultSize = size;
@@ -179,7 +172,7 @@ public class GameController implements Runnable{
 			for(int j = 0; j < nColumn; j++) {
 				grille[i][j] = Integer.parseInt(strings[j]);
 				if(grille[i][j] < 30) {
-					images[i][j] = loadImage("maze" + GameController.getGrille()[i][j] + ".png");
+					images[i][j] = loadImage("maze" + grille[i][j] + ".png");
 					g.drawImage(images[i][j], j * defaultSize, i * defaultSize,defaultSize,defaultSize, null);
 				}
 			}
@@ -214,11 +207,7 @@ public class GameController implements Runnable{
 		//Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
 		MainGame.updateMazeSize();
 
-		//Creer le PacMan  
-		ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
-
-		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION));
-
+		
 		// Creer les Gums et PacGums
 
 		foodList = new ArrayList();
@@ -228,15 +217,17 @@ public class GameController implements Runnable{
         //Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
         MainGame.updateMazeSize();
         
-    	//Creer le PacMan          
-    	pacMan = new PacMan(defaultSize, defaultSize, loadImage("Left_0.png"), definePosition(PM_INITIAL_POSITION));
+        //Creer le PacMan  
+      	ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
+         
+		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow);
         
     	//Creer les fantomes
     	ghostList = new ArrayList<Ghost>();
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION), "pink"));    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"), definePosition(ORANGE_INITIAL_POSITION), "orange"));    	    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION), "red"));    	    	
-    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"), definePosition(TURQUOISE_INITIAL_POSITION), "turquoise"));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"), definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
+    	getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"), definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, listTunnelLeft, listTunnelRight, nColumn, nRow));    	    	
     	ghostOutside = 0;
     	firstGhostToQuit = (int)(Math.random() * 4);
     	
@@ -269,36 +260,42 @@ public class GameController implements Runnable{
 			public void keyPressed(KeyEvent e) {
 
 				int key = e.getKeyCode();
-
+				if(!isGameOver()) {
 				// Mettre le jeu en pause
-				if (key == KeyEvent.VK_P && !pause) {
-					pause();
-				}
-				if (key == KeyEvent.VK_R && pause) {
-					resume = true;
-				}
-
-
-				if (key == KeyEvent.VK_M) {
-					// Mettre le jeu en muet 
-					if(!resume) {
-					tAudio.setMuteOnOff(true);
-				}
-				}
-
-				// Redimensionner le jeu
-				if (key == KeyEvent.VK_F) {
-					resize = true;
-					fullScreen = !fullScreen;
+					if (key == KeyEvent.VK_P && !isPause()) {
+						pause();
+					}
+					if (key == KeyEvent.VK_R && isPause()) {
+						setResume(true);
+					}
+	
+	
+					if (key == KeyEvent.VK_M) {
+						// Mettre le jeu en muet 
+						if(!isResume()) {
+						tAudio.setMuteOnOff(true);
+					}
+					}
+	
+					// Redimensionner le jeu
+					if (key == KeyEvent.VK_F) {
+						setResize(true);
+						setFullScreen(!isFullScreen());
+					}
 				}
 				if(key == KeyEvent.VK_ESCAPE) {
-					pause = true;
-					frame.displayMenu();
+					setPause(true);
+					if(isGameOver()) {
+						setResume(true);
+						getFrame().displayNewMenu();					
+					}
+					else
+						getFrame().displayMenu();
 				}
 
 
 				// Changer la direction du PacMan selon la fleche choisie.
-				if(!pause){
+				if(!isPause()){
 					if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
 						getPacMan().setNextDirection(key);
 					}
@@ -312,42 +309,26 @@ public class GameController implements Runnable{
 	@Override
 	public void run() {
 		running = true;
-		pause = true;
+		setPause(true);
 		while(running) {
-			if(gameOver) {
+			long pastTime = System.currentTimeMillis();
+			if(isGameOver()) {
 				try {
-					Thread.sleep(3000);
-					gameOver = false;
-					setLevel(1);
-					setLives(3);
-					setScore(0);
-					//statusBar.updateLevel();
-					getPacMan().returnInitialPosition();
-					for(int i = 0; i < getGhostList().size(); i++) {
-						getGhostList().get(i).returnInitialPosition();
-					}
-					getPacMan().initPM();
-					getPacMan().setNextDirection(KeyEvent.VK_LEFT);
-					getPacMan().loadImage();
-					fillFoodList();
-					//wantSound = soundOn;
-					pause = true;
-					//mute();
-					resume = true;
+					Thread.sleep(3000);					
 				}catch(InterruptedException ex) {}
 			}
 			else {
-				if(!pause) {	
+				if(!isPause()) {	
 					gameUpdate();
 				}
 				else
 					pause();
-				if(resume) {
+				if(isResume()) {
 					resume();
 				}
 			}
 			try {
-				Thread.sleep(FPS);
+				Thread.sleep(1000L / getFPS());
 			}catch(InterruptedException ex) {}
 		}
     }
@@ -359,16 +340,20 @@ public class GameController implements Runnable{
 
 
 		if(defaultSize != 0) {
-			if(!resume) {
+			if(!isResume()) {
 			if(ghostOutside < 4) {
-				updateGhostPosition(getGhostList().get(getFirstGhostToQuit()));
-    			raw = getGhostList().get(getFirstGhostToQuit()).getY() / GameController.getDefaultSize();
-    			column = getGhostList().get(getFirstGhostToQuit()).getX() / GameController.getDefaultSize();
-    			if(GameController.getGrille()[raw][column] == 15 ||GameController.getGrille()[raw][column] == 2) {
-    				ghostOutside++;
-    				getGhostList().get(getFirstGhostToQuit()).setOutside(true);
-    				firstGhostToQuit = (getFirstGhostToQuit() + 1) % 4;
-    			}
+				if(ghostCounter == 0) {
+					updateGhostPosition(getGhostList().get(getFirstGhostToQuit()));
+	    			raw = getGhostList().get(getFirstGhostToQuit()).getY() / defaultSize;
+	    			column = getGhostList().get(getFirstGhostToQuit()).getX() / defaultSize;
+	    			if(grille[raw][column] == 15 ||grille[raw][column] == 2) {
+	    				ghostOutside++;
+	    				getGhostList().get(getFirstGhostToQuit()).setOutside(true);
+	    				firstGhostToQuit = (getFirstGhostToQuit() + 1) % 4;
+	    			}
+				}
+	    		ghostCounter++;
+	    		ghostCounter = ghostCounter % 3;
     		}
     		
     		for(int i = 0; i < getGhostList().size(); i++) {
@@ -384,8 +369,8 @@ public class GameController implements Runnable{
 			if(!getPacMan().isInsideTunnel()) {
 				getPacMan().nextNextX();
 				getPacMan().nextNextY();
-				raw = (int) Math.floor((getPacMan().getNextY() + getPacMan().pacManFront.get(getPacMan().getNextDirection()).x)/defaultSize) % nRow;
-				column = (int) Math.floor((getPacMan().getNextX() + getPacMan().pacManFront.get(getPacMan().getNextDirection()).y)/defaultSize) % nColumn;
+				raw = (int) Math.floor((getPacMan().getNextY() + getPacMan().getPacManFront().get(getPacMan().getNextDirection()).x)/defaultSize) % nRow;
+				column = (int) Math.floor((getPacMan().getNextX() + getPacMan().getPacManFront().get(getPacMan().getNextDirection()).y)/defaultSize) % nColumn;
 				tile = grille[raw][column];
 			}
 			    			
@@ -396,8 +381,8 @@ public class GameController implements Runnable{
 			else{
 				getPacMan().nextX();
 				getPacMan().nextY();
-				raw = (int) Math.floor((getPacMan().getNextY() + getPacMan().pacManFront.get(getPacMan().getDirection()).x)/defaultSize) % nRow;
-				column = (int) Math.floor((getPacMan().getNextX() + getPacMan().pacManFront.get(getPacMan().getDirection()).y)/defaultSize) % nColumn;    		
+				raw = (int) Math.floor((getPacMan().getNextY() + getPacMan().getPacManFront().get(getPacMan().getDirection()).x)/defaultSize) % nRow;
+				column = (int) Math.floor((getPacMan().getNextX() + getPacMan().getPacManFront().get(getPacMan().getDirection()).y)/defaultSize) % nColumn;    		
 				tile = grille[raw][column];
 
 				if(tile == 0 || tile >= 30) {
@@ -434,7 +419,7 @@ public class GameController implements Runnable{
 			}
 		}
 		if(getFoodList().size()==0) {
-			setLevel(level+1);
+			level++;
 			//statusBar.updateLevel();
 			getPacMan().returnInitialPosition();
 			for(int i = 0; i < getGhostList().size(); i++) {
@@ -445,13 +430,13 @@ public class GameController implements Runnable{
 			getPacMan().loadImage();
 			fillFoodList();
 			//wantSound = soundOn;
-			pause = true;
+			setPause(true);
 			//mute();
 			tAudio.setMuteOnOff(true);
-			resume = true;
+			setResume(true);
 		}
 
-		if(!resume) {
+		if(!isResume()) {
 			getPacMan().move(); 
 			
 			if(flag)
@@ -464,7 +449,7 @@ public class GameController implements Runnable{
 	{
 			lives--;
 			if(lives == 0) {
-				gameOver = true;
+				setGameOver(true);
 			}
 			else {		
 				getPacMan().returnInitialPosition();
@@ -475,8 +460,8 @@ public class GameController implements Runnable{
 				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 				getPacMan().loadImage();
 				
-				pause = true;
-				resume = true;
+				setPause(true);
+				setResume(true);
 				
 				getPacMan().setIsDead(false);
 			}
@@ -484,9 +469,9 @@ public class GameController implements Runnable{
 
 	
 	public void startGame() {
-		frame.setContentPane(getMainPane());
+		getFrame().setContentPane(getMainPane());
 		getMainPane().requestFocus();
-		frame.revalidate();
+		getFrame().revalidate();
 		
 		if(gameThread == null || !gameThread.isAlive()) {
 		
@@ -507,16 +492,17 @@ public class GameController implements Runnable{
 			tRender.setName("Render");
 			tRender.start();
 			
-			frame.menuPane.gameRunning();
+			getFrame().getMenuPane().gameRunning();
 			tAudio.start();
 		}
 		System.out.println("haa");
-		resume = true;
+		setResume(true);
 	}
 	
 	
 	public void stop() {
 		running = false;
+		tRender.setRunning(false);
 		//******************************************************
 		//tAudio.setIsRunning(false);
 		try {
@@ -527,15 +513,15 @@ public class GameController implements Runnable{
 		}catch (InterruptedException e){
 			e.printStackTrace();
 		}
-		frame.menuPane.noMoreRunning();
-		frame.displayMenu();
+		getFrame().getMenuPane().noMoreRunning();
+		getFrame().displayMenu();
 	}
 
 	public void pause() {
 		while(tRender == null) {}
 		tAudio.setIsPause(true);
 		tRender.pause();
-		pause = true;
+		setPause(true);
 	}
 
 	/*private void mute() {
@@ -549,7 +535,7 @@ public class GameController implements Runnable{
 	}*/
 
 	public void resume(){
-		pause = false;
+		setPause(false);
 		while(tRender == null) {}
 		tAudio.setIsPause(false);
 		tRender.res();
@@ -557,7 +543,7 @@ public class GameController implements Runnable{
 		/*if(wantSound) {
 			music = getBackground();
 			unMute();}	*/	
-		resume = false;
+		setResume(false);
 		if(getPacMan().isResurrection()) {
 			getPacMan().setResurrection(false);
 		}
@@ -565,88 +551,50 @@ public class GameController implements Runnable{
 	
 	
 	
-	public static Point definePosition(int initialPositionValue) {
+	public Point definePosition(int initialPositionValue) {
 		Point p = new Point();
 		for(int i = 0; i < nRow; i++)
 			for(int j = 0; j < nColumn; j++) {
 				if(grille[i][j] == initialPositionValue) {
-					p.x = j * GameController.getDefaultSize();
-					p.y = i * GameController.getDefaultSize();
+					p.x = j * defaultSize;
+					p.y = i * defaultSize;
 				}
 			}
 		return p;
 	}
 	
 	public void changeVolume() {
-		frame.setContentPane(frame.audioPane);
-		frame.audioPane.requestFocus();
-		frame.revalidate();
+		getFrame().setContentPane(getFrame().getAudioPane());
+		getFrame().getAudioPane().requestFocus();
+		getFrame().revalidate();
 	}
 
-	public static int[][] getGrille() {
+	public int[][] getGrille() {
 		return grille;
 	}
 
-	public static void setGrille(int[][] grille) {
+	public void setGrille(int[][] grille) {
 		
-		GameController.grille = grille;
+		this.grille = grille;
 	}
 
-	public static int getnRow() {
+	public int getnRow() {
 		return nRow;
 	}
 
-	public static void setnRow(int nRow) {
-		GameController.nRow = nRow;
+	public void setnRow(int nRow) {
+		this.nRow = nRow;
 	}
 
-	public static int getnColumn() {
+	public int getnColumn() {
 		return nColumn;
 	}
 
-	public static void setnColumn(int nColumn) {
-		GameController.nColumn = nColumn;
+	public void setnColumn(int nColumn) {
+		this.nColumn = nColumn;
 	}
 
-	public static int getSize() {
-		return size;
-	}
 
-	public static void setSize(int size) {
-		GameController.size = size;
-	}
-
-	public static int getDefaultSize() {
-		return defaultSize;
-	}
-
-	public static void setDefaultSize(int defaultSize) {
-		GameController.defaultSize = defaultSize;
-	}
-
-	public static int getScore() {
-		return score;
-	}
-
-	public static void setScore(int score) {
-		GameController.score = score;
-	}
-
-	public static int getLives() {
-		return lives;
-	}
-
-	public static void setLives(int lives) {
-		GameController.lives = lives;
-	}
-
-	public static int getLevel() {
-		return level;
-	}
-
-	public static void setLevel(int level) {
-		GameController.level = level;
-	}
 
 	/**
 	 * @return the maze
@@ -709,5 +657,116 @@ public class GameController implements Runnable{
 	 */
 	public JPanel getMainPane() {
 		return mainPane;
+	}
+
+	public static long getJoinTimer() {
+		return JOIN_TIMER;
+	}
+
+	public MainGame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(MainGame frame) {
+		this.frame = frame;
+	}
+
+	public boolean isFullScreen() {
+		return fullScreen;
+	}
+
+	public void setFullScreen(boolean fullScreen) {
+		this.fullScreen = fullScreen;
+	}
+
+	public boolean isPause() {
+		return pause;
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+
+	public boolean isResume() {
+		return resume;
+	}
+
+	public void setResume(boolean resume) {
+		this.resume = resume;
+	}
+
+	public boolean isResize() {
+		return resize;
+	}
+
+	public void setResize(boolean resize) {
+		this.resize = resize;
+	}
+
+	public int getScore() {
+		// TODO Auto-generated method stub
+		return score;
+	}
+
+	public int getLives() {
+		// TODO Auto-generated method stub
+		return lives;
+	}
+
+	public int getLevel() {
+		// TODO Auto-generated method stub
+		return level;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	public static int getRESUME() {
+		return RESUME;
+	}
+
+	public static void setRESUME(int rESUME) {
+		RESUME = rESUME;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public int getDefaultSize() {
+		return defaultSize;
+	}
+
+	public void setDefaultSize(int defaultSize) {
+		this.defaultSize = defaultSize;
+	}
+
+	public static long getTimeUpdate() {
+		return timeUpdate;
+	}
+
+	public static void setTimeUpdate(long timeUpdate) {
+		GameController.timeUpdate = timeUpdate;
+	}
+
+	public static int getFPS() {
+		return FPS;
+	}
+
+	public static void setFPS(int fPS) {
+		FPS = fPS;
 	}	
+	
+	
+	
+	
 }

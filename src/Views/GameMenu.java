@@ -121,9 +121,9 @@ public class GameMenu extends JPanel implements ActionListener{
 			break;
 		case "Help":
 			System.out.println("help");
-			gameController.frame.setContentPane(gameController.frame.helpPane);
-			gameController.frame.helpPane.requestFocus();
-			gameController.frame.revalidate();
+			gameController.getFrame().setContentPane(gameController.getFrame().getHelpPane());
+			gameController.getFrame().getHelpPane().requestFocus();
+			gameController.getFrame().revalidate();
 			break;
 			default:
 			break;
