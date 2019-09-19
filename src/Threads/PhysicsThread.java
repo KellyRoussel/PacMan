@@ -78,15 +78,19 @@ public class PhysicsThread extends Thread
 
 	public void stopThread() {
 		isRunning = false;
-			try {
-				this.join(500);
-				if (this.isAlive()){
-					this.interrupt();
-				}
-			}catch (InterruptedException e){
-				e.printStackTrace();
+		try {
+			this.join(300);
+			if (this.isAlive()){
+				this.interrupt();
 			}
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
 	}
+	
+	/*public void stopThread() {
+		isRunning = false;		
+	}*/
 
 	public void run()
 	{

@@ -102,6 +102,10 @@ public class PacMan extends Character {
 
 	}
 	
+	public PacMan(int width, int height, Image image, Point initialPosition) {
+		super(width, height, image, initialPosition);
+	}
+	
 	public void returnInitialPosition() {
 		position.x = initialPosition.x;
 		position.y = initialPosition.y;
