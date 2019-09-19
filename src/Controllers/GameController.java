@@ -329,7 +329,7 @@ public class GameController implements Runnable{
 					Thread.sleep(3000);					
 				}catch(InterruptedException ex) {}
 			}
-			else {
+			else {				
 				if(!isPause()) {	
 					gameUpdate();
 				}
