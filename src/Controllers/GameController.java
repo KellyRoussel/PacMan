@@ -78,7 +78,7 @@ public class GameController implements Runnable{
 
     
 
-    private Thread gameThread; 
+    public Thread gameThread; 
     
 	//private boolean wantSound = true;
 
@@ -91,12 +91,10 @@ public class GameController implements Runnable{
 	private static int [][] grille;
 	private static int nRow; 
 	private static int nColumn;
-	//private Sound background;
-	//private Sound beginning;
-	//private Sound death;
 
-	private RenderThread tRender;
-	private AudioThread tAudio;
+	public PhysicsThread tPhysics;
+	public RenderThread tRender;
+	public AudioThread tAudio;
 
 	public static ArrayList<Point> listTunnelLeft;
 
@@ -510,7 +508,7 @@ public class GameController implements Runnable{
 			
 			//System.out.println("Physics coming threw");
 			
-			PhysicsThread tPhysics = new PhysicsThread(getPacMan(),getGhostList());
+			tPhysics = new PhysicsThread(getPacMan(),getGhostList());
 			tPhysics.setName("Physics");
 			tPhysics.start();
 			
@@ -521,7 +519,6 @@ public class GameController implements Runnable{
 			frame.menuPane.gameRunning();
 			
 		}
-		System.out.println("haa");
 		resume = true;
 	}
 	
@@ -591,7 +588,7 @@ public class GameController implements Runnable{
 	
 	public void changeVolume() {
 		frame.setContentPane(frame.audioPane);
-		frame.audioPane.requestFocus();
+		frame.requestFocus();
 		frame.revalidate();
 	}
 

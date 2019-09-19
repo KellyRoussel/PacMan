@@ -3,139 +3,162 @@ package Views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Controllers.GameController;
 
-public class GameMenu extends JPanel implements ActionListener{
-	
-	private GameController gameController;
-	private JButton startGame;
-	private JButton audio;
-	private JButton exit;
-	private JButton help;
-	
-	private Font defaultFont = new Font("Joystix", Font.BOLD, 15);
-	
+public class GameMenu extends JPanel{
+
+	private static GameController gameController;
+	public static JLabel startGame;
+	private JLabel audio;
+	private JLabel exit;
+	private JLabel help;
+	public static JLabel lCursor;
+	public static Cursor cursor;
+
+	private Point startPosition, audioPosition, helpPosition, exitPosition;
+
+	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
+
 
 	public GameMenu(GameController gameController) {
-		
+
 		this.gameController = gameController;
-		
+
+
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, 800));
 
 		setLayout(null);
-		
-	
+
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File("ressources" + File.separator + "menu.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
-			}
-		
-		
-	    JLabel lImage = new JLabel();
-	    Image Iimage = image.getScaledInstance(580, 150,Image.SCALE_SMOOTH);
+		}
+
+
+		JLabel lImage = new JLabel();
+		Image Iimage = image.getScaledInstance(580, 150,Image.SCALE_SMOOTH);
 		lImage.setIcon(new ImageIcon(Iimage));
 		add(lImage);
 		lImage.setLocation(0 , 0);
 		lImage.setSize(600,400);
-	    lImage.setLocation(0 , 0);
-	    
-		startGame = new JButton("Start Game");
+
+
+		startGame = new JLabel("<html><font color='WHITE'> START GAME </font></html>");
 		startGame.setFont(defaultFont);
-		startGame.setAlignmentX(CENTER_ALIGNMENT);
-		startGame.setAlignmentY(CENTER_ALIGNMENT);
 		add(startGame);
-		startGame.setBounds(220 , 450, 150, 50);
-		startGame.setBackground(Color.white);
-		startGame.setActionCommand("Start Game");
-		
-		audio = new JButton ("Audio");
+		startGame.setLocation(245 , 450);
+		startGame.setSize(300, 50);
+		startPosition = new Point(180, 450);
+
+
+		audio = new JLabel("<html><font color='WHITE'> AUDIO </font></html>");
 		audio.setFont(defaultFont);
-		audio.setAlignmentX(CENTER_ALIGNMENT);
-		audio.setAlignmentY(CENTER_ALIGNMENT);
 		add(audio);
-		audio.setBounds(220 , 520, 150, 50);
-		audio.setBackground(Color.white);
-		audio.setActionCommand("Audio");
-		
-		exit = new JButton("Exit");
+		audio.setLocation(245 , 520);
+		audio.setSize(150, 50);
+		audioPosition = new Point(180, 520);
+
+		exit = new JLabel("<html><font color='WHITE'> EXIT </font></html>");
 		exit.setFont(defaultFont);
-		exit.setAlignmentX(CENTER_ALIGNMENT);
-		exit.setAlignmentY(CENTER_ALIGNMENT);
-		exit.setBounds(220 , 660, 150, 50);
-		exit.setBackground(Color.white);
-		exit.setActionCommand("Exit");
+		exit.setLocation(245 , 660);
+		exit.setSize(150, 50);
 		add(exit);
-		
-		
-		help = new JButton("Help");
+		exitPosition = new Point(180, 660);
+
+
+		help = new JLabel("<html><font color='WHITE'> HELP </font></html>");
 		help.setFont(defaultFont);
-		help.setAlignmentX(CENTER_ALIGNMENT);
-		help.setAlignmentY(CENTER_ALIGNMENT);
 		add(help);
-		help.setBounds(220 , 590, 150, 50);
-		help.setBackground(Color.white);
-		help.setActionCommand("Help");
-		
-		//Des essais pour styliser les boutons
-//		help.setForeground(Color.white);
-//		help.setOpaque(false);
-//		help.setContentAreaFilled(false);
-//		help.setBorderPainted(false);
-			
-		
-		startGame.addActionListener(this);
-		audio.addActionListener(this);
-		exit.addActionListener(this);
-		help.addActionListener(this);
-		
+		help.setLocation(245 , 590);
+		help.setSize(150,50);
+		helpPosition = new Point(180, 590);
+
+
+		cursor = new Cursor(startPosition, 4, gameController);
+		cursor.addPossiblePosition(startPosition);
+		cursor.addPossiblePosition(audioPosition);
+		cursor.addPossiblePosition(helpPosition);
+		cursor.addPossiblePosition(exitPosition);
+
+		lCursor = new JLabel();
+
+		lCursor.setIcon(cursor.iiCursor);
+		add(lCursor);
+
+		lCursor.setSize(50,50);
+		lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
+
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		switch(cmd) {
-		case "Start Game":
-			gameController.startGame();	
-			break;
-		case "Audio":
-			gameController.changeVolume();
-			break;
-		case "Exit":
-			gameController.frame.dispose();
-			break;
-		case "Help":
-			gameController.frame.setContentPane(gameController.frame.helpPane);
-			gameController.frame.helpPane.requestFocus();
-			gameController.frame.revalidate();
-			break;
-			default:
-			break;
-		}
-			
-	}
 
 	public void gameRunning() {
-		startGame.setText("Resume");
+		startGame.setText("<html><font color='WHITE'> RESUME </font></html>");
 	}
-	
+
 	public void noMoreRunning() {
-		startGame.setText("Start Game");
+		startGame.setText("<html><font color='WHITE'> START GAME </font></html>");
 	}
-}
+
+
+	public static void moveInMenu(int key) {
+		switch(key) {
+		case KeyEvent.VK_DOWN:
+			cursor.nextPosition();
+			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
+			break;
+		case KeyEvent.VK_UP:
+			cursor.previousPosition();
+			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);		
+			break;
+		case KeyEvent.VK_ENTER:
+			int n = cursor.getNumPosition();
+			switch(n) {
+			case 0: //StartGame
+				gameController.startGame();
+				break;
+			case 1: //Audio
+				gameController.changeVolume();
+				break;
+			case 2: //Help
+				gameController.frame.setContentPane(gameController.frame.helpPane);
+				gameController.frame.requestFocus();
+				gameController.frame.revalidate();
+				break;
+			case 3: //Exit
+				if(gameController.gameThread != null && gameController.gameThread.isAlive()) {
+					gameController.stop();
+				}
+//				if(gameController.tRender != null && gameController.tRender.isAlive()) {
+//					gameController.tRender.stop();
+//				}
+//				if(gameController.tAudio != null && gameController.tAudio.isAlive()) {
+//					gameController.tAudio.stop();
+//				}
+				if(gameController.tPhysics != null && gameController.tPhysics.isAlive()) {
+					gameController.tPhysics.stopThread();
+				}
+				gameController.frame.dispose();
+				break;
+			default:
+				break;
+			}
+			break;
+			default:
+				break;
+		}
+	}
+		}

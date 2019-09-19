@@ -251,6 +251,7 @@ import javax.sound.sampled.FloatControl;
 			}
 		}
 
+		
 		// Getters et Setters
 		public static boolean isMusicPaused() {
 			return isMusicPaused.get();

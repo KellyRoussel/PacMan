@@ -29,18 +29,16 @@ import Views.StatusBar;
 
 public class RenderThread extends Thread{
 
-	
-	
+
 	private PacMan pacMan;
 	private GamePanel gamePanel;
 	private Maze maze;
 	private ArrayList<Food> foodList;
 	private ArrayList<Ghost> ghostList;
 	private StatusBar statusBar;
+	Threads.TimerThread timerThread;
 	
 	
-	
-
 	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
 		super();
@@ -95,7 +93,7 @@ public class RenderThread extends Thread{
 			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
 			
-			Threads.TimerThread timerThread = new Threads.TimerThread(1);
+			timerThread = new Threads.TimerThread(1);
 			timerThread.start();
 			timerThread.setName(" RESUME TIMER");
 			

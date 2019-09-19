@@ -3,8 +3,10 @@ package Views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,8 +14,8 @@ import javax.swing.JPanel;
 
 import Controllers.GameController;
 
-public class HelpPanel extends JPanel implements ActionListener {
-	private GameController gameController;
+public class HelpPanel extends JPanel {
+	private static GameController gameController;
 
 	private JLabel menu;
 	private JLabel muteMusic;
@@ -21,7 +23,12 @@ public class HelpPanel extends JPanel implements ActionListener {
 	private JLabel pause;
 	private JLabel resume;
 	private JLabel movements;
-	private JButton back;
+	private JLabel back;
+	private Point backPosition;
+	
+	public static Cursor cursor;
+	public static JLabel lCursor;
+	
 
 	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
 
@@ -69,10 +76,8 @@ public class HelpPanel extends JPanel implements ActionListener {
 		movements.setAlignmentX(CENTER_ALIGNMENT);
 		movements.setAlignmentY(CENTER_ALIGNMENT);
 
-		back = new JButton("BACK");
+		back = new JLabel("<html><font color='WHITE'> BACK </font></html>");
 		back.setFont(new Font("Joystix", Font.BOLD, 15));
-		back.setAlignmentX(CENTER_ALIGNMENT);
-		back.setAlignmentY(CENTER_ALIGNMENT);
 
 		add(menu);
 		menu.setLocation(100, 0);
@@ -99,21 +104,24 @@ public class HelpPanel extends JPanel implements ActionListener {
 		movements.setSize(400, 200);
 
 		add(back);
-		back.setBounds(450, 650, 100, 50);
-		back.setBackground(Color.white);
-		back.addActionListener(this);
-		back.setActionCommand("Back");
+		back.setLocation(450, 650);
+		back.setSize(100, 40);
+		backPosition = new Point(400, 650);
+		
+		cursor = new Cursor(backPosition, 1, gameController);
+		cursor.addPossiblePosition(backPosition);
+		
+		lCursor = new JLabel();   
+		lCursor.setIcon(cursor.iiCursor);
+		add(lCursor);
+
+		lCursor.setSize(50,50);
+	    lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		switch (cmd) {
-		case "Back":
-			gameController.frame.displayMenu();
-			break;
-		default:
-			break;
-		}
-
+	public static void moveInMenu(int key) {
+	if(key == KeyEvent.VK_ENTER) {
+		gameController.frame.displayMenu();
+	}
 	}
 }

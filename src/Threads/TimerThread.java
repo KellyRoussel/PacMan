@@ -13,7 +13,15 @@ public class TimerThread extends Thread{
 	}
 	
 	public void stopThread() {
-		isRunning = false;		
+		isRunning = false;	
+		try {
+			this.join(500);
+			if (this.isAlive()){
+				this.interrupt();
+			}
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {

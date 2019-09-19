@@ -3,11 +3,8 @@ package Views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -15,27 +12,36 @@ import javax.swing.JToggleButton;
 import Controllers.GameController;
 import Threads.AudioThread;
 
-public class AudioPanel extends JPanel implements ActionListener {
+public class AudioPanel extends JPanel {
 
-	private GameController gameController;
+	private static GameController gameController;
 
 	private JLabel musicLabel;
 	private JLabel muteMusicLabel;
-	private JToggleButton muteMusicButton;
+	private static JToggleButton muteMusicButton;
 	private JLabel soundLabel;
-	private JToggleButton muteSoundButton;
+	private static JToggleButton muteSoundButton;
 	private JLabel muteSoundLabel;
-	private JLabel musicValue;
-	private JLabel soundValue;
-	private JButton musicPlus;
-	private JButton musicMinus;
-	private JButton soundPlus;
-	private JButton soundMinus;
-	private JButton back;
-
+	private static JLabel musicValue;
+	private static JLabel soundValue;
 	
-	private int musicVal;
-	private int soundVal;
+	private JLabel musicPlus;
+	private JLabel musicMinus;
+	private JLabel soundPlus;
+	private JLabel soundMinus;
+	private JLabel back;
+
+	private Point musicPosition;
+	private Point musicMutePosition;
+	private Point soundPosition;
+	private Point soundMutePosition;
+	private Point backPosition;
+	
+	public static Cursor cursor;
+	public static JLabel lCursor;
+	
+	private static int musicVal;
+	private static int soundVal;
 
 	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
 
@@ -52,20 +58,15 @@ public class AudioPanel extends JPanel implements ActionListener {
 		musicLabel = new JLabel();
 		musicLabel.setFont(defaultFont);
 		musicLabel.setText("<html><font color = 'WHITE'> MUSIC </font></html>");
-		musicLabel.setAlignmentX(CENTER_ALIGNMENT);
-		musicLabel.setAlignmentY(CENTER_ALIGNMENT);
+		
 		
 		muteMusicLabel = new JLabel();
 		muteMusicLabel.setFont(defaultFont);
 		muteMusicLabel.setText("<html><font color = 'WHITE'> MUTE MUSIC </font></html>");
-		muteMusicLabel.setAlignmentX(CENTER_ALIGNMENT);
-		muteMusicLabel.setAlignmentY(CENTER_ALIGNMENT);
 
 		soundLabel = new JLabel();
 		soundLabel.setFont(defaultFont);
 		soundLabel.setText("<html><font color = 'WHITE'> SOUND </font></html>");
-		soundLabel.setAlignmentX(CENTER_ALIGNMENT);
-		soundLabel.setAlignmentY(CENTER_ALIGNMENT);
 
 		muteSoundLabel = new JLabel();
 		muteSoundLabel.setFont(defaultFont);
@@ -85,10 +86,8 @@ public class AudioPanel extends JPanel implements ActionListener {
 		soundValue.setAlignmentX(CENTER_ALIGNMENT);
 		soundValue.setAlignmentY(CENTER_ALIGNMENT);
 
-		musicPlus = new JButton("+");
+		musicPlus = new JLabel("<html><font color='WHITE'> + </font></html>");
 		musicPlus.setFont(defaultFont);
-		musicPlus.setAlignmentX(CENTER_ALIGNMENT);
-		musicPlus.setAlignmentY(CENTER_ALIGNMENT);
 		
 		muteMusicButton = new JToggleButton("M");
 		muteMusicButton.setFont(defaultFont);
@@ -96,10 +95,8 @@ public class AudioPanel extends JPanel implements ActionListener {
 		muteMusicButton.setAlignmentY(CENTER_ALIGNMENT);
 		muteMusicButton.setBackground(Color.white);
 
-		musicMinus = new JButton("-");
+		musicMinus = new JLabel("<html><font color='WHITE'> - </font></html>");
 		musicMinus.setFont(defaultFont);
-		musicMinus.setAlignmentX(CENTER_ALIGNMENT);
-		musicMinus.setAlignmentY(CENTER_ALIGNMENT);
 		
 		muteSoundButton = new JToggleButton("S");
 		muteSoundButton.setFont(defaultFont);
@@ -107,122 +104,175 @@ public class AudioPanel extends JPanel implements ActionListener {
 		muteSoundButton.setAlignmentY(CENTER_ALIGNMENT);
 		muteSoundButton.setBackground(Color.white);
 
-		soundPlus = new JButton("+");
+		soundPlus = new JLabel("<html><font color='WHITE'> + </font></html>");
 		soundPlus.setFont(defaultFont);
-		soundPlus.setAlignmentX(CENTER_ALIGNMENT);
-		soundPlus.setAlignmentY(CENTER_ALIGNMENT);
+		
 
-		soundMinus = new JButton("-");
+		soundMinus = new JLabel("<html><font color='WHITE'> - </font></html>");
 		soundMinus.setFont(defaultFont);
-		soundMinus.setAlignmentX(CENTER_ALIGNMENT);
-		soundMinus.setAlignmentY(CENTER_ALIGNMENT);
 
-		back = new JButton("BACK");
+		back = new JLabel("<html><font color='WHITE'> BACK </font></html>");
 		back.setFont(new Font("Joystix", Font.BOLD, 15));
-		back.setAlignmentX(CENTER_ALIGNMENT);
-		back.setAlignmentY(CENTER_ALIGNMENT);
 
 		add(musicLabel);
 		musicLabel.setLocation(70, 100);
 		musicLabel.setSize(100, 30);
+		musicPosition = new Point(30, 90);
+		
 		
 		add(muteMusicLabel);
-		muteMusicLabel.setLocation(70, 240);
+		muteMusicLabel.setLocation(70, 245);
 		muteMusicLabel.setSize(200, 30);
+		musicMutePosition = new Point(30, 240);
 		
 		add(muteMusicButton);
 		muteMusicButton.setBounds(350, 240, 60, 50);
 		muteMusicButton.setBackground(Color.white);
 
 		add(musicPlus);
-		musicPlus.setBounds(450, 100, 60, 50);
-		musicPlus.setBackground(Color.white);
-		musicPlus.setActionCommand("music+");
-		musicPlus.addActionListener(this);
+		musicPlus.setLocation(450, 90);
+		musicPlus.setSize(60, 50);
 
 		add(musicValue);
 		musicValue.setLocation(375, 100);
 		musicValue.setSize(100, 30);
 
 		add(musicMinus);
-		musicMinus.setBounds(260, 100, 60, 50);
+		musicMinus.setLocation(315, 90);
+		musicMinus.setSize(60, 50);
 		musicMinus.setBackground(Color.white);
-		musicMinus.setActionCommand("music-");
-		musicMinus.addActionListener(this);
+		
 
 		add(soundLabel);
 		soundLabel.setLocation(70, 400);
 		soundLabel.setSize(150, 30);
+		soundPosition = new Point(30, 390);
 		
 		add(muteSoundLabel);
-		muteSoundLabel.setLocation(70, 550);
+		muteSoundLabel.setLocation(70, 560);
 		muteSoundLabel.setSize(300, 30);
+		soundMutePosition = new Point(30, 550);
 		
 		add(muteSoundButton);
 		muteSoundButton.setBounds(350, 550, 60, 50);
 		muteSoundButton.setBackground(Color.white);
+		
 
 		add(soundPlus);
-		soundPlus.setBounds(450, 400, 60, 50);
-		soundPlus.setBackground(Color.white);
-		soundPlus.addActionListener(this);
-		soundPlus.setActionCommand("sound+");
+		soundPlus.setLocation(450, 385);
+		soundPlus.setSize(60, 50);
 
 		add(soundMinus);
-		soundMinus.setBounds(260, 400, 60, 50);
-		soundMinus.setBackground(Color.white);
-		soundMinus.addActionListener(this);
-		soundMinus.setActionCommand("sound-");
+		soundMinus.setLocation(300, 385);
+		soundMinus.setSize(60, 50);
+		
 
 		add(soundValue);
 		soundValue.setLocation(370, 400);
 		soundValue.setSize(150, 30);
 
 		add(back);
-		back.setBounds(450, 650, 100, 40);
-		back.setBackground(Color.white);
-		back.addActionListener(this);
-		back.setActionCommand("back");
+		back.setLocation(450, 650);
+		back.setSize(100, 40);
+		backPosition = new Point(400, 650);
+		
+		cursor = new Cursor(musicPosition, 5, gameController);
+		cursor.addPossiblePosition(musicPosition);
+		cursor.addPossiblePosition(musicMutePosition);
+		cursor.addPossiblePosition(soundPosition);
+		cursor.addPossiblePosition(soundMutePosition);
+		cursor.addPossiblePosition(backPosition);
+		
+		lCursor = new JLabel();   
+		lCursor.setIcon(cursor.iiCursor);
+		add(lCursor);
+
+		lCursor.setSize(50,50);
+	    lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		switch (cmd) {
-		case "music+":
-			if (musicVal < 100) {
-				musicVal += 5;
-				AudioThread.setMusicVolume((float) (musicVal / 100.0));
-				musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
+
+
+	public static void moveInMenu(int key) {
+		switch(key) {
+		case KeyEvent.VK_DOWN:
+			cursor.nextPosition();
+			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
+			break;
+		case KeyEvent.VK_UP:
+			cursor.previousPosition();
+			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);		
+			break;
+		case KeyEvent.VK_ENTER:
+			int n = cursor.getNumPosition();
+			switch(n) {
+			case 1: //MusicMute
+				if(muteMusicButton.isSelected()) {
+					muteMusicButton.setSelected(false);
+				}else {
+					muteMusicButton.setSelected(true);
+				}
+				break;
+			case 3: //SoundMute
+				if(muteSoundButton.isSelected()) {
+					muteSoundButton.setSelected(false);
+				}else {
+					muteSoundButton.setSelected(true);
+				}
+				break;
+			case 4: //Back
+				gameController.frame.displayMenu();
+				break;
+			default:
+				break;
 			}
 			break;
-		case "music-":
-			if (musicVal > 0) {
-				musicVal -= 5;
-				AudioThread.setMusicVolume((float) (musicVal / 100.0));
-				musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
+		case KeyEvent.VK_LEFT:
+			int i = cursor.getNumPosition();
+			switch(i) {
+			case 0: //MusicVolume
+				if (musicVal > 0) {
+					musicVal -= 5;
+					AudioThread.setMusicVolume((float) (musicVal / 100.0));
+					musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
+				}
+				break;
+			case 2: //SoundVolume
+				if (soundVal > 0) {
+					soundVal-= 5;
+					AudioThread.setSoundVolume((float)(soundVal/100.0));
+					soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
+				}
+				break;
+			default:
+				break;
 			}
 			break;
-		case "sound+":
-			if (soundVal < 100) {
-				soundVal+= 5;
-				AudioThread.setSoundVolume((float)(soundVal/100.0));
-				soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
+		case KeyEvent.VK_RIGHT:
+			int k = cursor.getNumPosition();
+			switch(k) {
+			case 0: //MusicVolume
+				if (musicVal < 100) {
+					musicVal += 5;
+					AudioThread.setMusicVolume((float) (musicVal / 100.0));
+					musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
+				}
+				break;
+			case 2: //SoundVolume
+				if (soundVal < 100) {
+					soundVal+= 5;
+					AudioThread.setSoundVolume((float)(soundVal/100.0));
+					soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case "sound-":
-			if (soundVal > 0) {
-				soundVal-= 5;
-				AudioThread.setSoundVolume((float)(soundVal/100.0));
-				soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
-			}
-			break;
-		case "back":
-			gameController.frame.displayMenu();
-			break;
-		default:
 			break;
 		}
 	}
+	
 }
+
+	

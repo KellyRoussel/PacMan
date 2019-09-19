@@ -40,12 +40,14 @@ public class MainGame extends JFrame implements WindowListener{
 		audioPane = new AudioPanel(gameController);
 		helpPane = new HelpPanel(gameController);
 		this.setContentPane(menuPane);
+		this.addKeyListener(menuPane.cursor);
 		addWindowListener(this);
+		this.setFocusable(true);
 	}
 	
 	public void displayMenu() {
 		setContentPane(menuPane);
-		menuPane.requestFocus();
+		this.requestFocus();
 		revalidate();
 	}
 	
