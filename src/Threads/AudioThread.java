@@ -86,8 +86,8 @@ import javax.sound.sampled.FloatControl;
 					resumeAudio(musicBackgroundClip, MusicfilePath, true);
 					
 					if (MuteOnOffSound.get()) {
-						MuteOnOff(eatedGumSoundClip, false);
-						MuteOnOff(startGameSoundClip, false);
+						//MuteOnOff(eatedGumSoundClip, false);
+						//MuteOnOff(startGameSoundClip, false);
 						MuteOnOff(deadPacmanSoundClip, false);
 						MuteOnOffSound.compareAndExchange(true, false);
 					}
