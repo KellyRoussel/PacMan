@@ -151,6 +151,11 @@ public class GameMenu extends JPanel{
 				if(gameController.gettPhysics() != null && gameController.gettPhysics().isAlive()) {
 					gameController.gettPhysics().stopThread();
 				}
+				
+				if(gameController.gettRender() != null && gameController.gettRender().isAlive()) {
+					gameController.gettRender().stopThread();
+				}
+				
 				gameController.getFrame().dispose();
 				break;
 			default:

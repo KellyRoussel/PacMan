@@ -841,11 +841,15 @@ public class GameController implements Runnable {
 		return tRender;
 	}
 
+	public void settRender(RenderThread tRender) {
+		this.tRender = tRender;
+
 	/**
 	 * @param running the running to set
 	 */
 	public void setRunning(boolean running) {
 		this.running = running;
+
 	}
 
 	/**
@@ -875,5 +879,8 @@ public class GameController implements Runnable {
 	public void setGhostOutside(int ghostOutside) {
 		this.ghostOutside = ghostOutside;
 	}
+
+	}	
+	
 
 }
