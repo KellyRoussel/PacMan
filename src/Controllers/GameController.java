@@ -80,8 +80,9 @@ public class GameController implements Runnable {
 
 	private Thread gameThread;
 	private RenderThread tRender;
-	private AudioThread tAudio;
-	private ArrayList<Point> listTunnelLeft;
+	private static boolean isAudioThreadStarted = false;
+	private AudioThread tAudio = new AudioThread();
+	ArrayList<Point> listTunnelLeft;
 	private ArrayList<Point> listTunnelRight;
 
 	private PhysicsThread tPhysics;
@@ -101,12 +102,6 @@ public class GameController implements Runnable {
 		mainPane = new JPanel(bl);
 		getMainPane().add(getGamePanel(), BorderLayout.CENTER);
 		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
-
-		tAudio = new AudioThread();
-		gettAudio().setName("Audio");
-		gettAudio().start();
-
-		gettAudio().setIsPause(true);
 
 	}
 
@@ -480,7 +475,6 @@ public class GameController implements Runnable {
 
 		if (getGameThread() == null || !getGameThread().isAlive()) {
 
-			gettAudio().setIsStart(true);
 			setGameThread(new Thread(this));
 			init();
 			getGameThread().start();
@@ -498,6 +492,14 @@ public class GameController implements Runnable {
 					getStatusBar());
 			gettRender().setName("Render");
 			gettRender().start();
+
+			if(!isAudioThreadStarted) {
+				gettAudio().setName("Audio");
+				gettAudio().start();
+				isAudioThreadStarted = true;
+			}
+			
+			gettAudio().setIsStart(true);
 
 			getFrame().getMenuPane().gameRunning();
 			pause = false;

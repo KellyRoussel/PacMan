@@ -73,7 +73,7 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		public void run() {
-			System.out.println("Start AUDIO Thread");
+			System.out.println("START - AUDIOTHREAD");
 			play(musicBackgroundClip, true);
 			while (isRunning.get()) {
 				// Dans le cas ou il n y a pas de pause
@@ -166,7 +166,7 @@ import javax.sound.sampled.FloatControl;
 				stop(startGameSoundClip);
 				stop(deadPacmanSoundClip);
 			}
-			System.out.println("Stop AUDIO Thread");
+			System.out.println("STOP - AUDIOTHREAD");
 		}
 		
 		// mettre le thread en stop
