@@ -276,9 +276,16 @@ public class GameController implements Runnable{
 	
 	
 					if (key == KeyEvent.VK_M) {
-						// Mettre le jeu en muet 
+						// Mettre la musique en muet 
 						if(!isResume()) {
-						tAudio.setMuteOnOff(true);
+						tAudio.setMuteOnOffMusic(true);
+					}
+					}
+					
+					if (key == KeyEvent.VK_S) {
+						// Mettre le son en muet 
+						if(!isResume()) {
+						tAudio.setMuteOnOffSound(true);
 					}
 					}
 	

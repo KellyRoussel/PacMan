@@ -11,7 +11,7 @@ import javax.sound.sampled.FloatControl;
 	public class AudioThread extends Thread {
 
 		// champs pour la musique du jeu
-		private volatile static AtomicBoolean isMusicPaused = new AtomicBoolean(true);
+		private static AtomicBoolean isMusicPaused = new AtomicBoolean(true);
 		private static float MusicVolume = 0.7f;
 		private static AtomicBoolean MusicMuted = new AtomicBoolean(false);
 
@@ -19,12 +19,12 @@ import javax.sound.sampled.FloatControl;
 		private static float SoundVolume = 0.8f;
 		private static AtomicBoolean SoundMuted = new AtomicBoolean(false);
 		
-		// champs qui sont a true si le clip correspondant aux sons est lance pour la premiere fois
+		// champs qui sont a true si le clip correspondant aux sons est lance pour la premiere fois 
 		private static boolean firstTimeDead = true;
 		private static boolean firstTimeEat = true;
 		private static boolean firstTimeStart = true;
 
-		// les clips du jeu
+		// les clips du jeu et leurs emplacements
 		private Clip musicBackgroundClip;
 		private final static String MusicfilePath = "Ressources" + File.separator + "loop.wav";
 		private Clip deadPacmanSoundClip;
@@ -36,8 +36,10 @@ import javax.sound.sampled.FloatControl;
 		
 		private static final long SLEEP_TIMER = 50; //ms
 
-		// 
-		private static AtomicBoolean MuteOnOff = new AtomicBoolean(false);
+		// variable qui detecte le changement du mode mute 
+		private static AtomicBoolean MuteOnOffMusic = new AtomicBoolean(false);
+		private static AtomicBoolean MuteOnOffSound = new AtomicBoolean(false);
+		
 		// Contexte du thread
 		private AtomicBoolean isRunning = new AtomicBoolean(true);
 		private AtomicBoolean isEaten 	= new AtomicBoolean(false);
@@ -45,10 +47,11 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isStart 	= new AtomicBoolean(false);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
 
+		
+		
 		public AudioThread() {
 			// initialiser tous les clips
 			try {
-				//play(startGameSoundClip, false);
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(MusicfilePath).getAbsoluteFile());
 				musicBackgroundClip = AudioSystem.getClip();
 				musicBackgroundClip.open(audioInputStream);
@@ -70,48 +73,50 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		public void run() {
+			System.out.println("Start AUDIO Thread");
 			play(musicBackgroundClip, true);
 			while (isRunning.get()) {
-				// Au cas de pause
+				// Dans le cas ou il n y a pas de pause
 				if (!isPause.get()) {
+					if (MuteOnOffMusic.get()) {
+						MuteOnOff(musicBackgroundClip, true);
+						MuteOnOffMusic.compareAndExchange(true, false);
+					}
 					// resume la musique d arriere plan
 					resumeAudio(musicBackgroundClip, MusicfilePath, true);
 					
-					if (MuteOnOff.get()) {
-						muteOnOff(musicBackgroundClip, true);
-						muteOnOff(eatedGumSoundClip, false);
-						muteOnOff(startGameSoundClip, false);
-						muteOnOff(deadPacmanSoundClip, false);
-						MuteOnOff.compareAndExchange(true, false);
+					if (MuteOnOffSound.get()) {
+						MuteOnOff(eatedGumSoundClip, false);
+						MuteOnOff(startGameSoundClip, false);
+						MuteOnOff(deadPacmanSoundClip, false);
+						MuteOnOffSound.compareAndExchange(true, false);
 					}
-					// si le pacman est mort et le son n est pas en mode mute
+					// si le pacman est mort 
 					if (isDead.get()) {
-						System.out.println("dead");
 						isDead.compareAndExchange(true, false);
+						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip deadPacmanSoundClip est deja lance une fois au moins
 							if(!firstTimeDead && !deadPacmanSoundClip.isRunning()) {
 								restart(deadPacmanSoundClip ,deadPacmanSoundfilePath ,false);
-								//stop(musicBackgroundClip);
 							}
-							// la premiere lance du clip deadPacmanSoundClip
+							// la premiere fois qu on lance le clip deadPacmanSoundClip
 							else {
 								play(deadPacmanSoundClip, false);
-								//stop(musicBackgroundClip);
 								firstTimeDead = false;
 							}
-						}
-						
+						}	
 					}
 					
-					// si le pacman mange une gomme et le son n est pas en mode mute
+					// si le pacman mange une gomme
 					if (isEaten.get()) {
+						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip eatedGumSoundClip est deja lance une fois au moins
 							if(!firstTimeEat && !eatedGumSoundClip.isRunning()) {
 								restart(eatedGumSoundClip ,eatGumSoundfilePath ,false);
 							}
-							// la premiere lance du clip eatedGumSoundClip
+							// la premiere fois qu on lance le clip eatedGumSoundClip
 							else {
 								play(eatedGumSoundClip, false);
 								firstTimeEat = false;
@@ -120,8 +125,9 @@ import javax.sound.sampled.FloatControl;
 						isEaten.compareAndExchange(true, false);
 					}
 					
-					// a la lance du jeu
+					//  lancement d un nouveau niveau
 					if (isStart.get()) {
+						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip eatedGumSoundClip est deja lance une fois au moins
 							if(!firstTimeStart) {
@@ -135,12 +141,16 @@ import javax.sound.sampled.FloatControl;
 						}
 						isStart.compareAndExchange(true, false);
 					}
+					
+				// mode en pause du jeu
 				} else {
 					pause(musicBackgroundClip);
-					/*pause(eatedGumSoundClip);
+					pause(eatedGumSoundClip);
 					pause(startGameSoundClip);
-					pause(deadPacmanSoundClip);*/
+					pause(deadPacmanSoundClip);
 				}
+				
+				// mettre le thread en sleep 
 				try {
 					Thread.sleep(SLEEP_TIMER);
 				} catch (InterruptedException e) {
@@ -149,14 +159,17 @@ import javax.sound.sampled.FloatControl;
 				}
 			}
 			
-			/*if (!isRunning.get()) {
+			//  Si le jeu est termine donc on stop et on ferme tous les clips
+			if (!isRunning.get()) {
 				stop(musicBackgroundClip);
 				stop(eatedGumSoundClip);
 				stop(startGameSoundClip);
 				stop(deadPacmanSoundClip);
-			}*/
+			}
+			System.out.println("Stop AUDIO Thread");
 		}
 
+		// methode pour lancer l audio 
 		public synchronized void play(Clip clip, boolean isMusic) {
 			// regler le volume
 			changeVolume(clip, isMusic);
@@ -169,7 +182,7 @@ import javax.sound.sampled.FloatControl;
 			}
 		}
 
-		// methode to mettre l audio en pause
+		// methode pour mettre l audio en pause
 		public synchronized void pause(Clip clip) {
 			if (isMusicPaused.get()) {
 				// audio deja en pause
@@ -223,7 +236,7 @@ import javax.sound.sampled.FloatControl;
 			}
 		}
 
-		// valeur du volume de 0 a 1
+		// changer le volume selon les champs de volume de musique et de sons
 		public synchronized void changeVolume(Clip clip, boolean isMusic) {
 			if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -240,7 +253,7 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		// gestion de mode mute 
-		public synchronized void muteOnOff(Clip clip, boolean isMusic) {
+		public synchronized void MuteOnOff(Clip clip, boolean isMusic) {
 			BooleanControl muteControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
 			if (isMusic) {
 				muteControl.setValue(!MusicMuted.get());
@@ -333,12 +346,20 @@ import javax.sound.sampled.FloatControl;
 			this.isPause = new AtomicBoolean(isPause);
 		}
 
-		public static boolean getMuteOnOff() {
-			return MuteOnOff.get();
+		public static boolean getMuteOnOffMusic() {
+			return MuteOnOffMusic.get();
 		}
 
-		public static void setMuteOnOff(boolean muteOnOff) {
-			MuteOnOff = new AtomicBoolean(muteOnOff);
+		public static void setMuteOnOffMusic(boolean MuteOnOff) {
+			MuteOnOffMusic = new AtomicBoolean(MuteOnOff);
+		}
+		
+		public static boolean getMuteOnOffSound() {
+			return MuteOnOffSound.get();
+		}
+
+		public static void setMuteOnOffSound(boolean MuteOnOff) {
+			MuteOnOffSound = new AtomicBoolean(MuteOnOff);
 		}
 		
 		
