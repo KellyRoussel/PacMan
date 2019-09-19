@@ -800,8 +800,15 @@ public class GameController implements Runnable{
 
 	public void settPhysics(PhysicsThread tPhysics) {
 		this.tPhysics = tPhysics;
+	}
+
+	public RenderThread gettRender() {
+		return tRender;
+	}
+
+	public void settRender(RenderThread tRender) {
+		this.tRender = tRender;
 	}	
-	
 	
 	
 	

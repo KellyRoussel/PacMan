@@ -153,4 +153,16 @@ public class RenderThread extends Thread{
 			statusBar.updateState("PLAY");		
 	}
 	
+	public void stopThread() {
+		running = false;
+		try {
+			this.join(300);
+			if (this.isAlive()){
+				this.interrupt();
+			}
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
+	}
+	
 }
