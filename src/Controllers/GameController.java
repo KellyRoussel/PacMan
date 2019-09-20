@@ -103,6 +103,8 @@ public class GameController implements Runnable {
 		getMainPane().add(getGamePanel(), BorderLayout.CENTER);
 		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
 
+		
+		
 	}
 
 	private void init() {
@@ -278,7 +280,7 @@ public class GameController implements Runnable {
 				}
 				if (key == KeyEvent.VK_ESCAPE) {
 					setPause(true);
-					if (isGameOver()) {
+					if (isGameOver()) {				
 						setResume(true);
 						getFrame().displayNewMenu();
 					} else
@@ -301,6 +303,7 @@ public class GameController implements Runnable {
 	@Override
 	public void run() {
 		setRunning(true);
+		System.out.println("START - " + gameThread.getName());
 		setPause(true);
 		while (isRunning()) {
 			long pastTime = System.currentTimeMillis();
@@ -323,6 +326,7 @@ public class GameController implements Runnable {
 			} catch (InterruptedException ex) {
 			}
 		}
+		System.out.println("STOP - " + gameThread.getName());
 	}
 
 	public void gameUpdate() {
@@ -422,7 +426,6 @@ public class GameController implements Runnable {
 			}
 		}
 		if (getFoodList().size() == 0) {
-			System.out.println("ici");
 			level++;
 			// statusBar.updateLevel();
 			getPacMan().returnInitialPosition();
@@ -473,11 +476,21 @@ public class GameController implements Runnable {
 		getMainPane().requestFocus();
 		getFrame().revalidate();
 
-		if (getGameThread() == null || !getGameThread().isAlive()) {
-
+		if (getGameThread()== null || !getGameThread().isAlive()) {
+			
 			setGameThread(new Thread(this));
+			getGameThread().setName("GameController");
+
+			System.out.println("ici");
 			init();
 			getGameThread().start();
+			
+			settPhysics(new PhysicsThread(getPacMan(), getGhostList()));
+			gettPhysics().setName("Physics");
+			
+			tRender = new RenderThread(getPacMan(), getGamePanel(), getMaze(), getFoodList(), getGhostList(),
+					getStatusBar());
+			gettRender().setName("Render");
 
 			// lancer l'audio thread
 			if(!isAudioThreadStarted) {
@@ -490,22 +503,28 @@ public class GameController implements Runnable {
 			
 			// Lancer un listener sur le clavier
 			addListeners();
-
-			// System.out.println("Physics coming threw");
-
-			settPhysics(new PhysicsThread(getPacMan(), getGhostList()));
-			gettPhysics().setName("Physics");
 			gettPhysics().start();
-
-			tRender = new RenderThread(getPacMan(), getGamePanel(), getMaze(), getFoodList(), getGhostList(),
-					getStatusBar());
-			gettRender().setName("Render");
 			gettRender().start();
 
 			getFrame().getMenuPane().gameRunning();
 			pause = false;
 			resume = true;
 		}
+//		else if(gameOver) {
+//			System.out.println("ici gameOver");
+//			init();
+//			getPacMan().returnInitialPosition();
+//			for (int i = 0; i < getGhostList().size(); i++) {
+//				getGhostList().get(i).returnInitialPosition();
+//			}
+//			getPacMan().initPM();
+//			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+//			getPacMan().loadImage();
+//			fillFoodList();
+//			pause = false;
+//			resume = true;
+//			
+//		}
 		setResume(true);
 	}
 

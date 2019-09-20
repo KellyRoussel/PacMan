@@ -81,11 +81,11 @@ public class RenderThread extends Thread{
 	@Override
 	public void run() {
 		running = true;
+		System.out.println("START - " + this.getName());
 		pause = true;
 		int counter = 0;
 		while(running) {
 			if(pacMan.isDead()) {
-				System.out.println("haa");
 				pacMan.deadAnimate();
 			}
     		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
@@ -117,6 +117,7 @@ public class RenderThread extends Thread{
 				
 			}catch(InterruptedException ex) {}
 		}
+		System.out.println("STOP - " + this.getName());
     }
 
 	public void pause() {

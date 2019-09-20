@@ -54,8 +54,12 @@ public class MainGame extends JFrame implements WindowListener{
 	}
 	
 	public void displayNewMenu() {
-		gameController = new GameController(this);
-		setMenuPane(new GameMenu(gameController));
+		gameController.gettRender().stopThread();
+		gameController.gettPhysics().stopThread();
+		gameController.stop();
+		//gameController = new GameController(this);
+		menuPane.noMoreRunning();
+		setMenuPane(menuPane);
 		displayMenu();
 	}
 	

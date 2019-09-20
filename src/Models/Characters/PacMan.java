@@ -235,10 +235,8 @@ public class PacMan extends Character {
 	}
 
 	public void deadAnimate() {
-		System.out.println("hohoo");
 		// l image de l animation change apr�s 5 Frames 
 		// il existe 12 images de l animation
-		System.out.println("dead = " + deadAnimationCounter);
 		if (getDeadAnimationCounter() < 12 * 2) {
 			ToSprite pacMan_tiles_to_sprite = new ToSprite(8, "pacmanTilesSheet");
 			setImage(pacMan_tiles_to_sprite.extractImage((getDeadAnimationCounter() / 2) % 8, 4 + getDeadAnimationCounter() / (8 * 2),

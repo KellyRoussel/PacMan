@@ -142,12 +142,12 @@ public class GameMenu extends JPanel{
 				if(gameController.getGameThread() != null && gameController.getGameThread().isAlive()) {
 					gameController.stop();
 				}
-//				if(gameController.tRender != null && gameController.tRender.isAlive()) {
-//					gameController.tRender.stop();
-//				}
-//				if(gameController.tAudio != null && gameController.tAudio.isAlive()) {
-//					gameController.tAudio.stop();
-//				}
+				if(gameController.gettRender() != null && gameController.gettRender().isAlive()) {
+					gameController.gettRender().stopThread();
+				}
+				if(gameController.gettAudio() != null && gameController.gettAudio().isAlive()) {
+					gameController.gettAudio().stopThread();
+				}
 				if(gameController.gettPhysics() != null && gameController.gettPhysics().isAlive()) {
 					gameController.gettPhysics().stopThread();
 				}
