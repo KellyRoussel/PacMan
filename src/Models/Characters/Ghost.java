@@ -170,6 +170,8 @@ public class Ghost  extends Character{
 
 	public int getUpdatedAvailableDirections() {
 		
+		//System.out.println(getPosition().y);
+		//System.out.println(getPosition().x);
 			
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;

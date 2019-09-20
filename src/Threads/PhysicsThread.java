@@ -17,11 +17,13 @@ public class PhysicsThread extends Thread
 
 	private final PacMan pacMan;
 	private final List<Ghost> ghost;
+	private final List<Food> food;
 
-	public PhysicsThread(PacMan PACMAN, List<Ghost> GHOST) 
-	{
+	public PhysicsThread(PacMan PACMAN, ArrayList<Ghost> GHOST, ArrayList<Food> FOOD) {
+		
 		pacMan = PACMAN;
 		ghost = GHOST;
+		food = FOOD;
 	}
 
 	public synchronized boolean catchCollisionRectangle(Rectangle R1, Rectangle R2) {
@@ -30,23 +32,35 @@ public class PhysicsThread extends Thread
 		}
 		return false;
 	}
-
-	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> var_ghost) {
-
-		//Rectangle = Basic Pacman Hitbox
-		//Ellipse = Advanced Pacman Hitbox
-		Rectangle pacmanRectangle = var_pacMan.getRectangle();
-		Ellipse2D.Float pacmanEllipse = var_pacMan.getEllipse();
-
-		for(Ghost x : var_ghost) 
+	
+	public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
+		
+		//int cpt = 0;
+		for(Food f : var_food)
 		{
-			//ghostRectangle = Basic Ghost Hitbox
-			//ghostRectangleLow = Advanced Lower Ghost Hitbox
-			//ghostArcTop = Advanced Upper Ghost Hitbox
-			Rectangle ghostRectangle = x.getRectangle();
-			Rectangle ghostRectangleLow = x.getAdvancedLowerRectangle();
-			Arc2D ghostArcTop = x.getAdvancedTopArc();
-			
+			//cpt++;
+			//System.out.println("looking threw food : " + cpt);
+			if(pacMan.getRectangle().intersects(f.getRectangle())) 
+			{
+				if(catchAdvancedCollisionPacManPacGum()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public synchronized boolean catchAdvancedCollisionPacManPacGum() {
+		//var_pacMan.getRectangle().getWidth() == 0 && var_pacMan.getRectangle().getCenterY() == 0
+		return true;
+	}
+
+	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost2) {
+
+		Rectangle pacmanRectangle = var_pacMan.getRectangle();
+
+		for(Ghost x : ghost2) 
+		{			
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
 				System.out.println("Basic Collision Detected");
@@ -104,10 +118,9 @@ public class PhysicsThread extends Thread
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
 					pacMan.setIsDead(true);
 				}
-				/*if(catchCollisionPacManPacGum(pacMan,pacgum)) {
-					System.out.println("collision detected");
-					pacMan.setIsDead(true);
-				}*/
+				if(catchCollisionPacManPacGum(pacMan,food)) {
+					System.out.println("collision pacgum detected");
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

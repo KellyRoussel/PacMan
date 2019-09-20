@@ -485,7 +485,7 @@ public class GameController implements Runnable {
 			init();
 			getGameThread().start();
 			
-			settPhysics(new PhysicsThread(getPacMan(), getGhostList()));
+			settPhysics(new PhysicsThread(getPacMan(), getGhostList(), getFoodList()));
 			gettPhysics().setName("Physics");
 			
 			tRender = new RenderThread(getPacMan(), getGamePanel(), getMaze(), getFoodList(), getGhostList(),
