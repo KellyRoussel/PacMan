@@ -61,8 +61,6 @@ public class RenderThread extends Thread {
 		setPause(true);
 		int counter = 0;
 		while (isRunning()) {
-			System.out.println(isResume());
-			System.out.println(isRunning());
 			try {
 				if (pacMan.isDead()) {
 					pacMan.deadAnimate();
@@ -75,25 +73,18 @@ public class RenderThread extends Thread {
 				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 				gamePanel.paintScreen();
 
-				long currentTime = System.currentTimeMillis();
-				int sleeptime = (int) (1000L / GameController.getFPS());
-				if (date != 0 && (currentTime - date - sleeptime) != 0)
-					GameController.setFPS((int) (1000 / (currentTime - date - sleeptime) / 2));
 
-				date = currentTime;
+				int fps = updatedFPS(GameController.getFPS(), date);
 
-				if (GameController.getFPS() > 60)
-					GameController.setFPS(60);
-				else if (GameController.getFPS() < 30)
-					GameController.setFPS(30);
+				date = System.currentTimeMillis();
+				GameController.setFPS(fps);
 
+				Thread.sleep(1000L / fps);
+			
 				if (counter == 0)
 					statusBar.updateFPS("" + GameController.getFPS());
 				counter++;
 				counter = counter % 10;
-
-				Thread.sleep(1000L / (long) GameController.getFPS());
-
 			} catch (InterruptedException ex) {
 
 			}
@@ -101,9 +92,6 @@ public class RenderThread extends Thread {
 		System.out.println("STOP - " + this.getName());
 	}
 
-	public boolean isResume() {
-		return resume.get();
-	}
 
 	public void pause() {
 		setPause(true);
@@ -156,14 +144,32 @@ public class RenderThread extends Thread {
 		}
 	}
 
-	public int updatedFPS(int i, long currentTimeMillis) {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int updatedFPS(int fps, long date) {
+		int currFPS = 30;
+		long currentTime = System.currentTimeMillis();
+		int sleeptime = (int)(1000L / fps);
+
+		if(date != 0 && (currentTime - date - sleeptime) != 0)
+			currFPS = (int)(1000 / (currentTime - date - sleeptime) / 2);
+
+		if(currFPS > 60)
+			currFPS = 60;
+		else if(currFPS < 30)
+			currFPS = 30;
+
+		return currFPS;
 	}
 
-	public void setResume(boolean b) {
-		// TODO Auto-generated method stub
-		
+	public boolean isResume() {
+		return resume.get();
+	}
+
+	public static boolean getResume() {
+		return resume.get();
+	}
+
+	public static void setResume(boolean resume) {
+		RenderThread.resume = new AtomicBoolean(resume);
 	}
 
 }
