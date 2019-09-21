@@ -26,12 +26,12 @@ public class PhysicsThread extends Thread
 		food = FOOD;
 	}
 
-	public synchronized boolean catchCollisionRectangle(Rectangle R1, Rectangle R2) {
+	/*public synchronized boolean catchCollisionRectangle(Rectangle R1, Rectangle R2) {
 		if(R1.intersects(R2)) {
 			return true;
 		}
 		return false;
-	}
+	}/*
 	
 	/*public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
@@ -56,12 +56,12 @@ public class PhysicsThread extends Thread
 		return true;
 	}*/
 
-	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost2) {
+	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost) {
 
 		Rectangle pacmanRectangle = var_pacMan.getRectangle();
 
-		for(Ghost x : ghost2) 
-		{			
+		for(Ghost x : ghost) 
+		{		
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
 				System.out.println("Basic Collision Detected");
@@ -93,14 +93,6 @@ public class PhysicsThread extends Thread
 
 	public void stopThread() {
 		isRunning = false;
-		try {
-			this.join(300);
-			if (this.isAlive()){
-				this.interrupt();
-			}
-		}catch (InterruptedException e){
-			e.printStackTrace();
-		}
 	}
 	
 	/*public void stopThread() {

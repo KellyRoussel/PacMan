@@ -52,6 +52,9 @@ class PhysicsThreadTest {
 	private BufferedImage output;
 	private Graphics g;
 	
+	private PacMan pacman;
+	private ArrayList<Ghost> ghostList;
+	
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
 		return icon.getImage();
@@ -129,6 +132,24 @@ class PhysicsThreadTest {
 		Physics = new PhysicsThread(pacman,ghostList,foodlist);
 		assertNotNull(Physics, "Thread init failed");		
 		
+		pacman.setRectangleX(160);
+		pacman.setRectangleY(160);
+		
+		pacman.setEllipseX(160);
+		pacman.setEllipseY(160);
+		
+		for(Ghost x : ghostList) 
+		{		
+			x.setRectangleX(170);
+			x.setRectangleY(170);
+			
+			x.setAdvancedLowerRectangleX(170);
+			x.setAdvancedLowerRectangleY(170);
+			
+			x.setAdvancedTopArcX(170);
+			x.setAdvancedTopArcY(170);
+		}
+		
 		Physics.start();
 		assertTrue(Physics.isAlive(), "Thread should be started");
 	}
@@ -157,8 +178,9 @@ class PhysicsThreadTest {
 	}
 
 	@Test
-	void test() {
-		assertEquals(true,true);
+	void TestCollisionAdvanced() {
+		assertEquals(true,pacman.isDead());
 	}
+	
 
 }

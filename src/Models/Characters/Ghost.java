@@ -136,6 +136,14 @@ public class Ghost  extends Character{
     public double getRectangleY(){
    		return ghostRectangle.getY();
     }
+    
+    public void setRectangleX(int x){
+    	ghostRectangle.x = x;
+    }
+   
+    public void setRectangleY(int y){
+   		ghostRectangle.y = y;
+    }
    
     public Rectangle getRectangle(){
    		return ghostRectangle;
@@ -148,6 +156,14 @@ public class Ghost  extends Character{
     public double getAdvancedLowerRectangleY(){
    		return ghostAdvancedLowerShape.getY();
     }
+    
+    public void setAdvancedLowerRectangleX(int x){
+   		ghostAdvancedLowerShape.x = x;
+    }
+   
+    public void setAdvancedLowerRectangleY(int y){
+   		ghostAdvancedLowerShape.y = y;
+    }
    
     public Rectangle getAdvancedLowerRectangle(){
    		return ghostAdvancedLowerShape;
@@ -159,6 +175,14 @@ public class Ghost  extends Character{
     
     public double getAdvancedTopArcY(){
     	return ghostAdvancedTopShape.getY();
+    }
+    
+    public void setAdvancedTopArcX(int x){
+    	ghostAdvancedTopShape.x = x;
+    }
+    
+    public void setAdvancedTopArcY(int y){
+    	ghostAdvancedTopShape.y = y;
     }
     
     public Arc2D.Float getAdvancedTopArc(){
