@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -63,7 +64,7 @@ public class GameController implements Runnable {
 	private boolean running;
 	private int ghostOutside;
 	private boolean pause;
-	private static int RESUME;
+	private static AtomicInteger RESUME;
 	private boolean resume;
 	private boolean fullScreen;
 	private boolean resize;
@@ -322,7 +323,7 @@ public class GameController implements Runnable {
 				}
 			}
 			try {
-				Thread.sleep(1000L / getFPS());
+				Thread.sleep((1000L / getFPS()) / 2);
 			} catch (InterruptedException ex) {
 			}
 		}
@@ -549,8 +550,8 @@ public class GameController implements Runnable {
 	public void pause() {
 		while (gettRender() == null) {
 		}
+		gettRender().setPause(true);
 		gettAudio().setIsPause(true);
-		gettRender().pause();
 		setPause(true);
 	}
 
@@ -561,7 +562,7 @@ public class GameController implements Runnable {
 		while (gettRender() == null) {
 		}
 		gettAudio().setIsPause(false);
-		gettRender().res();
+		gettRender().Resume();
 
 		setResume(false);
 		if (getPacMan().isResurrection()) {
@@ -725,11 +726,11 @@ public class GameController implements Runnable {
 	}
 
 	public static int getRESUME() {
-		return RESUME;
+		return RESUME.get();
 	}
 
 	public static void setRESUME(int rESUME) {
-		RESUME = rESUME;
+		RESUME = new AtomicInteger(rESUME);
 	}
 
 	public int getSize() {

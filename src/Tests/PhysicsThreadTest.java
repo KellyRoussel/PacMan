@@ -52,7 +52,6 @@ class PhysicsThreadTest {
 	private BufferedImage output;
 	private Graphics g;
 	
-	
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
 		return icon.getImage();
