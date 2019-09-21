@@ -126,25 +126,7 @@ public class MainGame extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Closing window \nStopping threads");
-		if (gameController.getGameThread() != null && gameController.getGameThread().isAlive()) {
-			gameController.stop();
-		}
-		if (gameController.gettRender() != null && gameController.gettRender().isAlive()) {
-			gameController.gettRender().stopThread();
-		}
-		if (gameController.gettAudio() != null && gameController.gettAudio().isAlive()) {
-			gameController.gettAudio().stopThread();
-		}
-		if (gameController.gettPhysics() != null && gameController.gettPhysics().isAlive()) {
-			gameController.gettPhysics().stopThread();
-		}
-
-		if (gameController.gettRender() != null && gameController.gettRender().isAlive()) {
-			gameController.gettRender().stopThread();
-		}
-		gameController.getFrame().dispose();
-
+		gameController.closeWindow();
 	}
 
 	@Override
