@@ -73,6 +73,8 @@ class AudioThreadTest {
 			Thread.sleep(500);
 
 			assertFalse(tAudio.isMusicPaused(), "Pause Mode for Music Not Changed");
+
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,13 +89,6 @@ class AudioThreadTest {
 			tAudio.setSoundMuted(false);
 
 
-			Thread.sleep(500);
-			
-			assertFalse(tAudio.getIsDead(), "IsDead should be turned to false");
-			
-			// so That the test pass from restart method
-			tAudio.setIsDead(true);
-			
 			Thread.sleep(500);
 			
 			assertFalse(tAudio.getIsDead(), "IsDead should be turned to false");
@@ -129,6 +124,17 @@ class AudioThreadTest {
 
 			tAudio.setIsEaten(true);
 			tAudio.setSoundMuted(false);
+
+			Thread.sleep(500);
+			
+			assertFalse(tAudio.getIsEaten(), "IsEaten should be turned to false");
+			
+			Thread.sleep(1500);
+			
+			//so that the test pass from the restart method
+			tAudio.setIsEaten(true);
+			tAudio.setSoundMuted(false);
+
 
 			Thread.sleep(500);
 			
