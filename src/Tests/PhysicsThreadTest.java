@@ -35,7 +35,7 @@ class PhysicsThreadTest {
 	
 	private int height = 800;
 	private int width = 600;
-	private int nRow = 33;
+	private int nRow = 30;
 	private int nColumn = 30;
 	private int defaultSize = Math.min(height / nRow, width / nColumn);
 	
@@ -55,10 +55,6 @@ class PhysicsThreadTest {
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
 		return icon.getImage();
-	}
-	
-	private BufferedImage getOutput() {
-		return output;
 	}
 	
 	private Point definePosition(int initialPositionValue) {
@@ -97,7 +93,22 @@ class PhysicsThreadTest {
 		{
 			for (int j = 0; j < nColumn; j++)
 			{
-				grille[i][j] = 30;
+				//Init Ghost initialPosition
+				if(j ==1) {
+					grille[i][j] = 26;
+				}
+				else if(j ==2){
+					grille[i][j] = 27;
+				}
+				else if(j ==3){
+					grille[i][j] = 28;
+				}
+				else if(j ==4){
+					grille[i][j] = 29;
+				}
+				else {
+					grille[i][j] = 30;
+				}
 			}
 		}
 	

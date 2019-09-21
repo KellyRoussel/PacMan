@@ -111,8 +111,13 @@ public class Ghost  extends Character{
         ghostAdvancedLowerShape = new Rectangle(getPosition().x,getPosition().y + (height/2),width,height/2);
         ghostAdvancedTopShape = new Arc2D.Float(getPosition().x,getPosition().y,width,height/2, 0, 180, Arc2D.CHORD);
         
-        availableDirections = getUpdatedAvailableDirections();
-    	setRandomDirection();
+        
+        try {
+        	availableDirections = getUpdatedAvailableDirections();
+        	setRandomDirection();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	public void returnInitialPosition() {
@@ -170,8 +175,8 @@ public class Ghost  extends Character{
 
 	public int getUpdatedAvailableDirections() {
 		
-		//System.out.println(getPosition().y);
-		//System.out.println(getPosition().x);
+		System.out.println(getPosition().y);
+		System.out.println(getPosition().x);
 			
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;

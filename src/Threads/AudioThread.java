@@ -86,14 +86,14 @@ import javax.sound.sampled.FloatControl;
 					resumeAudio(musicBackgroundClip, MusicfilePath, true);
 					
 					if (MuteOnOffSound.get()) {
-						//MuteOnOff(eatedGumSoundClip, false);
-						//MuteOnOff(startGameSoundClip, false);
+						MuteOnOff(eatedGumSoundClip, false);
+						MuteOnOff(startGameSoundClip, false);
 						MuteOnOff(deadPacmanSoundClip, false);
+						SoundMuted.getAndSet(!SoundMuted.get());
 						MuteOnOffSound.compareAndExchange(true, false);
 					}
 					// si le pacman est mort 
 					if (isDead.get()) {
-						isDead.compareAndExchange(true, false);
 						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip deadPacmanSoundClip est deja lance une fois au moins
@@ -105,7 +105,8 @@ import javax.sound.sampled.FloatControl;
 								play(deadPacmanSoundClip, false);
 								firstTimeDead = false;
 							}
-						}	
+						}
+						isDead.compareAndExchange(true, false);
 					}
 					
 					// si le pacman mange une gomme
@@ -144,10 +145,10 @@ import javax.sound.sampled.FloatControl;
 					
 				// mode en pause du jeu
 				} else {
-					pause(musicBackgroundClip);
-					pause(eatedGumSoundClip);
-					pause(startGameSoundClip);
-					pause(deadPacmanSoundClip);
+					pause(musicBackgroundClip,true);
+					//pause(eatedGumSoundClip,false);
+					//pause(startGameSoundClip,false);
+					//pause(deadPacmanSoundClip,false);
 				}
 				
 				// mettre le thread en sleep 
@@ -196,13 +197,15 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		// methode pour mettre l audio en pause
-		public synchronized void pause(Clip clip) {
+		public synchronized void pause(Clip clip, boolean isMusic) {
 			if (isMusicPaused.get()) {
 				// audio deja en pause
 				return;
 			}
 			clip.stop();
-			isMusicPaused.compareAndExchange(false, true);
+			if(isMusic) {
+				isMusicPaused = new AtomicBoolean(true);
+			}
 		}
 
 		// methode pour relancer l audio si en pause
@@ -273,7 +276,6 @@ import javax.sound.sampled.FloatControl;
 				MusicMuted.getAndSet(!MusicMuted.get());
 			} else {
 				muteControl.setValue(!SoundMuted.get());
-				SoundMuted.getAndSet(!SoundMuted.get());
 			}
 		}
 
@@ -315,18 +317,6 @@ import javax.sound.sampled.FloatControl;
 			return SoundMuted.get();
 		}
 
-		public static void setSoundMuted(boolean soundMuted) {
-			SoundMuted = new AtomicBoolean(soundMuted);
-		}
-
-		public boolean getIsRunning() {
-			return isRunning.get();
-		}
-
-		public void setIsRunning(boolean isRunning) {
-			this.isRunning = new AtomicBoolean(isRunning);
-		}
-
 		public boolean getIsEaten() {
 			return isEaten.get();
 		}
@@ -351,29 +341,43 @@ import javax.sound.sampled.FloatControl;
 			this.isStart = new AtomicBoolean(isStart);
 		}
 
-		public boolean getIsPause() {
-			return isPause.get();
+		public static AtomicBoolean getSoundMuted() {
+			return SoundMuted;
+		}
+
+		public static void setSoundMuted(boolean soundMuted) {
+			SoundMuted = new AtomicBoolean(soundMuted);
 		}
 
 		public void setIsPause(boolean isPause) {
 			this.isPause = new AtomicBoolean(isPause);
 		}
 
-		public static boolean getMuteOnOffMusic() {
-			return MuteOnOffMusic.get();
-		}
-
 		public static void setMuteOnOffMusic(boolean MuteOnOff) {
 			MuteOnOffMusic = new AtomicBoolean(MuteOnOff);
-		}
-		
-		public static boolean getMuteOnOffSound() {
-			return MuteOnOffSound.get();
 		}
 
 		public static void setMuteOnOffSound(boolean MuteOnOff) {
 			MuteOnOffSound = new AtomicBoolean(MuteOnOff);
 		}
+
+		public Clip getMusicBackgroundClip() {
+			return musicBackgroundClip;
+		}
+
+		public Clip getDeadPacmanSoundClip() {
+			return deadPacmanSoundClip;
+		}
+
+		public Clip getEatedGumSoundClip() {
+			return eatedGumSoundClip;
+		}
+
+		public Clip getStartGameSoundClip() {
+			return startGameSoundClip;
+		}
+
 		
 		
 }
+

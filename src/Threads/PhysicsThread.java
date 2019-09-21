@@ -33,7 +33,7 @@ public class PhysicsThread extends Thread
 		return false;
 	}
 	
-	public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
+	/*public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
 		//int cpt = 0;
 		for(Food f : var_food)
@@ -47,13 +47,14 @@ public class PhysicsThread extends Thread
 				}
 			}
 		}
+		
 		return false;
 	}
 	
 	public synchronized boolean catchAdvancedCollisionPacManPacGum() {
 		//var_pacMan.getRectangle().getWidth() == 0 && var_pacMan.getRectangle().getCenterY() == 0
 		return true;
-	}
+	}*/
 
 	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost2) {
 
@@ -118,9 +119,9 @@ public class PhysicsThread extends Thread
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
 					pacMan.setIsDead(true);
 				}
-				if(catchCollisionPacManPacGum(pacMan,food)) {
+				/*if(catchCollisionPacManPacGum(pacMan,food)) {
 					System.out.println("collision pacgum detected");
-				}
+				}*/
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
