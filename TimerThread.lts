@@ -1,0 +1,4 @@
+const N = 2 range T =0..N
+TIMERTHREAD = (sleep->SLEEP),
+SLEEP=(lessThanOneSec->SLEEP | oneSecPassed->endThread->TIMERTHREAD).
+
