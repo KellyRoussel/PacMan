@@ -164,13 +164,6 @@ class ModelsPacManTest {
 	}
 
 	@Test
-	void testTreatcollision() {
-		PacMan test = new PacMan();
-		test.treatcollision();
-		assertEquals(0,0);
-	}
-
-	@Test
 	void testGetNextX() {
 		PacMan test = new PacMan();
 		test.setNextX(0);
@@ -238,27 +231,6 @@ class ModelsPacManTest {
 		PacMan test = new PacMan();
 		test.setDirection(1);
 		assertEquals(1,test.getDirection());
-	}
-
-	@Test
-	void testSetUndefinedPosition() {
-		PacMan test = new PacMan();
-		test.setUndefinedPosition(true);
-		assertEquals(true,test.undefinedPosition());
-	}
-
-	@Test
-	void testUndefinedPositionTrue() {
-		PacMan test = new PacMan();
-		test.setUndefinedPosition(true);
-		assertEquals(true,test.undefinedPosition());
-	}
-	
-	@Test
-	void testUndefinedPositionFalse() {
-		PacMan test = new PacMan();
-		test.setUndefinedPosition(false);
-		assertEquals(false,test.undefinedPosition());
 	}
 
 	@Test
