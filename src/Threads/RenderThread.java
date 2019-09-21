@@ -45,8 +45,7 @@ public class RenderThread extends Thread{
 	private static AtomicBoolean pause = new AtomicBoolean(false);
 
 	
-	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
-			ArrayList<Ghost> ghostList, StatusBar statusBar) {
+	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList, ArrayList<Ghost> ghostList, StatusBar statusBar) {
 		super();
 		this.pacMan = pacMan;
 		this.gamePanel = gamePanel;
@@ -57,27 +56,7 @@ public class RenderThread extends Thread{
 	}
 	//Boucle du jeu
 	
-	public boolean isPause() {
-		return pause.get();
-	}
-
-
-
-	public void setPause(boolean pause) {
-		this.pause = new AtomicBoolean(pause);
-	}
-
-
-
-	public boolean isRunning() {
-		return running.get();
-	}
-
-
-
-	public void setRunning(boolean running) {
-		this.running = new AtomicBoolean(running);
-	}
+	
 	
 	
 	@Override
@@ -87,8 +66,6 @@ public class RenderThread extends Thread{
 		setPause(true);
 		int counter = 0;
 		while(isRunning()) {
-			System.out.println(isResume());
-			System.out.println(isRunning());
 			try {
 				if(pacMan.isDead()) {
 					pacMan.deadAnimate();
@@ -99,28 +76,21 @@ public class RenderThread extends Thread{
 				else
 					if(isResume())
 						Resume();
-				
-	    		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+
+				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 				gamePanel.paintScreen();
 				
-				long currentTime = System.currentTimeMillis();
-				int sleeptime = (int)(1000L / GameController.getFPS());
-				if(date != 0 && (currentTime - date - sleeptime) != 0)
-					GameController.setFPS((int)(1000 / (currentTime - date - sleeptime) / 2));
-
-				date = currentTime;
-				
-				if(GameController.getFPS() > 60)
-					GameController.setFPS(60);
-				else if(GameController.getFPS() < 30)
-					GameController.setFPS(30);
 			
+				int fps = updatedFPS(GameController.getFPS(), date);
+				date = System.currentTimeMillis();
+				GameController.setFPS(fps);
+				
+				Thread.sleep(1000L / fps);
+				
 				if(counter == 0)
-					statusBar.updateFPS("" + GameController.getFPS());
+					statusBar.updateFPS("" + fps);
 				counter++;
 				counter = counter % 10;
-				
-				Thread.sleep(1000L / (long)GameController.getFPS());
 				
 			}catch(InterruptedException ex) {
 				
@@ -129,7 +99,26 @@ public class RenderThread extends Thread{
 		System.out.println("STOP - " + this.getName());
     }
 
-	private boolean isResume() {
+
+
+
+	public static int updatedFPS(int fps, long date) {
+		int currFPS = 30;
+		long currentTime = System.currentTimeMillis();
+		int sleeptime = (int)(1000L / fps);
+		
+		if(date != 0 && (currentTime - date - sleeptime) != 0)
+			currFPS = (int)(1000 / (currentTime - date - sleeptime) / 2);
+		
+		if(currFPS > 60)
+			currFPS = 60;
+		else if(currFPS < 30)
+			currFPS = 30;
+		
+		return currFPS;
+	}
+
+	public boolean isResume() {
 		return resume.get();
 	}
 
@@ -137,7 +126,7 @@ public class RenderThread extends Thread{
 		setPause(true);
 		statusBar.updateState("PAUSED");
 	}
-
+	
 	public void Resume(){
 		setPause(false);
 		statusBar.updateState("RESUME");
@@ -182,5 +171,37 @@ public class RenderThread extends Thread{
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isPause() {
+		return pause.get();
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = new AtomicBoolean(pause);
+	}
+
+	public boolean isRunning() {
+		return running.get();
+	}
+
+	public void setRunning(boolean running) {
+		this.running = new AtomicBoolean(running);
+	}
+
+
+
+
+	
+	public static boolean getResume() {
+		return resume.get();
+	}
+
+
+
+
+	public static void setResume(boolean resume) {
+		RenderThread.resume = new AtomicBoolean(resume);
+	}
+
 	
 }

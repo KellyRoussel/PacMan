@@ -482,7 +482,6 @@ public class GameController implements Runnable {
 			setGameThread(new Thread(this));
 			getGameThread().setName("GameController");
 
-			System.out.println("ici");
 			init();
 			getGameThread().start();
 			

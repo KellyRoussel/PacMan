@@ -43,7 +43,7 @@ public class AudioPanel extends JPanel {
 	private static int musicVal;
 	private static int soundVal;
 
-	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
+	private Font defaultFont = new Font("Joystix", Font.BOLD, 20);
 
 	public AudioPanel(GameController gameController) {
 
