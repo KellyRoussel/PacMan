@@ -1,1 +1,3 @@
-Render = (isRunning->GameRender->paintScreen->UpdateFPS->Render).
+Render = isRunning -> (Resume | Pause | RenderAux) -> Render
+Resume = GameRender -> paintScreen -> ShowTimer -> Resume
+RenderAux = GameRender->paintScreen->UpdateFPS
