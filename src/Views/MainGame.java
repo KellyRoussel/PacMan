@@ -126,7 +126,7 @@ public class MainGame extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Fermeture de la fenêtre \nArrêt des Threads");
+		System.out.println("Closing window \nStopping threads");
 		if (gameController.getGameThread() != null && gameController.getGameThread().isAlive()) {
 			gameController.stop();
 		}
