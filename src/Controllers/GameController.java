@@ -455,7 +455,7 @@ public class GameController implements Runnable {
 		setLives(lives - 1);
 		if (lives == 0) {
 			setGameOver(true);
-			highScore.newScore(score);
+			getHighScore().newScore(score);
 		} else {
 			getPacMan().returnInitialPosition();
 			for (int i = 0; i < 4; i++) {
@@ -920,6 +920,13 @@ public class GameController implements Runnable {
 		}
 
 		getFrame().dispose();
+	}
+
+	/**
+	 * @return the highScore
+	 */
+	public HighScore getHighScore() {
+		return highScore;
 	}
 
 }

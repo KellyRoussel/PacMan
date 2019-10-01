@@ -91,6 +91,9 @@ public class Cursor implements KeyListener{
 		else if(c == MainGame.getInstance().getHelpPane()) {
 			HelpPanel.moveInMenu(key);
 		}
+		else if(c == MainGame.getInstance().getScorePane()) {
+			ScorePanel.moveInMenu(key);
+		}
 
 	}
 

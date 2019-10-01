@@ -25,6 +25,7 @@ public class MainGame extends JFrame implements WindowListener {
 	private static GameMenu menuPane;
 	private AudioPanel audioPane;
 	private HelpPanel helpPane;
+	private ScorePanel scorePane;
 
 	public static MainGame getInstance() {
 		return SINGLE_INSTANCE;
@@ -38,6 +39,7 @@ public class MainGame extends JFrame implements WindowListener {
 		setMenuPane(new GameMenu(gameController));
 		setAudioPane(new AudioPanel(gameController));
 		setHelpPane(new HelpPanel(gameController));
+		setScorePane(new ScorePanel(gameController));
 		this.setContentPane(getMenuPane());
 		this.addKeyListener(menuPane.cursor);
 
@@ -205,5 +207,19 @@ public class MainGame extends JFrame implements WindowListener {
 
 	public static int getDefaultwidth() {
 		return DefaultWidth;
+	}
+
+	/**
+	 * @return the scorePane
+	 */
+	public ScorePanel getScorePane() {
+		return scorePane;
+	}
+
+	/**
+	 * @param scorePane the scorePane to set
+	 */
+	public void setScorePane(ScorePanel scorePane) {
+		this.scorePane = scorePane;
 	}
 }

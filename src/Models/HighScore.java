@@ -13,9 +13,9 @@ import java.util.List;
 
 public class HighScore {
 
-	String scoreFile = "ressources" + File.separator + "highestScores.txt";
-	List<Integer> scoreList = new ArrayList<Integer>();
-	List<String> scorerList = new ArrayList<String>();
+	private String scoreFile = "ressources" + File.separator + "highestScores.txt";
+	private List<Integer> scoreList = new ArrayList<Integer>();
+	private List<String> scorerList = new ArrayList<String>();
 
 	public HighScore() {
 		try{
@@ -24,8 +24,8 @@ public class HighScore {
 			BufferedReader br=new BufferedReader(ipsr);
 			String line;
 			while ((line=br.readLine())!=null){
-				scorerList.add(line.substring(0, 3));
-				scoreList.add(Integer.parseInt(line.substring(4,line.length())));
+				getScorerList().add(line.substring(0, 3));
+				getScoreList().add(Integer.parseInt(line.substring(4,line.length())));
 			}
 			br.close(); 
 		}  
@@ -35,8 +35,8 @@ public class HighScore {
 	}
 
 	public void newScore(int score) {
-		int k = scoreList.size()-1; //On part de la fin de la liste
-		while(score >= scoreList.get(k) && k > 0) { //Si le score est plus grand que le plus petit score
+		int k = getScoreList().size()-1; //On part de la fin de la liste
+		while(score >= getScoreList().get(k) && k > 0) { //Si le score est plus grand que le plus petit score
 			k-=1;
 		}
 		if(k < 4){ //Si la position du nouveau score dans la liste est < 4, il faut l'ajouter
@@ -49,9 +49,9 @@ public class HighScore {
 		// Récupérer les valeurs String Scorer et score
 		//scorerList.add(k, scorer); 
 		//scoreList.add(k, score);
-		if(scoreList.size()> 5) { //On ne garde que les 5 meilleurs
-			scoreList.remove(-1);
-			scorerList.remove(-1);
+		if(getScoreList().size()> 5) { //On ne garde que les 5 meilleurs
+			getScoreList().remove(-1);
+			getScorerList().remove(-1);
 		}
 		try { // On écrit dans le fichier
 			FileWriter fw = new FileWriter (scoreFile);
@@ -64,5 +64,19 @@ public class HighScore {
 			System.out.println(e.toString());
 		}
 
+	}
+
+	/**
+	 * @return the scoreList
+	 */
+	public List<Integer> getScoreList() {
+		return scoreList;
+	}
+
+	/**
+	 * @return the scorerList
+	 */
+	public List<String> getScorerList() {
+		return scorerList;
 	}
 }
