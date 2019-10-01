@@ -19,6 +19,10 @@ import javax.swing.JPanel;
 import Models.Maze;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
+import Models.Characters.Strategies.Normal.OrangeStrategy;
+import Models.Characters.Strategies.Normal.PinkStrategy;
+import Models.Characters.Strategies.Normal.RedStrategy;
+import Models.Characters.Strategies.Normal.TurquoiseStrategy;
 import Models.Foods.Food;
 import Models.Foods.Fruit;
 import Models.Foods.Gum;
@@ -38,12 +42,12 @@ public class GameController implements Runnable {
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
 
-	private PacMan pacMan;
+	private static PacMan pacMan;
 	private Maze maze;
 	private ArrayList<Food> foodList;
 
 	// private Sound music;
-	private int size, defaultSize;
+	private static int size, defaultSize;
 	private int level;
 	private int score;
 	private int lives;
@@ -67,7 +71,7 @@ public class GameController implements Runnable {
 	private boolean fullScreen;
 	private boolean resize;
 	private boolean gameOver;
-	private int[][] grille;
+	private static int[][] grille;
 	private int nRow;
 	private int nColumn;
 	private int firstGhostToQuit;
@@ -197,19 +201,25 @@ public class GameController implements Runnable {
 
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
-		getGhostList().add(
-				new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION),
-						"pink", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));
+		
 		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"),
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
-				getListTunnelRight(), nColumn, nRow));
+				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
+		
 		getGhostList().add(
 				new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION),
-						"red", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow));
+						"red", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow, new RedStrategy()));
+		
 		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
-				getListTunnelRight(), nColumn, nRow));
+				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
+		
+		getGhostList().add(
+				new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION),
+						"pink", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
+		
 		setGhostOutside(0);
+		
 		setFirstGhostToQuit((int) (Math.random() * 4));
 
 		// Creer les Gums et PacGums
@@ -335,7 +345,7 @@ public class GameController implements Runnable {
 			if (!isResume()) {
 				if (getGhostOutside() < 4) {
 					if (ghostCounter == 0) {
-						updateGhostPosition(getGhostList().get(getFirstGhostToQuit()));
+						getGhostList().get(getFirstGhostToQuit()).updatePosition();
 						raw = getGhostList().get(getFirstGhostToQuit()).getY() / defaultSize;
 						column = getGhostList().get(getFirstGhostToQuit()).getX() / defaultSize;
 						if (grille[raw][column] == 15 || grille[raw][column] == 2) {
@@ -350,7 +360,7 @@ public class GameController implements Runnable {
 
 				for (int i = 0; i < getGhostList().size(); i++) {
 					if (getGhostList().get(i).isOutside()) {
-						updateGhostPosition(getGhostList().get(i));
+						getGhostList().get(i).updatePosition();
 					}
 				}
 			}
@@ -403,13 +413,7 @@ public class GameController implements Runnable {
 		}
 	}
 
-	private void updateGhostPosition(Ghost currentGhost) {
-		if (currentGhost.getUpdatedAvailableDirections() != currentGhost.getAvailableDirections()) {
-			currentGhost.setAvailableDirections(currentGhost.getUpdatedAvailableDirections());
-			currentGhost.setRandomDirection();
-		}
-		currentGhost.move();
-	}
+	
 
 	public void updatePositions(int raw, int column, boolean flag) {
 		for (int i = 0; i < getFoodList().size(); i++) {
@@ -582,7 +586,7 @@ public class GameController implements Runnable {
 		getFrame().revalidate();
 	}
 
-	public int[][] getGrille() {
+	public static int[][] getGrille() {
 		return grille;
 	}
 
@@ -619,6 +623,10 @@ public class GameController implements Runnable {
 	 */
 	public PacMan getPacMan() {
 		return pacMan;
+	}
+	
+	public static Point getPacManPosition() {
+		return pacMan.getPosition();
 	}
 
 	/**
@@ -732,7 +740,7 @@ public class GameController implements Runnable {
 		this.size = size;
 	}
 
-	public int getDefaultSize() {
+	public static int getDefaultSize() {
 		return defaultSize;
 	}
 
@@ -918,4 +926,7 @@ public class GameController implements Runnable {
 		getFrame().dispose();
 	}
 
+	public static void setPacMan(PacMan pacMan) {
+		GameController.pacMan = pacMan;
+	}
 }

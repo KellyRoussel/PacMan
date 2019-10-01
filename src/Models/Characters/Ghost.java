@@ -49,6 +49,8 @@ public class Ghost  extends Character{
     private Map<Integer, Point> steps;
     private Map<Integer, Point> ghostFront;
     private Map<Integer, String> directionString;
+    private Map<Integer, Integer> oppositeDirection;
+    
     private Rectangle ghostRectangle;
     private Rectangle ghostAdvancedLowerShape;
     private Arc2D.Float ghostAdvancedTopShape;
@@ -59,11 +61,14 @@ public class Ghost  extends Character{
 	private ArrayList<Point> listTunnelRight;
 	private int nColumn;
 	private int nRow;
+	private GhostStrategy ghostStrategy;
     
-	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow) {
+	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow, GhostStrategy ghostStrategy) {
 		super(width, height, image, initialPosition);
 		// TODO Auto-generated constructor stub
 		
+		this.ghostStrategy = ghostStrategy;
+		ghostStrategy.setGhost(this);
 		this.defaultSize = defaultSize;
 		this.grille = grille;
 		this.listTunnelLeft = listTunnelLeft;
@@ -85,7 +90,13 @@ public class Ghost  extends Character{
         directionString.put(KeyEvent.VK_UP, "Up");	        
         directionString.put(KeyEvent.VK_DOWN, "Down");	
         
-    	
+        oppositeDirection = new HashMap<Integer, Integer>(); 
+        oppositeDirection.put(KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+        oppositeDirection.put(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT);	        
+        oppositeDirection.put(KeyEvent.VK_UP, KeyEvent.VK_DOWN);	        
+        oppositeDirection.put(KeyEvent.VK_DOWN, KeyEvent.VK_UP);	
+        
+        
     	w = image.getWidth(null);
         h = image.getHeight(null);
     		        
@@ -149,6 +160,10 @@ public class Ghost  extends Character{
    		return ghostRectangle;
     }
     
+    public void updatePosition() {
+    	ghostStrategy.updatePosition();
+	}
+    
     public double getAdvancedLowerRectangleX(){
    		return ghostAdvancedLowerShape.getX();
     }
@@ -198,19 +213,16 @@ public class Ghost  extends Character{
 	}
 
 	public int getUpdatedAvailableDirections() {
-		
-		System.out.println(getPosition().y);
-		System.out.println(getPosition().x);
-			
+					
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;
 		   int counter = 0;
-		   counter += (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15)? KeyEvent.VK_UP : 0;
-		   counter += (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1)? 0 : KeyEvent.VK_DOWN;
-		   counter += (listTunnelLeft.contains(new Point(raw, column)) || (grille[raw][column - 1] <= 25 && grille[raw][column - 1] >= 1))? 0 : KeyEvent.VK_LEFT;
-		   counter += (column + 1 >= 30 || listTunnelRight.contains(new Point(raw, column)) || (grille[raw][column + 1] <= 25 && grille[raw][column + 1] >= 1))? 0 : KeyEvent.VK_RIGHT;
+		   counter += (raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))? KeyEvent.VK_UP : 0;
+		   counter += (raw + 1 > nRow || (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1))? 0 : KeyEvent.VK_DOWN;
+		   counter += (listTunnelLeft.contains(new Point(raw, column)) || column - 1 < 0 || (grille[raw][column - 1] <= 25 && grille[raw][column - 1] >= 1))? 0 : KeyEvent.VK_LEFT;
+		   counter += (column + 1 >= 30 || listTunnelRight.contains(new Point(raw, column)) || (column + 1 < nColumn) || (grille[raw][column + 1] <= 25 && grille[raw][column + 1] >= 1))? 0 : KeyEvent.VK_RIGHT;
 		   return counter;
-		}
+	}
 	
 	
 	
@@ -239,6 +251,7 @@ public class Ghost  extends Character{
     		style = (style + 1) % 2;
     		loadImage();
     	}
+    	
     	getPosition().x += dx;
     	getPosition().y += dy;
     	setInsideTile(getPosition().y / defaultSize, getPosition().x / defaultSize);
@@ -329,6 +342,8 @@ public class Ghost  extends Character{
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+		dx = steps.get(direction).x;
+		dy = steps.get(direction).y;
 	}
 	
 	public void setPosition(int x, int y) {
@@ -375,10 +390,10 @@ public class Ghost  extends Character{
 		int raw = getPosition().y / defaultSize;
 		int column = getPosition().x / defaultSize;
 		
-		if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
+		if(raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);
 		
-		if((grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
+		if(raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
 			availables.add(KeyEvent.VK_DOWN);
 		
 		if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !listTunnelLeft.contains(new Point(raw, column))) 
@@ -403,9 +418,8 @@ public class Ghost  extends Character{
 				availables.add(KeyEvent.VK_RIGHT);
 		}
 		
-		direction = availables.get((int)(Math.random() * availables.size()));
-		dx = steps.get(direction).x;
-		dy = steps.get(direction).y;
+		setDirection(availables.get((int)(Math.random() * availables.size())));
+		
 	}
 
 
@@ -418,5 +432,28 @@ public class Ghost  extends Character{
 
 	public void setOutside(boolean outside) {
 		this.outside = outside;
+	}
+
+	public void setOppositeDirection(int direction) {
+		// TODO Auto-generated method stub
+		int dir = oppositeDirection.get(direction);
+		setDirection(dir);
+	}
+	public boolean canMove(int direction) {
+		int x = position.x + steps.get(direction).x;
+		int y = position.y + steps.get(direction).y;
+		
+	   int raw = y / defaultSize;
+	   int column = x / defaultSize;
+	   
+	   if(raw >= 0 && raw < nRow && column >= 0 && column < nColumn && (grille[raw][column] <= 0 || grille[raw][column] > 25))
+		   return true;
+	   
+	   return false;
+	}
+
+	public int getOppositeDirection(int direction2) {
+		// TODO Auto-generated method stub
+		return oppositeDirection.get(direction2);
 	}
 }
