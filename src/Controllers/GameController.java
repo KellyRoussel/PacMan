@@ -15,6 +15,7 @@ import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import Models.HighScore;
 import Models.Maze;
 import Models.ToSprite;
 import Models.Characters.Ghost;
@@ -38,6 +39,7 @@ public class GameController implements Runnable {
 	private JPanel mainPane;
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
+	private HighScore highScore;
 
 	private PacMan pacMan;
 	private Maze maze;
@@ -96,6 +98,7 @@ public class GameController implements Runnable {
 		this.setFrame(frame);
 
 		statusBar = new StatusBar();
+		highScore = new HighScore();
 
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
@@ -455,6 +458,7 @@ public class GameController implements Runnable {
 		setLives(lives - 1);
 		if (lives == 0) {
 			setGameOver(true);
+			highScore.newScore(score);
 		} else {
 			getPacMan().returnInitialPosition();
 			for (int i = 0; i < 4; i++) {
