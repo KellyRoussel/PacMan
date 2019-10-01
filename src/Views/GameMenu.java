@@ -24,10 +24,11 @@ public class GameMenu extends JPanel {
 	private JLabel audio;
 	private JLabel exit;
 	private JLabel help;
+	private JLabel highestScores;
 	public static JLabel lCursor;
 	public static Cursor cursor;
 
-	private Point startPosition, audioPosition, helpPosition, exitPosition;
+	private Point startPosition, audioPosition, helpPosition, exitPosition, highestScoresPosition;
 
 	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
 
@@ -57,9 +58,16 @@ public class GameMenu extends JPanel {
 		startGame = new JLabel("<html><font color='WHITE'> START GAME </font></html>");
 		startGame.setFont(defaultFont);
 		add(startGame);
-		startGame.setLocation(245, 450);
+		startGame.setLocation(245, 380);
 		startGame.setSize(300, 50);
-		startPosition = new Point(180, 450);
+		startPosition = new Point(180, 380);
+		
+		highestScores = new JLabel("<html><font color='WHITE'> HIGHEST SCORES </font></html>");
+		highestScores.setFont(defaultFont);
+		add(highestScores);
+		highestScores.setLocation(245, 450);
+		highestScores.setSize(450, 50);
+		highestScoresPosition = new Point(180, 450);
 
 		audio = new JLabel("<html><font color='WHITE'> AUDIO </font></html>");
 		audio.setFont(defaultFont);
@@ -82,11 +90,13 @@ public class GameMenu extends JPanel {
 		help.setSize(150, 50);
 		helpPosition = new Point(180, 590);
 
-		cursor = new Cursor(startPosition, 4, gameController);
+		cursor = new Cursor(startPosition, 5, gameController);
 		cursor.addPossiblePosition(startPosition);
+		cursor.addPossiblePosition(highestScoresPosition);
 		cursor.addPossiblePosition(audioPosition);
 		cursor.addPossiblePosition(helpPosition);
 		cursor.addPossiblePosition(exitPosition);
+		
 
 		lCursor = new JLabel();
 
@@ -122,15 +132,20 @@ public class GameMenu extends JPanel {
 			case 0: // StartGame
 				gameController.startGame();
 				break;
-			case 1: // Audio
+			case 1: // HighestScores
+				gameController.getFrame().setContentPane(gameController.getFrame().getScorePane());
+				gameController.getFrame().requestFocus();
+				gameController.getFrame().revalidate();
+				break;
+			case 2: // Audio
 				gameController.changeVolume();
 				break;
-			case 2: // Help
+			case 3: // Help
 				gameController.getFrame().setContentPane(gameController.getFrame().getHelpPane());
 				gameController.getFrame().requestFocus();
 				gameController.getFrame().revalidate();
 				break;
-			case 3: // Exit
+			case 4: // Exit
 				gameController.closeWindow();
 				break;
 			default:

@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import Models.HighScore;
 import Models.Maze;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
@@ -41,6 +42,7 @@ public class GameController implements Runnable {
 	private JPanel mainPane;
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
+	private HighScore highScore;
 
 	private static PacMan pacMan;
 	private Maze maze;
@@ -99,6 +101,7 @@ public class GameController implements Runnable {
 		this.setFrame(frame);
 
 		statusBar = new StatusBar();
+		highScore = new HighScore();
 
 		// Creation du Border Layout pour contenir le gamePanel et le StatusBar
 		BorderLayout bl = new BorderLayout();
@@ -456,6 +459,7 @@ public class GameController implements Runnable {
 		setLives(lives - 1);
 		if (lives == 0) {
 			setGameOver(true);
+			getHighScore().newScore(score);
 		} else {
 			getPacMan().returnInitialPosition();
 			for (int i = 0; i < 4; i++) {
@@ -926,7 +930,17 @@ public class GameController implements Runnable {
 		getFrame().dispose();
 	}
 
+<<<<<<< HEAD
 	public static void setPacMan(PacMan pacMan) {
 		GameController.pacMan = pacMan;
 	}
+=======
+	/**
+	 * @return the highScore
+	 */
+	public HighScore getHighScore() {
+		return highScore;
+	}
+
+>>>>>>> c1edbbfb6d4e5056f773c1ccffcc4e641b20c9d8
 }
