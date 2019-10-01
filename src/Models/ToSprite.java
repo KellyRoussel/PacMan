@@ -96,7 +96,10 @@ public class ToSprite {
 		int i = 0;
 		text = text.toUpperCase();
 		for (char c : text.toCharArray()) {
-			g.drawImage(stringImageMap.get(c), x + i * width, y, width, height, null);
+			if(c == ' ') {}
+			else {
+				g.drawImage(stringImageMap.get(c), x + i * width, y, width, height, null);
+			}
 			i++;
 		}
 	}
