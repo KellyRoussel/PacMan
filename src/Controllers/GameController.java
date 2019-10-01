@@ -223,7 +223,7 @@ public class GameController implements Runnable {
 		
 		setGhostOutside(0);
 		
-		setFirstGhostToQuit((int) (Math.random() * 4));
+		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
 
 		// Creer les Gums et PacGums
 
@@ -346,7 +346,7 @@ public class GameController implements Runnable {
 
 		if (defaultSize != 0) {
 			if (!isResume()) {
-				if (getGhostOutside() < 4) {
+				if (getGhostOutside() < ghostList.size()) {
 					if (ghostCounter == 0) {
 						getGhostList().get(getFirstGhostToQuit()).updatePosition();
 						raw = getGhostList().get(getFirstGhostToQuit()).getY() / defaultSize;
@@ -354,7 +354,7 @@ public class GameController implements Runnable {
 						if (grille[raw][column] == 15 || grille[raw][column] == 2) {
 							setGhostOutside(getGhostOutside() + 1);
 							getGhostList().get(getFirstGhostToQuit()).setOutside(true);
-							setFirstGhostToQuit((getFirstGhostToQuit() + 1) % 4);
+							setFirstGhostToQuit((getFirstGhostToQuit() + 1) % ghostList.size());
 						}
 					}
 					ghostCounter++;
@@ -462,7 +462,7 @@ public class GameController implements Runnable {
 			getHighScore().newScore(score);
 		} else {
 			getPacMan().returnInitialPosition();
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < ghostList.size(); i++) {
 				getGhostList().get(i).returnInitialPosition();
 			}
 			getPacMan().initPM();
@@ -935,6 +935,11 @@ public class GameController implements Runnable {
 	 */
 	public HighScore getHighScore() {
 		return highScore;
+	}
+
+	public static int getPacManDirection() {
+		// TODO Auto-generated method stub
+		return pacMan.getDirection();
 	}
 
 }
