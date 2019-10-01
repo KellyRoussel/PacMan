@@ -1,0 +1,7 @@
+MUSIC = (notPaused->resume->MUSIC|pause->MUSIC).
+SOUND = (isSoundActivated->soundnotMuted->SOUNDACTIVATION).
+SOUNDACTIVATION = (resume->SOUND | firstTimeActivated->play->SOUND).
+
+
+
+

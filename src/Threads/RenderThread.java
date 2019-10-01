@@ -1,34 +1,17 @@
 package Threads;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import Controllers.GameController;
 import Models.Maze;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
-import Models.Foods.Fruit;
-import Models.Foods.Gum;
-import Models.Foods.PacGum;
 import Views.GamePanel;
-import Views.MainGame;
 import Views.StatusBar;
 
-public class RenderThread extends Thread{
-
+public class RenderThread extends Thread {
 
 	private PacMan pacMan;
 	private GamePanel gamePanel;
@@ -36,11 +19,13 @@ public class RenderThread extends Thread{
 	private ArrayList<Food> foodList;
 	private ArrayList<Ghost> ghostList;
 	private StatusBar statusBar;
-	private boolean pause;
-	private boolean running;
 	private long date = 0;
 	private TimerThread timerThread;
-	
+
+	private static AtomicBoolean running = new AtomicBoolean(false);
+	private static AtomicBoolean resume = new AtomicBoolean(false);
+	private static AtomicBoolean pause = new AtomicBoolean(false);
+
 	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
 		super();
@@ -50,122 +35,141 @@ public class RenderThread extends Thread{
 		this.foodList = foodList;
 		this.ghostList = ghostList;
 		this.statusBar = statusBar;
-		pause = false;
-		running = false;
 	}
-	//Boucle du jeu
-	
+	// Boucle du jeu
+
 	public boolean isPause() {
-		return pause;
+		return pause.get();
 	}
-
-
 
 	public void setPause(boolean pause) {
-		this.pause = pause;
+		this.pause = new AtomicBoolean(pause);
 	}
-
-
 
 	public boolean isRunning() {
-		return running;
+		return running.get();
 	}
-
-
 
 	public void setRunning(boolean running) {
-		this.running = running;
+		this.running = new AtomicBoolean(running);
 	}
-	
-	
+
 	@Override
 	public void run() {
-		running = true;
+		setRunning(true);
 		System.out.println("START - " + this.getName());
-		pause = true;
+		setPause(true);
 		int counter = 0;
-		while(running) {
-			if(pacMan.isDead()) {
-				pacMan.deadAnimate();
-			}
-    		gamePanel.gameRender(pacMan, maze, foodList, ghostList);
-			gamePanel.paintScreen();
-
+		while (isRunning()) {
 			try {
-				
-				long currentTime = System.currentTimeMillis();
-				int sleeptime = (int)(1000L / GameController.getFPS());
-				if(date != 0 && (currentTime - date - sleeptime) != 0)
-					GameController.setFPS((int)(1000 / (currentTime - date - sleeptime)));
+				if (pacMan.isDead()) {
+					pacMan.deadAnimate();
+				}
+				if (isPause()) {
+					pause();
+				} else if (isResume())
+					Resume();
 
-				date = currentTime;
-				
-				
-				
-				
-				if(GameController.getFPS() > 60)
-					GameController.setFPS(60);
-				else if(GameController.getFPS() < 30)
-					GameController.setFPS(30);
+				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
+				gamePanel.paintScreen();
+
+
+				int fps = updatedFPS(GameController.getFPS(), date);
+
+				date = System.currentTimeMillis();
+				GameController.setFPS(fps);
+
+				Thread.sleep(1000L / fps);
 			
-				if(counter == 0)
+				if (counter == 0)
 					statusBar.updateFPS("" + GameController.getFPS());
 				counter++;
 				counter = counter % 10;
-				
-				Thread.sleep(1000L / (long)GameController.getFPS());
-				
-			}catch(InterruptedException ex) {}
+			} catch (InterruptedException ex) {
+
+			}
 		}
 		System.out.println("STOP - " + this.getName());
-    }
+	}
+
 
 	public void pause() {
-		pause = true;
+		setPause(true);
 		statusBar.updateState("PAUSED");
 	}
 
-	public void res(){
+	public void Resume() {
+		setPause(false);
 		statusBar.updateState("RESUME");
-		
+
 		GameController.setRESUME(0);
-		while(GameController.getRESUME() <3) {
+		while (GameController.getRESUME() < 3) {
 			GameController.setRESUME(GameController.getRESUME() + 1);
+
 			gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 			gamePanel.paintScreen();
-			
+
 			timerThread = new Threads.TimerThread(1);
 			timerThread.start();
 			timerThread.setName(" RESUME TIMER");
-			
-			synchronized(timerThread) {
-					
+
+			synchronized (timerThread) {
+
 				try {
 					timerThread.wait(1 * 1000 + 500);
-					timerThread.join(GameController.getJoinTimer()); 
-					if(timerThread.isAlive()) {	timerThread.interrupt();}
-				}
-				catch(InterruptedException e) {
+					timerThread.join(GameController.getJoinTimer());
+					if (timerThread.isAlive()) {
+						timerThread.interrupt();
+					}
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
-			statusBar.updateState("PLAY");		
+		statusBar.updateState("PLAY");
 	}
-	
+
 	public void stopThread() {
 
-		running = false;
+		setRunning(false);
 		try {
 			this.join(300);
-			if (this.isAlive()){
+			if (this.isAlive()) {
 
 				this.interrupt();
 			}
-		}catch (InterruptedException e){
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static int updatedFPS(int fps, long date) {
+		int currFPS = 30;
+		long currentTime = System.currentTimeMillis();
+		int sleeptime = (int)(1000L / fps);
+
+		if(date != 0 && (currentTime - date - sleeptime) != 0)
+			currFPS = (int)(1000 / (currentTime - date - sleeptime) / 2);
+
+		if(currFPS > 60)
+			currFPS = 60;
+		else if(currFPS < 30)
+			currFPS = 30;
+
+		return currFPS;
+	}
+
+	public boolean isResume() {
+		return resume.get();
+	}
+
+	public static boolean getResume() {
+		return resume.get();
+	}
+
+	public static void setResume(boolean resume) {
+		RenderThread.resume = new AtomicBoolean(resume);
+	}
+
 }

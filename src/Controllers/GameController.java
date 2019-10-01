@@ -11,13 +11,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import Models.HighScore;
 import Models.Maze;
-import Models.ToSprite;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
@@ -27,7 +27,6 @@ import Models.Foods.PacGum;
 import Threads.AudioThread;
 import Threads.PhysicsThread;
 import Threads.RenderThread;
-import Views.GameMenu;
 import Views.GamePanel;
 import Views.MainGame;
 import Views.StatusBar;
@@ -65,7 +64,7 @@ public class GameController implements Runnable {
 	private boolean running;
 	private int ghostOutside;
 	private boolean pause;
-	private static int RESUME;
+	private static AtomicInteger RESUME;
 	private boolean resume;
 	private boolean fullScreen;
 	private boolean resize;
@@ -106,8 +105,6 @@ public class GameController implements Runnable {
 		getMainPane().add(getGamePanel(), BorderLayout.CENTER);
 		getMainPane().add(getStatusBar(), BorderLayout.SOUTH);
 
-		
-		
 	}
 
 	private void init() {
@@ -263,7 +260,7 @@ public class GameController implements Runnable {
 						// Mettre la musique en muet
 						if (!isResume()) {
 							gettAudio().setMuteOnOffMusic(true);
-		
+
 						}
 					}
 
@@ -271,7 +268,7 @@ public class GameController implements Runnable {
 						// Mettre le son en muet
 						if (!isResume()) {
 							gettAudio().setMuteOnOffSound(true);
-							
+
 						}
 					}
 
@@ -283,7 +280,7 @@ public class GameController implements Runnable {
 				}
 				if (key == KeyEvent.VK_ESCAPE) {
 					setPause(true);
-					if (isGameOver()) {				
+					if (isGameOver()) {
 						setResume(true);
 						getFrame().displayNewMenu();
 					} else
@@ -325,7 +322,7 @@ public class GameController implements Runnable {
 				}
 			}
 			try {
-				Thread.sleep(1000L / getFPS());
+				Thread.sleep((1000L / getFPS()) / 2);
 			} catch (InterruptedException ex) {
 			}
 		}
@@ -473,38 +470,36 @@ public class GameController implements Runnable {
 
 		}
 	}
-	
 
 	public void startGame() {
 		getFrame().setContentPane(getMainPane());
 		getMainPane().requestFocus();
 		getFrame().revalidate();
 
-		if (getGameThread()== null || !getGameThread().isAlive()) {
-			
+		if (getGameThread() == null || !getGameThread().isAlive()) {
+
 			setGameThread(new Thread(this));
 			getGameThread().setName("GameController");
 
-			System.out.println("ici");
 			init();
 			getGameThread().start();
-			
-			settPhysics(new PhysicsThread(getPacMan(), getGhostList()));
+
+			settPhysics(new PhysicsThread(getPacMan(), getGhostList(), getFoodList()));
 			gettPhysics().setName("Physics");
-			
+
 			tRender = new RenderThread(getPacMan(), getGamePanel(), getMaze(), getFoodList(), getGhostList(),
 					getStatusBar());
 			gettRender().setName("Render");
 
 			// lancer l'audio thread
-			if(!isAudioThreadStarted) {
+			if (!isAudioThreadStarted) {
 				gettAudio().setName("Audio");
 				gettAudio().start();
 				isAudioThreadStarted = true;
 			}
-			
+
 			gettAudio().setIsStart(true);
-			
+
 			// Lancer un listener sur le clavier
 			addListeners();
 			gettPhysics().start();
@@ -553,19 +548,17 @@ public class GameController implements Runnable {
 	public void pause() {
 		while (gettRender() == null) {
 		}
+		gettRender().setPause(true);
 		gettAudio().setIsPause(true);
-		gettRender().pause();
 		setPause(true);
 	}
-
-
 
 	public void resume() {
 		setPause(false);
 		while (gettRender() == null) {
 		}
 		gettAudio().setIsPause(false);
-		gettRender().res();
+		gettRender().Resume();
 
 		setResume(false);
 		if (getPacMan().isResurrection()) {
@@ -653,7 +646,6 @@ public class GameController implements Runnable {
 		return firstGhostToQuit;
 	}
 
-	
 	/**
 	 * @return the mainPane
 	 */
@@ -729,11 +721,11 @@ public class GameController implements Runnable {
 	}
 
 	public static int getRESUME() {
-		return RESUME;
+		return RESUME.get();
 	}
 
 	public static void setRESUME(int rESUME) {
-		RESUME = rESUME;
+		RESUME = new AtomicInteger(rESUME);
 	}
 
 	public int getSize() {
@@ -871,6 +863,7 @@ public class GameController implements Runnable {
 	public void settRender(RenderThread tRender) {
 		this.tRender = tRender;
 	}
+
 	/**
 	 * @param running the running to set
 	 */
@@ -905,7 +898,28 @@ public class GameController implements Runnable {
 	 */
 	public void setGhostOutside(int ghostOutside) {
 		this.ghostOutside = ghostOutside;
-	}	
-	
+	}
+
+	public void closeWindow() {
+		System.out.println("Closing window \nStopping threads");
+		if (getGameThread() != null && getGameThread().isAlive()) {
+			stop();
+		}
+		if (gettRender() != null && gettRender().isAlive()) {
+			gettRender().stopThread();
+		}
+		if (gettAudio() != null && gettAudio().isAlive()) {
+			gettAudio().stopThread();
+		}
+		if (gettPhysics() != null && gettPhysics().isAlive()) {
+			gettPhysics().stopThread();
+		}
+
+		if (gettRender() != null && gettRender().isAlive()) {
+			gettRender().stopThread();
+		}
+
+		getFrame().dispose();
+	}
 
 }

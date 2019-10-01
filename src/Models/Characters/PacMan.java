@@ -28,7 +28,7 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
-	private final int PAS = 4;
+	private final int PAS = 2;
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;
@@ -104,6 +104,9 @@ public class PacMan extends Character {
 	
 	public PacMan(int width, int height, Image image, Point initialPosition) {
 		super(width, height, image, initialPosition);
+		
+		pacManRectangle = new Rectangle(getPosition().x,getPosition().y,width,height);
+		pacManAdvancedFullShape = new Ellipse2D.Float(getPosition().x,getPosition().y,w,h);
 	}
 	
 	public void returnInitialPosition() {
@@ -133,6 +136,14 @@ public class PacMan extends Character {
     	return pacManRectangle.getY();
     }
     
+    public void setRectangleX(int x){
+    	pacManRectangle.x = x;
+    }
+    
+    public void setRectangleY(int y){
+    	pacManRectangle.y = y;
+    }
+    
     public Rectangle getRectangle(){
     	return pacManRectangle;
     }
@@ -143,6 +154,14 @@ public class PacMan extends Character {
     
     public double getEllipseY(){
     	return pacManAdvancedFullShape.getY();
+    }
+    
+    public void setEllipseX(int x){
+    	pacManAdvancedFullShape.x = x;
+    }
+    
+    public void setEllipseY(int y){
+    	pacManAdvancedFullShape.y = y;
     }
     
     public Ellipse2D.Float getEllipse(){

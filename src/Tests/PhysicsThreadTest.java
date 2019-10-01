@@ -2,11 +2,15 @@ package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 
@@ -18,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
+import Models.Foods.Food;
 import Threads.AudioThread;
 import Threads.PhysicsThread;
 import Views.MainGame;
@@ -42,7 +47,14 @@ class PhysicsThreadTest {
 	private int [][] grille = new int[nRow][nColumn];
 	private ArrayList<Point> listTunnelLeft;
 	private ArrayList<Point> listTunnelRight;
-
+	
+	private Image[][] images;
+	private BufferedImage output;
+	private Graphics g;
+	
+	private PacMan pacman;
+	private ArrayList<Ghost> ghostList;
+	
 	private Image loadImage(String fileName) {
 		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
 		return icon.getImage();
@@ -76,8 +88,33 @@ class PhysicsThreadTest {
 		//Init PacMan
 		int width1 = 0;
 		int height1 = 0;
-		//Image image = new Image[30][30];
 		Point initPosition = new Point();
+		
+		grille = new int[nRow][nColumn];
+		
+		for (int i = 0; i < nRow; i++) 
+		{
+			for (int j = 0; j < nColumn; j++)
+			{
+				//Init Ghost initialPosition
+				if(j ==1) {
+					grille[i][j] = 26;
+				}
+				else if(j ==2){
+					grille[i][j] = 27;
+				}
+				else if(j ==3){
+					grille[i][j] = 28;
+				}
+				else if(j ==4){
+					grille[i][j] = 29;
+				}
+				else {
+					grille[i][j] = 30;
+				}
+			}
+		}
+	
 		
 		//Init List Ghost
 		ArrayList<Ghost> ghostList = new ArrayList<Ghost>();
@@ -90,8 +127,28 @@ class PhysicsThreadTest {
 		ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
 		PacMan pacman = new PacMan(width1, height1, ii.getImage(), initPosition);
 		
-		Physics = new PhysicsThread(pacman,ghostList);
+		ArrayList<Food> foodlist = new ArrayList<Food>();
+		
+		Physics = new PhysicsThread(pacman,ghostList,foodlist);
 		assertNotNull(Physics, "Thread init failed");		
+		
+		pacman.setRectangleX(160);
+		pacman.setRectangleY(160);
+		
+		pacman.setEllipseX(160);
+		pacman.setEllipseY(160);
+		
+		for(Ghost x : ghostList) 
+		{		
+			x.setRectangleX(170);
+			x.setRectangleY(170);
+			
+			x.setAdvancedLowerRectangleX(170);
+			x.setAdvancedLowerRectangleY(170);
+			
+			x.setAdvancedTopArcX(170);
+			x.setAdvancedTopArcY(170);
+		}
 		
 		Physics.start();
 		assertTrue(Physics.isAlive(), "Thread should be started");
@@ -121,8 +178,9 @@ class PhysicsThreadTest {
 	}
 
 	@Test
-	void test() {
-		assertEquals(true,true);
+	void TestCollisionAdvanced() {
+		assertEquals(true,pacman.isDead());
 	}
+	
 
 }

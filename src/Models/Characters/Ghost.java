@@ -39,7 +39,7 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 4;
+    private final int PAS = 2;
 	private final int MARGE = 10;
     
 	private int dx;
@@ -111,8 +111,13 @@ public class Ghost  extends Character{
         ghostAdvancedLowerShape = new Rectangle(getPosition().x,getPosition().y + (height/2),width,height/2);
         ghostAdvancedTopShape = new Arc2D.Float(getPosition().x,getPosition().y,width,height/2, 0, 180, Arc2D.CHORD);
         
-        availableDirections = getUpdatedAvailableDirections();
-    	setRandomDirection();
+        
+        try {
+        	availableDirections = getUpdatedAvailableDirections();
+        	setRandomDirection();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	public void returnInitialPosition() {
@@ -131,6 +136,14 @@ public class Ghost  extends Character{
     public double getRectangleY(){
    		return ghostRectangle.getY();
     }
+    
+    public void setRectangleX(int x){
+    	ghostRectangle.x = x;
+    }
+   
+    public void setRectangleY(int y){
+   		ghostRectangle.y = y;
+    }
    
     public Rectangle getRectangle(){
    		return ghostRectangle;
@@ -143,6 +156,14 @@ public class Ghost  extends Character{
     public double getAdvancedLowerRectangleY(){
    		return ghostAdvancedLowerShape.getY();
     }
+    
+    public void setAdvancedLowerRectangleX(int x){
+   		ghostAdvancedLowerShape.x = x;
+    }
+   
+    public void setAdvancedLowerRectangleY(int y){
+   		ghostAdvancedLowerShape.y = y;
+    }
    
     public Rectangle getAdvancedLowerRectangle(){
    		return ghostAdvancedLowerShape;
@@ -154,6 +175,14 @@ public class Ghost  extends Character{
     
     public double getAdvancedTopArcY(){
     	return ghostAdvancedTopShape.getY();
+    }
+    
+    public void setAdvancedTopArcX(int x){
+    	ghostAdvancedTopShape.x = x;
+    }
+    
+    public void setAdvancedTopArcY(int y){
+    	ghostAdvancedTopShape.y = y;
     }
     
     public Arc2D.Float getAdvancedTopArc(){
@@ -170,6 +199,8 @@ public class Ghost  extends Character{
 
 	public int getUpdatedAvailableDirections() {
 		
+		System.out.println(getPosition().y);
+		System.out.println(getPosition().x);
 			
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;
