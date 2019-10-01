@@ -930,11 +930,6 @@ public class GameController implements Runnable {
 		getFrame().dispose();
 	}
 
-<<<<<<< HEAD
-	public static void setPacMan(PacMan pacMan) {
-		GameController.pacMan = pacMan;
-	}
-=======
 	/**
 	 * @return the highScore
 	 */
@@ -942,5 +937,4 @@ public class GameController implements Runnable {
 		return highScore;
 	}
 
->>>>>>> c1edbbfb6d4e5056f773c1ccffcc4e641b20c9d8
 }
