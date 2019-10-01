@@ -23,6 +23,7 @@ import javax.sound.sampled.FloatControl;
 		private static boolean firstTimeDead = true;
 		private static boolean firstTimeEat = true;
 		private static boolean firstTimeStart = true;
+		private static boolean firstTimePacGumEaten = true;
 
 		// les clips du jeu et leurs emplacements
 		private Clip musicBackgroundClip;
@@ -33,6 +34,8 @@ import javax.sound.sampled.FloatControl;
 		private final static String eatGumSoundfilePath = "Ressources" + File.separator + "pacman_chomp.wav";
 		private Clip startGameSoundClip;
 		private final static String startGameSoundfilePath = "Ressources" + File.separator + "beginning.wav";
+		private Clip eatedPacGumMusicClip;
+		private final static String eatedPacGumSoundfilePath = "Ressources" + File.separator + "pacman_extrapac.wav";
 		
 		private static final long SLEEP_TIMER = 50; //ms
 
@@ -46,6 +49,7 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isDead 	= new AtomicBoolean(false);
 		private AtomicBoolean isStart 	= new AtomicBoolean(false);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
+		private AtomicBoolean isPacGumEaten = new AtomicBoolean(false);
 
 		
 		
@@ -55,6 +59,10 @@ import javax.sound.sampled.FloatControl;
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(MusicfilePath).getAbsoluteFile());
 				musicBackgroundClip = AudioSystem.getClip();
 				musicBackgroundClip.open(audioInputStream);
+				
+				AudioInputStream audioInputStream0 = AudioSystem.getAudioInputStream(new File(eatedPacGumSoundfilePath).getAbsoluteFile());
+				eatedPacGumMusicClip = AudioSystem.getClip();
+				eatedPacGumMusicClip.open(audioInputStream0);
 
 				AudioInputStream audioInputStream1  = AudioSystem.getAudioInputStream(new File(deadPacmanSoundfilePath).getAbsoluteFile());
 				deadPacmanSoundClip = AudioSystem.getClip();
@@ -107,6 +115,25 @@ import javax.sound.sampled.FloatControl;
 							}
 						}
 						isDead.compareAndExchange(true, false);
+					}
+					
+					// si le pacman mange une pacGomme
+					if(isPacGumEaten.get()) {
+						/* je dois ajouter traitement pour arreter la musique du background et après je dois faire 
+						un traitement pour arrêter cette musique et pour lancer celle du background
+						*/
+						// et le son n est pas en mode mute
+						if(!SoundMuted.get()) {
+							// si le clip eatedPacGumMusicClip est deja lance une fois au moins
+							if(!firstTimePacGumEaten) {
+								restart(eatedPacGumMusicClip ,eatedPacGumSoundfilePath ,true);
+							}
+							// la premiere fois qu on lance le clip eatedPacGumMusicClip
+							else {
+								play(eatedPacGumMusicClip, true);
+								firstTimePacGumEaten = false;
+							}
+						}
 					}
 					
 					// si le pacman mange une gomme
@@ -324,6 +351,14 @@ import javax.sound.sampled.FloatControl;
 		public void setIsEaten(boolean isEaten) {
 			this.isEaten = new AtomicBoolean(isEaten);
 		}
+		
+		public boolean getIsPacGumEaten() {
+			return isEaten.get();
+		}
+
+		public void setIsPacGumEaten(boolean isEaten) {
+			this.isEaten = new AtomicBoolean(isEaten);
+		}
 
 		public boolean getIsDead() {
 			return isDead.get();
@@ -376,7 +411,6 @@ import javax.sound.sampled.FloatControl;
 		public Clip getStartGameSoundClip() {
 			return startGameSoundClip;
 		}
-
 		
 		
 }
