@@ -55,6 +55,9 @@ public class HighScore {
 			k -= 1;
 		}
 		if (k < 4) { // Si la position du nouveau score dans la liste est < 4, il faut l'ajouter
+			if(k > 0) {
+			k+=1;
+			}
 			newHighScore(k);
 			isNewScore = true;
 		}
@@ -68,8 +71,8 @@ public class HighScore {
 		scorerList.add(k, getActualScorer());
 		scoreList.add(k, getScore());
 		if (getScoreList().size() > 5) { // On ne garde que les 5 meilleurs
-			getScoreList().remove(-1);
-			getScorerList().remove(-1);
+			getScoreList().remove(getScoreList().size()-1);
+			getScorerList().remove(getScoreList().size()-1);
 		}
 		try { // On écrit dans le fichier
 			FileWriter fw = new FileWriter(scoreFile);
@@ -77,7 +80,6 @@ public class HighScore {
 			PrintWriter writer = new PrintWriter(bw);
 			for(int i = 0; i< scorerList.size(); i++) {
 				writer.println(scorerList.get(i) + ";" + scoreList.get(i));
-				System.out.println(scorerList.get(i));
 			}
 			writer.close();
 		} catch (Exception e) {
@@ -116,9 +118,11 @@ public class HighScore {
 	public String getActualScorer() {
 		// Récupérer les valeurs String Scorer 
 		String scorer;
-		char[] scorerCharArray = null;
+		char[] scorerCharArray = {'A','A','A'};
 		for (int i = 0; i < 3; i++) {
+			System.out.println(letterIndex);
 			scorerCharArray[i] = (char) (65 + letterIndex[i]);
+			
 		}
 		scorer = new String(scorerCharArray);
 		return scorer;

@@ -133,6 +133,7 @@ public class GameMenu extends JPanel {
 				gameController.startGame();
 				break;
 			case 1: // HighestScores
+				gameController.getFrame().getScorePane().displayScores();
 				gameController.getFrame().setContentPane(gameController.getFrame().getScorePane());
 				gameController.getFrame().requestFocus();
 				gameController.getFrame().revalidate();
