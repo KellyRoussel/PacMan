@@ -65,16 +65,16 @@ public class TurquoiseStrategy implements GhostStrategy{
 	
 		if(pmRaw == ghostRaw) {
 			if(pmColumn > ghostColumn) {
-				for(int i = ghostColumn + 1; i < pmColumn; i++) {
-					if(GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) {
+				for(int i = ghostColumn; i <= pmColumn; i++) {
+					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelRight().contains(new Point(pmRaw, i))) {
 						return -1;
 					}
 				}
 				return KeyEvent.VK_RIGHT;
 			}
 			else {
-				for(int i = pmColumn + 1; i < ghostColumn; i++) {
-					if(GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) {
+				for(int i = pmColumn; i <= ghostColumn; i++) {
+					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelLeft().contains(new Point(pmRaw, i))) {
 						return -1;
 					}
 				}

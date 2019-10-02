@@ -28,7 +28,7 @@ public class PinkStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
 		int pmDirection = GameController.getPacManDirection();
 		
-		if(isPacManCorridor() && ghost.canMove(pmDirection)) {
+		if(!onRoad && isPacManCorridor() && ghost.canMove(pmDirection)) {
 			ghost.setDirection(pmDirection);
 			onRoad = true;
 		}
@@ -53,16 +53,16 @@ public class PinkStrategy implements GhostStrategy{
 	
 		if(pmRaw == ghostRaw) {
 			if(pmColumn > ghostColumn) {
-				for(int i = ghostColumn + 1; i < pmColumn; i++) {
-					if(GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) {
+				for(int i = ghostColumn; i <= pmColumn; i++) {
+					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelRight().contains(new Point(pmRaw, i))) {
 						return false;
 					}
 				}
 				return true;
 			}
 			else {
-				for(int i = pmColumn + 1; i < ghostColumn; i++) {
-					if(GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) {
+				for(int i = pmColumn; i <= ghostColumn; i++) {
+					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelLeft().contains(new Point(pmRaw, i))) {
 						return false;
 					}
 				}
