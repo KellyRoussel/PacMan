@@ -166,7 +166,7 @@ public class GamePanel extends JPanel {
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - text.length() * TEXT_MESSAGE_SIZE) / 2,
 					(MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) / 2, TEXT_MESSAGE_SIZE,
 					TEXT_MESSAGE_SIZE, dbg);
-			if(!gameController.isScoreSaved()) {
+			if(!gameController.isScoreSaved() && gameController.isNewScore()) {
 				// l'image du score
 				scoreImage = createImage(gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));

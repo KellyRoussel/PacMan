@@ -43,6 +43,8 @@ public class GameController implements Runnable {
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
 	private HighScore highScore;
+	
+	private boolean isNewScore;
 
 	private static PacMan pacMan;
 	private Maze maze;
@@ -73,7 +75,7 @@ public class GameController implements Runnable {
 	private boolean fullScreen;
 	private boolean resize;
 	private boolean gameOver;
-	private boolean isScoreSaved = false;
+	private boolean isScoreSaved;
 	private static int[][] grille;
 	private int nRow;
 	private int nColumn;
@@ -313,6 +315,7 @@ public class GameController implements Runnable {
 					if(key == KeyEvent.VK_ENTER) {
 						setScoreSaved(true);
 						highScore.getActualScorer();
+						setNewScore(false);
 					}
 				}
 				
@@ -487,7 +490,8 @@ public class GameController implements Runnable {
 		setLives(lives - 1);
 		if (lives == 0) {
 			setGameOver(true);
-			getHighScore().newScore(score);
+			highScore.setScore(score);
+			setNewScore(getHighScore().newScore(score));
 		} else {
 			getPacMan().returnInitialPosition();
 			for (int i = 0; i < ghostList.size(); i++) {
@@ -540,6 +544,8 @@ public class GameController implements Runnable {
 			getFrame().getMenuPane().gameRunning();
 			pause = false;
 			resume = true;
+			isScoreSaved = false;
+			
 		}
 //		else if(gameOver) {
 //			System.out.println("ici gameOver");
@@ -976,6 +982,20 @@ public class GameController implements Runnable {
 
 	public void setScoreSaved(boolean isScoreSaved) {
 		this.isScoreSaved = isScoreSaved;
+	}
+
+	/**
+	 * @return the isNewScore
+	 */
+	public boolean isNewScore() {
+		return isNewScore;
+	}
+
+	/**
+	 * @param isNewScore the isNewScore to set
+	 */
+	public void setNewScore(boolean isNewScore) {
+		this.isNewScore = isNewScore;
 	}
 
 	

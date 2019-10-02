@@ -36,6 +36,33 @@ public class ScorePanel extends JPanel {
 		setBackground(Color.black);
 		setPreferredSize(new Dimension(600, 800));
 		
+		
+		back = new JLabel("<html><font color='WHITE'> BACK </font></html>");
+		back.setFont(new Font("Joystix", Font.BOLD, 15));
+		
+		
+		back.setLocation(450, 650);
+		back.setSize(100, 40);
+		backPosition = new Point(400, 650);
+		
+		cursor = new Cursor(backPosition, 1, gameController);
+		cursor.addPossiblePosition(backPosition);
+		
+		lCursor = new JLabel();   
+		lCursor.setIcon(cursor.iiCursor);
+		
+
+		lCursor.setSize(50,50);
+	    lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
+	
+}
+	
+	public void displayScores() {
+		removeAll();
+		//add your elements
+		add(back);
+		add(lCursor);
+		
 		List<String> scorerList = gameController.getHighScore().getScorerList();
 		List<Integer> scoreList = gameController.getHighScore().getScoreList();
 		
@@ -47,26 +74,9 @@ public class ScorePanel extends JPanel {
 			score.setSize(300, 40);
 		}
 		
-		
-		back = new JLabel("<html><font color='WHITE'> BACK </font></html>");
-		back.setFont(new Font("Joystix", Font.BOLD, 15));
-		
-		add(back);
-		back.setLocation(450, 650);
-		back.setSize(100, 40);
-		backPosition = new Point(400, 650);
-		
-		cursor = new Cursor(backPosition, 1, gameController);
-		cursor.addPossiblePosition(backPosition);
-		
-		lCursor = new JLabel();   
-		lCursor.setIcon(cursor.iiCursor);
-		add(lCursor);
-
-		lCursor.setSize(50,50);
-	    lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
-	
-}
+		revalidate();
+		repaint();
+	}
 	
 	public static void moveInMenu(int key) {
 		if(key == KeyEvent.VK_ENTER) {
