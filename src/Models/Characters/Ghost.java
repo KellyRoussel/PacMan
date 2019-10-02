@@ -451,6 +451,24 @@ public class Ghost  extends Character{
 	   System.out.println(raw + " " + column + " " + grille[raw][column]);
 	   return false;
 	}
+	
+	
+
+	public ArrayList<Point> getListTunnelLeft() {
+		return listTunnelLeft;
+	}
+
+	public void setListTunnelLeft(ArrayList<Point> listTunnelLeft) {
+		this.listTunnelLeft = listTunnelLeft;
+	}
+
+	public ArrayList<Point> getListTunnelRight() {
+		return listTunnelRight;
+	}
+
+	public void setListTunnelRight(ArrayList<Point> listTunnelRight) {
+		this.listTunnelRight = listTunnelRight;
+	}
 
 	public int getOppositeDirection(int direction2) {
 		// TODO Auto-generated method stub
