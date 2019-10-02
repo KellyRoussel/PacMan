@@ -23,7 +23,7 @@ public class HighScore {
 	private static int[] letterIndex = { 0, 0, 0 }; // Index des lettres actuelles selon les flèches haut ou bas
 
 	// champ du score
-	private int score = 10033;
+	private static int score = 10033;
 
 	// champ pour écrire les lettres et chiffres en images
 	private ToSprite toSprite = new ToSprite(16, "pacmanTiles");
@@ -91,7 +91,7 @@ public class HighScore {
 		text = String.valueOf(score);
 		// toSprite.drawToSprite(score,(width-text.length())/2, 70,
 		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		toSprite.drawToSprite(score, 12, 90, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
+		toSprite.drawToSprite(score, 12+(int)((14-text.length())/2*TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
 		for (int i = 0; i < 3; i++) {
 			// toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
 			// (width-3 +i *2 *TEXT_MESSAGE_SIZE)/2, 120,
@@ -104,7 +104,7 @@ public class HighScore {
 				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
 			}
 			toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
-					(int) (12 + i * 1.5 * TEXT_MESSAGE_SIZE), 140-shift, textMessage, textMessage, g);
+					(int) (12+(int)(4.5*TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140-shift, textMessage, textMessage, g);
 		}
 	}
 
@@ -130,19 +130,20 @@ public class HighScore {
 		HighScore.letterPosition = letterPosition;
 	}
 
-	/*
-	 * public static int getLetterIndex() { return letterIndex; }
-	 * 
-	 * public static void setLetterIndex(int letterIndex) { HighScore.letterIndex =
-	 * letterIndex; }
-	 */
+	public static int[] getLetterIndex() {
+		return letterIndex;
+	}
 
-	public int getScore() {
+	public static void setLetterIndex(int[] letterIndex) {
+		HighScore.letterIndex = letterIndex;
+	}
+
+	public static int getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
-		this.score = score;
+	public static void setScore(int score) {
+		HighScore.score = score;
 	}
 
 }

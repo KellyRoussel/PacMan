@@ -73,6 +73,7 @@ public class GameController implements Runnable {
 	private boolean fullScreen;
 	private boolean resize;
 	private boolean gameOver;
+	private boolean isScoreSaved = false;
 	private static int[][] grille;
 	private int nRow;
 	private int nColumn;
@@ -288,6 +289,31 @@ public class GameController implements Runnable {
 						setFullScreen(!isFullScreen());
 					}
 				}
+				// Key Event pour gerer le score lors d un gameOver
+				else {
+					if(key == KeyEvent.VK_LEFT) {
+						highScore.setLetterPosition((highScore.getLetterPosition()-1)%3);
+						if(highScore.getLetterPosition()<0) {
+							highScore.setLetterPosition(highScore.getLetterPosition()+3);
+						}
+					}
+					if(key == KeyEvent.VK_RIGHT) {
+						highScore.setLetterPosition((highScore.getLetterPosition()+1)%3);
+					}
+					if(key == KeyEvent.VK_UP) {
+						highScore.getLetterIndex()[highScore.getLetterPosition()]--;
+						if(highScore.getLetterIndex()[highScore.getLetterPosition()]<0) {
+							highScore.getLetterIndex()[highScore.getLetterPosition()]+=26;
+						}
+					}
+					if(key == KeyEvent.VK_DOWN) {
+						highScore.getLetterIndex()[highScore.getLetterPosition()]++;
+					}
+					if(key == KeyEvent.VK_ENTER) {
+						setScoreSaved(true);
+					}
+				}
+				
 				if (key == KeyEvent.VK_ESCAPE) {
 					setPause(true);
 					if (isGameOver()) {
@@ -942,4 +968,13 @@ public class GameController implements Runnable {
 		return pacMan.getDirection();
 	}
 
+	public boolean isScoreSaved() {
+		return isScoreSaved;
+	}
+
+	public void setScoreSaved(boolean isScoreSaved) {
+		this.isScoreSaved = isScoreSaved;
+	}
+
+	
 }

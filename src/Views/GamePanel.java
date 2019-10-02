@@ -166,19 +166,21 @@ public class GamePanel extends JPanel {
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - text.length() * TEXT_MESSAGE_SIZE) / 2,
 					(MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) / 2, TEXT_MESSAGE_SIZE,
 					TEXT_MESSAGE_SIZE, dbg);
-			// l'image du score
-			scoreImage = createImage(gameController.getDefaultSize() * (gameController.getnColumn() / 2),
-					gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
-			Graphics scorebg = scoreImage.getGraphics();
-			scorebg.setColor(Color.black);
-			scorebg.fillRect(0, 0, gameController.getDefaultSize() * (gameController.getnColumn() / 2),
-					gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
-			highScore.visualHighScore(scorebg, gameController.getDefaultSize() * (gameController.getnColumn() / 3));
-			dbg.drawImage(scoreImage, gameController.getDefaultSize() * (gameController.getnColumn() / 4),
-					(int) ((MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) * (3.0 / 5)),
-					gameController.getDefaultSize() * (gameController.getnColumn() / 2),
-					gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3), null);
-		}
+			if(!gameController.isScoreSaved()) {
+				// l'image du score
+				scoreImage = createImage(gameController.getDefaultSize() * (gameController.getnColumn() / 2),
+						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
+				Graphics scorebg = scoreImage.getGraphics();
+				scorebg.setColor(Color.black);
+				scorebg.fillRect(0, 0, gameController.getDefaultSize() * (gameController.getnColumn() / 2),
+						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
+				highScore.visualHighScore(scorebg, gameController.getDefaultSize() * (gameController.getnColumn() / 3));
+				dbg.drawImage(scoreImage, gameController.getDefaultSize() * (gameController.getnColumn() / 4),
+						(int) ((MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) * (3.0 / 5)),
+						gameController.getDefaultSize() * (gameController.getnColumn() / 2),
+						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3), null);
+			}
+			}
 	}
 
 	public static int getDebutX() {
