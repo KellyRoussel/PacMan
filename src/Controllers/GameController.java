@@ -445,9 +445,7 @@ public class GameController implements Runnable {
 		if (getPacMan().isResurrection()) {
 			startNewLife();
 		}
-		if (getScore()>= 10000 && lives < 4) {
-			setLives(lives + 1);
-		}
+		
 	}
 
 	
@@ -458,7 +456,11 @@ public class GameController implements Runnable {
 					&& getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
 				gettAudio().setIsEaten(true);
 				// Tile contenant une Gum
+				int scoreBefore = score;
 				score += getFoodList().get(i).getGain();
+				if (getScore()>= 10000 && scoreBefore < 10000) {
+					setLives(lives + 1);
+				}
 				getFoodList().remove(i);
 				// statusBar.updateScore();
 			}
