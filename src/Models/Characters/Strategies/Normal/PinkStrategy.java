@@ -28,7 +28,7 @@ public class PinkStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
 		int pmDirection = GameController.getPacManDirection();
 		
-		if(isPacManCorridor() && ghost.canMove(pmDirection)) {
+		if(!onRoad && isPacManCorridor() && ghost.canMove(pmDirection)) {
 			ghost.setDirection(pmDirection);
 			onRoad = true;
 		}
