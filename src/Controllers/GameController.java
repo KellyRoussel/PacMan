@@ -445,6 +445,9 @@ public class GameController implements Runnable {
 		if (getPacMan().isResurrection()) {
 			startNewLife();
 		}
+		if (getScore()>= 10000 && lives < 4) {
+			setLives(lives + 1);
+		}
 	}
 
 	

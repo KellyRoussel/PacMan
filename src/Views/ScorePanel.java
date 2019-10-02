@@ -59,7 +59,7 @@ public class ScorePanel extends JPanel {
 	
 	public void displayScores() {
 		removeAll();
-		//add your elements
+
 		add(back);
 		add(lCursor);
 		
