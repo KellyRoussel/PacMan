@@ -120,7 +120,6 @@ public class HighScore {
 		String scorer;
 		char[] scorerCharArray = {'A','A','A'};
 		for (int i = 0; i < 3; i++) {
-			System.out.println(letterIndex);
 			scorerCharArray[i] = (char) (65 + letterIndex[i]);
 			
 		}

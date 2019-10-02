@@ -260,7 +260,7 @@ public class GameController implements Runnable {
 			public void keyPressed(KeyEvent e) {
 
 				int key = e.getKeyCode();
-				if (!isGameOver()) {
+				if (!isGameOver() && !pacMan.isDead() && !pacMan.isResurrection()) {
 					// Mettre le jeu en pause
 					if (key == KeyEvent.VK_P && !isPause()) {
 						pause();
@@ -438,6 +438,7 @@ public class GameController implements Runnable {
 		if (getPacMan().isDead() && pacMan.getDeadAnimationCounter() == 0) {
 
 			gettAudio().setIsDead(true);
+			
 			getPacMan().deadAnimate();
 
 			// getPacMan().setIsDead(false);
@@ -491,11 +492,12 @@ public class GameController implements Runnable {
 	}
 
 	public void startNewLife() {
-		getPacMan().setIsDead(false);
 		setLives(lives - 1);
+		getPacMan().setIsDead(false);
 		if (lives == 0) {
 			setGameOver(true);
 			highScore.setScore(score);
+			
 			setNewScore(getHighScore().newScore(score));
 		} else {
 			getPacMan().returnInitialPosition();
