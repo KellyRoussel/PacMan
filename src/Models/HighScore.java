@@ -23,7 +23,7 @@ public class HighScore {
 	private static int[] letterIndex = { 0, 0, 0 }; // Index des lettres actuelles selon les flèches haut ou bas
 
 	// champ du score
-	private static int score = 10033;
+	private static int score;
 
 	// champ pour écrire les lettres et chiffres en images
 	private ToSprite toSprite = new ToSprite(16, "pacmanTiles");
@@ -103,7 +103,7 @@ public class HighScore {
 				textMessage = TEXT_MESSAGE_SIZE_EMPHASIZED;
 				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
 			}
-			toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
+			toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
 					(int) (12+(int)(4.5*TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140-shift, textMessage, textMessage, g);
 		}
 	}

@@ -305,9 +305,10 @@ public class GameController implements Runnable {
 						if(highScore.getLetterIndex()[highScore.getLetterPosition()]<0) {
 							highScore.getLetterIndex()[highScore.getLetterPosition()]+=26;
 						}
+						highScore.getLetterIndex()[highScore.getLetterPosition()]%=26;
 					}
 					if(key == KeyEvent.VK_DOWN) {
-						highScore.getLetterIndex()[highScore.getLetterPosition()]++;
+						highScore.getLetterIndex()[highScore.getLetterPosition()]=(highScore.getLetterIndex()[highScore.getLetterPosition()]+1)%26;
 					}
 					if(key == KeyEvent.VK_ENTER) {
 						setScoreSaved(true);
