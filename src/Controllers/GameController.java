@@ -312,6 +312,7 @@ public class GameController implements Runnable {
 					}
 					if(key == KeyEvent.VK_ENTER) {
 						setScoreSaved(true);
+						highScore.getActualScorer();
 					}
 				}
 				

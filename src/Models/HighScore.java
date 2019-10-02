@@ -91,7 +91,8 @@ public class HighScore {
 		text = String.valueOf(score);
 		// toSprite.drawToSprite(score,(width-text.length())/2, 70,
 		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		toSprite.drawToSprite(score, 12+(int)((14-text.length())/2*TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
+		toSprite.drawToSprite(score, 12 + (int) ((14 - text.length()) / 2 * TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE,
+				TEXT_MESSAGE_SIZE, g);
 		for (int i = 0; i < 3; i++) {
 			// toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
 			// (width-3 +i *2 *TEXT_MESSAGE_SIZE)/2, 120,
@@ -104,8 +105,20 @@ public class HighScore {
 				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
 			}
 			toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
-					(int) (12+(int)(4.5*TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140-shift, textMessage, textMessage, g);
+					(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+					textMessage, textMessage, g);
 		}
+	}
+
+	public String getActualScorer() {
+		// Récupérer les valeurs String Scorer 
+		String scorer;
+		char[] scorerCharArray = null;
+		for (int i = 0; i < 3; i++) {
+			scorerCharArray[i] = (char) (65 + letterIndex[i]);
+		}
+		scorer = new String(scorerCharArray);
+		return scorer;
 	}
 
 	/**
@@ -147,4 +160,3 @@ public class HighScore {
 	}
 
 }
-
