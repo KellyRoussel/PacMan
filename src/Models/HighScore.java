@@ -65,8 +65,8 @@ public class HighScore {
 		// Lancer le visuel d'enregistrement
 
 		// Récupérer les valeurs String Scorer et score
-		// scorerList.add(k, scorer);
-		// scoreList.add(k, score);
+		scorerList.add(k, getActualScorer());
+		scoreList.add(k, getScore());
 		if (getScoreList().size() > 5) { // On ne garde que les 5 meilleurs
 			getScoreList().remove(-1);
 			getScorerList().remove(-1);
@@ -75,7 +75,10 @@ public class HighScore {
 			FileWriter fw = new FileWriter(scoreFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter writer = new PrintWriter(bw);
-			// writer.println(scorer + ";" + score);
+			for(int i = 0; i< scorerList.size(); i++) {
+				writer.println(scorerList.get(i) + ";" + scoreList.get(i));
+				System.out.println(scorerList.get(i));
+			}
 			writer.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
