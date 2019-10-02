@@ -31,9 +31,9 @@ public class PhysicsThread extends Thread
 			return true;
 		}
 		return false;
-	}/*
+	}*/
 	
-	/*public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
+	public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
 		//int cpt = 0;
 		for(Food f : var_food)
@@ -42,9 +42,10 @@ public class PhysicsThread extends Thread
 			//System.out.println("looking threw food : " + cpt);
 			if(pacMan.getRectangle().intersects(f.getRectangle())) 
 			{
-				if(catchAdvancedCollisionPacManPacGum()) {
-					return true;
-				}
+				System.out.println("pacman is eating food");
+				//if(catchAdvancedCollisionPacManPacGum()) {
+					//return true;
+				//}
 			}
 		}
 		
@@ -54,7 +55,7 @@ public class PhysicsThread extends Thread
 	public synchronized boolean catchAdvancedCollisionPacManPacGum() {
 		//var_pacMan.getRectangle().getWidth() == 0 && var_pacMan.getRectangle().getCenterY() == 0
 		return true;
-	}*/
+	}
 
 	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost) {
 
@@ -64,12 +65,12 @@ public class PhysicsThread extends Thread
 		{		
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
-				System.out.println("Basic Collision Detected");
+				//System.out.println("Basic Collision Detected");
 				if(advancedCatchCollisionTactics(pacMan.getEllipse(),x.getAdvancedLowerRectangle(),x.getAdvancedTopArc()))
 				{
 					return true;
 				}
-				System.out.println("Basic Not Valid Collision Detected");
+				//System.out.println("Basic Not Valid Collision Detected");
 			}
 		}
 		return false;
@@ -79,12 +80,12 @@ public class PhysicsThread extends Thread
 	{
 		if(var_pacman.intersects(var_ghostlower))
 		{
-			System.out.println("Advanced Rectangle Collision");
+			//System.out.println("Advanced Rectangle Collision");
 			return true;
 		}
 		else if(((var_pacman.getWidth()/2)+(var_ghostUpper.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_ghostUpper.getCenterX())) && ((var_pacman.getHeight()/2)+(var_ghostUpper.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_ghostUpper.getCenterY())))
 		{
-			System.out.println("Advanced Arc Collision");
+			//System.out.println("Advanced Arc Collision");
 			return true;
 		}
 		return false;
@@ -94,10 +95,6 @@ public class PhysicsThread extends Thread
 	public void stopThread() {
 		isRunning = false;
 	}
-	
-	/*public void stopThread() {
-		isRunning = false;		
-	}*/
 
 	public void run()
 	{
@@ -111,9 +108,9 @@ public class PhysicsThread extends Thread
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
 					pacMan.setIsDead(true);
 				}
-				/*if(catchCollisionPacManPacGum(pacMan,food)) {
+				if(catchCollisionPacManPacGum(pacMan,food)) {
 					System.out.println("collision pacgum detected");
-				}*/
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

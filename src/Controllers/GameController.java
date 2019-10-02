@@ -235,7 +235,7 @@ public class GameController implements Runnable {
 
 	}
 
-	private void fillFoodList() {
+	private synchronized void fillFoodList() {
 		for (int i = 0; i < nRow; i++)
 			for (int j = 0; j < nColumn; j++) {
 				if (grille[i][j] == 30)
@@ -451,7 +451,7 @@ public class GameController implements Runnable {
 
 	
 
-	public void updatePositions(int raw, int column, boolean flag) {
+	public synchronized void updatePositions(int raw, int column, boolean flag) {
 		for (int i = 0; i < getFoodList().size(); i++) {
 			if (getFoodList().get(i).getInitialPosition().x / defaultSize == column
 					&& getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
