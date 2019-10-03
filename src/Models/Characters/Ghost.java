@@ -216,6 +216,10 @@ public class Ghost  extends Character{
 					
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;
+		   if(raw < 0 || raw >= nRow || column < 0 || column >= nColumn)
+			   return 0;
+
+
 		   int counter = 0;
 		   counter += (raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))? KeyEvent.VK_UP : 0;
 		   counter += (raw + 1 > nRow || (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1))? 0 : KeyEvent.VK_DOWN;

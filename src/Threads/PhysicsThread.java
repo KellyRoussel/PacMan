@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Models.Characters.Ghost;
@@ -36,18 +37,19 @@ public class PhysicsThread extends Thread
 	public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
 		//int cpt = 0;
-		for(Food f : var_food)
-		{
-			//cpt++;
-			//System.out.println("looking threw food : " + cpt);
-			if(pacMan.getRectangle().intersects(f.getRectangle())) 
+		Iterator iter = var_food.iterator();
+	    while (iter.hasNext()){
+	    	Food f = (Food) iter.next();
+	    	if(pacMan.getRectangle().intersects(f.getRectangle())) 
 			{
 				System.out.println("pacman is eating food");
 				//if(catchAdvancedCollisionPacManPacGum()) {
 					//return true;
 				//}
 			}
-		}
+	    }
+	    
+	
 		
 		return false;
 	}
@@ -61,8 +63,9 @@ public class PhysicsThread extends Thread
 
 		Rectangle pacmanRectangle = var_pacMan.getRectangle();
 
-		for(Ghost x : ghost) 
-		{		
+		Iterator iter = ghost.iterator();
+	    while (iter.hasNext()){
+	    	Ghost x = (Ghost) iter.next();
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
 				//System.out.println("Basic Collision Detected");

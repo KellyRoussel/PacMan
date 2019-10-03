@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -208,7 +209,7 @@ public class GameController implements Runnable {
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
 		
-		/*getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"),
+		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"),
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
 		
@@ -219,7 +220,6 @@ public class GameController implements Runnable {
 		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
-		*/
 		getGhostList().add(
 				new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION),
 						"pink", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
@@ -450,17 +450,19 @@ public class GameController implements Runnable {
 	
 
 	public synchronized void updatePositions(int raw, int column, boolean flag) {
-		for (int i = 0; i < getFoodList().size(); i++) {
-			if (getFoodList().get(i).getInitialPosition().x / defaultSize == column
-					&& getFoodList().get(i).getInitialPosition().y / defaultSize == raw) {
+		Iterator iter = getFoodList().iterator();
+	    while (iter.hasNext()){
+	    	Food f = (Food)iter.next();
+			if (f.getInitialPosition().x / defaultSize == column
+					&& f.getInitialPosition().y / defaultSize == raw) {
 				gettAudio().setIsEaten(true);
 				// Tile contenant une Gum
 				int scoreBefore = score;
-				score += getFoodList().get(i).getGain();
+				score += f.getGain();
 				if (getScore()>= 10000 && scoreBefore < 10000) {
 					setLives(lives + 1);
 				}
-				getFoodList().remove(i);
+				iter.remove();
 				// statusBar.updateScore();
 			}
 		}
