@@ -389,7 +389,7 @@ public class GameController implements Runnable {
 						}
 					}
 					ghostCounter++;
-					ghostCounter = ghostCounter % 1;
+					ghostCounter = ghostCounter % 2;
 				}
 
 				for (int i = 0; i < getGhostList().size(); i++) {
@@ -438,7 +438,6 @@ public class GameController implements Runnable {
 		if (getPacMan().isDead() && pacMan.getDeadAnimationCounter() == 0) {
 			gettAudio().setIsDead(true);
 			getPacMan().deadAnimate();
-			setGhostOutside(0);
 			// getPacMan().setIsDead(false);
 		}
 		if (getPacMan().isResurrection()) {
