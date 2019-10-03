@@ -243,6 +243,7 @@ public class Ghost  extends Character{
     	setNextY((getPosition().y + dy + defaultSize * nRow) % (defaultSize * nRow));
     }
     
+
  
    
     public void move() {
@@ -448,7 +449,7 @@ public class Ghost  extends Character{
 	   
 	   if(raw >= 0 && raw < nRow && column >= 0 && column < nColumn && (grille[raw][column] <= 0 || grille[raw][column] > 25))
 		   return true;
-	   System.out.println(raw + " " + column + " " + grille[raw][column]);
+
 	   return false;
 	}
 	

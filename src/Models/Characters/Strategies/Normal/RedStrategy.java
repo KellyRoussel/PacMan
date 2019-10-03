@@ -43,7 +43,12 @@ public class RedStrategy implements GhostStrategy{
 		
 		int ghostRaw = ghost.getPosition().y / GameController.getDefaultSize();
 		int ghostColumn = ghost.getPosition().x / GameController.getDefaultSize();
-	
+		
+		if(ghostRaw < 0 || ghostRaw >= GameController.getGrille().length)
+			return -1;
+		if(ghostColumn < 0 || ghostColumn >= GameController.getGrille()[0].length)
+			return -1;
+		
 		if(pmRaw == ghostRaw) {
 			if(pmColumn > ghostColumn) {
 				for(int i = ghostColumn; i <= pmColumn; i++) {
