@@ -14,7 +14,7 @@ import Models.Foods.Food;
 public class PhysicsThread extends Thread
 {
 	private volatile boolean isRunning;
-	private final int SLEEP_TIMER = 5; //ms
+	private final int SLEEP_TIMER = 50; //ms
 
 	private final PacMan pacMan;
 	private final List<Ghost> ghost;
@@ -34,29 +34,26 @@ public class PhysicsThread extends Thread
 		return false;
 	}*/
 	
-	public synchronized boolean catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
+	public synchronized void catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
-		//int cpt = 0;
-		Iterator iter = var_food.iterator();
-	    while (iter.hasNext()){
-	    	Food f = (Food) iter.next();
-	    	if(pacMan.getRectangle().intersects(f.getRectangle())) 
+		for (Iterator<Food> iterator = var_food.iterator(); iterator.hasNext();) {
+			Food food_ite = iterator.next();
+			if(var_pacMan.getRectangle().intersects(food_ite.getRectangle())) 
 			{
-				System.out.println("pacman is eating food");
-				//if(catchAdvancedCollisionPacManPacGum()) {
-					//return true;
-				//}
+				if(catchAdvancedCollisionPacManPacGum(var_pacMan.getEllipse(), food_ite.getEllipse() )) {
+					food_ite.setEaten();
+				}
 			}
-	    }
-	    
-	
-		
-		return false;
+		}
 	}
 	
-	public synchronized boolean catchAdvancedCollisionPacManPacGum() {
-		//var_pacMan.getRectangle().getWidth() == 0 && var_pacMan.getRectangle().getCenterY() == 0
-		return true;
+	public synchronized boolean catchAdvancedCollisionPacManPacGum(Ellipse2D.Float var_pacman, Ellipse2D.Float var_food) 
+	{
+		if(((var_pacman.getWidth()/2)+(var_food.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_food.x+(var_food.getWidth()/2))) && ((var_pacman.getHeight()/2)+(var_food.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_food.y+(var_food.getHeight()/2))))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public synchronized boolean catchCollisionPacManGhost(PacMan var_pacMan, List<Ghost> ghost) {
@@ -111,9 +108,8 @@ public class PhysicsThread extends Thread
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
 					pacMan.setIsDead(true);
 				}
-				if(catchCollisionPacManPacGum(pacMan,food)) {
-					System.out.println("collision pacgum detected");
-				}
+				catchCollisionPacManPacGum(pacMan,food);
+
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

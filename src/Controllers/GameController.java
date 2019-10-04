@@ -452,8 +452,7 @@ public class GameController implements Runnable {
 		Iterator iter = getFoodList().iterator();
 	    while (iter.hasNext()){
 	    	Food f = (Food)iter.next();
-			if (f.getInitialPosition().x / defaultSize == column
-					&& f.getInitialPosition().y / defaultSize == raw) {
+			if (f.getEaten()) {
 				gettAudio().setIsEaten(true);
 				// Tile contenant une Gum
 				int scoreBefore = score;
