@@ -32,11 +32,11 @@ public class AudioPanel extends JPanel {
 	private JLabel soundMinus;
 	private JLabel back;
 
-	private Point musicPosition;
-	private Point musicMutePosition;
-	private Point soundPosition;
-	private Point soundMutePosition;
-	private Point backPosition;
+	private static Point musicPosition;
+	private static Point musicMutePosition;
+	private static Point soundPosition;
+	private static Point soundMutePosition;
+	private static Point backPosition;
 
 	public static Cursor cursor;
 	public static JLabel lCursor;
@@ -119,7 +119,7 @@ public class AudioPanel extends JPanel {
 		musicPosition = new Point(30, 90);
 
 		add(muteMusicLabel);
-		muteMusicLabel.setLocation(70, 245);
+		muteMusicLabel.setLocation(70, 215);
 		muteMusicLabel.setSize(200, 100);
 		musicMutePosition = new Point(30, 240);
 
@@ -198,17 +198,16 @@ public class AudioPanel extends JPanel {
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 			break;
 		case KeyEvent.VK_ENTER:
-			int n = cursor.getNumPosition();
-			switch (n) {
-			case 1: // MusicMute
+			Point position = cursor.getCurrentPosition();
+			if(position == musicMutePosition) { // MusicMute
 				if (muteMusicButton.isSelected()) {
 					muteMusicButton.setSelected(false);
 				} else {
 					muteMusicButton.setSelected(true);
 				}
 				AudioThread.setMuteOnOffMusic(true);
-				break;
-			case 3: // SoundMute
+			}
+			if(position == soundMutePosition) { // SoundMute
 				if (muteSoundButton.isSelected()) {
 					muteSoundButton.setSelected(false);
 
@@ -216,14 +215,10 @@ public class AudioPanel extends JPanel {
 					muteSoundButton.setSelected(true);
 				}
 				AudioThread.setMuteOnOffSound(true);
-				break;
-			case 4: // Back
-				gameController.getFrame().displayMenu();
-				break;
-			default:
-				break;
 			}
-			break;
+			if(position == backPosition) { // Back
+				gameController.getFrame().displayMenu();
+			}
 		case KeyEvent.VK_LEFT:
 			int i = cursor.getNumPosition();
 			switch (i) {

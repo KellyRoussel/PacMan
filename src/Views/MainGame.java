@@ -36,10 +36,10 @@ public class MainGame extends JFrame implements WindowListener {
 		setActualWindowHeight(DefaultHeight);
 		setActualWindowWidth(getDefaultwidth());
 		gameController = new GameController(this);
-		setMenuPane(new GameMenu(gameController));
-		setAudioPane(new AudioPanel(gameController));
-		setHelpPane(new HelpPanel(gameController));
-		setScorePane(new ScorePanel(gameController));
+		setMenuPane(new GameMenu(getGameController()));
+		setAudioPane(new AudioPanel(getGameController()));
+		setHelpPane(new HelpPanel(getGameController()));
+		setScorePane(new ScorePanel(getGameController()));
 		this.setContentPane(getMenuPane());
 		this.addKeyListener(menuPane.cursor);
 
@@ -54,9 +54,9 @@ public class MainGame extends JFrame implements WindowListener {
 	}
 
 	public void displayNewMenu() {
-		gameController.gettRender().stopThread();
-		gameController.gettPhysics().stopThread();
-		gameController.stop();
+		getGameController().gettRender().stopThread();
+		getGameController().gettPhysics().stopThread();
+		getGameController().stop();
 		// gameController = new GameController(this);
 		menuPane.noMoreRunning();
 		setMenuPane(menuPane);
@@ -65,7 +65,7 @@ public class MainGame extends JFrame implements WindowListener {
 
 	public static void resize() {
 		int mazeSize;
-		if (gameController.isFullScreen()) {
+		if (getGameController().isFullScreen()) {
 			SINGLE_INSTANCE.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 			// La taille de l'ecran
@@ -96,17 +96,17 @@ public class MainGame extends JFrame implements WindowListener {
 
 	// redimensionner le labyrinthe
 	public static void updateMazeSize() {
-		if (gameController != null) {
-			gameController.setSize(
-					Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (gameController.getnRow() + 3),
-							MainGame.getActualWindowWidth() / gameController.getnColumn()));
+		if (getGameController() != null) {
+			getGameController().setSize(
+					Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (getGameController().getnRow() + 3),
+							MainGame.getActualWindowWidth() / getGameController().getnColumn()));
 
-			if (!gameController.isFullScreen()) {
-				gameController.setDefaultSize(
-						Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (gameController.getnRow() + 3),
-								MainGame.getActualWindowWidth() / gameController.getnColumn()));
+			if (!getGameController().isFullScreen()) {
+				getGameController().setDefaultSize(
+						Math.min((MainGame.getActualWindowHeight() - StatusBar.HEIGHT) / (getGameController().getnRow() + 3),
+								MainGame.getActualWindowWidth() / getGameController().getnColumn()));
 			}
-			GamePanel.setDebutX((getActualWindowWidth() - gameController.getSize() * gameController.getnColumn()) / 2);
+			GamePanel.setDebutX((getActualWindowWidth() - getGameController().getSize() * getGameController().getnColumn()) / 2);
 		}
 		// GamePanel.setDebutY((actualWindowHeight - GameController.getSize() *
 		// GameController.getnRow() - 150) / 2);
@@ -128,7 +128,7 @@ public class MainGame extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		gameController.closeWindow();
+		getGameController().closeWindow();
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class MainGame extends JFrame implements WindowListener {
 	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.setPause(true);
+		getGameController().setPause(true);
 
 	}
 
@@ -153,15 +153,15 @@ public class MainGame extends JFrame implements WindowListener {
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.setPause(true);
-		gameController.setResume(true);
+		getGameController().setPause(true);
+		getGameController().setResume(true);
 
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		gameController.setPause(true);
+		getGameController().setPause(true);
 
 	}
 
@@ -221,5 +221,12 @@ public class MainGame extends JFrame implements WindowListener {
 	 */
 	public void setScorePane(ScorePanel scorePane) {
 		this.scorePane = scorePane;
+	}
+
+	/**
+	 * @return the gameController
+	 */
+	public static GameController getGameController() {
+		return gameController;
 	}
 }

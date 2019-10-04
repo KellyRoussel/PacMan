@@ -20,7 +20,6 @@ public class Cursor implements KeyListener{
 	private ArrayList<Point> possiblePositions;
 	private Point currentPosition;
 	private int numPosition;
-	private int nButtons;
 	public ImageIcon iiCursor;
 	private GameController gameController;
 
@@ -28,7 +27,6 @@ public class Cursor implements KeyListener{
 		currentPosition = new Point(initialPosition.x, initialPosition.y);
 		possiblePositions = new ArrayList<Point>();
 		numPosition = 0;
-		this.nButtons = nButtons;
 		this.gameController = gameController;
 
 		BufferedImage imageCursor = null;
@@ -46,6 +44,7 @@ public class Cursor implements KeyListener{
 	}
 
 	public void previousPosition() {
+		int nButtons = possiblePositions.size();
 		if(getNumPosition() != 0) {
 			numPosition = (getNumPosition() - 1) % nButtons;
 			setCurrentPosition(getNumPosition());
@@ -53,6 +52,7 @@ public class Cursor implements KeyListener{
 	}
 
 	public void nextPosition() {
+		int nButtons = possiblePositions.size();
 		numPosition = (getNumPosition() + 1) % nButtons;
 		setCurrentPosition(getNumPosition());
 	}

@@ -28,7 +28,11 @@ public class GameMenu extends JPanel {
 	public static JLabel lCursor;
 	public static Cursor cursor;
 
-	private Point startPosition, audioPosition, helpPosition, exitPosition, highestScoresPosition;
+	private static Point startPosition;
+	private static Point audioPosition;
+	private static Point helpPosition;
+	private static Point exitPosition;
+	private static Point highestScoresPosition;
 
 	private Font defaultFont = new Font("Joystix", Font.BOLD, 30);
 
@@ -88,14 +92,14 @@ public class GameMenu extends JPanel {
 		add(help);
 		help.setLocation(245, 590);
 		help.setSize(150, 50);
-		helpPosition = new Point(180, 590);
+		setHelpPosition(new Point(180, 590));
 
-		cursor = new Cursor(startPosition, 5, gameController);
-		cursor.addPossiblePosition(startPosition);
-		cursor.addPossiblePosition(highestScoresPosition);
+		cursor = new Cursor(getStartPosition(), 5, gameController);
+		cursor.addPossiblePosition(getStartPosition());
+		cursor.addPossiblePosition(getHighestScoresPosition());
 		cursor.addPossiblePosition(audioPosition);
-		cursor.addPossiblePosition(helpPosition);
-		cursor.addPossiblePosition(exitPosition);
+		cursor.addPossiblePosition(getHelpPosition());
+		cursor.addPossiblePosition(getExitPosition());
 		
 
 		lCursor = new JLabel();
@@ -127,34 +131,65 @@ public class GameMenu extends JPanel {
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 			break;
 		case KeyEvent.VK_ENTER:
-			int n = cursor.getNumPosition();
-			switch (n) {
-			case 0: // StartGame
+			Point position = cursor.getCurrentPosition();
+			if(position == startPosition) { // StartGame
 				gameController.startGame();
-				break;
-			case 1: // HighestScores
+			}
+			else if(position == highestScoresPosition) { // HighestScores
 				gameController.getFrame().getScorePane().displayScores();
 				gameController.getFrame().setContentPane(gameController.getFrame().getScorePane());
 				gameController.getFrame().requestFocus();
 				gameController.getFrame().revalidate();
-				break;
-			case 2: // Audio
+			}
+			else if(position == audioPosition) { //Audio
 				gameController.changeVolume();
-				break;
-			case 3: // Help
+			}
+			else if(position == helpPosition) {
 				gameController.getFrame().setContentPane(gameController.getFrame().getHelpPane());
 				gameController.getFrame().requestFocus();
 				gameController.getFrame().revalidate();
-				break;
-			case 4: // Exit
+			}
+			else if(position == exitPosition) {
 				gameController.closeWindow();
-				break;
-			default:
-				break;
 			}
 			break;
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * @return the startPosition
+	 */
+	public Point getStartPosition() {
+		return startPosition;
+	}
+
+	/**
+	 * @return the helpPosition
+	 */
+	public Point getHelpPosition() {
+		return helpPosition;
+	}
+
+	/**
+	 * @param helpPosition the helpPosition to set
+	 */
+	public void setHelpPosition(Point helpPosition) {
+		this.helpPosition = helpPosition;
+	}
+
+	/**
+	 * @return the exitPosition
+	 */
+	public Point getExitPosition() {
+		return exitPosition;
+	}
+
+	/**
+	 * @return the highestScoresPosition
+	 */
+	public Point getHighestScoresPosition() {
+		return highestScoresPosition;
 	}
 }
