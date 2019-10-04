@@ -165,6 +165,7 @@ public class MainGame extends JFrame implements WindowListener {
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		getGameController().setPause(true);
+		gameController.setRESUME(4);
 
 	}
 

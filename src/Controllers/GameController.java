@@ -267,6 +267,7 @@ public class GameController implements Runnable {
 					// Mettre le jeu en pause
 					if (key == KeyEvent.VK_P && !isPause()) {
 						pause();
+						setRESUME(4);
 					}
 					if (key == KeyEvent.VK_R && isPause()) {
 						setResume(true);

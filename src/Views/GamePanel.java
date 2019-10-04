@@ -153,8 +153,8 @@ public class GamePanel extends JPanel {
 					TEXT_MESSAGE_SIZE, dbg);
 		}
 
-		// dessiner le "Pause" au cas de pause
-		if (gameController.isResume()) {
+		// dessiner le décompte Resume
+		if (gameController.isResume() && gameController.getRESUME()<=3) {
 			int text = gameController.getRESUME();
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - TEXT_MESSAGE_SIZE) / 2,
 					debutY + (MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) / 2, TEXT_MESSAGE_SIZE,
