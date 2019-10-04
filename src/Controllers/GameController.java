@@ -10,7 +10,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,7 +51,7 @@ public class GameController implements Runnable {
 
 	private static PacMan pacMan;
 	private Maze maze;
-	private ArrayList<Food> foodList;
+	private List<Food> foodList;
 
 	// private Sound music;
 	private static int size, defaultSize;
@@ -194,8 +196,9 @@ public class GameController implements Runnable {
 
 		// Creer les Gums et PacGums
 
-		foodList = new ArrayList();
+		foodList = Collections.synchronizedList(new ArrayList<Food>()); 
 		fillFoodList();
+
 
 		// Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
 		MainGame.updateMazeSize();
@@ -229,10 +232,10 @@ public class GameController implements Runnable {
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
 
 		// Creer les Gums et PacGums
-
-		foodList = new ArrayList();
-		fillFoodList();
-
+		synchronized (foodList) {
+			foodList = Collections.synchronizedList(new ArrayList<Food>()); 
+			fillFoodList();
+		}
 	}
 
 	private synchronized void fillFoodList() {
@@ -449,36 +452,43 @@ public class GameController implements Runnable {
 	
 
 	public synchronized void updatePositions(int raw, int column, boolean flag) {
-		Iterator iter = getFoodList().iterator();
-	    while (iter.hasNext()){
-	    	Food f = (Food)iter.next();
-			if (f.getEaten()) {
-				gettAudio().setIsEaten(true);
-				// Tile contenant une Gum
-				int scoreBefore = score;
-				score += f.getGain();
-				if (getScore()>= 10000 && scoreBefore < 10000) {
-					setLives(lives + 1);
+		synchronized (foodList) {
+			Iterator iter = getFoodList().iterator();
+		    while (iter.hasNext()){
+		    	Food f = (Food)iter.next();
+				if (f.getEaten()) {
+					gettAudio().setIsEaten(true);
+					// Tile contenant une Gum
+					int scoreBefore = score;
+					score += f.getGain();
+					if (getScore()>= 10000 && scoreBefore < 10000) {
+						setLives(lives + 1);
+					}
+					iter.remove();
+					// statusBar.updateScore();
 				}
-				iter.remove();
-				// statusBar.updateScore();
 			}
 		}
-		if (getFoodList().size() == 0) {
-			level++;
-			// statusBar.updateLevel();
-			getPacMan().returnInitialPosition();
-			for (int i = 0; i < getGhostList().size(); i++) {
-				getGhostList().get(i).returnInitialPosition();
+
+		
+		synchronized(foodList) {
+			if (getFoodList().size() == 0) {
+				level++;
+				// statusBar.updateLevel();
+				getPacMan().returnInitialPosition();
+				for (int i = 0; i < getGhostList().size(); i++) {
+					getGhostList().get(i).returnInitialPosition();
+				}
+				getPacMan().initPM();
+				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
+				getPacMan().loadImage();
+				fillFoodList();
+				gettAudio().setIsStart(true);
+				setPause(true);
+				resume = true;
 			}
-			getPacMan().initPM();
-			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
-			getPacMan().loadImage();
-			fillFoodList();
-			gettAudio().setIsStart(true);
-			setPause(true);
-			resume = true;
 		}
+		
 
 		if (!isResume()) {
 			getPacMan().move();
@@ -675,7 +685,7 @@ public class GameController implements Runnable {
 	/**
 	 * @return the foodList
 	 */
-	public ArrayList<Food> getFoodList() {
+	public synchronized List<Food> getFoodList() {
 		return foodList;
 	}
 

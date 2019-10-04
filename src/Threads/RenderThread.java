@@ -1,6 +1,7 @@
 package Threads;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import Controllers.GameController;
@@ -16,7 +17,7 @@ public class RenderThread extends Thread {
 	private PacMan pacMan;
 	private GamePanel gamePanel;
 	private Maze maze;
-	private ArrayList<Food> foodList;
+	private List<Food> foodList;
 	private ArrayList<Ghost> ghostList;
 	private StatusBar statusBar;
 	private long date = 0;
@@ -26,13 +27,13 @@ public class RenderThread extends Thread {
 	private static AtomicBoolean resume = new AtomicBoolean(false);
 	private static AtomicBoolean pause = new AtomicBoolean(false);
 
-	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, ArrayList<Food> foodList,
+	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, List<Food> list,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
 		super();
 		this.pacMan = pacMan;
 		this.gamePanel = gamePanel;
 		this.maze = maze;
-		this.foodList = foodList;
+		this.foodList = list;
 		this.ghostList = ghostList;
 		this.statusBar = statusBar;
 	}

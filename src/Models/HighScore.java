@@ -20,12 +20,12 @@ public class HighScore {
 
 	// champs de scorer
 	private static int letterPosition; // Position du curseur sur l'une des trois lettres du scorer
-	private static int[] letterIndex = { 0, 0, 0 }; // Index des lettres actuelles selon les flèches haut ou bas
+	private static int[] letterIndex = { 0, 0, 0 }; // Index des lettres actuelles selon les flï¿½ches haut ou bas
 
 	// champ du score
 	private static int score;
 
-	// champ pour écrire les lettres et chiffres en images
+	// champ pour ï¿½crire les lettres et chiffres en images
 	private ToSprite toSprite = new ToSprite(16, "pacmanTiles");
 
 	// le size du texte
@@ -49,15 +49,20 @@ public class HighScore {
 	}
 
 	public boolean newScore(int score) {
+		System.out.println(score);
 		boolean isNewScore = false;
-		int k = getScoreList().size() - 1; // On part de la fin de la liste
-		while (score >= getScoreList().get(k) && k > 0) { // Si le score est plus grand que le plus petit score
+		int k = getScoreList().size() - 1;// On part de la fin de la liste
+		if(k == -1) {
+			newHighScore(0);
+			isNewScore = true;
+			return isNewScore;
+		}
+		while (k >= 0 && score >= getScoreList().get(k)) { // Si le score est plus grand que le plus petit score
 			k -= 1;
 		}
+		k++;
+		System.out.println(k);
 		if (k < 4) { // Si la position du nouveau score dans la liste est < 4, il faut l'ajouter
-			if(k > 0) {
-			k+=1;
-			}
 			newHighScore(k);
 			isNewScore = true;
 		}
@@ -67,14 +72,14 @@ public class HighScore {
 	public void newHighScore(int k) {
 		// Lancer le visuel d'enregistrement
 
-		// Récupérer les valeurs String Scorer et score
+		// Rï¿½cupï¿½rer les valeurs String Scorer et score
 		scorerList.add(k, getActualScorer());
 		scoreList.add(k, getScore());
 		if (getScoreList().size() > 5) { // On ne garde que les 5 meilleurs
 			getScoreList().remove(getScoreList().size()-1);
 			getScorerList().remove(getScoreList().size()-1);
 		}
-		try { // On écrit dans le fichier
+		try { // On ï¿½crit dans le fichier
 			FileWriter fw = new FileWriter(scoreFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter writer = new PrintWriter(bw);
@@ -116,7 +121,7 @@ public class HighScore {
 	}
 
 	public String getActualScorer() {
-		// Récupérer les valeurs String Scorer 
+		// Rï¿½cupï¿½rer les valeurs String Scorer 
 		String scorer;
 		char[] scorerCharArray = {'A','A','A'};
 		for (int i = 0; i < 3; i++) {
