@@ -251,7 +251,7 @@ public class Ghost  extends Character{
  
    
     public void move() {
-    	System.out.println(color);
+    	//System.out.println(color);
     	counter = (counter + 1) % 10;
     	if(counter == 0) {
     		style = (style + 1) % 2;

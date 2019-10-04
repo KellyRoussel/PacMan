@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -21,14 +22,17 @@ public class PacGum extends Food{
 	private static int animationCounter ;
 	
 	private final int PACGUM_GAIN = 50;
-	
-	private Rectangle PacGumRectangle;
+	private Rectangle foodRectangle;
+	private Ellipse2D.Float foodEllipse;
+	private boolean isEaten;
 
 	public PacGum(int width, int height, Image image, Point position) {
 			super(width, height, image, position);
 			initialisePacGumImages();
 
-			PacGumRectangle = new Rectangle(position.x,position.y,width,height);
+			foodRectangle = new Rectangle(getPosition().x,getPosition().y,width,height);
+			foodEllipse = new Ellipse2D.Float(getPosition().x,getPosition().y,width,height);
+			isEaten = false;
 		}
 	 
 	@Override
@@ -48,23 +52,37 @@ public class PacGum extends Food{
 	}
 	
 	public double getRectangleX(){
-   		return PacGumRectangle.getX();
+   		return foodRectangle.getX();
     }
    
     public double getRectangleY(){
-   		return PacGumRectangle.getY();
+   		return foodRectangle.getY();
     }
    
     public Rectangle getRectangle(){
-   		return PacGumRectangle;
+   		return foodRectangle;
+    }
+    
+    public double getEllipseX(){
+   		return foodEllipse.getX();
+    }
+   
+    public double getEllipseY(){
+   		return foodEllipse.getY();
+    }
+   
+    public Ellipse2D.Float getEllipse(){
+   		return foodEllipse;
     }
     
 	@Override
-	public void setEaten() {
-		
-		//// TODO
+	public synchronized void setEaten() {
+		isEaten = true;
 	}
-
+	@Override
+	public synchronized boolean getEaten() {
+		return isEaten;
+	}
 	@Override
 	public int getGain() {
 		// TODO Auto-generated method stub
