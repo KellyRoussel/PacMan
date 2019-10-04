@@ -41,7 +41,7 @@ class GameMenuTest {
 		assertEquals(menuPane.getStartPosition().y, menuPane.getStartPosition().y);
 	}
 	
-	public void MySleep() {
+	public void MySleep() { 
 		try {
 			Thread.sleep(100);
 		}catch(InterruptedException e) {

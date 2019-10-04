@@ -1,1 +1,5 @@
-/lib/
+/Controllers/
+/Models/
+/Threads/
+/Tests/
+/Views/

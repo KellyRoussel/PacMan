@@ -171,7 +171,7 @@ public class AudioPanel extends JPanel {
 		back.setSize(100, 40);
 		backPosition = new Point(400, 650);
 
-		cursor = new Cursor(musicPosition, 5, gameController);
+		cursor = new Cursor(musicPosition, gameController);
 		cursor.addPossiblePosition(musicPosition);
 		cursor.addPossiblePosition(musicMutePosition);
 		cursor.addPossiblePosition(soundPosition);
@@ -199,7 +199,7 @@ public class AudioPanel extends JPanel {
 			break;
 		case KeyEvent.VK_ENTER:
 			Point position = cursor.getCurrentPosition();
-			if(position == musicMutePosition) { // MusicMute
+			if(position.y == musicMutePosition.y) { // MusicMute
 				if (muteMusicButton.isSelected()) {
 					muteMusicButton.setSelected(false);
 				} else {
@@ -207,7 +207,7 @@ public class AudioPanel extends JPanel {
 				}
 				AudioThread.setMuteOnOffMusic(true);
 			}
-			if(position == soundMutePosition) { // SoundMute
+			if(position.y == soundMutePosition.y) { // SoundMute
 				if (muteSoundButton.isSelected()) {
 					muteSoundButton.setSelected(false);
 
@@ -216,50 +216,41 @@ public class AudioPanel extends JPanel {
 				}
 				AudioThread.setMuteOnOffSound(true);
 			}
-			if(position == backPosition) { // Back
+			if(position.y == backPosition.y) { // Back
 				gameController.getFrame().displayMenu();
 			}
 		case KeyEvent.VK_LEFT:
-			int i = cursor.getNumPosition();
-			switch (i) {
-			case 0: // MusicVolume
+			int yPos = cursor.getCurrentPosition().y;
+			if(yPos== musicPosition.y) { // MusicVolume
 				if (musicVal > 0) {
 					musicVal -= 5;
 					AudioThread.setMusicVolume((float) (musicVal / 100.0));
 					musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
 				}
-				break;
-			case 2: // SoundVolume
+			}
+			else if(yPos == soundPosition.y) { // SoundVolume
 				if (soundVal > 0) {
 					soundVal -= 5;
 					AudioThread.setSoundVolume((float) (soundVal / 100.0));
 					soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
 				}
-				break;
-			default:
-				break;
 			}
 			break;
-
 		case KeyEvent.VK_RIGHT:
-			int k = cursor.getNumPosition();
-			switch (k) {
-			case 0: // MusicVolume
+			int yPosi = cursor.getCurrentPosition().y;
+			if(yPosi == musicPosition.y) { // MusicVolume
 				if (musicVal < 100) {
 					musicVal += 5;
 					AudioThread.setMusicVolume((float) (musicVal / 100.0));
 					musicValue.setText("<html><font color = 'WHITE'>" + musicVal + "</font></html>");
 				}
-				break;
-			case 2: // SoundVolume
+			}
+			else if(yPosi == soundPosition.y) { // SoundVolume
 				if (soundVal < 100) {
 					soundVal += 5;
 					AudioThread.setSoundVolume((float) (soundVal / 100.0));
 					soundValue.setText("<html><font color = 'WHITE'>" + soundVal + "</font></html>");
 				}
-				break;
-			default:
-				break;
 			}
 			break;
 		}

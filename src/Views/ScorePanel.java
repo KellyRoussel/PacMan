@@ -45,7 +45,7 @@ public class ScorePanel extends JPanel {
 		back.setSize(100, 40);
 		backPosition = new Point(400, 650);
 		
-		cursor = new Cursor(backPosition, 1, gameController);
+		cursor = new Cursor(backPosition, gameController);
 		cursor.addPossiblePosition(backPosition);
 		
 		lCursor = new JLabel();   

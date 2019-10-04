@@ -85,7 +85,7 @@ import javax.sound.sampled.FloatControl;
 			play(musicBackgroundClip, true);
 			while (isRunning.get()) {
 				// Dans le cas ou il n y a pas de pause
-				if (!isPause.get()) {
+				if (!getIsPause().get()) {
 					if (MuteOnOffMusic.get()) {
 						MuteOnOff(musicBackgroundClip, true);
 						MuteOnOffMusic.compareAndExchange(true, false);
@@ -410,6 +410,13 @@ import javax.sound.sampled.FloatControl;
 
 		public Clip getStartGameSoundClip() {
 			return startGameSoundClip;
+		}
+
+		/**
+		 * @return the isPause
+		 */
+		public AtomicBoolean getIsPause() {
+			return isPause;
 		}
 		
 		

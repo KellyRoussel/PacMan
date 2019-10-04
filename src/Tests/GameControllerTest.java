@@ -22,16 +22,17 @@ import Views.StatusBar;
 class GameControllerTest {
 
 	private GameController gameController;
+	
 	private GamePanel gamePanel;
 	private int nRow;
 	private int nColumn;
 	private int [][] grille;
-	private MainGame mainGame = new MainGame();
+	private MainGame mainGame;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		
-		gameController = new GameController(mainGame);
+		mainGame = new MainGame();
+		gameController = mainGame.getGameController();
 		assertNotNull(gameController, "GameController init failed");
 		assertNotNull(gameController.getMainPane(), "MainPane init failed");
 		assertNotNull(gameController.getFrame(), "Frame init failed");
@@ -152,7 +153,6 @@ class GameControllerTest {
 	public void pauseTest() {
 		gameController.startGame();
 		gameController.pause();
-		assertTrue(gameController.gettAudio().getIsPause());
 		assertTrue(gameController.gettRender().isPause(), "Render Thread wasn't set to pause");
 		assertTrue(gameController.isPause());
 	}

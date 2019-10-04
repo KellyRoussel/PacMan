@@ -23,7 +23,7 @@ public class Cursor implements KeyListener{
 	public ImageIcon iiCursor;
 	private GameController gameController;
 
-	public Cursor(Point initialPosition, int nButtons, GameController gameController) {
+	public Cursor(Point initialPosition, GameController gameController) {
 		currentPosition = new Point(initialPosition.x, initialPosition.y);
 		possiblePositions = new ArrayList<Point>();
 		numPosition = 0;
