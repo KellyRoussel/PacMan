@@ -121,6 +121,7 @@ public class GameMenu extends JPanel {
 	}
 
 	public static void moveInMenu(int key) {
+
 		switch (key) {
 		case KeyEvent.VK_DOWN:
 			cursor.nextPosition();
