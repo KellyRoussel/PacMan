@@ -24,6 +24,9 @@ public class HighScore {
 
 	// champ du score
 	private static int score;
+	
+	//Position du nouveau score dans la liste
+	private int position;
 
 	// champ pour �crire les lettres et chiffres en images
 	private ToSprite toSprite = new ToSprite(16, "pacmanTiles");
@@ -49,11 +52,10 @@ public class HighScore {
 	}
 
 	public boolean newScore(int score) {
-		System.out.println(score);
 		boolean isNewScore = false;
 		int k = getScoreList().size() - 1;// On part de la fin de la liste
 		if(k == -1) {
-			newHighScore(0);
+			position = 0;
 			isNewScore = true;
 			return isNewScore;
 		}
@@ -61,20 +63,19 @@ public class HighScore {
 			k -= 1;
 		}
 		k++;
-		System.out.println(k);
 		if (k < 4) { // Si la position du nouveau score dans la liste est < 4, il faut l'ajouter
-			newHighScore(k);
+			position = k;
 			isNewScore = true;
 		}
 		return isNewScore;
 	}
 
-	public void newHighScore(int k) {
+	public void newHighScore() {
 		// Lancer le visuel d'enregistrement
 
 		// R�cup�rer les valeurs String Scorer et score
-		scorerList.add(k, getActualScorer());
-		scoreList.add(k, getScore());
+		scorerList.add(position, getActualScorer());
+		scoreList.add(position, getScore());
 		if (getScoreList().size() > 5) { // On ne garde que les 5 meilleurs
 			getScoreList().remove(getScoreList().size()-1);
 			getScorerList().remove(getScoreList().size()-1);
