@@ -52,7 +52,7 @@ public class PhysicsThread extends Thread
 	
 	public synchronized boolean catchAdvancedCollisionPacManPacGum(Ellipse2D.Float var_pacman, Ellipse2D.Float var_food) 
 	{
-		if(((var_pacman.getWidth()/2)+(var_food.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_food.x+(var_food.getWidth()/2))) && ((var_pacman.getHeight()/2)+(var_food.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_food.y+(var_food.getHeight()/2))))
+		if(((var_pacman.getWidth()/2)+(var_food.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_food.x+(var_food.getWidth()/2))) || ((var_pacman.getHeight()/2)+(var_food.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_food.y+(var_food.getHeight()/2))))
 		{
 			return true;
 		}
