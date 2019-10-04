@@ -547,13 +547,12 @@ public class GameController implements Runnable {
 			if (!isAudioThreadStarted) {
 				gettAudio().setName("Audio");
 				gettAudio().start();
+				// Lancer un listener sur le clavier
+				addListeners();
 				isAudioThreadStarted = true;
 			}
 
 			gettAudio().setIsStart(true);
-
-			// Lancer un listener sur le clavier
-			addListeners();
 			gettPhysics().start();
 			gettRender().start();
 
@@ -1012,6 +1011,10 @@ public class GameController implements Runnable {
 	 */
 	public void setNewScore(boolean isNewScore) {
 		this.isNewScore = isNewScore;
+	}
+
+	public void setHighScore(HighScore highScore) {
+		this.highScore = highScore;
 	}
 
 	

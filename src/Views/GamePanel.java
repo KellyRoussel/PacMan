@@ -50,8 +50,6 @@ public class GamePanel extends JPanel {
 	// ToSprite Instance qui creer les tiles des nombres et les chiffres
 	private static ToSprite chiffre_lettre = new ToSprite(16, "pacmanTiles");
 	
-	// HighScore variable
-	private HighScore highScore = new HighScore();
 
 	public GamePanel(GameController gameController) {
 		this.gameController = gameController;
@@ -175,7 +173,7 @@ public class GamePanel extends JPanel {
 				scorebg.setColor(Color.black);
 				scorebg.fillRect(0, 0, gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
-				highScore.visualHighScore(scorebg, gameController.getDefaultSize() * (gameController.getnColumn() / 3));
+				gameController.getHighScore().visualHighScore(scorebg, gameController.getDefaultSize() * (gameController.getnColumn() / 3));
 				dbg.drawImage(scoreImage, gameController.getDefaultSize() * (gameController.getnColumn() / 4),
 						(int) ((MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) * (3.0 / 5)),
 						gameController.getDefaultSize() * (gameController.getnColumn() / 2),
