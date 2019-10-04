@@ -1,5 +1,8 @@
+/.DS_Store
+/AudioThreadNotIntegrated/
 /Controllers/
 /Models/
-/Threads/
 /Tests/
+/Threads/
 /Views/
+/lib/
