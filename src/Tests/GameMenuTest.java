@@ -22,7 +22,10 @@ class GameMenuTest {
 	@BeforeEach
 	public void setUp() throws Exception{
 		mainGame = new MainGame();
+		mainGame.resize();
 		menuPane = mainGame.getMenuPane();
+		mainGame.requestFocus();
+		
 		assertEquals(mainGame.getContentPane(), menuPane, "Panel should be menu");
 		
 		robot = new Robot();
@@ -31,6 +34,7 @@ class GameMenuTest {
 
 	@Test
 	void testSelectionStartGame() {
+		// Vérification que le GameMenu est affiché fait dans le BeforeEach
 		Cursor cursor = menuPane.cursor;
 		// StartGame
 		while(cursor.getCurrentPosition().y!= menuPane.getStartPosition().y) {
@@ -38,8 +42,14 @@ class GameMenuTest {
 			MySleep();
 			robot.keyRelease(KeyEvent.VK_DOWN);
 		}
-		assertEquals(menuPane.getStartPosition().y, menuPane.getStartPosition().y);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		MySleep();
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		MySleep();
+		
+		//assertEquals(mainGame.getContentPane(), mainGame.getGameController().getMainPane());
 	}
+	
 	
 	public void MySleep() { 
 		try {

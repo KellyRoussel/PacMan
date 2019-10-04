@@ -41,10 +41,13 @@ public class MainGame extends JFrame implements WindowListener {
 		setHelpPane(new HelpPanel(getGameController()));
 		setScorePane(new ScorePanel(getGameController()));
 		this.setContentPane(getMenuPane());
+		
+		this.setFocusable(true);
+		this.requestFocus();
 		this.addKeyListener(menuPane.cursor);
 
 		addWindowListener(this);
-		this.setFocusable(true);
+		
 	}
 
 	public void displayMenu() {
