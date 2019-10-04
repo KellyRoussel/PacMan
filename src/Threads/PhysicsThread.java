@@ -20,11 +20,11 @@ public class PhysicsThread extends Thread
 	private final List<Ghost> ghost;
 	private final List<Food> food;
 
-	public PhysicsThread(PacMan PACMAN, ArrayList<Ghost> GHOST, ArrayList<Food> FOOD) {
+	public PhysicsThread(PacMan PACMAN, ArrayList<Ghost> GHOST, List<Food> list) {
 		
 		pacMan = PACMAN;
 		ghost = GHOST;
-		food = FOOD;
+		food = list;
 	}
 
 	/*public synchronized boolean catchCollisionRectangle(Rectangle R1, Rectangle R2) {
@@ -36,15 +36,18 @@ public class PhysicsThread extends Thread
 	
 	public synchronized void catchCollisionPacManPacGum(PacMan var_pacMan, List<Food> var_food) {
 		
-		for (Iterator<Food> iterator = var_food.iterator(); iterator.hasNext();) {
-			Food food_ite = iterator.next();
-			if(var_pacMan.getRectangle().intersects(food_ite.getRectangle())) 
-			{
-				if(catchAdvancedCollisionPacManPacGum(var_pacMan.getEllipse(), food_ite.getEllipse() )) {
-					food_ite.setEaten();
+		synchronized (var_food) {
+			for (Iterator<Food> iterator = var_food.iterator(); iterator.hasNext();) {
+				Food food_ite = iterator.next();
+				if(var_pacMan.getRectangle().intersects(food_ite.getRectangle())) 
+				{
+					if(catchAdvancedCollisionPacManPacGum(var_pacMan.getEllipse(), food_ite.getEllipse() )) {
+						food_ite.setEaten();
+					}
 				}
 			}
 		}
+		
 	}
 	
 	public synchronized boolean catchAdvancedCollisionPacManPacGum(Ellipse2D.Float var_pacman, Ellipse2D.Float var_food) 

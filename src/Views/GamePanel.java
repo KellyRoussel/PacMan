@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Timer;
 
@@ -77,7 +78,7 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void gameRender(PacMan pacMan, Maze maze, ArrayList<Food> foodList, ArrayList<Ghost> ghostList) {
+	public void gameRender(PacMan pacMan, Maze maze, List<Food> foodList, ArrayList<Ghost> ghostList) {
 
 		// Redimensionner la fenetre
 		if (gameController.isResize()) {
