@@ -133,7 +133,13 @@ public class HighScore {
 		String scorer;
 		char[] scorerCharArray = {'A','A','A'};
 		for (int i = 0; i < 3; i++) {
-			scorerCharArray[i] = (char) (65 + letterIndex[i]);
+			if(letterIndex[i]<26) {
+				scorerCharArray[i] = (char) (65 + letterIndex[i]);
+			}
+			else {
+				scorerCharArray[i] = String.valueOf(letterIndex[i]-26).charAt(0);
+			}
+			
 			
 		}
 		scorer = new String(scorerCharArray);
