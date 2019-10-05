@@ -412,10 +412,10 @@ public class Ghost  extends Character{
 			
 		
 		if(availables.size() == 0) {
-			if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
+			if((raw - 1 >= 0 && grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
 				availables.add(KeyEvent.VK_UP);
 			
-			if((grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
+			if((raw + 1 < nRow && grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
 				availables.add(KeyEvent.VK_DOWN);
 			
 			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column)))
