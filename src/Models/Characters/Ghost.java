@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 
 import Controllers.GameController;
 import Models.Characters.Strategies.GhostStrategy;
+import Models.Characters.Strategies.StrBlue;
 
 public class Ghost  extends Character{
 	
@@ -62,6 +63,7 @@ public class Ghost  extends Character{
 	private int nColumn;
 	private int nRow;
 	private GhostStrategy ghostStrategy;
+	private GhostStrategy normalStrategy;
     
 	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow, GhostStrategy ghostStrategy) {
 		super(width, height, image, initialPosition);
@@ -69,6 +71,7 @@ public class Ghost  extends Character{
 		
 		this.ghostStrategy = ghostStrategy;
 		ghostStrategy.setGhost(this);
+		this.normalStrategy = ghostStrategy;
 		this.defaultSize = defaultSize;
 		this.grille = grille;
 		this.listTunnelLeft = listTunnelLeft;
@@ -479,5 +482,16 @@ public class Ghost  extends Character{
 	public int getOppositeDirection(int direction2) {
 		// TODO Auto-generated method stub
 		return oppositeDirection.get(direction2);
+	}
+
+	public void setStrategy(GhostStrategy normalStrategy2) {
+		// TODO Auto-generated method stub
+		this.ghostStrategy = normalStrategy2;
+		
+	}
+
+	public void setNormalStrategy() {
+		// TODO Auto-generated method stub
+		setStrategy(normalStrategy);
 	}
 }

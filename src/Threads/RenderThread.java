@@ -26,6 +26,7 @@ public class RenderThread extends Thread {
 	private static AtomicBoolean running = new AtomicBoolean(false);
 	private static AtomicBoolean resume = new AtomicBoolean(false);
 	private static AtomicBoolean pause = new AtomicBoolean(false);
+	private static boolean isInvincible;
 
 	public RenderThread(PacMan pacMan, GamePanel gamePanel, Maze maze, List<Food> list,
 			ArrayList<Ghost> ghostList, StatusBar statusBar) {
@@ -70,7 +71,7 @@ public class RenderThread extends Thread {
 					pause();
 				} else if (isResume())
 					Resume();
-
+				
 				gamePanel.gameRender(pacMan, maze, foodList, ghostList);
 				gamePanel.paintScreen();
 
@@ -93,6 +94,8 @@ public class RenderThread extends Thread {
 		System.out.println("STOP - " + this.getName());
 	}
 
+
+	
 
 	public void pause() {
 		setPause(true);
@@ -171,6 +174,11 @@ public class RenderThread extends Thread {
 
 	public static void setResume(boolean resume) {
 		RenderThread.resume = new AtomicBoolean(resume);
+	}
+
+	public void setIsInvincible(boolean b) {
+		// TODO Auto-generated method stub
+		isInvincible = b;
 	}
 
 }

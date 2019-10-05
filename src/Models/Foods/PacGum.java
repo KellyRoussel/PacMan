@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import Controllers.GameController;
 import Models.ToSprite;
 
 
@@ -78,6 +79,8 @@ public class PacGum extends Food{
 	@Override
 	public synchronized void setEaten() {
 		isEaten = true;
+		GameController.setInvincible(true);
+		GameController.setStartInvincible(System.currentTimeMillis());
 	}
 	@Override
 	public synchronized boolean getEaten() {
