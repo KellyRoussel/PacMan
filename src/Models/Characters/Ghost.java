@@ -40,7 +40,7 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 2;
+    private final int PAS = 1;
 	private final int MARGE = 10;
     
 	private int dx;
@@ -500,6 +500,9 @@ public class Ghost  extends Character{
 	public void setEaten(boolean eaten) {
 		isEaten = eaten;
 		ghostStrategy.loadImage();
+		if(eaten) {
+			returnInitialPosition();
+		}
 	}
 		
 	public boolean isEaten() {

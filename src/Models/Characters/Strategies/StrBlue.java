@@ -26,17 +26,20 @@ public class StrBlue implements GhostStrategy{
 
 	public void updatePosition() {
 		// TODO Auto-generated method stub
-		int direction = isPacManCorridor();
-		if(direction != -1) {
-			ghost.setDirection(direction);
-		}
-		else {
-			if (ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
-				ghost.setRandomDirection();
+		if(!ghost.isEaten()){
+
+			int direction = isPacManCorridor();
+			if(direction != -1) {
+				ghost.setDirection(direction);
 			}
+			else {
+				if (ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
+					ghost.setRandomDirection();
+				}
+			}
+			ghost.move();
 		}
-		ghost.move();
 	}
 	public int isPacManCorridor() {
 		Point pacManPosition = GameController.getPacManPosition();
@@ -107,6 +110,7 @@ public class StrBlue implements GhostStrategy{
 		}
 		else
 			str = "alive";
+		
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + ".png");
     	ghost.setImage(ii.getImage());
 	}

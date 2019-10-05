@@ -394,7 +394,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setStrategy(new StrBlue());
 			ghostList.get(i).loadImage();
 		}
-		pacMan.setPas(3);
+		pacMan.setPas(2);
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {
 			stopInvincibleMode();
@@ -414,7 +414,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
 		}
-		pacMan.setPas(2);
+		pacMan.setPas(1);
 		setEatenGhosts(0);
 	}
 
