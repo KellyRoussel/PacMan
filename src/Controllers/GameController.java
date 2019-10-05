@@ -391,7 +391,6 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
-<<<<<<< HEAD
 		if(pacMan.getPas() == 3) {
 			while (gettRender() == null) {
 			}
@@ -403,19 +402,6 @@ public class GameController implements Runnable {
 				ghostList.get(i).loadImage();
 			}
 			pacMan.setPas(4);
-=======
-		if(pacMan.getPas() == 1) {
-		while (gettRender() == null) {
-		}
-		gettAudio().setIsPacGumEaten(true);
-		gettRender().setIsInvincible(true);
-
-		for(int i = 0; i < ghostList.size(); i++) {
-			ghostList.get(i).setStrategy(new StrBlue());
-			ghostList.get(i).loadImage();
-		}
-		pacMan.setPas(2);
->>>>>>> 7b54471665e813a4252e91dc0c0615e0a22f897e
 		}
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {
