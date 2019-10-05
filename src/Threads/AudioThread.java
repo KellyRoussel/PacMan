@@ -49,7 +49,7 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isDead 	= new AtomicBoolean(false);
 		private AtomicBoolean isStart 	= new AtomicBoolean(false);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
-		private AtomicBoolean isPacGumEaten = new AtomicBoolean(true);
+		private AtomicBoolean isPacGumEaten = new AtomicBoolean(false);
 		private AtomicBoolean isInvincible = new AtomicBoolean(true);
 
 		
@@ -89,6 +89,8 @@ import javax.sound.sampled.FloatControl;
 				if (!getIsPause().get()) {
 					if (MuteOnOffMusic.get()) {
 						MuteOnOff(musicBackgroundClip, true);
+						MuteOnOff(eatedPacGumMusicClip, true);
+						MusicMuted.getAndSet(!MusicMuted.get());
 						MuteOnOffMusic.compareAndExchange(true, false);
 					}
 					
@@ -127,7 +129,6 @@ import javax.sound.sampled.FloatControl;
 					
 					// si le pacman mange une pacGomme
 					if(isPacGumEaten.get()) {
-						System.out.println("****************************PacGumEaten*****************************************");
 						stop(musicBackgroundClip);
 						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
@@ -181,9 +182,10 @@ import javax.sound.sampled.FloatControl;
 				// mode en pause du jeu
 				} else {
 					pause(musicBackgroundClip,true);
-					//pause(eatedGumSoundClip,false);
-					//pause(startGameSoundClip,false);
-					//pause(deadPacmanSoundClip,false);
+					pause(startGameSoundClip,false);
+					pause(eatedPacGumMusicClip,true);
+					pause(deadPacmanSoundClip,false);
+					isMusicPaused = new AtomicBoolean(true);
 				}
 				
 				// mettre le thread en sleep 
@@ -238,9 +240,6 @@ import javax.sound.sampled.FloatControl;
 				return;
 			}
 			clip.stop();
-			if(isMusic) {
-				isMusicPaused = new AtomicBoolean(true);
-			}
 		}
 
 		// methode pour relancer l audio si en pause
@@ -308,7 +307,6 @@ import javax.sound.sampled.FloatControl;
 			BooleanControl muteControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
 			if (isMusic) {
 				muteControl.setValue(!MusicMuted.get());
-				MusicMuted.getAndSet(!MusicMuted.get());
 			} else {
 				muteControl.setValue(!SoundMuted.get());
 			}
@@ -365,7 +363,7 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		public void setIsPacGumEaten(boolean isEaten) {
-			this.isEaten = new AtomicBoolean(isEaten);
+			this.isPacGumEaten = new AtomicBoolean(isEaten);
 		}
 
 		public boolean getIsDead() {

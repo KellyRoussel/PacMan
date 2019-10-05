@@ -397,7 +397,7 @@ public class GameController implements Runnable {
 		if(pacMan.getPas() == 4) {
 			while (gettRender() == null) {
 			}
-			gettAudio().setIsInivincible(true);
+			gettAudio().setIsPacGumEaten(true);
 			gettRender().setIsInvincible(true);
 	
 			for(int i = 0; i < ghostList.size(); i++) {
