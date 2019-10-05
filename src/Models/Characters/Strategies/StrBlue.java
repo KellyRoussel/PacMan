@@ -115,7 +115,6 @@ public class StrBlue implements GhostStrategy{
 	public void loadImage() {
 		// TODO Auto-generated method stub
 		counter++;
-		System.out.println(counter);
 		if(counter == 3) {
 			counter = 0;
 			if(GameController.getInvincibleCounter() <= 3) {
@@ -134,7 +133,6 @@ public class StrBlue implements GhostStrategy{
 			str = "alive";
 		
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + style + ".png");
-    	System.out.println("ressources" + File.separator + "ghost" + str + style + ".png");
     	ghost.setImage(ii.getImage());
 	}
 	

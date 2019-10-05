@@ -105,7 +105,7 @@ public class GameController implements Runnable {
 
 	private int updateCounter;
 
-	private static int invincibleCounter;
+	private static AtomicInteger invincibleCounter = new AtomicInteger();
 
 
 	public GameController(MainGame frame) {
@@ -407,7 +407,7 @@ public class GameController implements Runnable {
 			pacMan.setPas(5);
 		}
 		long date = System.currentTimeMillis();
-		invincibleCounter = (int) ((date - startInvicible) / 1000);
+		setInvincibleCounter((int) ((date - startInvicible) / 1000));
 		if(date - startInvicible > 8000) {
 			stopInvincibleMode();
 		}
@@ -1124,11 +1124,11 @@ public class GameController implements Runnable {
 	}
 	
 	public static int getInvincibleCounter() {
-		return invincibleCounter;
+		return invincibleCounter.get();
 	}
 
 	public static void setInvincibleCounter(int invincibleCounter) {
-		GameController.invincibleCounter = invincibleCounter;
+		GameController.invincibleCounter = new AtomicInteger(invincibleCounter);
 	}
 
 	
