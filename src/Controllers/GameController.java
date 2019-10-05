@@ -103,6 +103,8 @@ public class GameController implements Runnable {
 
 	private PhysicsThread tPhysics;
 
+	private int updateCounter;
+
 	public GameController(MainGame frame) {
 
 		this.gamePanel = new GamePanel(this);
@@ -357,6 +359,7 @@ public class GameController implements Runnable {
 		setRunning(true);
 		System.out.println("START - " + gameThread.getName());
 		setPause(true);
+		updateCounter = 0;
 		while (isRunning()) {
 			long pastTime = System.currentTimeMillis();
 			if (isGameOver()) {
@@ -366,7 +369,10 @@ public class GameController implements Runnable {
 				}
 			} else {
 				if (!isPause()) {
-					gameUpdate();
+					updateCounter++;
+					updateCounter %= 3;
+					if(updateCounter == 0)
+						gameUpdate();
 				} else
 					pause();
 				if (isResume()) {
@@ -385,17 +391,17 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
-		if(pacMan.getPas() == 1) {
-		while (gettRender() == null) {
-		}
-		gettAudio().setIsPacGumEaten(true);
-		gettRender().setIsInvincible(true);
-
-		for(int i = 0; i < ghostList.size(); i++) {
-			ghostList.get(i).setStrategy(new StrBlue());
-			ghostList.get(i).loadImage();
-		}
-		pacMan.setPas(2);
+		if(pacMan.getPas() == 3) {
+			while (gettRender() == null) {
+			}
+			gettAudio().setIsInivincible(true);
+			gettRender().setIsInvincible(true);
+	
+			for(int i = 0; i < ghostList.size(); i++) {
+				ghostList.get(i).setStrategy(new StrBlue());
+				ghostList.get(i).loadImage();
+			}
+			pacMan.setPas(4);
 		}
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {
@@ -416,7 +422,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
 		}
-		pacMan.setPas(1);
+		pacMan.setPas(3);
 		setEatenGhosts(0);
 	}
 
