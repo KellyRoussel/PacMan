@@ -108,12 +108,22 @@ class GameControllerTest {
 		Point positionBeforeMove = new Point(gameController.getPacMan().getPosition().x , gameController.getPacMan().getPosition().y);
 
 		//On va le faire bouger à droite
+
+		//On renvoie les fantomes dans leur boite pour ne pas se faire manger
+		for (int i = 0; i < gameController.getGhostList().size(); i++) {
+			gameController.getGhostList().get(i).returnInitialPosition();
+		}
 		robot.keyPress(KeyEvent.VK_RIGHT);
 		MySleep();
 		robot.keyRelease(KeyEvent.VK_RIGHT);
-		assertTrue(positionBeforeMove.x < gameController.getPacMan().getPosition().x);
+		assertTrue(positionBeforeMove.x < gameController.getPacMan().getPosition().x, "x should be greater after moving");
 
 		//A gauche
+		//On renvoie les fantomes dans leur boite pour ne pas se faire manger
+		for (int i = 0; i < gameController.getGhostList().size(); i++) {
+			gameController.getGhostList().get(i).returnInitialPosition();
+		}
+		mainGame.resize();
 		positionBeforeMove.x = gameController.getPacMan().getPosition().x;
 		robot.keyPress(KeyEvent.VK_LEFT);
 		MySleep();
@@ -138,7 +148,7 @@ class GameControllerTest {
 
 	public void MySleep() { 
 		try {
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}
