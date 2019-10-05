@@ -23,6 +23,7 @@ import Models.HighScore;
 import Models.Maze;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
+import Models.Characters.Strategies.StrBlue;
 import Models.Characters.Strategies.Normal.OrangeStrategy;
 import Models.Characters.Strategies.Normal.PinkStrategy;
 import Models.Characters.Strategies.Normal.RedStrategy;
@@ -56,7 +57,7 @@ public class GameController implements Runnable {
 	// private Sound music;
 	private static int size, defaultSize;
 	private int level;
-	private int score;
+	private static int score;
 	private int lives;
 
 	private static final int PM_INITIAL_POSITION = 60;
@@ -65,7 +66,7 @@ public class GameController implements Runnable {
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
-
+	private static int eatenGhosts;
 	private Image[][] images;
 	private BufferedImage output;
 	private Graphics g;
@@ -88,11 +89,15 @@ public class GameController implements Runnable {
 
 	private static long timeUpdate = 10;
 	private static int FPS = 30;
-
+	private static boolean isInvincible;
 	private Thread gameThread;
 	private RenderThread tRender;
 	private static boolean isAudioThreadStarted = false;
 	private static AudioThread tAudio = new AudioThread();
+
+	private static int INVINCIBLE;
+
+	private static long startInvicible;
 	private ArrayList<Point> listTunnelLeft;
 	private ArrayList<Point> listTunnelRight;
 
@@ -124,6 +129,7 @@ public class GameController implements Runnable {
 		setRunning(false);
 		setFullScreen(false);
 		setResize(false);
+		setInvincible(false);
 		setGameOver(false);
 		score = 0;
 		setLives(3);
@@ -366,6 +372,9 @@ public class GameController implements Runnable {
 				if (isResume()) {
 					resume();
 				}
+				else if(isInvincible()) {
+					switchToInvicibleMode();
+				}
 			}
 			try {
 				Thread.sleep((1000L / getFPS()) / 2);
@@ -373,6 +382,52 @@ public class GameController implements Runnable {
 			}
 		}
 		System.out.println("STOP - " + gameThread.getName());
+	}
+
+	private void switchToInvicibleMode() {
+		if(pacMan.getPas() == 1) {
+		while (gettRender() == null) {
+		}
+		gettAudio().setIsPacGumEaten(true);
+		gettRender().setIsInvincible(true);
+
+		for(int i = 0; i < ghostList.size(); i++) {
+			ghostList.get(i).setStrategy(new StrBlue());
+			ghostList.get(i).loadImage();
+		}
+		pacMan.setPas(2);
+		}
+		long date = System.currentTimeMillis();
+		if(date - startInvicible > 8000) {
+			stopInvincibleMode();
+		}
+		System.out.println((date - startInvicible) / 1000);
+		
+	}
+
+	private void stopInvincibleMode() {
+		// TODO Auto-generated method stub
+		while (gettRender() == null) {
+		}
+		gettAudio().setIsInivincible(false);
+		gettRender().setIsInvincible(false);
+		setInvincible(false);
+		for(int i = 0; i < ghostList.size(); i++) {
+			ghostList.get(i).setNormalStrategy();
+			ghostList.get(i).setEaten(false);
+		}
+		pacMan.setPas(1);
+		setEatenGhosts(0);
+	}
+
+	private void setEatenGhosts(int i) {
+		// TODO Auto-generated method stub
+		eatenGhosts = i;
+	}
+
+	public static boolean isInvincible() {
+		// TODO Auto-generated method stub
+		return isInvincible;
 	}
 
 	public void gameUpdate() {
@@ -755,7 +810,7 @@ public class GameController implements Runnable {
 		this.resize = resize;
 	}
 
-	public int getScore() {
+	public static int getScore() {
 		// TODO Auto-generated method stub
 		return score;
 	}
@@ -929,7 +984,12 @@ public class GameController implements Runnable {
 		this.running = running;
 
 	}
-
+	
+	public static void setInvincible(boolean isInvincble) {
+		System.out.println("INIVINCIBLE STARTED");
+		isInvincible = isInvincble;
+	}
+	
 	/**
 	 * @return the ghostOutside
 	 */
@@ -1018,5 +1078,43 @@ public class GameController implements Runnable {
 		this.highScore = highScore;
 	}
 
+	public static void setINVINCIBLE(int i) {
+		// TODO Auto-generated method stub
+		INVINCIBLE = i;
+	}
+
+	public static int getINVINCIBLE() {
+		// TODO Auto-generated method stub
+		return INVINCIBLE;
+	}
+
+	public static void setStartInvincible(long currentTimeMillis) {
+		// TODO Auto-generated method stub
+		startInvicible = currentTimeMillis;
+	}
+
+	public static void setScore(int score) {
+		GameController.score = score;
+	}
+	
+
+
+	public static void incEatenGhosts() {
+		// TODO Auto-generated method stub
+		eatenGhosts++;
+	}
+	
+	public static int getEatenGhosts() {
+		// TODO Auto-generated method stub
+		return eatenGhosts;
+	}
+	
+	public static void initEatenGhosts() {
+		// TODO Auto-generated method stub
+		eatenGhosts = 0;
+	}
+	
+
+	
 	
 }

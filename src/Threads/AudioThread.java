@@ -49,7 +49,8 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isDead 	= new AtomicBoolean(false);
 		private AtomicBoolean isStart 	= new AtomicBoolean(false);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
-		private AtomicBoolean isPacGumEaten = new AtomicBoolean(false);
+		private AtomicBoolean isPacGumEaten = new AtomicBoolean(true);
+		private AtomicBoolean isInvincible = new AtomicBoolean(true);
 
 		
 		
@@ -90,6 +91,13 @@ import javax.sound.sampled.FloatControl;
 						MuteOnOff(musicBackgroundClip, true);
 						MuteOnOffMusic.compareAndExchange(true, false);
 					}
+					
+					// quand le mode d invincibilte est termine
+					if(!isInvincible.get()) {
+						stop(eatedPacGumMusicClip);
+						restart(musicBackgroundClip, MusicfilePath, true);
+						isInvincible.compareAndExchange(false, true);
+					}
 					// resume la musique d arriere plan
 					resumeAudio(musicBackgroundClip, MusicfilePath, true);
 					
@@ -119,9 +127,8 @@ import javax.sound.sampled.FloatControl;
 					
 					// si le pacman mange une pacGomme
 					if(isPacGumEaten.get()) {
-						/* je dois ajouter traitement pour arreter la musique du background et après je dois faire 
-						un traitement pour arrêter cette musique et pour lancer celle du background
-						*/
+						System.out.println("****************************PacGumEaten*****************************************");
+						stop(musicBackgroundClip);
 						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip eatedPacGumMusicClip est deja lance une fois au moins
@@ -134,6 +141,7 @@ import javax.sound.sampled.FloatControl;
 								firstTimePacGumEaten = false;
 							}
 						}
+						isPacGumEaten.compareAndExchange(true, false);
 					}
 					
 					// si le pacman mange une gomme
@@ -247,7 +255,7 @@ import javax.sound.sampled.FloatControl;
 		}
 
 		
-		 // methode pour relancer l audio depuis le début 
+		 // methode pour relancer l audio depuis le dï¿½but 
 		 public synchronized void restart(Clip clip, String filePath ,boolean isMusic){	
 			 stop(clip);
 			 resetAudioStream(clip ,filePath ,isMusic); 
@@ -265,7 +273,7 @@ import javax.sound.sampled.FloatControl;
 			}
 		}
 
-		// réinitialiser l audio stream
+		// rï¿½initialiser l audio stream
 		public synchronized void resetAudioStream(Clip clip, String filePath, boolean isMusic) {
 			try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
@@ -417,6 +425,11 @@ import javax.sound.sampled.FloatControl;
 		 */
 		public AtomicBoolean getIsPause() {
 			return isPause;
+		}
+
+		public void setIsInivincible(boolean b) {
+			// TODO Auto-generated method stub
+			isInvincible = new AtomicBoolean(b);
 		}
 		
 		

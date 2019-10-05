@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import Controllers.GameController;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
@@ -52,7 +53,7 @@ public class PhysicsThread extends Thread
 	
 	public synchronized boolean catchAdvancedCollisionPacManPacGum(Ellipse2D.Float var_pacman, Ellipse2D.Float var_food) 
 	{
-		if(((var_pacman.getWidth()/2)+(var_food.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_food.x+(var_food.getWidth()/2))) && ((var_pacman.getHeight()/2)+(var_food.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_food.y+(var_food.getHeight()/2))))
+		if(((var_pacman.getWidth()/2)+(var_food.getWidth()/2)) >= ((var_pacman.x+(var_pacman.getWidth()/2) - var_food.x+(var_food.getWidth()/2))) || ((var_pacman.getHeight()/2)+(var_food.getHeight()/2)) >= ((var_pacman.y+(var_pacman.getHeight()/2) - var_food.y+(var_food.getHeight()/2))))
 		{
 			return true;
 		}
@@ -69,8 +70,9 @@ public class PhysicsThread extends Thread
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
 				//System.out.println("Basic Collision Detected");
-				if(advancedCatchCollisionTactics(pacMan.getEllipse(),x.getAdvancedLowerRectangle(),x.getAdvancedTopArc()))
+				if(!x.isEaten() && advancedCatchCollisionTactics(pacMan.getEllipse(),x.getAdvancedLowerRectangle(),x.getAdvancedTopArc()))
 				{
+					x.setEaten(true);
 					return true;
 				}
 				//System.out.println("Basic Not Valid Collision Detected");
@@ -109,7 +111,13 @@ public class PhysicsThread extends Thread
 			try {
 				Thread.sleep(SLEEP_TIMER);
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
-					pacMan.setIsDead(true);
+					if(GameController.isInvincible()) {
+						
+						GameController.incEatenGhosts();
+						GameController.setScore(GameController.getScore() + 200 * GameController.getEatenGhosts());
+					}
+					else
+						pacMan.setIsDead(true);
 				}
 				catchCollisionPacManPacGum(pacMan,food);
 

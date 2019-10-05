@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 
 import Controllers.GameController;
 import Models.Characters.Strategies.GhostStrategy;
+import Models.Characters.Strategies.StrBlue;
 
 public class Ghost  extends Character{
 	
@@ -39,11 +40,14 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 2;
+    private final int PAS = 1;
 	private final int MARGE = 10;
     
 	private int dx;
     private int dy;
+    
+	private boolean isEaten;
+
         	    
     private Map<Integer, Point> changes;
     private Map<Integer, Point> steps;
@@ -62,6 +66,7 @@ public class Ghost  extends Character{
 	private int nColumn;
 	private int nRow;
 	private GhostStrategy ghostStrategy;
+	private GhostStrategy normalStrategy;
     
 	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow, GhostStrategy ghostStrategy) {
 		super(width, height, image, initialPosition);
@@ -69,6 +74,7 @@ public class Ghost  extends Character{
 		
 		this.ghostStrategy = ghostStrategy;
 		ghostStrategy.setGhost(this);
+		this.normalStrategy = ghostStrategy;
 		this.defaultSize = defaultSize;
 		this.grille = grille;
 		this.listTunnelLeft = listTunnelLeft;
@@ -267,10 +273,8 @@ public class Ghost  extends Character{
 		ghostAdvancedTopShape.setFrame(getPosition().x,getPosition().y,w,h/2);
     }
 
-    private void loadImage() {
-		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + color+ ".png");
-    	image = ii.getImage();
+    public void loadImage() {
+    	ghostStrategy.loadImage();
 	}
 
 	public int getX() {
@@ -411,10 +415,10 @@ public class Ghost  extends Character{
 			
 		
 		if(availables.size() == 0) {
-			if((grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
+			if((raw - 1 >= 0 && grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
 				availables.add(KeyEvent.VK_UP);
 			
-			if((grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
+			if((raw + 1 < nRow && grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
 				availables.add(KeyEvent.VK_DOWN);
 			
 			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column)))
@@ -479,5 +483,30 @@ public class Ghost  extends Character{
 	public int getOppositeDirection(int direction2) {
 		// TODO Auto-generated method stub
 		return oppositeDirection.get(direction2);
+	}
+
+	public void setStrategy(GhostStrategy normalStrategy2) {
+		// TODO Auto-generated method stub
+		this.ghostStrategy = normalStrategy2;
+		this.ghostStrategy.setGhost(this);
+		
+	}
+
+	public void setNormalStrategy() {
+		// TODO Auto-generated method stub
+		setStrategy(normalStrategy);
+	}
+	
+	public void setEaten(boolean eaten) {
+		isEaten = eaten;
+		ghostStrategy.loadImage();
+		if(eaten) {
+			returnInitialPosition();
+		}
+	}
+		
+	public boolean isEaten() {
+		// TODO Auto-generated method stub
+		return isEaten;
 	}
 }
