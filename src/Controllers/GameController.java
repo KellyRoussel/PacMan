@@ -385,6 +385,7 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
+		if(pacMan.getPas() == 1) {
 		while (gettRender() == null) {
 		}
 		gettAudio().setIsInivincible(true);
@@ -395,6 +396,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).loadImage();
 		}
 		pacMan.setPas(2);
+		}
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {
 			stopInvincibleMode();

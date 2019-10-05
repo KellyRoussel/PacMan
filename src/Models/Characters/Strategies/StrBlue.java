@@ -12,6 +12,9 @@ import Models.Characters.Ghost;
 public class StrBlue implements GhostStrategy{
 
 	private Ghost ghost;
+	private int style = 1;
+	private int counter = 0;
+
 	@Override
 	public void meet() {
 		// TODO Auto-generated method stub
@@ -40,6 +43,8 @@ public class StrBlue implements GhostStrategy{
 			}
 			ghost.move();
 		}
+		else
+			loadImage();
 	}
 	public int isPacManCorridor() {
 		Point pacManPosition = GameController.getPacManPosition();
@@ -104,6 +109,12 @@ public class StrBlue implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
+		counter++;
+		System.out.println(counter);
+		if(counter == 3) {
+			counter = 0;
+			style = (style + 1) % 4;
+		}
 		String str = "";
 		if(ghost.isEaten()) {
 			str = "dead";
@@ -111,7 +122,8 @@ public class StrBlue implements GhostStrategy{
 		else
 			str = "alive";
 		
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + ".png");
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + style + ".png");
+    	System.out.println("ressources" + File.separator + "ghost" + str + style + ".png");
     	ghost.setImage(ii.getImage());
 	}
 	
