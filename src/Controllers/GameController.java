@@ -105,6 +105,9 @@ public class GameController implements Runnable {
 
 	private int updateCounter;
 
+	private static int invincibleCounter;
+
+
 	public GameController(MainGame frame) {
 
 		this.gamePanel = new GamePanel(this);
@@ -391,7 +394,7 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
-		if(pacMan.getPas() == 3) {
+		if(pacMan.getPas() == 4) {
 			while (gettRender() == null) {
 			}
 			gettAudio().setIsInivincible(true);
@@ -401,13 +404,13 @@ public class GameController implements Runnable {
 				ghostList.get(i).setStrategy(new StrBlue());
 				ghostList.get(i).loadImage();
 			}
-			pacMan.setPas(4);
+			pacMan.setPas(5);
 		}
 		long date = System.currentTimeMillis();
+		invincibleCounter = (int) ((date - startInvicible) / 1000);
 		if(date - startInvicible > 8000) {
 			stopInvincibleMode();
 		}
-		System.out.println((date - startInvicible) / 1000);
 		
 	}
 
@@ -422,7 +425,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
 		}
-		pacMan.setPas(3);
+		pacMan.setPas(4);
 		setEatenGhosts(0);
 	}
 
@@ -992,7 +995,7 @@ public class GameController implements Runnable {
 	}
 	
 	public static void setInvincible(boolean isInvincble) {
-		System.out.println("INIVINCIBLE STARTED");
+
 		isInvincible = isInvincble;
 	}
 	
@@ -1120,6 +1123,13 @@ public class GameController implements Runnable {
 		eatenGhosts = 0;
 	}
 	
+	public static int getInvincibleCounter() {
+		return invincibleCounter;
+	}
+
+	public static void setInvincibleCounter(int invincibleCounter) {
+		GameController.invincibleCounter = invincibleCounter;
+	}
 
 	
 	

@@ -28,7 +28,7 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
-	private int PAS = 3;
+	private int PAS = 4;
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;

@@ -40,7 +40,7 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 3;
+    private final int PAS = 4;
 	private final int MARGE = 10;
     
 	private int dx;
@@ -222,15 +222,37 @@ public class Ghost  extends Character{
 					
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;
+		   
 		   if(raw < 0 || raw >= nRow || column < 0 || column >= nColumn)
 			   return 0;
 
 
 		   int counter = 0;
-		   counter += (raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))? KeyEvent.VK_UP : 0;
-		   counter += (raw + 1 > nRow || (grille[raw + 1][column] <= 25 && grille[raw + 1][column] >= 1))? 0 : KeyEvent.VK_DOWN;
-		   counter += (listTunnelLeft.contains(new Point(raw, column)) || column - 1 < 0 || (grille[raw][column - 1] <= 25 && grille[raw][column - 1] >= 1))? 0 : KeyEvent.VK_LEFT;
-		   counter += (column + 1 >= 30 || listTunnelRight.contains(new Point(raw, column)) || (column + 1 < nColumn) || (grille[raw][column + 1] <= 25 && grille[raw][column + 1] >= 1))? 0 : KeyEvent.VK_RIGHT;
+		   //UP
+		   if(raw - 1 >= 0 && 
+				   (grille[raw - 1][column] > 25 || 
+						   grille[raw - 1][column] < 1 ||  
+						   grille[raw - 1][column] == 2 || 
+						   grille[raw - 1][column] == 15))
+			   counter += KeyEvent.VK_UP;
+		   //DOWN
+		   if(raw + 1 < nRow && 
+				   (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
+			   counter += KeyEvent.VK_DOWN;
+		   
+		   //LEFT
+		   if(!listTunnelLeft.contains(new Point(raw, column)) &&
+				   column - 1 >= 0 &&
+				   (grille[raw][column - 1] > 25 ||
+						   grille[raw][column - 1] < 1))
+			   counter += KeyEvent.VK_LEFT;
+		   //DOWN
+		   if(column + 1 < nColumn &&
+				   !listTunnelRight.contains(new Point(raw, column)) &&
+				   (grille[raw][column + 1] > 25 || 
+						   grille[raw][column + 1] < 1))
+				   counter += KeyEvent.VK_RIGHT;
+		   
 		   return counter;
 	}
 	
@@ -257,7 +279,6 @@ public class Ghost  extends Character{
  
    
     public void move() {
-    	//System.out.println(color);
     	counter = (counter + 1) % 10;
     	if(counter == 0) {
     		style = (style + 1) % 2;
@@ -400,7 +421,8 @@ public class Ghost  extends Character{
 		int raw = getPosition().y / defaultSize;
 		int column = getPosition().x / defaultSize;
 		
-		if(raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
+		if(raw - 1 >= 0 && 
+				(grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);
 		
 		if(raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
@@ -415,17 +437,19 @@ public class Ghost  extends Character{
 			
 		
 		if(availables.size() == 0) {
-			if((raw - 1 >= 0 && grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
+			if(raw - 1 >= 0 && 
+					(grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
 				availables.add(KeyEvent.VK_UP);
 			
-			if((raw + 1 < nRow && grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
+			if(raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
 				availables.add(KeyEvent.VK_DOWN);
 			
-			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column)))
+			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column))) 
 				availables.add(KeyEvent.VK_LEFT);
 			
-			if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && !listTunnelRight.contains(new Point(raw, column)))
+			if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && !listTunnelRight.contains(new Point(raw, column))) {
 				availables.add(KeyEvent.VK_RIGHT);
+			}
 		}
 		
 		setDirection(availables.get((int)(Math.random() * availables.size())));
