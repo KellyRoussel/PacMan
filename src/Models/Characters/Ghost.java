@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.ImageIcon;
 
@@ -46,7 +47,7 @@ public class Ghost  extends Character{
 	private int dx;
     private int dy;
     
-	private boolean isEaten;
+	private AtomicBoolean isEaten;
 
         	    
     private Map<Integer, Point> changes;
@@ -87,7 +88,7 @@ public class Ghost  extends Character{
     	dx = -PAS;
     	dy = 0;
     	
-    	
+    	isEaten = new AtomicBoolean(false);
     	this.color = color;
         
     	directionString = new HashMap<Integer, String>(); 
@@ -513,7 +514,7 @@ public class Ghost  extends Character{
 		// TODO Auto-generated method stub
 		this.ghostStrategy = normalStrategy2;
 		this.ghostStrategy.setGhost(this);
-		
+		this.setEaten(false);
 	}
 
 	public void setNormalStrategy() {
@@ -522,8 +523,10 @@ public class Ghost  extends Character{
 	}
 	
 	public void setEaten(boolean eaten) {
-		isEaten = eaten;
-		ghostStrategy.loadImage();
+		synchronized (isEaten) {
+			isEaten = new AtomicBoolean(eaten);
+			ghostStrategy.loadImage();
+		}
 		if(eaten) {
 			returnInitialPosition();
 		}
@@ -531,6 +534,8 @@ public class Ghost  extends Character{
 		
 	public boolean isEaten() {
 		// TODO Auto-generated method stub
-		return isEaten;
+		synchronized (isEaten) {
+			return isEaten.get();			
+		}
 	}
 }
