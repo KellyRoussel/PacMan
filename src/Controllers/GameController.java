@@ -549,7 +549,6 @@ public class GameController implements Runnable {
 				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 				getPacMan().loadImage();
 				fillFoodList();
-				gettAudio().setIsStart(true);
 				setPause(true);
 				resume = true;
 			}
@@ -610,14 +609,16 @@ public class GameController implements Runnable {
 
 			// lancer l'audio thread
 			if (!isAudioThreadStarted) {
-				gettAudio().setName("Audio");
-				gettAudio().start();
 				// Lancer un listener sur le clavier
 				addListeners();
 				isAudioThreadStarted = true;
 			}
+			else {
+				tAudio = new AudioThread();
+			}
 
-			gettAudio().setIsStart(true);
+			gettAudio().setName("Audio");
+			gettAudio().start();
 			gettPhysics().start();
 			gettRender().start();
 
@@ -648,8 +649,7 @@ public class GameController implements Runnable {
 	public void stop() {
 		setRunning(false);
 		gettRender().setRunning(false);
-		// ******************************************************
-		// tAudio.setIsRunning(false);
+		tAudio.stopThread();
 		try {
 
 			getGameThread().join(500);
