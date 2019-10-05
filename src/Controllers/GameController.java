@@ -458,7 +458,7 @@ public class GameController implements Runnable {
 						}
 					}
 					ghostCounter++;
-					ghostCounter = ghostCounter % 2;
+					ghostCounter = ghostCounter % 1;
 				}
 
 				for (int i = 0; i < getGhostList().size(); i++) {
