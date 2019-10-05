@@ -270,10 +270,8 @@ public class Ghost  extends Character{
 		ghostAdvancedTopShape.setFrame(getPosition().x,getPosition().y,w,h/2);
     }
 
-    private void loadImage() {
-		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + color+ ".png");
-    	image = ii.getImage();
+    public void loadImage() {
+    	ghostStrategy.loadImage();
 	}
 
 	public int getX() {
@@ -487,6 +485,7 @@ public class Ghost  extends Character{
 	public void setStrategy(GhostStrategy normalStrategy2) {
 		// TODO Auto-generated method stub
 		this.ghostStrategy = normalStrategy2;
+		this.ghostStrategy.setGhost(this);
 		
 	}
 

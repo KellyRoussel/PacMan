@@ -1,5 +1,9 @@
 package Models.Characters.Strategies.Normal;
 
+import java.io.File;
+
+import javax.swing.ImageIcon;
+
 import Models.Characters.Ghost;
 import Models.Characters.Strategies.GhostStrategy;
 
@@ -29,5 +33,11 @@ public class OrangeStrategy implements GhostStrategy{
 		}
 		ghost.move();
 	}
-
+	
+	@Override
+	public void loadImage() {
+		// TODO Auto-generated method stub
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostorange.png");
+    	ghost.setImage(ii.getImage());
+	}
 }

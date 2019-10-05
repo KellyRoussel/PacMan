@@ -392,6 +392,7 @@ public class GameController implements Runnable {
 
 		for(int i = 0; i < ghostList.size(); i++) {
 			ghostList.get(i).setStrategy(new StrBlue());
+			ghostList.get(i).loadImage();
 		}
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {

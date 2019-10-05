@@ -2,6 +2,9 @@ package Models.Characters.Strategies.Normal;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.File;
+
+import javax.swing.ImageIcon;
 
 import Controllers.GameController;
 import Models.Characters.Ghost;
@@ -121,6 +124,13 @@ public class PinkStrategy implements GhostStrategy{
 	
 		return -1;
 		
+	}
+
+	@Override
+	public void loadImage() {
+		// TODO Auto-generated method stub
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostpink.png");
+    	ghost.setImage(ii.getImage());
 	}
 	
 
