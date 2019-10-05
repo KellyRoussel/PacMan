@@ -57,7 +57,7 @@ public class GameController implements Runnable {
 	// private Sound music;
 	private static int size, defaultSize;
 	private int level;
-	private int score;
+	private static int score;
 	private int lives;
 
 	private static final int PM_INITIAL_POSITION = 60;
@@ -66,7 +66,7 @@ public class GameController implements Runnable {
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
-
+	private static int eatenGhosts;
 	private Image[][] images;
 	private BufferedImage output;
 	private Graphics g;
@@ -394,6 +394,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setStrategy(new StrBlue());
 			ghostList.get(i).loadImage();
 		}
+		pacMan.setPas(3);
 		long date = System.currentTimeMillis();
 		if(date - startInvicible > 8000) {
 			stopInvincibleMode();
@@ -411,10 +412,18 @@ public class GameController implements Runnable {
 		setInvincible(false);
 		for(int i = 0; i < ghostList.size(); i++) {
 			ghostList.get(i).setNormalStrategy();
+			ghostList.get(i).setEaten(false);
 		}
+		pacMan.setPas(2);
+		setEatenGhosts(0);
 	}
 
-	private static boolean isInvincible() {
+	private void setEatenGhosts(int i) {
+		// TODO Auto-generated method stub
+		eatenGhosts = i;
+	}
+
+	public static boolean isInvincible() {
 		// TODO Auto-generated method stub
 		return isInvincible;
 	}
@@ -799,7 +808,7 @@ public class GameController implements Runnable {
 		this.resize = resize;
 	}
 
-	public int getScore() {
+	public static int getScore() {
 		// TODO Auto-generated method stub
 		return score;
 	}
@@ -1082,5 +1091,28 @@ public class GameController implements Runnable {
 		startInvicible = currentTimeMillis;
 	}
 
+	public static void setScore(int score) {
+		GameController.score = score;
+	}
+	
+
+
+	public static void incEatenGhosts() {
+		// TODO Auto-generated method stub
+		eatenGhosts++;
+	}
+	
+	public static int getEatenGhosts() {
+		// TODO Auto-generated method stub
+		return eatenGhosts;
+	}
+	
+	public static void initEatenGhosts() {
+		// TODO Auto-generated method stub
+		eatenGhosts = 0;
+	}
+	
+
+	
 	
 }

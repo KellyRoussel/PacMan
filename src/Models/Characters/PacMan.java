@@ -28,7 +28,7 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
-	private final int PAS = 2;
+	private int PAS = 2;
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;
@@ -432,5 +432,15 @@ public class PacMan extends Character {
 	 */
 	public int getDeadAnimationCounter() {
 		return deadAnimationCounter;
+	}
+
+	public void setPas(int i) {
+		// TODO Auto-generated method stub
+		PAS = i;
+		steps = new HashMap<Integer, Point>();
+		steps.put(KeyEvent.VK_LEFT, new Point(-PAS, 0));
+		steps.put(KeyEvent.VK_RIGHT, new Point(PAS, 0));
+		steps.put(KeyEvent.VK_UP, new Point(0, -PAS));
+		steps.put(KeyEvent.VK_DOWN, new Point(0, PAS));
 	}
 }

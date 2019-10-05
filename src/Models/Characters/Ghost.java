@@ -45,6 +45,9 @@ public class Ghost  extends Character{
     
 	private int dx;
     private int dy;
+    
+	private boolean isEaten;
+
         	    
     private Map<Integer, Point> changes;
     private Map<Integer, Point> steps;
@@ -492,5 +495,15 @@ public class Ghost  extends Character{
 	public void setNormalStrategy() {
 		// TODO Auto-generated method stub
 		setStrategy(normalStrategy);
+	}
+	
+	public void setEaten(boolean eaten) {
+		isEaten = eaten;
+		ghostStrategy.loadImage();
+	}
+		
+	public boolean isEaten() {
+		// TODO Auto-generated method stub
+		return isEaten;
 	}
 }

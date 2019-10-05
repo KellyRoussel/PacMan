@@ -101,7 +101,13 @@ public class StrBlue implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostdead.png");
+		String str = "";
+		if(ghost.isEaten()) {
+			str = "dead";
+		}
+		else
+			str = "alive";
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + ".png");
     	ghost.setImage(ii.getImage());
 	}
 	
