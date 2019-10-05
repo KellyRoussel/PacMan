@@ -318,14 +318,14 @@ public class GameController implements Runnable {
 					if (key == KeyEvent.VK_UP) {
 						highScore.getLetterIndex()[highScore.getLetterPosition()]--;
 						if (highScore.getLetterIndex()[highScore.getLetterPosition()] < 0) {
-							highScore.getLetterIndex()[highScore.getLetterPosition()] += 26;
+							highScore.getLetterIndex()[highScore.getLetterPosition()] += 36;
 						}
-						highScore.getLetterIndex()[highScore.getLetterPosition()] %= 26;
+						highScore.getLetterIndex()[highScore.getLetterPosition()] %= 36;
 					}
 					if (key == KeyEvent.VK_DOWN) {
 						highScore.getLetterIndex()[highScore
 								.getLetterPosition()] = (highScore.getLetterIndex()[highScore.getLetterPosition()] + 1)
-										% 26;
+										% 36;
 					}
 					if (key == KeyEvent.VK_ENTER) {
 						setScoreSaved(true);

@@ -115,9 +115,16 @@ public class HighScore {
 				textMessage = TEXT_MESSAGE_SIZE_EMPHASIZED;
 				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
 			}
-			toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
-					(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
-					textMessage, textMessage, g);
+			if(letterIndex[i]>25) {
+				toSprite.drawToSprite(letterIndex[i]-26,
+						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+						textMessage, textMessage, g);
+			}
+			else {
+				toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
+						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+						textMessage, textMessage, g);
+			}
 		}
 	}
 
