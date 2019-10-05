@@ -61,6 +61,8 @@ public class StrBlue implements GhostStrategy{
 			return -1;
 		
 		if(pmRaw == ghostRaw) {
+			if(Math.abs(pmColumn - ghostColumn) <= 2)
+				return -1;
 			if(pmColumn > ghostColumn) {
 				for(int i = ghostColumn; i <= pmColumn; i++) {
 					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelRight().contains(new Point(pmRaw, i))) {
@@ -70,6 +72,7 @@ public class StrBlue implements GhostStrategy{
 				return ghost.canMove(KeyEvent.VK_LEFT)? KeyEvent.VK_LEFT : -1;
 			}
 			else {
+				
 				for(int i = pmColumn; i <= ghostColumn; i++) {
 					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelLeft().contains(new Point(pmRaw, i))) {
 						return -1;
@@ -80,6 +83,8 @@ public class StrBlue implements GhostStrategy{
 		}
 		
 		if(pmColumn == ghostColumn) {
+			if(Math.abs(ghostRaw - pmRaw) <= 2)
+				return -1;
 			if(pmRaw > ghostRaw) {
 				for(int i = ghostRaw + 1; i < pmRaw; i++) {
 					if(GameController.getGrille()[i][pmColumn] <= 25 && GameController.getGrille()[i][pmColumn] >= 1) {
@@ -113,7 +118,13 @@ public class StrBlue implements GhostStrategy{
 		System.out.println(counter);
 		if(counter == 3) {
 			counter = 0;
-			style = (style + 1) % 4;
+			if(GameController.getInvincibleCounter() <= 3) {
+				style = (style + 1) % 2;
+				style *= 2;
+				style += 1;
+			}
+			else
+				style = (style + 1) % 4;
 		}
 		String str = "";
 		if(ghost.isEaten()) {
