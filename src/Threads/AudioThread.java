@@ -49,8 +49,8 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isDead 	= new AtomicBoolean(false);
 		private AtomicBoolean isStart 	= new AtomicBoolean(false);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
-		private AtomicBoolean isPacGumEaten = new AtomicBoolean(false);
-		private boolean isInvincible;
+		private AtomicBoolean isPacGumEaten = new AtomicBoolean(true);
+		private AtomicBoolean isInvincible = new AtomicBoolean(true);
 
 		
 		
@@ -91,6 +91,13 @@ import javax.sound.sampled.FloatControl;
 						MuteOnOff(musicBackgroundClip, true);
 						MuteOnOffMusic.compareAndExchange(true, false);
 					}
+					
+					// quand le mode d invincibilte est termine
+					if(!isInvincible.get()) {
+						stop(eatedPacGumMusicClip);
+						restart(musicBackgroundClip, MusicfilePath, true);
+						isInvincible.compareAndExchange(false, true);
+					}
 					// resume la musique d arriere plan
 					resumeAudio(musicBackgroundClip, MusicfilePath, true);
 					
@@ -120,9 +127,8 @@ import javax.sound.sampled.FloatControl;
 					
 					// si le pacman mange une pacGomme
 					if(isPacGumEaten.get()) {
-						/* je dois ajouter traitement pour arreter la musique du background et apr�s je dois faire 
-						un traitement pour arr�ter cette musique et pour lancer celle du background
-						*/
+						System.out.println("****************************PacGumEaten*****************************************");
+						stop(musicBackgroundClip);
 						// et le son n est pas en mode mute
 						if(!SoundMuted.get()) {
 							// si le clip eatedPacGumMusicClip est deja lance une fois au moins
@@ -135,6 +141,7 @@ import javax.sound.sampled.FloatControl;
 								firstTimePacGumEaten = false;
 							}
 						}
+						isPacGumEaten.compareAndExchange(true, false);
 					}
 					
 					// si le pacman mange une gomme
@@ -422,7 +429,7 @@ import javax.sound.sampled.FloatControl;
 
 		public void setIsInivincible(boolean b) {
 			// TODO Auto-generated method stub
-			isInvincible = b;
+			isInvincible = new AtomicBoolean(b);
 		}
 		
 		
