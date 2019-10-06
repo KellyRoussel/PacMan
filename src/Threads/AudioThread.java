@@ -47,7 +47,7 @@ import javax.sound.sampled.FloatControl;
 		private AtomicBoolean isRunning = new AtomicBoolean(true);
 		private AtomicBoolean isEaten 	= new AtomicBoolean(false);
 		private AtomicBoolean isDead 	= new AtomicBoolean(false);
-		private AtomicBoolean isStart 	= new AtomicBoolean(false);
+		private AtomicBoolean isStart 	= new AtomicBoolean(true);
 		private AtomicBoolean isPause 	= new AtomicBoolean(false);
 		private AtomicBoolean isPacGumEaten = new AtomicBoolean(false);
 		private AtomicBoolean isInvincible = new AtomicBoolean(true);

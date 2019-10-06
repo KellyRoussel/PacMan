@@ -47,7 +47,7 @@ public class GameController implements Runnable {
 	private GamePanel gamePanel;
 	private StatusBar statusBar;
 	private HighScore highScore;
-	
+
 	private boolean isNewScore;
 
 	private static PacMan pacMan;
@@ -106,7 +106,6 @@ public class GameController implements Runnable {
 	private int updateCounter;
 
 	private static AtomicInteger invincibleCounter = new AtomicInteger();
-
 
 	public GameController(MainGame frame) {
 
@@ -207,9 +206,8 @@ public class GameController implements Runnable {
 
 		// Creer les Gums et PacGums
 
-		foodList = Collections.synchronizedList(new ArrayList<Food>()); 
+		foodList = Collections.synchronizedList(new ArrayList<Food>());
 		fillFoodList();
-
 
 		// Redimensionner le labyrinthe selon la dimension actuelle de la fenêtre du jeu
 		MainGame.updateMazeSize();
@@ -222,29 +220,29 @@ public class GameController implements Runnable {
 
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
-		
+
 		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"),
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
-		
-		getGhostList().add(
-				new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"), definePosition(RED_INITIAL_POSITION),
-						"red", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow, new RedStrategy()));
-		
+
+		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"),
+				definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, getListTunnelLeft(),
+				getListTunnelRight(), nColumn, nRow, new RedStrategy()));
+
 		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
-		getGhostList().add(
-				new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"), definePosition(PINK_INITIAL_POSITION),
-						"pink", defaultSize, grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
-		
+		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"),
+				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
+				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
+
 		setGhostOutside(0);
-		
+
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
 
 		// Creer les Gums et PacGums
 		synchronized (foodList) {
-			foodList = Collections.synchronizedList(new ArrayList<Food>()); 
+			foodList = Collections.synchronizedList(new ArrayList<Food>());
 			fillFoodList();
 		}
 	}
@@ -308,33 +306,35 @@ public class GameController implements Runnable {
 				}
 				// Key Event pour gerer le score lors d un gameOver
 				else {
-					if(key == KeyEvent.VK_LEFT) {
-						highScore.setLetterPosition((highScore.getLetterPosition()-1)%3);
-						if(highScore.getLetterPosition()<0) {
-							highScore.setLetterPosition(highScore.getLetterPosition()+3);
+					if (key == KeyEvent.VK_LEFT) {
+						highScore.setLetterPosition((highScore.getLetterPosition() - 1) % 3);
+						if (highScore.getLetterPosition() < 0) {
+							highScore.setLetterPosition(highScore.getLetterPosition() + 3);
 						}
 					}
-					if(key == KeyEvent.VK_RIGHT) {
-						highScore.setLetterPosition((highScore.getLetterPosition()+1)%3);
+					if (key == KeyEvent.VK_RIGHT) {
+						highScore.setLetterPosition((highScore.getLetterPosition() + 1) % 3);
 					}
-					if(key == KeyEvent.VK_UP) {
+					if (key == KeyEvent.VK_UP) {
 						highScore.getLetterIndex()[highScore.getLetterPosition()]--;
-						if(highScore.getLetterIndex()[highScore.getLetterPosition()]<0) {
-							highScore.getLetterIndex()[highScore.getLetterPosition()]+=26;
+						if (highScore.getLetterIndex()[highScore.getLetterPosition()] < 0) {
+							highScore.getLetterIndex()[highScore.getLetterPosition()] += 36;
 						}
-						highScore.getLetterIndex()[highScore.getLetterPosition()]%=26;
+						highScore.getLetterIndex()[highScore.getLetterPosition()] %= 36;
 					}
-					if(key == KeyEvent.VK_DOWN) {
-						highScore.getLetterIndex()[highScore.getLetterPosition()]=(highScore.getLetterIndex()[highScore.getLetterPosition()]+1)%26;
+					if (key == KeyEvent.VK_DOWN) {
+						highScore.getLetterIndex()[highScore
+								.getLetterPosition()] = (highScore.getLetterIndex()[highScore.getLetterPosition()] + 1)
+										% 36;
 					}
-					if(key == KeyEvent.VK_ENTER) {
+					if (key == KeyEvent.VK_ENTER) {
 						setScoreSaved(true);
-						//highScore.getActualScorer();
+						// highScore.getActualScorer();
 						highScore.newHighScore();
 						setNewScore(false);
 					}
 				}
-				
+
 				if (key == KeyEvent.VK_ESCAPE) {
 					setPause(true);
 					if (isGameOver()) {
@@ -374,14 +374,13 @@ public class GameController implements Runnable {
 				if (!isPause()) {
 					updateCounter++;
 					updateCounter %= 3;
-					if(updateCounter == 0)
+					if (updateCounter == 0)
 						gameUpdate();
 				} else
 					pause();
 				if (isResume()) {
 					resume();
-				}
-				else if(isInvincible()) {
+				} else if (isInvincible() && !isPause() && !isResume()) {
 					switchToInvicibleMode();
 				}
 			}
@@ -394,13 +393,13 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
-		if(pacMan.getPas() == 4) {
+		if (pacMan.getPas() == 4) {
 			while (gettRender() == null) {
 			}
 			gettAudio().setIsPacGumEaten(true);
 			gettRender().setIsInvincible(true);
-	
-			for(int i = 0; i < ghostList.size(); i++) {
+
+			for (int i = 0; i < ghostList.size(); i++) {
 				ghostList.get(i).setStrategy(new StrBlue());
 				ghostList.get(i).loadImage();
 			}
@@ -408,10 +407,10 @@ public class GameController implements Runnable {
 		}
 		long date = System.currentTimeMillis();
 		setInvincibleCounter((int) ((date - startInvicible) / 1000));
-		if(date - startInvicible > 8000) {
+		if (date - startInvicible > 8000) {
 			stopInvincibleMode();
 		}
-		
+
 	}
 
 	private void stopInvincibleMode() {
@@ -421,7 +420,7 @@ public class GameController implements Runnable {
 		gettAudio().setIsInivincible(false);
 		gettRender().setIsInvincible(false);
 		setInvincible(false);
-		for(int i = 0; i < ghostList.size(); i++) {
+		for (int i = 0; i < ghostList.size(); i++) {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
 		}
@@ -512,22 +511,20 @@ public class GameController implements Runnable {
 		if (getPacMan().isResurrection()) {
 			startNewLife();
 		}
-		
-	}
 
-	
+	}
 
 	public synchronized void updatePositions(int raw, int column, boolean flag) {
 		synchronized (foodList) {
 			Iterator iter = getFoodList().iterator();
-		    while (iter.hasNext()){
-		    	Food f = (Food)iter.next();
+			while (iter.hasNext()) {
+				Food f = (Food) iter.next();
 				if (f.getEaten()) {
 					gettAudio().setIsEaten(true);
 					// Tile contenant une Gum
 					int scoreBefore = score;
 					score += f.getGain();
-					if (getScore()>= 10000 && scoreBefore < 10000) {
+					if (getScore() >= 10000 && scoreBefore < 10000) {
 						setLives(lives + 1);
 					}
 					iter.remove();
@@ -536,8 +533,7 @@ public class GameController implements Runnable {
 			}
 		}
 
-		
-		synchronized(foodList) {
+		synchronized (foodList) {
 			if (getFoodList().size() == 0) {
 				level++;
 				// statusBar.updateLevel();
@@ -549,12 +545,10 @@ public class GameController implements Runnable {
 				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 				getPacMan().loadImage();
 				fillFoodList();
-				gettAudio().setIsStart(true);
 				setPause(true);
 				resume = true;
 			}
 		}
-		
 
 		if (!isResume()) {
 			getPacMan().move();
@@ -571,7 +565,7 @@ public class GameController implements Runnable {
 		if (lives == 0) {
 			setGameOver(true);
 			highScore.setScore(score);
-			
+
 			setNewScore(getHighScore().newScore(score));
 		} else {
 			getPacMan().returnInitialPosition();
@@ -610,14 +604,15 @@ public class GameController implements Runnable {
 
 			// lancer l'audio thread
 			if (!isAudioThreadStarted) {
-				gettAudio().setName("Audio");
-				gettAudio().start();
 				// Lancer un listener sur le clavier
 				addListeners();
 				isAudioThreadStarted = true;
+			} else {
+				tAudio = new AudioThread();
 			}
 
-			gettAudio().setIsStart(true);
+			gettAudio().setName("Audio");
+			gettAudio().start();
 			gettPhysics().start();
 			gettRender().start();
 
@@ -625,7 +620,7 @@ public class GameController implements Runnable {
 			pause = false;
 			resume = true;
 			isScoreSaved = false;
-			
+
 		}
 //		else if(gameOver) {
 //			System.out.println("ici gameOver");
@@ -648,8 +643,7 @@ public class GameController implements Runnable {
 	public void stop() {
 		setRunning(false);
 		gettRender().setRunning(false);
-		// ******************************************************
-		// tAudio.setIsRunning(false);
+		tAudio.stopThread();
 		try {
 
 			getGameThread().join(500);
@@ -682,6 +676,7 @@ public class GameController implements Runnable {
 		if (getPacMan().isResurrection()) {
 			getPacMan().setResurrection(false);
 		}
+		startInvicible += System.currentTimeMillis() - startInvicible;
 	}
 
 	public Point definePosition(int initialPositionValue) {
@@ -742,7 +737,7 @@ public class GameController implements Runnable {
 	public PacMan getPacMan() {
 		return pacMan;
 	}
-	
+
 	public static Point getPacManPosition() {
 		return pacMan.getPosition();
 	}
@@ -993,12 +988,12 @@ public class GameController implements Runnable {
 		this.running = running;
 
 	}
-	
+
 	public static void setInvincible(boolean isInvincble) {
 
 		isInvincible = isInvincble;
 	}
-	
+
 	/**
 	 * @return the ghostOutside
 	 */
@@ -1105,24 +1100,22 @@ public class GameController implements Runnable {
 	public static void setScore(int score) {
 		GameController.score = score;
 	}
-	
-
 
 	public static void incEatenGhosts() {
 		// TODO Auto-generated method stub
 		eatenGhosts++;
 	}
-	
+
 	public static int getEatenGhosts() {
 		// TODO Auto-generated method stub
 		return eatenGhosts;
 	}
-	
+
 	public static void initEatenGhosts() {
 		// TODO Auto-generated method stub
 		eatenGhosts = 0;
 	}
-	
+
 	public static int getInvincibleCounter() {
 		return invincibleCounter.get();
 	}
@@ -1131,6 +1124,4 @@ public class GameController implements Runnable {
 		GameController.invincibleCounter = new AtomicInteger(invincibleCounter);
 	}
 
-	
-	
 }
