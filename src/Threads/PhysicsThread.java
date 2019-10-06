@@ -111,10 +111,11 @@ public class PhysicsThread extends Thread
 			try {
 				Thread.sleep(SLEEP_TIMER);
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
+					//devrait être dans le controlleur, la thread ne devrait pas contenir de logique de code à l'intérieur, mais seulement voir les collisions.
 					if(GameController.isInvincible()) {
-						
 						GameController.incEatenGhosts();
-						GameController.setScore(GameController.getScore() + 200 * GameController.getEatenGhosts());
+						//System.out.println((Math.pow(2,GameController.getEatenGhosts())));
+						GameController.setScore(GameController.getScore() + 100 * (int)(Math.pow(2,GameController.getEatenGhosts())));
 					}
 					else
 						pacMan.setIsDead(true);
