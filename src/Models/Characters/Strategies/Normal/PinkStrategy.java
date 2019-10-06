@@ -129,7 +129,7 @@ public class PinkStrategy implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostpink.png");
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "pink" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
 	

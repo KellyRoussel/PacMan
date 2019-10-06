@@ -37,7 +37,7 @@ public class OrangeStrategy implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostorange.png");
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "orange" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
 }

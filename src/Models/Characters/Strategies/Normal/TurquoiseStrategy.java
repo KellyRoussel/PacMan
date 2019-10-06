@@ -116,7 +116,7 @@ public class TurquoiseStrategy implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostturquoise.png");
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "turquoise" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
 }

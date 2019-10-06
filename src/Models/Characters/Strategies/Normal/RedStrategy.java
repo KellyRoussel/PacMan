@@ -97,7 +97,7 @@ public class RedStrategy implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghostred.png");
+    	ImageIcon ii = new ImageIcon("ressources" + File.separator + "red" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
 }
