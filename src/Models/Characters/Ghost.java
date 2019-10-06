@@ -92,10 +92,10 @@ public class Ghost  extends Character{
     	this.color = color;
         
     	directionString = new HashMap<Integer, String>(); 
-        directionString.put(KeyEvent.VK_LEFT, "Left");
-        directionString.put(KeyEvent.VK_RIGHT, "Right");	        
-        directionString.put(KeyEvent.VK_UP, "Up");	        
-        directionString.put(KeyEvent.VK_DOWN, "Down");	
+        directionString.put(KeyEvent.VK_LEFT, "left");
+        directionString.put(KeyEvent.VK_RIGHT, "right");	        
+        directionString.put(KeyEvent.VK_UP, "up");	        
+        directionString.put(KeyEvent.VK_DOWN, "down");	
         
         oppositeDirection = new HashMap<Integer, Integer>(); 
         oppositeDirection.put(KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
