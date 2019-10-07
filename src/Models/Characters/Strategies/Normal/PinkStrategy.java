@@ -3,6 +3,7 @@ package Models.Characters.Strategies.Normal;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -61,9 +62,10 @@ public class PinkStrategy implements GhostStrategy{
 					return;
 				}
 			}
-			if (!ghost.canMove(ghost.getDirection()) || ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
-				ghost.setRandomDirection();
+			if (!ghost.canMove(ghost.getDirection()) || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+					return;
 			}
 			ghost.move();
 		}

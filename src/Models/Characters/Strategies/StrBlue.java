@@ -3,6 +3,7 @@ package Models.Characters.Strategies;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -14,6 +15,7 @@ public class StrBlue implements GhostStrategy{
 	private Ghost ghost;
 	private int style = 1;
 	private int counter = 0;
+	private boolean onRoad = false;
 
 	@Override
 	public void meet() {
@@ -30,15 +32,19 @@ public class StrBlue implements GhostStrategy{
 	public void updatePosition() {
 		// TODO Auto-generated method stub
 		if(!ghost.isEaten()){
-
 			int direction = isPacManCorridor();
-			if(direction != -1) {
+			if(direction != -1 && ghost.canMove(direction)) {
+				onRoad = true;
 				ghost.setDirection(direction);
 			}
 			else {
-				if (ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
-					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
-					ghost.setRandomDirection();
+				ArrayList<Integer> excluded = new ArrayList<Integer>();
+				if (onRoad || ghost.getUpdatedAvailableDirections(excluded) != ghost.getAvailableDirections()) {
+					onRoad = false;
+					if(direction != -1)
+						excluded.add(ghost.getOppositeDirection(direction));
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(excluded));
+					ghost.setRandomDirection(excluded);
 				}
 			}
 			ghost.move();

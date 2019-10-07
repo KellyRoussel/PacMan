@@ -151,7 +151,7 @@ public class GamePanel extends JPanel {
 					TEXT_MESSAGE_SIZE, dbg);
 		}
 
-		// dessiner le décompte Resume
+		// dessiner le dï¿½compte Resume
 		if (gameController.isResume() && gameController.getRESUME()<=3) {
 			int text = gameController.getRESUME();
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - TEXT_MESSAGE_SIZE) / 2,

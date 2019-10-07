@@ -3,6 +3,7 @@ package Models.Characters.Strategies.Normal;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -31,9 +32,10 @@ public class RedStrategy implements GhostStrategy{
 			ghost.setDirection(direction);
 		}
 		else {
-			if (ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
-				ghost.setRandomDirection();
+			if (ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+					return;
 			}
 		}
 		ghost.move();
