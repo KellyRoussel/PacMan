@@ -111,7 +111,7 @@ public class PhysicsThread extends Thread {
 						GameController.incEatenGhosts();
 						// System.out.println((Math.pow(2,GameController.getEatenGhosts())));
 						GameController.setScore(
-								GameController.getScore() + 200 * (int) (Math.pow(2, GameController.getEatenGhosts())));
+								GameController.getScore() + 100 * (int) (Math.pow(2, GameController.getEatenGhosts())));
 					} else
 						pacMan.setIsDead(true);
 				}
