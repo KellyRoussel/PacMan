@@ -41,8 +41,8 @@ public class ToSprite {
 	private static final int START_POINT_INTEGER_Y = 1;
 
 	// dictionnaire stockant les images des tiles avec leur valeur correspondante
-	private static Map<java.lang.Character, Image> stringImageMap = new HashMap<java.lang.Character, Image>();
-	private static Map<Integer, Image> integerImageMap = new HashMap<Integer, Image>();
+	private Map<java.lang.Character, Image> stringImageMap = new HashMap<java.lang.Character, Image>();
+	private Map<Integer, Image> integerImageMap = new HashMap<Integer, Image>();
 
 	public ToSprite(int column_Number, String fileName) {
 		super();
@@ -57,7 +57,7 @@ public class ToSprite {
 		int i = START_POINT_STRING_X;
 		int j = START_POINT_STRING_Y;
 		while (AlphabetCounter < 26) {
-			stringImageMap.put((char) (65 + AlphabetCounter), extractImage(i, j, "string", AlphabetCounter));
+			this.stringImageMap.put((char) (65 + AlphabetCounter), extractImage(i, j, "string", AlphabetCounter));
 			AlphabetCounter++;
 			j = j + (i + 1) / column_Number;
 			i = (i + 1) % column_Number;
@@ -68,7 +68,7 @@ public class ToSprite {
 		i = START_POINT_INTEGER_X;
 		j = START_POINT_INTEGER_Y;
 		while (NumberCounter < 10) {
-			integerImageMap.put(NumberCounter, extractImage(i, j, "number", NumberCounter));
+			this.integerImageMap.put(NumberCounter, extractImage(i, j, "number", NumberCounter));
 			NumberCounter++;
 			j = j + (i + 1) / column_Number;
 			i = (i + 1) % column_Number;
@@ -98,7 +98,7 @@ public class ToSprite {
 		for (char c : text.toCharArray()) {
 			if(c == ' ') {}
 			else {
-				g.drawImage(stringImageMap.get(c), x + i * width, y, width, height, null);
+				g.drawImage(this.stringImageMap.get(c), x + i * width, y, width, height, null);
 			}
 			i++;
 		}
@@ -110,7 +110,7 @@ public class ToSprite {
 		String numberString = String.valueOf(number);
 		int i = 0;
 		for (char c : numberString.toCharArray()) {
-			g.drawImage(integerImageMap.get(Integer.parseInt(Character.toString(c))), x + i * width, y, width, height,
+			g.drawImage(this.integerImageMap.get(Integer.parseInt(Character.toString(c))), x + i * width, y, width, height,
 					null);
 			i++;
 		}
