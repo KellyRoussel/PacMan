@@ -210,9 +210,9 @@ public class PacMan extends Character {
 
 	public void move() {
 		if (!isDead) {
-			counter = (counter + 1) % 10;
+			counter = (counter + 1) % 2;
 			if (counter == 0) {
-				style = (style + 1) % 2;
+				style = (style + 1) % 3;
 			}
 			loadImage();
 			getPosition().x = nextX;

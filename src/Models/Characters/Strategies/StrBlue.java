@@ -71,7 +71,7 @@ public class StrBlue implements GhostStrategy{
 				return -1;
 			if(pmColumn > ghostColumn) {
 				for(int i = ghostColumn; i <= pmColumn; i++) {
-					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelRight().contains(new Point(pmRaw, i))) {
+					if(ghost.getListTunnelLeft().contains(new Point(pmRaw, i)) || (GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelRight().contains(new Point(pmRaw, i))) {
 						return -1;
 					}
 				}
@@ -80,7 +80,7 @@ public class StrBlue implements GhostStrategy{
 			else {
 				
 				for(int i = pmColumn; i <= ghostColumn; i++) {
-					if((GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelLeft().contains(new Point(pmRaw, i))) {
+					if(ghost.getListTunnelRight().contains(new Point(pmRaw, i)) || (GameController.getGrille()[pmRaw][i] <= 25 && GameController.getGrille()[pmRaw][i] >= 1) || ghost.getListTunnelLeft().contains(new Point(pmRaw, i))) {
 						return -1;
 					}
 				}
