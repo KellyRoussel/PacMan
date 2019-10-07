@@ -215,24 +215,24 @@ public class GameController implements Runnable {
 		// Creer le PacMan
 		ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
 
-		pacMan = new PacMan(defaultSize, defaultSize, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize,
+		pacMan = new PacMan((defaultSize * 4) / 3, (defaultSize * 4) / 3, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize,
 				grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow);
 
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
 
-		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostorange.png"),
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostorange.png"),
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
 
-		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostred.png"),
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostred.png"),
 				definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new RedStrategy()));
 
-		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostturquoise.png"),
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
-		getGhostList().add(new Ghost(defaultSize, defaultSize, loadImage("ghostpink.png"),
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
 
@@ -251,7 +251,7 @@ public class GameController implements Runnable {
 		for (int i = 0; i < nRow; i++)
 			for (int j = 0; j < nColumn; j++) {
 				if (grille[i][j] == 30)
-					getFoodList().add(new Gum((defaultSize * 3) / 4, (defaultSize * 3) / 4, loadImage("gum.png"),
+					getFoodList().add(new Gum(defaultSize , defaultSize, loadImage("gum.png"),
 							new Point(j * defaultSize, i * defaultSize)));
 				if (grille[i][j] == 40)
 					getFoodList().add(new PacGum(defaultSize, defaultSize, loadImage("pacGum.png"),
@@ -393,7 +393,7 @@ public class GameController implements Runnable {
 	}
 
 	private void switchToInvicibleMode() {
-		if (pacMan.getPas() == 4) {
+		if (pacMan.getPas() == 3) {
 			while (gettRender() == null) {
 			}
 			gettAudio().setIsPacGumEaten(true);
@@ -403,7 +403,7 @@ public class GameController implements Runnable {
 				ghostList.get(i).setStrategy(new StrBlue());
 				ghostList.get(i).loadImage();
 			}
-			pacMan.setPas(5);
+			pacMan.setPas(4);
 		}
 		long date = System.currentTimeMillis();
 		setInvincibleCounter((int) ((date - startInvicible) / 1000));
@@ -424,7 +424,7 @@ public class GameController implements Runnable {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
 		}
-		pacMan.setPas(4);
+		pacMan.setPas(3);
 		setEatenGhosts(0);
 	}
 

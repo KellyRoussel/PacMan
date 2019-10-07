@@ -117,7 +117,7 @@ public class StrBlue implements GhostStrategy{
 		counter++;
 		if(counter == 3) {
 			counter = 0;
-			if(GameController.getInvincibleCounter() <= 3) {
+			if(GameController.getInvincibleCounter() <= 5) {
 				style = (style + 1) % 2;
 				style *= 2;
 				style += 1;
