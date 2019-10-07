@@ -3,6 +3,7 @@ package Models.Characters.Strategies.Normal;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -49,9 +50,10 @@ public class TurquoiseStrategy implements GhostStrategy{
 			}
 		}
 		else {
-			if (onRoad || ghost.getUpdatedAvailableDirections() != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections());
-				ghost.setRandomDirection();
+			if (onRoad || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+					return;
 			}
 			onRoad = false;
 		}

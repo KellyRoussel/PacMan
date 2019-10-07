@@ -41,7 +41,7 @@ public class Ghost  extends Character{
     private int nextX;
     private int nextY;
     
-    private final int PAS = 4;
+    private final int PAS = 3;
 	private final int MARGE = 10;
     
 	private int dx;
@@ -50,7 +50,6 @@ public class Ghost  extends Character{
 	private AtomicBoolean isEaten;
 
         	    
-    private Map<Integer, Point> changes;
     private Map<Integer, Point> steps;
     private Map<Integer, Point> ghostFront;
     private Map<Integer, String> directionString;
@@ -107,11 +106,6 @@ public class Ghost  extends Character{
     	w = image.getWidth(null);
         h = image.getHeight(null);
     		        
-        changes = new HashMap<Integer, Point>();
-        changes.put(KeyEvent.VK_LEFT, new Point(0, 1));
-        changes.put(KeyEvent.VK_RIGHT, new Point(0, 1));
-        changes.put(KeyEvent.VK_UP, new Point(1, 0));
-        changes.put(KeyEvent.VK_DOWN, new Point(1, 0));
         
         steps = new HashMap<Integer, Point>();
         steps.put(KeyEvent.VK_LEFT, new Point(-PAS, 0));
@@ -131,8 +125,8 @@ public class Ghost  extends Character{
         
         
         try {
-        	availableDirections = getUpdatedAvailableDirections();
-        	setRandomDirection();
+        	availableDirections = getUpdatedAvailableDirections(new ArrayList<Integer>());
+        	setRandomDirection(new ArrayList<Integer>());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -219,7 +213,7 @@ public class Ghost  extends Character{
 		this.availableDirections = availableDirections;
 	}
 
-	public int getUpdatedAvailableDirections() {
+	public int getUpdatedAvailableDirections(ArrayList<Integer> excluded) {
 					
 		   int raw = getPosition().y / defaultSize;
 		   int column = getPosition().x / defaultSize;
@@ -230,25 +224,25 @@ public class Ghost  extends Character{
 
 		   int counter = 0;
 		   //UP
-		   if(raw - 1 >= 0 && 
+		   if(!excluded.contains(KeyEvent.VK_UP) && raw - 1 >= 0 && 
 				   (grille[raw - 1][column] > 25 || 
 						   grille[raw - 1][column] < 1 ||  
 						   grille[raw - 1][column] == 2 || 
 						   grille[raw - 1][column] == 15))
 			   counter += KeyEvent.VK_UP;
 		   //DOWN
-		   if(raw + 1 < nRow && 
+		   if(!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow && 
 				   (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
 			   counter += KeyEvent.VK_DOWN;
 		   
 		   //LEFT
-		   if(!listTunnelLeft.contains(new Point(raw, column)) &&
+		   if(!excluded.contains(KeyEvent.VK_LEFT) && !listTunnelLeft.contains(new Point(raw, column)) &&
 				   column - 1 >= 0 &&
 				   (grille[raw][column - 1] > 25 ||
 						   grille[raw][column - 1] < 1))
 			   counter += KeyEvent.VK_LEFT;
 		   //DOWN
-		   if(column + 1 < nColumn &&
+		   if(!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn &&
 				   !listTunnelRight.contains(new Point(raw, column)) &&
 				   (grille[raw][column + 1] > 25 || 
 						   grille[raw][column + 1] < 1))
@@ -392,10 +386,11 @@ public class Ghost  extends Character{
 	public void setInsideTile(int nRaw, int nColumn) {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
 		int sz = defaultSize;
-		if(changes.get(direction).x == 1)
-			getPosition().x = nColumn * sz;
-		if(changes.get(direction).y == 1)
+		if(direction == KeyEvent.VK_RIGHT || direction == KeyEvent.VK_LEFT)
 			getPosition().y = nRaw * sz;
+		else
+			getPosition().x = nColumn * sz;
+
 	}
 	
 	public int getDX() {
@@ -416,45 +411,38 @@ public class Ghost  extends Character{
 
 
 
-	public void setRandomDirection() {
+	public boolean setRandomDirection(ArrayList<Integer> excluded) {
 		// TODO Auto-generated method stub
 		List<Integer> availables = new ArrayList<>();
 		int raw = getPosition().y / defaultSize;
 		int column = getPosition().x / defaultSize;
 		
-		if(raw - 1 >= 0 && 
+		if(!excluded.contains(KeyEvent.VK_UP) && raw - 1 >= 0 && 
 				(grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);
 		
-		if(raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
+		if(!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
 			availables.add(KeyEvent.VK_DOWN);
 		
-		if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !listTunnelLeft.contains(new Point(raw, column))) 
+		if(!excluded.contains(KeyEvent.VK_LEFT) && column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !listTunnelLeft.contains(new Point(raw, column))) 
 			availables.add(KeyEvent.VK_LEFT);
 		
-		if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction && !listTunnelRight.contains(new Point(raw, column))) {
+		if(!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction && !listTunnelRight.contains(new Point(raw, column))) {
 			availables.add(KeyEvent.VK_RIGHT);
 		}
+		
 			
 		
 		if(availables.size() == 0) {
-			if(raw - 1 >= 0 && 
-					(grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
-				availables.add(KeyEvent.VK_UP);
-			
-			if(raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
-				availables.add(KeyEvent.VK_DOWN);
-			
-			if(column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && !listTunnelLeft.contains(new Point(raw, column))) 
-				availables.add(KeyEvent.VK_LEFT);
-			
-			if(column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && !listTunnelRight.contains(new Point(raw, column))) {
-				availables.add(KeyEvent.VK_RIGHT);
+			if(excluded.contains(getOppositeDirection(direction))) {
+				System.out.println("hahahha");
+				return false;
 			}
+			availables.add(getOppositeDirection(direction));
 		}
 		
 		setDirection(availables.get((int)(Math.random() * availables.size())));
-		
+		return true;
 	}
 
 
@@ -483,7 +471,6 @@ public class Ghost  extends Character{
 	   
 	   if(raw >= 0 && raw < nRow && column >= 0 && column < nColumn && (grille[raw][column] <= 0 || grille[raw][column] > 25))
 		   return true;
-
 	   return false;
 	}
 	

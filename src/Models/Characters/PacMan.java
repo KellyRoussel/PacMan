@@ -28,7 +28,7 @@ public class PacMan extends Character {
 	private int nextX;
 	private int nextY;
 
-	private int PAS = 4;
+	private int PAS = 3;
 	private final int MARGE = 10;
 	private int dx;
 	private int dy;
@@ -36,7 +36,6 @@ public class PacMan extends Character {
 	private int nextDx;
 	private int nextDy;
 
-	private Map<Integer, Point> changes;
 	private Map<Integer, Point> steps;
 	private Map<Integer, Point> pacManFront;
 	private Map<Integer, String> directionString;
@@ -78,12 +77,6 @@ public class PacMan extends Character {
 
 		w = image.getWidth(null);
 		h = image.getHeight(null);
-
-		changes = new HashMap<Integer, Point>();
-		changes.put(KeyEvent.VK_LEFT, new Point(0, 1));
-		changes.put(KeyEvent.VK_RIGHT, new Point(0, 1));
-		changes.put(KeyEvent.VK_UP, new Point(1, 0));
-		changes.put(KeyEvent.VK_DOWN, new Point(1, 0));
 
 		steps = new HashMap<Integer, Point>();
 		steps.put(KeyEvent.VK_LEFT, new Point(-PAS, 0));
@@ -357,10 +350,11 @@ public class PacMan extends Character {
 	public void setInsideTile(int nRaw, int nColumn) {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
 		int sz = defaultSize;
-		if (changes.get(direction).x == 1)
-			getPosition().x = nColumn * sz;
-		if (changes.get(direction).y == 1)
+		if(direction == KeyEvent.VK_RIGHT || direction == KeyEvent.VK_LEFT)
 			getPosition().y = nRaw * sz;
+		else
+			getPosition().x = nColumn * sz;
+
 	}
 
 	public int getDX() {

@@ -70,7 +70,7 @@ public class PhysicsThread extends Thread
 			if(pacmanRectangle.intersects(x.getRectangle())) 
 			{
 				//System.out.println("Basic Collision Detected");
-				if(!x.isEaten() && advancedCatchCollisionTactics(pacMan.getEllipse(),x.getAdvancedLowerRectangle(),x.getAdvancedTopArc()))
+				if(advancedCatchCollisionTactics(pacMan.getEllipse(),x.getAdvancedLowerRectangle(),x.getAdvancedTopArc()))
 				{
 					x.setEaten(true);
 					return true;
@@ -111,7 +111,7 @@ public class PhysicsThread extends Thread
 			try {
 				Thread.sleep(SLEEP_TIMER);
 				if(catchCollisionPacManGhost(pacMan,ghost)) {
-					//devrait être dans le controlleur, la thread ne devrait pas contenir de logique de code à l'intérieur, mais seulement voir les collisions.
+					//devrait ï¿½tre dans le controlleur, la thread ne devrait pas contenir de logique de code ï¿½ l'intï¿½rieur, mais seulement voir les collisions.
 					if(GameController.isInvincible()) {
 						GameController.incEatenGhosts();
 						//System.out.println((Math.pow(2,GameController.getEatenGhosts())));
