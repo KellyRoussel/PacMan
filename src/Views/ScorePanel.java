@@ -67,7 +67,8 @@ public class ScorePanel extends JPanel {
 		List<Integer> scoreList = gameController.getHighScore().getScoreList();
 		
 		for(int i = 0; i < scoreList.size(); i++) {
-			score = new JLabel("<html><font color='WHITE'>" + scorerList.get(i)+ " - "+ scoreList.get(i) +  "</font></html>");
+			int num = i+1;
+			score = new JLabel("<html><font color='WHITE'>" + num+ " -  " + scorerList.get(i)+ " - "+ scoreList.get(i) +  "</font></html>");
 			score.setFont(defaultFont);
 			add(score);
 			score.setLocation(200, 200+70*i);
