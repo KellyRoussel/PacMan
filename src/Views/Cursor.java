@@ -80,9 +80,14 @@ public class Cursor implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+	//	System.out.println("Cursor : key pressed");
 		int key = e.getKeyCode();
+	//	System.out.println(MainGame.getInstance().getContentPane());
 		Container c = MainGame.getInstance().getContentPane();
+//		System.out.println(c);
+//		System.out.println(MainGame.getInstance().getMenuPane());
 		if(c == MainGame.getInstance().getMenuPane()) {
+			System.out.println("move in menu MenuPane");
 			GameMenu.moveInMenu(key);
 		}
 		else if(c == MainGame.getInstance().getAudioPane()) {

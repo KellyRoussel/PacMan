@@ -269,9 +269,11 @@ class GameControllerTest {
 			//assertNotEquals(position1, position2);
 		}
 
-
-
-
+	}
+	
+	@AfterEach
+	public void tearDown() throws Exception {
+		gameController.closeWindow();
 	}
 
 

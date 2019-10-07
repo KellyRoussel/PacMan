@@ -124,6 +124,7 @@ public class GameMenu extends JPanel {
 
 		switch (key) {
 		case KeyEvent.VK_DOWN:
+			System.out.println("pressed down");
 			cursor.nextPosition();
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 			break;
@@ -132,6 +133,7 @@ public class GameMenu extends JPanel {
 			lCursor.setLocation(cursor.getCurrentPosition().x, cursor.getCurrentPosition().y);
 			break;
 		case KeyEvent.VK_ENTER:
+			System.out.println("enter pressed");
 			Point position = cursor.getCurrentPosition();
 			if(position.y == startPosition.y) { // StartGame
 				gameController.startGame();
