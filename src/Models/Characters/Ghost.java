@@ -463,8 +463,9 @@ public class Ghost  extends Character{
 		setDirection(dir);
 	}
 	public boolean canMove(int direction) {
-		int x = position.x + steps.get(direction).x;
-		int y = position.y + steps.get(direction).y;
+			
+		int x = position.x + steps.get(direction).x * 5;
+		int y = position.y + steps.get(direction).y * 5;
 		
 	   int raw = y / defaultSize;
 	   int column = x / defaultSize;
