@@ -14,6 +14,7 @@ import Models.Characters.Strategies.GhostStrategy;
 public class RedStrategy implements GhostStrategy{
 
 	private Ghost ghost;
+	private boolean onRoad;
 	@Override
 	public void meet() {
 		// TODO Auto-generated method stub
@@ -29,10 +30,12 @@ public class RedStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
 		int direction = isPacManCorridor();
 		if(direction != -1) {
+			onRoad = true;
 			ghost.setDirection(direction);
 		}
 		else {
-			if (ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+			if (onRoad || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+				onRoad = false;
 				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
 				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
 					return;
