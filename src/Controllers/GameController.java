@@ -183,23 +183,23 @@ public class GameController implements Runnable {
 		setListTunnelRight(new ArrayList<Point>());
 
 		for (int i = 0; i < nRow; i++) {
-			if (grille[i][0] >= 30) {
+			if (grille[i][0] == 0) {
 				int j = 0;
-				while (grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
+				while (grille[i][j] == 0 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
 					j++;
 				getListTunnelLeft().add(new Point(i, j));
+				System.out.println(i + " " + j);
 			}
 		}
 
 		for (int i = 0; i < nRow; i++) {
-			if (grille[i][nColumn - 1] >= 30) {
+			if (grille[i][nColumn - 1] == 0) {
 				int j = nColumn - 1;
-				while (grille[i][j] >= 30 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
+				while (grille[i][j] == 0 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
 					j--;
 				getListTunnelRight().add(new Point(i, j));
 			}
 		}
-
 		// Creer une instance de la labyrinthe
 		maze = new Maze(defaultSize * nColumn, defaultSize * nRow, getOutput(), new Point(0, 0));
 
@@ -238,7 +238,7 @@ public class GameController implements Runnable {
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
-
+		
 		setGhostOutside(0);
 
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
