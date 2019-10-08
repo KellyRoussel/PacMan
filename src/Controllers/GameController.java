@@ -67,6 +67,8 @@ public class GameController implements Runnable {
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
 	private static int eatenGhosts;
+	public static long deathTime;
+	private static Point deathLocation;
 	private Image[][] images;
 	private BufferedImage output;
 	private Graphics g;
@@ -215,8 +217,9 @@ public class GameController implements Runnable {
 		// Creer le PacMan
 		ImageIcon ii = new ImageIcon("ressources" + File.separator + "Left_0.png");
 
-		pacMan = new PacMan((defaultSize * 4) / 3, (defaultSize * 4) / 3, ii.getImage(), definePosition(PM_INITIAL_POSITION), defaultSize,
-				grille, getListTunnelLeft(), getListTunnelRight(), nColumn, nRow);
+		pacMan = new PacMan((defaultSize * 4) / 3, (defaultSize * 4) / 3, ii.getImage(),
+				definePosition(PM_INITIAL_POSITION), defaultSize, grille, getListTunnelLeft(), getListTunnelRight(),
+				nColumn, nRow);
 
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
@@ -251,7 +254,7 @@ public class GameController implements Runnable {
 		for (int i = 0; i < nRow; i++)
 			for (int j = 0; j < nColumn; j++) {
 				if (grille[i][j] == 30)
-					getFoodList().add(new Gum(defaultSize , defaultSize, loadImage("gum.png"),
+					getFoodList().add(new Gum(defaultSize, defaultSize, loadImage("gum.png"),
 							new Point(j * defaultSize, i * defaultSize)));
 				if (grille[i][j] == 40)
 					getFoodList().add(new PacGum(defaultSize, defaultSize, loadImage("pacGum.png"),
@@ -1103,6 +1106,7 @@ public class GameController implements Runnable {
 
 	public static void incEatenGhosts() {
 		// TODO Auto-generated method stub
+		deathTime = System.currentTimeMillis();
 		eatenGhosts++;
 	}
 
@@ -1122,6 +1126,14 @@ public class GameController implements Runnable {
 
 	public static void setInvincibleCounter(int invincibleCounter) {
 		GameController.invincibleCounter = new AtomicInteger(invincibleCounter);
+	}
+
+	public Point getDeathLocation() {
+		return deathLocation;
+	}
+
+	public static void setDeathLocation(Point deathLocation) {
+		GameController.deathLocation = deathLocation;
 	}
 
 }

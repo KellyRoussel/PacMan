@@ -2,36 +2,22 @@ package Views;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Timer;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import Controllers.GameController;
-import Models.HighScore;
 import Models.Maze;
 import Models.ToSprite;
 import Models.Characters.Ghost;
 import Models.Characters.PacMan;
 import Models.Foods.Food;
-import Models.Foods.Fruit;
-import Models.Foods.Gum;
-import Models.Foods.PacGum;
-
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 public class GamePanel extends JPanel {
 
@@ -49,7 +35,6 @@ public class GamePanel extends JPanel {
 
 	// ToSprite Instance qui creer les tiles des nombres et les chiffres
 	private static ToSprite chiffre_lettre = new ToSprite(16, "pacmanTiles");
-	
 
 	public GamePanel(GameController gameController) {
 		this.gameController = gameController;
@@ -152,7 +137,7 @@ public class GamePanel extends JPanel {
 		}
 
 		// dessiner le d�compte Resume
-		if (gameController.isResume() && gameController.getRESUME()<=3) {
+		if (gameController.isResume() && gameController.getRESUME() <= 3) {
 			int text = gameController.getRESUME();
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - TEXT_MESSAGE_SIZE) / 2,
 					debutY + (MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) / 2, TEXT_MESSAGE_SIZE,
@@ -165,7 +150,7 @@ public class GamePanel extends JPanel {
 			chiffre_lettre.drawToSprite(text, (MainGame.getDefaultwidth() - text.length() * TEXT_MESSAGE_SIZE) / 2,
 					(MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) / 2, TEXT_MESSAGE_SIZE,
 					TEXT_MESSAGE_SIZE, dbg);
-			if(!gameController.isScoreSaved() && gameController.isNewScore()) {
+			if (!gameController.isScoreSaved() && gameController.isNewScore()) {
 				// l'image du score
 				scoreImage = createImage(gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
@@ -173,13 +158,27 @@ public class GamePanel extends JPanel {
 				scorebg.setColor(Color.black);
 				scorebg.fillRect(0, 0, gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
-				gameController.getHighScore().visualHighScore(scorebg, gameController.getDefaultSize() * (gameController.getnColumn() / 3));
+				gameController.getHighScore().visualHighScore(scorebg,
+						gameController.getDefaultSize() * (gameController.getnColumn() / 3));
 				dbg.drawImage(scoreImage, gameController.getDefaultSize() * (gameController.getnColumn() / 4),
 						(int) ((MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) * (3.0 / 5)),
 						gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3), null);
 			}
+		}
+		// Affichage du score quand PC mange un fantome
+		if (gameController.getEatenGhosts() > 0) {
+			int score = 100 * (int) (Math.pow(2, GameController.getEatenGhosts()));
+			Point pacman = gameController.getDeathLocation(); // pacman = pznege
+			if (!gameController.isPause() && !gameController.isResume()) {
+				if (System.currentTimeMillis() - GameController.deathTime < 3000) {
+					chiffre_lettre.drawToSprite(score, pacman.x, pacman.y - 20, 20, 20, dbg);
+				}
+			} else {
+				chiffre_lettre.drawToSprite(score, pacman.x, pacman.y - 20, 20, 20, dbg);
 			}
+
+		}
 	}
 
 	public static int getDebutX() {

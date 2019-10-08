@@ -1,64 +1,55 @@
 package Models.Characters;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.swing.ImageIcon;
-
 import Controllers.GameController;
 import Models.Characters.Strategies.GhostStrategy;
-import Models.Characters.Strategies.StrBlue;
 
-public class Ghost  extends Character{
-	
+public class Ghost extends Character {
 
 	private boolean state = true;
 	private String color;
 	private GhostStrategy stategy;
-	
-	private int direction;	
-	
+
+	private int direction;
+
 	private boolean outside = false;
 
 	private int style;
 	private int counter;
-    
-    private int w;
-    private int h;
-    
-    
-    private int nextX;
-    private int nextY;
-    
-    private final int PAS = 4;
+
+	private int w;
+	private int h;
+
+	private int nextX;
+	private int nextY;
+
+	private final int PAS = 4;
 	private final int MARGE = 10;
-    
+
 	private int dx;
-    private int dy;
-    
+	private int dy;
+
 	private AtomicBoolean isEaten;
 
-        	    
-    private Map<Integer, Point> steps;
-    private Map<Integer, Point> ghostFront;
-    private Map<Integer, String> directionString;
-    private Map<Integer, Integer> oppositeDirection;
-    
-    private Rectangle ghostRectangle;
-    private Rectangle ghostAdvancedLowerShape;
-    private Arc2D.Float ghostAdvancedTopShape;
-    private int availableDirections;
+	private Map<Integer, Point> steps;
+	private Map<Integer, Point> ghostFront;
+	private Map<Integer, String> directionString;
+	private Map<Integer, Integer> oppositeDirection;
+
+	private Rectangle ghostRectangle;
+	private Rectangle ghostAdvancedLowerShape;
+	private Arc2D.Float ghostAdvancedTopShape;
+	private int availableDirections;
 	private int defaultSize;
 	private int[][] grille;
 	private ArrayList<Point> listTunnelLeft;
@@ -67,11 +58,13 @@ public class Ghost  extends Character{
 	private int nRow;
 	private GhostStrategy ghostStrategy;
 	private GhostStrategy normalStrategy;
-    
-	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize, int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow, GhostStrategy ghostStrategy) {
+
+	public Ghost(int width, int height, Image image, Point initialPosition, String color, int defaultSize,
+			int[][] grille, ArrayList<Point> listTunnelLeft, ArrayList<Point> listTunnelRight, int nColumn, int nRow,
+			GhostStrategy ghostStrategy) {
 		super(width, height, image, initialPosition);
 		// TODO Auto-generated constructor stub
-		
+
 		this.ghostStrategy = ghostStrategy;
 		ghostStrategy.setGhost(this);
 		this.normalStrategy = ghostStrategy;
@@ -81,131 +74,129 @@ public class Ghost  extends Character{
 		this.listTunnelRight = listTunnelRight;
 		this.nColumn = nColumn;
 		this.nRow = nRow;
-		
-		counter = 0;
-    	direction = KeyEvent.VK_LEFT;
-    	dx = -PAS;
-    	dy = 0;
-    	
-    	isEaten = new AtomicBoolean(false);
-    	this.color = color;
-        
-    	directionString = new HashMap<Integer, String>(); 
-        directionString.put(KeyEvent.VK_LEFT, "left");
-        directionString.put(KeyEvent.VK_RIGHT, "right");	        
-        directionString.put(KeyEvent.VK_UP, "up");	        
-        directionString.put(KeyEvent.VK_DOWN, "down");	
-        
-        oppositeDirection = new HashMap<Integer, Integer>(); 
-        oppositeDirection.put(KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
-        oppositeDirection.put(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT);	        
-        oppositeDirection.put(KeyEvent.VK_UP, KeyEvent.VK_DOWN);	        
-        oppositeDirection.put(KeyEvent.VK_DOWN, KeyEvent.VK_UP);	
-        
-        
-    	w = image.getWidth(null);
-        h = image.getHeight(null);
-    		        
-        
-        steps = new HashMap<Integer, Point>();
-        steps.put(KeyEvent.VK_LEFT, new Point(-PAS, 0));
-        steps.put(KeyEvent.VK_RIGHT, new Point(PAS, 0));
-        steps.put(KeyEvent.VK_UP, new Point(0, -PAS));
-        steps.put(KeyEvent.VK_DOWN, new Point(0, PAS));
 
-        ghostFront = new HashMap<Integer, Point>();
-        ghostFront.put(KeyEvent.VK_LEFT, new Point(h/2, 0));
-        ghostFront.put(KeyEvent.VK_RIGHT, new Point(h/2, w));	        
-        ghostFront.put(KeyEvent.VK_UP, new Point(0, w/2));	        
-        ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w/2));	
-        
-        ghostRectangle = new Rectangle(getPosition().x,getPosition().y,width,height);
-        ghostAdvancedLowerShape = new Rectangle(getPosition().x,getPosition().y + (height/2),width,height/2);
-        ghostAdvancedTopShape = new Arc2D.Float(getPosition().x,getPosition().y,width,height/2, 0, 180, Arc2D.CHORD);
-        
-        
-        try {
-        	availableDirections = getUpdatedAvailableDirections(new ArrayList<Integer>());
-        	setRandomDirection(new ArrayList<Integer>());
+		counter = 0;
+		direction = KeyEvent.VK_LEFT;
+		dx = -PAS;
+		dy = 0;
+
+		isEaten = new AtomicBoolean(false);
+		this.color = color;
+
+		directionString = new HashMap<Integer, String>();
+		directionString.put(KeyEvent.VK_LEFT, "left");
+		directionString.put(KeyEvent.VK_RIGHT, "right");
+		directionString.put(KeyEvent.VK_UP, "up");
+		directionString.put(KeyEvent.VK_DOWN, "down");
+
+		oppositeDirection = new HashMap<Integer, Integer>();
+		oppositeDirection.put(KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+		oppositeDirection.put(KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT);
+		oppositeDirection.put(KeyEvent.VK_UP, KeyEvent.VK_DOWN);
+		oppositeDirection.put(KeyEvent.VK_DOWN, KeyEvent.VK_UP);
+
+		w = image.getWidth(null);
+		h = image.getHeight(null);
+
+		steps = new HashMap<Integer, Point>();
+		steps.put(KeyEvent.VK_LEFT, new Point(-PAS, 0));
+		steps.put(KeyEvent.VK_RIGHT, new Point(PAS, 0));
+		steps.put(KeyEvent.VK_UP, new Point(0, -PAS));
+		steps.put(KeyEvent.VK_DOWN, new Point(0, PAS));
+
+		ghostFront = new HashMap<Integer, Point>();
+		ghostFront.put(KeyEvent.VK_LEFT, new Point(h / 2, 0));
+		ghostFront.put(KeyEvent.VK_RIGHT, new Point(h / 2, w));
+		ghostFront.put(KeyEvent.VK_UP, new Point(0, w / 2));
+		ghostFront.put(KeyEvent.VK_DOWN, new Point(h, w / 2));
+
+		ghostRectangle = new Rectangle(getPosition().x, getPosition().y, width, height);
+		ghostAdvancedLowerShape = new Rectangle(getPosition().x, getPosition().y + (height / 2), width, height / 2);
+		ghostAdvancedTopShape = new Arc2D.Float(getPosition().x, getPosition().y, width, height / 2, 0, 180,
+				Arc2D.CHORD);
+
+		try {
+			availableDirections = getUpdatedAvailableDirections(new ArrayList<Integer>());
+			setRandomDirection(new ArrayList<Integer>());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
-	
+
 	public void returnInitialPosition() {
 		getPosition().x = initialPosition.x;
 		getPosition().y = initialPosition.y;
-		
-		ghostRectangle.setLocation(initialPosition.x,initialPosition.y);
-		ghostAdvancedLowerShape.setLocation(initialPosition.x,initialPosition.y + (h/2));
-		ghostAdvancedTopShape.setFrame(initialPosition.x,initialPosition.y,w,h/2);
+
+		ghostRectangle.setLocation(initialPosition.x, initialPosition.y);
+		ghostAdvancedLowerShape.setLocation(initialPosition.x, initialPosition.y + (h / 2));
+		ghostAdvancedTopShape.setFrame(initialPosition.x, initialPosition.y, w, h / 2);
 	}
 
-	public double getRectangleX(){
-   		return ghostRectangle.getX();
-    }
-   
-    public double getRectangleY(){
-   		return ghostRectangle.getY();
-    }
-    
-    public void setRectangleX(int x){
-    	ghostRectangle.x = x;
-    }
-   
-    public void setRectangleY(int y){
-   		ghostRectangle.y = y;
-    }
-   
-    public Rectangle getRectangle(){
-   		return ghostRectangle;
-    }
-    
-    public void updatePosition() {
-    	ghostStrategy.updatePosition();
+	public double getRectangleX() {
+		return ghostRectangle.getX();
 	}
-    
-    public double getAdvancedLowerRectangleX(){
-   		return ghostAdvancedLowerShape.getX();
-    }
-   
-    public double getAdvancedLowerRectangleY(){
-   		return ghostAdvancedLowerShape.getY();
-    }
-    
-    public void setAdvancedLowerRectangleX(int x){
-   		ghostAdvancedLowerShape.x = x;
-    }
-   
-    public void setAdvancedLowerRectangleY(int y){
-   		ghostAdvancedLowerShape.y = y;
-    }
-   
-    public Rectangle getAdvancedLowerRectangle(){
-   		return ghostAdvancedLowerShape;
-    }
-    
-    public double getAdvancedTopArcX(){
-    	return ghostAdvancedTopShape.getX();
-    }
-    
-    public double getAdvancedTopArcY(){
-    	return ghostAdvancedTopShape.getY();
-    }
-    
-    public void setAdvancedTopArcX(int x){
-    	ghostAdvancedTopShape.x = x;
-    }
-    
-    public void setAdvancedTopArcY(int y){
-    	ghostAdvancedTopShape.y = y;
-    }
-    
-    public Arc2D.Float getAdvancedTopArc(){
-    	return ghostAdvancedTopShape;
-    }
-    
-   public int getAvailableDirections() {
+
+	public double getRectangleY() {
+		return ghostRectangle.getY();
+	}
+
+	public void setRectangleX(int x) {
+		ghostRectangle.x = x;
+	}
+
+	public void setRectangleY(int y) {
+		ghostRectangle.y = y;
+	}
+
+	public Rectangle getRectangle() {
+		return ghostRectangle;
+	}
+
+	public void updatePosition() {
+		ghostStrategy.updatePosition();
+	}
+
+	public double getAdvancedLowerRectangleX() {
+		return ghostAdvancedLowerShape.getX();
+	}
+
+	public double getAdvancedLowerRectangleY() {
+		return ghostAdvancedLowerShape.getY();
+	}
+
+	public void setAdvancedLowerRectangleX(int x) {
+		ghostAdvancedLowerShape.x = x;
+	}
+
+	public void setAdvancedLowerRectangleY(int y) {
+		ghostAdvancedLowerShape.y = y;
+	}
+
+	public Rectangle getAdvancedLowerRectangle() {
+		return ghostAdvancedLowerShape;
+	}
+
+	public double getAdvancedTopArcX() {
+		return ghostAdvancedTopShape.getX();
+	}
+
+	public double getAdvancedTopArcY() {
+		return ghostAdvancedTopShape.getY();
+	}
+
+	public void setAdvancedTopArcX(int x) {
+		ghostAdvancedTopShape.x = x;
+	}
+
+	public void setAdvancedTopArcY(int y) {
+		ghostAdvancedTopShape.y = y;
+	}
+
+	public Arc2D.Float getAdvancedTopArc() {
+		return ghostAdvancedTopShape;
+	}
+
+	public int getAvailableDirections() {
 		return availableDirections;
 	}
 
@@ -214,121 +205,106 @@ public class Ghost  extends Character{
 	}
 
 	public int getUpdatedAvailableDirections(ArrayList<Integer> excluded) {
-					
-		   int raw = getPosition().y / defaultSize;
-		   int column = getPosition().x / defaultSize;
-		   
-		   if(raw < 0 || raw >= nRow || column < 0 || column >= nColumn)
-			   return 0;
 
+		int raw = getPosition().y / defaultSize;
+		int column = getPosition().x / defaultSize;
 
-		   int counter = 0;
-		   //UP
-		   if(!excluded.contains(KeyEvent.VK_UP) && raw - 1 >= 0 && 
-				   (grille[raw - 1][column] > 25 || 
-						   grille[raw - 1][column] < 1 ||  
-						   grille[raw - 1][column] == 2 || 
-						   grille[raw - 1][column] == 15))
-			   counter += KeyEvent.VK_UP;
-		   //DOWN
-		   if(!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow && 
-				   (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
-			   counter += KeyEvent.VK_DOWN;
-		   
-		   //LEFT
-		   if(!excluded.contains(KeyEvent.VK_LEFT) && !listTunnelLeft.contains(new Point(raw, column)) &&
-				   column - 1 >= 0 &&
-				   (grille[raw][column - 1] > 25 ||
-						   grille[raw][column - 1] < 1))
-			   counter += KeyEvent.VK_LEFT;
-		   //DOWN
-		   if(!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn &&
-				   !listTunnelRight.contains(new Point(raw, column)) &&
-				   (grille[raw][column + 1] > 25 || 
-						   grille[raw][column + 1] < 1))
-				   counter += KeyEvent.VK_RIGHT;
-		   
-		   return counter;
+		if (raw < 0 || raw >= nRow || column < 0 || column >= nColumn)
+			return 0;
+
+		int counter = 0;
+		// UP
+		if (!excluded.contains(KeyEvent.VK_UP) && raw - 1 >= 0 && (grille[raw - 1][column] > 25
+				|| grille[raw - 1][column] < 1 || grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15))
+			counter += KeyEvent.VK_UP;
+		// DOWN
+		if (!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow
+				&& (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1))
+			counter += KeyEvent.VK_DOWN;
+
+		// LEFT
+		if (!excluded.contains(KeyEvent.VK_LEFT) && !listTunnelLeft.contains(new Point(raw, column)) && column - 1 >= 0
+				&& (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1))
+			counter += KeyEvent.VK_LEFT;
+		// DOWN
+		if (!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn
+				&& !listTunnelRight.contains(new Point(raw, column))
+				&& (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1))
+			counter += KeyEvent.VK_RIGHT;
+
+		return counter;
 	}
-	
-	
-	
+
 	public String getDirectionString() {
 		return directionString.get(direction);
 	}
 
-
-    public int getPas() {
+	public int getPas() {
 		return PAS;
 	}
 
-    public void nextX(){
-    	setNextX((getPosition().x + dx + defaultSize * nColumn - MARGE) % (defaultSize * nColumn - MARGE));
-    }
-    
-    public void nextY() {
-    	setNextY((getPosition().y + dy + defaultSize * nRow) % (defaultSize * nRow));
-    }
-    
+	public void nextX() {
+		setNextX((getPosition().x + dx + defaultSize * nColumn - MARGE) % (defaultSize * nColumn - MARGE));
+	}
 
- 
-   
-    public void move() {
-    	counter = (counter + 1) % 10;
-    	if(counter == 0) {
-    		style = (style + 1) % 2;
-    		loadImage();
-    	}
-    	
-    	getPosition().x += dx;
-    	getPosition().y += dy;
-    	setInsideTile(getPosition().y / defaultSize, getPosition().x / defaultSize);
-    	
-    	ghostRectangle.setLocation(getPosition().x,getPosition().y);
-    	ghostAdvancedLowerShape.setLocation(getPosition().x,getPosition().y);
-		ghostAdvancedTopShape.setFrame(getPosition().x,getPosition().y,w,h/2);
-    }
+	public void nextY() {
+		setNextY((getPosition().y + dy + defaultSize * nRow) % (defaultSize * nRow));
+	}
 
-    public void loadImage() {
-    	ghostStrategy.loadImage();
+	public void move() {
+		counter = (counter + 1) % 10;
+		if (counter == 0) {
+			style = (style + 1) % 2;
+			loadImage();
+		}
+
+		getPosition().x += dx;
+		getPosition().y += dy;
+		setInsideTile(getPosition().y / defaultSize, getPosition().x / defaultSize);
+
+		ghostRectangle.setLocation(getPosition().x, getPosition().y);
+		ghostAdvancedLowerShape.setLocation(getPosition().x, getPosition().y);
+		ghostAdvancedTopShape.setFrame(getPosition().x, getPosition().y, w, h / 2);
+	}
+
+	public void loadImage() {
+		ghostStrategy.loadImage();
 	}
 
 	public int getX() {
-        
-        return getPosition().x;
-    }
-    
-    public void setX(int var_x) {
-        
-    	getPosition().x = var_x;
-    }
 
-    public int getY() {
-        
-        return getPosition().y;
-    }
-    
-    public void setY(int var_y) {
-        
-    	getPosition().y = var_y;
-    }
-    
-    public int getWidth() {
-        
-        return getW();
-    }
-    
-    public int getHeight() {
-        
-        return getH();
-    }    
+		return getPosition().x;
+	}
 
-    public Image getImage() {
-        
-        return image;
-    }
-    
+	public void setX(int var_x) {
 
+		getPosition().x = var_x;
+	}
+
+	public int getY() {
+
+		return getPosition().y;
+	}
+
+	public void setY(int var_y) {
+
+		getPosition().y = var_y;
+	}
+
+	public int getWidth() {
+
+		return getW();
+	}
+
+	public int getHeight() {
+
+		return getH();
+	}
+
+	public Image getImage() {
+
+		return image;
+	}
 
 	public int getNextX() {
 		return nextX;
@@ -371,87 +347,85 @@ public class Ghost  extends Character{
 		dx = steps.get(direction).x;
 		dy = steps.get(direction).y;
 	}
-	
+
 	public void setPosition(int x, int y) {
 		// TODO Auto-generated method stub
 		getPosition().x = x;
 		getPosition().y = y;
-		
-		ghostRectangle.setLocation(x,y);
-		ghostAdvancedLowerShape.setLocation(x,y+(h/2));
-		ghostAdvancedTopShape.setFrame(x,y,w,h/2);
+
+		ghostRectangle.setLocation(x, y);
+		ghostAdvancedLowerShape.setLocation(x, y + (h / 2));
+		ghostAdvancedTopShape.setFrame(x, y, w, h / 2);
 	}
 
-	
 	public void setInsideTile(int nRaw, int nColumn) {
 		// POUR METTRE LE PACMAN AU MILIEU DE LA TILE DE LA LABYRINTHE
 		int sz = defaultSize;
-		if(direction == KeyEvent.VK_RIGHT || direction == KeyEvent.VK_LEFT)
+		if (direction == KeyEvent.VK_RIGHT || direction == KeyEvent.VK_LEFT)
 			getPosition().y = nRaw * sz;
 		else
 			getPosition().x = nColumn * sz;
 
 	}
-	
+
 	public int getDX() {
 		return dx;
 	}
-	
+
 	public int getDY() {
 		return dy;
 	}
-	
+
 	public void setDX(int var_dx) {
 		dx = var_dx;
 	}
-	
+
 	public void setDY(int var_dy) {
 		dy = var_dy;
 	}
-
-
 
 	public boolean setRandomDirection(ArrayList<Integer> excluded) {
 		// TODO Auto-generated method stub
 		List<Integer> availables = new ArrayList<>();
 		int raw = getPosition().y / defaultSize;
 		int column = getPosition().x / defaultSize;
-		
-		if(!excluded.contains(KeyEvent.VK_UP) && raw - 1 >= 0 && 
-				(grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1 ||  grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15) && KeyEvent.VK_DOWN != direction)
+
+		if (!excluded.contains(KeyEvent.VK_UP)
+				&& raw - 1 >= 0 && (grille[raw - 1][column] > 25 || grille[raw - 1][column] < 1
+						|| grille[raw - 1][column] == 2 || grille[raw - 1][column] == 15)
+				&& KeyEvent.VK_DOWN != direction)
 			availables.add(KeyEvent.VK_UP);
-		
-		if(!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow && (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
+
+		if (!excluded.contains(KeyEvent.VK_DOWN) && raw + 1 < nRow
+				&& (grille[raw + 1][column] > 25 || grille[raw + 1][column] < 1) && KeyEvent.VK_UP != direction)
 			availables.add(KeyEvent.VK_DOWN);
-		
-		if(!excluded.contains(KeyEvent.VK_LEFT) && column - 1 >= 0 && (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction && !listTunnelLeft.contains(new Point(raw, column))) 
+
+		if (!excluded.contains(KeyEvent.VK_LEFT) && column - 1 >= 0
+				&& (grille[raw][column - 1] > 25 || grille[raw][column - 1] < 1) && KeyEvent.VK_RIGHT != direction
+				&& !listTunnelLeft.contains(new Point(raw, column)))
 			availables.add(KeyEvent.VK_LEFT);
-		
-		if(!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn && (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction && !listTunnelRight.contains(new Point(raw, column))) {
+
+		if (!excluded.contains(KeyEvent.VK_RIGHT) && column + 1 < nColumn
+				&& (grille[raw][column + 1] > 25 || grille[raw][column + 1] < 1) && KeyEvent.VK_LEFT != direction
+				&& !listTunnelRight.contains(new Point(raw, column))) {
 			availables.add(KeyEvent.VK_RIGHT);
 		}
-		
-			
-		
-		if(availables.size() == 0) {
-			if(excluded.contains(getOppositeDirection(direction))) {
+
+		if (availables.size() == 0) {
+			if (excluded.contains(getOppositeDirection(direction))) {
 				System.out.println("hahahha");
 				return false;
 			}
 			availables.add(getOppositeDirection(direction));
 		}
-		
-		setDirection(availables.get((int)(Math.random() * availables.size())));
+
+		setDirection(availables.get((int) (Math.random() * availables.size())));
 		return true;
 	}
-
-
 
 	public boolean isOutside() {
 		return outside;
 	}
-
-
 
 	public void setOutside(boolean outside) {
 		this.outside = outside;
@@ -462,20 +436,20 @@ public class Ghost  extends Character{
 		int dir = oppositeDirection.get(direction);
 		setDirection(dir);
 	}
+
 	public boolean canMove(int direction) {
-			
+
 		int x = position.x + steps.get(direction).x * 5;
 		int y = position.y + steps.get(direction).y * 5;
-		
-	   int raw = y / defaultSize;
-	   int column = x / defaultSize;
-	   
-	   if(raw >= 0 && raw < nRow && column >= 0 && column < nColumn && (grille[raw][column] <= 0 || grille[raw][column] > 25))
-		   return true;
-	   return false;
+
+		int raw = y / defaultSize;
+		int column = x / defaultSize;
+
+		if (raw >= 0 && raw < nRow && column >= 0 && column < nColumn
+				&& (grille[raw][column] <= 0 || grille[raw][column] > 25))
+			return true;
+		return false;
 	}
-	
-	
 
 	public ArrayList<Point> getListTunnelLeft() {
 		return listTunnelLeft;
@@ -509,21 +483,25 @@ public class Ghost  extends Character{
 		// TODO Auto-generated method stub
 		setStrategy(normalStrategy);
 	}
-	
+
 	public void setEaten(boolean eaten) {
 		synchronized (isEaten) {
+			Point death = new Point();
+			death.x = this.getPosition().x;
+			death.y = this.getPosition().y;
+			GameController.setDeathLocation(death);
 			isEaten = new AtomicBoolean(eaten);
 			ghostStrategy.loadImage();
 		}
-		if(eaten) {
+		if (eaten) {
 			returnInitialPosition();
 		}
 	}
-		
+
 	public boolean isEaten() {
 		// TODO Auto-generated method stub
 		synchronized (isEaten) {
-			return isEaten.get();			
+			return isEaten.get();
 		}
 	}
 }
