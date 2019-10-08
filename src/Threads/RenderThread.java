@@ -81,7 +81,7 @@ public class RenderThread extends Thread {
 				date = System.currentTimeMillis();
 				GameController.setFPS(fps);
 
-				Thread.sleep(1000L / fps);
+				Thread.sleep((1000L / fps) / 2);
 			
 				if (counter == 0)
 					statusBar.updateFPS("" + GameController.getFPS());
