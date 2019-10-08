@@ -212,7 +212,7 @@ public class PacMan extends Character {
 		if (!isDead) {
 			counter = (counter + 1) % 2;
 			if (counter == 0) {
-				style = (style + 1) % 3;
+				style = (style + 1) % 4;
 			}
 			loadImage();
 			getPosition().x = nextX;
