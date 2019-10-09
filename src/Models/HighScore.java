@@ -25,6 +25,8 @@ public class HighScore {
 	// champ du score
 	private static int score;
 	
+	private String scorer;
+	
 	//Position du nouveau score dans la liste
 	private int position;
 
@@ -40,7 +42,7 @@ public class HighScore {
 		try {
 			toSpriteNumbers.fillMap();
 			toSprite.fillMap();
-			InputStream ips = new FileInputStream(scoreFile);
+			InputStream ips = new FileInputStream(getScoreFile());
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
 			String line;
@@ -84,7 +86,7 @@ public class HighScore {
 			getScorerList().remove(getScoreList().size()-1);
 		}
 		try { // On �crit dans le fichier
-			FileWriter fw = new FileWriter(scoreFile);
+			FileWriter fw = new FileWriter(getScoreFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter writer = new PrintWriter(bw);
 			for(int i = 0; i< scorerList.size(); i++) {
@@ -97,43 +99,10 @@ public class HighScore {
 
 	}
 
-	public void visualHighScore(Graphics g, int width) {
-		String text = "new high score";
-		// toSprite.drawToSprite(text, (width-text.length())/2, 20,
-		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		toSprite.drawToSprite(text, 12, 40, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
-		text = String.valueOf(score);
-		// toSprite.drawToSprite(score,(width-text.length())/2, 70,
-		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		toSprite.drawToSprite(score, 12 + (int) ((14 - text.length()) / 2 * TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE,
-				TEXT_MESSAGE_SIZE, g);
-		for (int i = 0; i < 3; i++) {
-			// toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
-			// (width-3 +i *2 *TEXT_MESSAGE_SIZE)/2, 120,
-			// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-			int textMessage = TEXT_MESSAGE_SIZE;
-			int shift = 0;
-			// on agrandit le size si il s agit de la lettre selectionne par l utilisateur
-			if (letterPosition == i) {
-				textMessage = TEXT_MESSAGE_SIZE_EMPHASIZED;
-				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
-			}
-			if(letterIndex[i]>25) {
-				toSpriteNumbers.drawToSprite(letterIndex[i]-26,
-						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
-						textMessage, textMessage, g);
-			}
-			else {
-				toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
-						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
-						textMessage, textMessage, g);
-			}
-		}
-	}
+	
 
 	public String getActualScorer() {
 		// R�cup�rer les valeurs String Scorer 
-		String scorer;
 		char[] scorerCharArray = {'A','A','A'};
 		for (int i = 0; i < 3; i++) {
 			if(letterIndex[i]<26) {
@@ -145,7 +114,7 @@ public class HighScore {
 			
 			
 		}
-		scorer = new String(scorerCharArray);
+		setScorer(new String(scorerCharArray));
 		return scorer;
 	}
 
@@ -185,6 +154,20 @@ public class HighScore {
 
 	public static void setScore(int score) {
 		HighScore.score = score;
+	}
+
+	/**
+	 * @return the scoreFile
+	 */
+	public String getScoreFile() {
+		return scoreFile;
+	}
+
+	/**
+	 * @param scorer the scorer to set
+	 */
+	public void setScorer(String scorer) {
+		this.scorer = scorer;
 	}
 
 }

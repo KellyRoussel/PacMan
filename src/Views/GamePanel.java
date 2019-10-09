@@ -180,6 +180,40 @@ public class GamePanel extends JPanel {
 
 		}
 	}
+	
+	public void visualHighScore(Graphics g, int width) {
+		String text = "new high score";
+		// toSprite.drawToSprite(text, (width-text.length())/2, 20,
+		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
+		chiffre_lettre.drawToSprite(text, 12, 40, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
+		text = String.valueOf(score);
+		// toSprite.drawToSprite(score,(width-text.length())/2, 70,
+		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
+		chiffre_lettre.drawToSprite(score, 12 + (int) ((14 - text.length()) / 2 * TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE,
+				TEXT_MESSAGE_SIZE, g);
+		for (int i = 0; i < 3; i++) {
+			// toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
+			// (width-3 +i *2 *TEXT_MESSAGE_SIZE)/2, 120,
+			// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
+			int textMessage = TEXT_MESSAGE_SIZE;
+			int shift = 0;
+			// on agrandit le size si il s agit de la lettre selectionne par l utilisateur
+			if (letterPosition == i) {
+				textMessage = TEXT_MESSAGE_SIZE_EMPHASIZED;
+				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
+			}
+			if(letterIndex[i]>25) {
+				toSpriteNumbers.drawToSprite(letterIndex[i]-26,
+						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+						textMessage, textMessage, g);
+			}
+			else {
+				toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
+						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+						textMessage, textMessage, g);
+			}
+		}
+	}
 
 	public static int getDebutX() {
 		return debutX;
