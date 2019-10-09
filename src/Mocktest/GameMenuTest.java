@@ -1,4 +1,4 @@
-package Tests;
+package Mocktest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +43,7 @@ class GameMenuTest {
 //		System.out.println(MainGame.getInstance().getContentPane());
 //		System.out.println(MainGame.getInstance().getMenuPane());
 		mainGame.requestFocus();
-		assertEquals(cursor.getCurrentPosition().y, menuPane.getStartPosition().y, "Le curseur devrait être positionné sur StartGame");
+		assertEquals(menuPane.getStartPosition().y,cursor.getCurrentPosition().y, "Le curseur devrait être positionné sur StartGame");
 		//System.out.println("Cursor " + cursor.getCurrentPosition().y + " start " + menuPane.getStartPosition().y);
 		// Le curseur est déjà positionné sur StartGame donc on ne passera pas dans la boucle
 		while(cursor.getCurrentPosition().y!= menuPane.getStartPosition().y) {
@@ -58,17 +58,17 @@ class GameMenuTest {
 		robot.keyRelease(KeyEvent.VK_ENTER);
 		MySleep();
 		//System.out.println(mainGame.getContentPane().equals(menuPane));
-		assertEquals(mainGame.getContentPane(), mainGame.getGameController().getMainPane(), "Le panel affiché n'est pas le bon");
+		assertEquals( mainGame.getGameController().getMainPane(), mainGame.getContentPane(),"Le panel affiché n'est pas le bon");
 	}
 	
 	@Test
 	void testSelectionDownToFirst() {
 		// Vérification que le GameMenu est affiché fait dans le BeforeEach
 		Cursor cursor = menuPane.cursor;
-		assertEquals(cursor.getCurrentPosition().y, menuPane.getStartPosition().y, "Le curseur devrait être positionné sur StartGame");
+		assertEquals( menuPane.getStartPosition().y,cursor.getCurrentPosition().y, "Le curseur devrait être positionné sur StartGame");
 		cursor.nextPosition(); // On décale le curseur de 1 en bas
 		while(cursor.getCurrentPosition().y!= menuPane.getStartPosition().y) { // On descend tant qu'on n'est pas remonté à StartGame
-			mainGame.resize();
+			//mainGame.resize();
 			mainGame.requestFocus();
 			robot.keyPress(KeyEvent.VK_DOWN);
 			MySleep();
@@ -82,17 +82,19 @@ class GameMenuTest {
 		MySleep();
 		robot.keyRelease(KeyEvent.VK_ENTER);
 		MySleep();
-		assertEquals(mainGame.getContentPane(), mainGame.getGameController().getMainPane());
+		assertEquals( mainGame.getGameController().getMainPane(),mainGame.getContentPane());
 	}
 	
 	@Test
 	void testSelectionUpToFirst() {
 		// Vérification que le GameMenu est affiché fait dans le BeforeEach
 		Cursor cursor = menuPane.cursor;
-		assertEquals(cursor.getCurrentPosition().y, menuPane.getStartPosition().y, "Le curseur devrait être positionné sur StartGame");
-		cursor.nextPosition(); // On décale le curseur de 1 en bas
+		assertEquals( menuPane.getStartPosition().y,cursor.getCurrentPosition().y, "Le curseur devrait être positionné sur StartGame");
+		// On décale le curseur de 2 en bas
+		cursor.nextPosition(); 
+		cursor.nextPosition(); 
 		while(cursor.getCurrentPosition().y!= menuPane.getStartPosition().y) { // On remonte tant qu'on n'est pas remonté à StartGame
-			mainGame.resize();
+			//mainGame.resize();
 			mainGame.requestFocus();
 			robot.keyPress(KeyEvent.VK_UP);
 			MySleep();
@@ -105,7 +107,7 @@ class GameMenuTest {
 		MySleep();
 		robot.keyRelease(KeyEvent.VK_ENTER);
 		MySleep();
-		assertEquals(mainGame.getContentPane(), mainGame.getGameController().getMainPane());
+		assertEquals( mainGame.getGameController().getMainPane(), mainGame.getContentPane());
 	}
 	
 	
@@ -121,11 +123,6 @@ class GameMenuTest {
 	@AfterEach
 	public void tearDown() throws Exception{
 		mainGame.getGameController().closeWindow();
-		
-//		assertFalse(mainGame.getGameController().getGameThread().isAlive(), "GameThread Not stopped");
-//		assertFalse(mainGame.getGameController().gettAudio().isAlive(), "tAudio Not stopped");
-//		assertFalse(mainGame.getGameController().gettRender().isAlive(), "tRender Not stopped");
-//		assertFalse(mainGame.getGameController().gettPhysics().isAlive(), "tPhysics Not stopped");
 	}
 
 }

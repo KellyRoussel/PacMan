@@ -1,4 +1,4 @@
-package Tests;
+package Mocktest;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,8 +108,8 @@ class GameControllerTest {
 		}
 		//Le pacMan est à sa position initiale
 		gameController.getPacMan().returnInitialPosition();
-		assertEquals(gameController.getPacMan().getPosition().x, gameController.getPacMan().getInitialPosition().x);
-		assertEquals(gameController.getPacMan().getPosition().y, gameController.getPacMan().getInitialPosition().y);
+		assertEquals(gameController.getPacMan().getInitialPosition().x, gameController.getPacMan().getPosition().x);
+		assertEquals( gameController.getPacMan().getInitialPosition().y, gameController.getPacMan().getPosition().y);
 		Point positionBeforeMove = new Point(gameController.getPacMan().getPosition().x , gameController.getPacMan().getPosition().y);
 
 		//On va le faire bouger à droite
