@@ -105,7 +105,7 @@ public class HighScore {
 			
 			
 		}
-		setScorer(new String(scorerCharArray));
+		scorer = new String(scorerCharArray);
 		return scorer;
 	}
 
@@ -162,11 +162,6 @@ public class HighScore {
 		return scoreFile;
 	}
 
-	/**
-	 * @param scorer the scorer to set
-	 */
-	public void setScorer(String scorer) {
-		this.scorer = scorer;
-	}
+
 
 }
