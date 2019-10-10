@@ -15,10 +15,34 @@ import Views.GameMenu;
 import Views.MainGame;
 
 class MockCollisionTest {
+	
+	private GameMenu menuPanel;
+	private Robot robot;
+	private MainGame mainGame;
+	
+	@BeforeEach
+	public void setUp() throws Exception{
+		mainGame = MainGame.getInstance();
+		mainGame.resize();
+		mainGame.displayMenu();
+		menuPanel = mainGame.getMenuPane();
+		mainGame.requestFocus();
+		
+		assertEquals(mainGame.getContentPane(), menuPanel);
+		
+		robot = new Robot();
+	}
 
 	@Test
 	void testSelectionDirection() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		assertEquals(true, true, "True should be true");
 	}
 	
 	@Test
