@@ -238,7 +238,7 @@ public class GameController implements Runnable {
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
-		
+
 		setGhostOutside(0);
 
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
@@ -1027,6 +1027,7 @@ public class GameController implements Runnable {
 
 	public void closeWindow() {
 		System.out.println("Closing window \nStopping threads");
+		setRESUME(4);
 		if (getGameThread() != null && getGameThread().isAlive()) {
 			stop();
 		}
