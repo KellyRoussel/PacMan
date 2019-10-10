@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import Controllers.GameController;
+import Models.HighScore;
 import Models.Maze;
 import Models.ToSprite;
 import Models.Characters.Ghost;
@@ -24,6 +25,8 @@ public class GamePanel extends JPanel {
 	// la dimension des messages afficher selon etat du jeu
 	private static final int TEXT_MESSAGE_SIZE = 50;
 	private static final int TEXT_STATUS_SIZE = 15;
+	private static final int TEXT_MESSAGE_SIZE_EMPHASIZED = 25;
+	private static final int TEXT_SCORE_SIZE = 20;
 
 	private Graphics dbg;
 	private Image dbImage;
@@ -35,6 +38,7 @@ public class GamePanel extends JPanel {
 
 	// ToSprite Instance qui creer les tiles des nombres et les chiffres
 	private static ToSprite chiffre_lettre = new ToSprite(16, "pacmanTiles");
+	private ToSprite toSpriteNumbers = new ToSprite(16, "pacmanTiles2");
 
 	public GamePanel(GameController gameController) {
 		this.gameController = gameController;
@@ -45,6 +49,7 @@ public class GamePanel extends JPanel {
 
 		// remplir les dictionnaires de mots_Images et chiffres_Images
 		chiffre_lettre.fillMap();
+		toSpriteNumbers.fillMap();
 
 	}
 
@@ -158,8 +163,7 @@ public class GamePanel extends JPanel {
 				scorebg.setColor(Color.black);
 				scorebg.fillRect(0, 0, gameController.getDefaultSize() * (gameController.getnColumn() / 2),
 						gameController.getDefaultSize() * ((gameController.getnRow() / 4) + 3));
-				gameController.getHighScore().visualHighScore(scorebg,
-						gameController.getDefaultSize() * (gameController.getnColumn() / 3));
+				visualHighScore(scorebg);
 				dbg.drawImage(scoreImage, gameController.getDefaultSize() * (gameController.getnColumn() / 4),
 						(int) ((MainGame.getActualWindowHeight() - 150 - TEXT_MESSAGE_SIZE) * (3.0 / 5)),
 						gameController.getDefaultSize() * (gameController.getnColumn() / 2),
@@ -181,35 +185,28 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	public void visualHighScore(Graphics g, int width) {
+	public void visualHighScore(Graphics g) {
 		String text = "new high score";
-		// toSprite.drawToSprite(text, (width-text.length())/2, 20,
-		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		chiffre_lettre.drawToSprite(text, 12, 40, TEXT_MESSAGE_SIZE, TEXT_MESSAGE_SIZE, g);
-		text = String.valueOf(score);
-		// toSprite.drawToSprite(score,(width-text.length())/2, 70,
-		// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-		chiffre_lettre.drawToSprite(score, 12 + (int) ((14 - text.length()) / 2 * TEXT_MESSAGE_SIZE), 90, TEXT_MESSAGE_SIZE,
-				TEXT_MESSAGE_SIZE, g);
+		chiffre_lettre.drawToSprite(text, 12, 40, TEXT_SCORE_SIZE, TEXT_SCORE_SIZE, g);
+		text = String.valueOf(HighScore.getScore());
+		chiffre_lettre.drawToSprite(HighScore.getScore(), 12 + (int) ((14 - text.length()) / 2 * TEXT_SCORE_SIZE), 90, TEXT_SCORE_SIZE,
+				TEXT_SCORE_SIZE, g);
 		for (int i = 0; i < 3; i++) {
-			// toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i] % 26)),
-			// (width-3 +i *2 *TEXT_MESSAGE_SIZE)/2, 120,
-			// TEXT_MESSAGE_SIZE,TEXT_MESSAGE_SIZE, g);
-			int textMessage = TEXT_MESSAGE_SIZE;
+			int textMessage = TEXT_SCORE_SIZE;
 			int shift = 0;
 			// on agrandit le size si il s agit de la lettre selectionne par l utilisateur
-			if (letterPosition == i) {
+			if (HighScore.getLetterPosition() == i) {
 				textMessage = TEXT_MESSAGE_SIZE_EMPHASIZED;
-				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_MESSAGE_SIZE;
+				shift = TEXT_MESSAGE_SIZE_EMPHASIZED - TEXT_SCORE_SIZE;
 			}
-			if(letterIndex[i]>25) {
-				toSpriteNumbers.drawToSprite(letterIndex[i]-26,
-						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+			if(HighScore.getLetterIndex()[i]>25) {
+				toSpriteNumbers.drawToSprite(HighScore.getLetterIndex()[i]-26,
+						(int) (12 + (int) (4.5 * TEXT_SCORE_SIZE) + i * 1.5 * TEXT_SCORE_SIZE), 140 - shift,
 						textMessage, textMessage, g);
 			}
 			else {
-				toSprite.drawToSprite(String.valueOf((char) (65 + letterIndex[i])),
-						(int) (12 + (int) (4.5 * TEXT_MESSAGE_SIZE) + i * 1.5 * TEXT_MESSAGE_SIZE), 140 - shift,
+				chiffre_lettre.drawToSprite(String.valueOf((char) (65 + HighScore.getLetterIndex()[i])),
+						(int) (12 + (int) (4.5 * TEXT_SCORE_SIZE) + i * 1.5 * TEXT_SCORE_SIZE), 140 - shift,
 						textMessage, textMessage, g);
 			}
 		}

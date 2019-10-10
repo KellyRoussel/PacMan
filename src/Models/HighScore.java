@@ -30,18 +30,9 @@ public class HighScore {
 	//Position du nouveau score dans la liste
 	private int position;
 
-	// champ pour �crire les lettres et chiffres en images
-	private ToSprite toSprite = new ToSprite(16, "pacmanTiles");
-	private ToSprite toSpriteNumbers = new ToSprite(16, "pacmanTiles2");
-
-	// le size du texte
-	private static final int TEXT_MESSAGE_SIZE = 20;
-	private static final int TEXT_MESSAGE_SIZE_EMPHASIZED = 25;
 
 	public HighScore() {
 		try {
-			toSpriteNumbers.fillMap();
-			toSprite.fillMap();
 			InputStream ips = new FileInputStream(getScoreFile());
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
@@ -150,6 +141,14 @@ public class HighScore {
 
 	public static int getScore() {
 		return score;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 
 	public static void setScore(int score) {
