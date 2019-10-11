@@ -227,6 +227,7 @@ public class GameController implements Runnable {
 		// Creer les fantomes
 		ghostList = new ArrayList<Ghost>();
 
+		
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostorange.png"),
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
