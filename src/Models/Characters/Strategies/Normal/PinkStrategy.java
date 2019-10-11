@@ -16,7 +16,8 @@ public class PinkStrategy implements GhostStrategy{
 	
 	private Ghost ghost;
 	private boolean onRoad;
-	
+	private Point lastPosition;
+
 	public void setGhost(Ghost ghost){
 		this.ghost = ghost;
 	}
@@ -32,40 +33,61 @@ public class PinkStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
 		int direction = isPacManCorridor();
 		if(direction != -1) {
+			lastPosition = new Point();
+			lastPosition.x = GameController.getPacManPosition().x;
+			lastPosition.y = GameController.getPacManPosition().y;
+			onRoad = true;
 			ghost.setDirection(direction);
 			ghost.move();
 			return;
 		}
 		else {
-			Point pacManPosition = GameController.getPacManPosition();
-			
-			int pmRaw = pacManPosition.y / GameController.getDefaultSize();
-			int pmColumn = pacManPosition.x / GameController.getDefaultSize();
-			
-			int ghostRaw = ghost.getPosition().y / GameController.getDefaultSize();
-			int ghostColumn = ghost.getPosition().x / GameController.getDefaultSize();
-			
-			int pmDirection = GameController.getPacManDirection();
-			
-			if(ghostRaw == pmRaw) {
-				if((pmDirection == KeyEvent.VK_UP ||pmDirection == KeyEvent.VK_DOWN) && ghost.canMove(pmDirection)) {
-					ghost.setDirection(pmDirection);
-					ghost.move();
-					return;
+			if(onRoad){
+				int ghostRaw = ghost.getPosition().x / GameController.getDefaultSize();
+				int pmRaw = lastPosition.x / GameController.getDefaultSize();
+				
+				int ghostColumn = ghost.getPosition().y / GameController.getDefaultSize();
+				int pmColumn = lastPosition.y / GameController.getDefaultSize();
+				
+
+				if(ghostRaw == pmRaw && ghostColumn == pmColumn) {
+					onRoad = false;
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
 				}
 			}
-			
-			if(ghostColumn == pmColumn) {
-				if((pmDirection == KeyEvent.VK_RIGHT ||pmDirection == KeyEvent.VK_LEFT) && ghost.canMove(pmDirection)) {
-					ghost.setDirection(pmDirection);
-					ghost.move();
-					return;
+			else {
+				Point pacManPosition = GameController.getPacManPosition();
+				
+				int pmRaw = pacManPosition.y / GameController.getDefaultSize();
+				int pmColumn = pacManPosition.x / GameController.getDefaultSize();
+				
+				int ghostRaw = ghost.getPosition().y / GameController.getDefaultSize();
+				int ghostColumn = ghost.getPosition().x / GameController.getDefaultSize();
+				
+				int pmDirection = GameController.getPacManDirection();
+				
+				if(ghostRaw == pmRaw) {
+					if((pmDirection == KeyEvent.VK_UP ||pmDirection == KeyEvent.VK_DOWN) && ghost.canMove(pmDirection)) {
+						ghost.setDirection(pmDirection);
+						ghost.move();
+						return;
+					}
 				}
-			}
-			if (!ghost.canMove(ghost.getDirection()) || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
-				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
-					return;
+				
+				if(ghostColumn == pmColumn) {
+					if((pmDirection == KeyEvent.VK_RIGHT ||pmDirection == KeyEvent.VK_LEFT) && ghost.canMove(pmDirection)) {
+						ghost.setDirection(pmDirection);
+						ghost.move();
+						return;
+					}
+				}
+				if (!ghost.canMove(ghost.getDirection()) || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
+				}
 			}
 			ghost.move();
 		}

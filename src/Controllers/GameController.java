@@ -228,17 +228,18 @@ public class GameController implements Runnable {
 				definePosition(ORANGE_INITIAL_POSITION), "orange", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new OrangeStrategy()));
 
-		*/getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostred.png"),
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostred.png"),
 				definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, getListTunnelLeft(),
-				getListTunnelRight(), nColumn, nRow, new RedStrategy()));
+				getListTunnelRight(), nColumn, nRow, new RedStrategy()));*/
 
 		/*getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
+		*/
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
-*/
+
 		setGhostOutside(0);
 
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));

@@ -47,7 +47,6 @@ public class RedStrategy implements GhostStrategy{
 				
 
 				if(ghostRaw == pmRaw && ghostColumn == pmColumn) {
-					System.out.println("opla");
 					onRoad = false;
 					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
 					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
