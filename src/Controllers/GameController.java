@@ -552,6 +552,8 @@ public class GameController implements Runnable {
 					getGhostList().get(i).setNormalStrategy();
 					getGhostList().get(i).setOutside(true);
 				}
+				if(isInvincible)
+					stopInvincibleMode();
 				getPacMan().initPM();
 				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 				getPacMan().loadImage();
