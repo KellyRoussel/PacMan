@@ -430,6 +430,7 @@ public class GameController implements Runnable {
 		for (int i = 0; i < ghostList.size(); i++) {
 			ghostList.get(i).setNormalStrategy();
 			ghostList.get(i).setEaten(false);
+			ghostList.get(i).setOutside(true);
 		}
 		pacMan.setPas(4);
 		setEatenGhosts(0);
@@ -458,6 +459,7 @@ public class GameController implements Runnable {
 					column = getGhostList().get(getFirstGhostToQuit()).getX() / defaultSize;
 					if (grille[raw][column] == 15 || grille[raw][column] == 2) {
 						setGhostOutside(getGhostOutside() + 1);
+						System.out.println(getGhostOutside());
 						getGhostList().get(getFirstGhostToQuit()).setOutside(true);
 						setFirstGhostToQuit((getFirstGhostToQuit() + 1) % ghostList.size());
 					}
