@@ -66,6 +66,8 @@ public class GameController implements Runnable {
 	private static final int ORANGE_INITIAL_POSITION = 27;
 	private static final int RED_INITIAL_POSITION = 28;
 	private static final int TURQUOISE_INITIAL_POSITION = 29;
+
+	private static final int JOIN_THREAD_TIMER = 500;
 	private static int eatenGhosts;
 	public static long deathTime;
 	private static Point deathLocation;
@@ -234,7 +236,7 @@ public class GameController implements Runnable {
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostturquoise.png"),
 				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
-		
+
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
@@ -1025,21 +1027,43 @@ public class GameController implements Runnable {
 	public void closeWindow() {
 		System.out.println("Closing window \nStopping threads");
 		setRESUME(4);
+
 		if (getGameThread() != null && getGameThread().isAlive()) {
+			try {
+				getGameThread().join(JOIN_THREAD_TIMER);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			stop();
 		}
 		if (gettRender() != null && gettRender().isAlive()) {
+			try {
+				gettRender().join(JOIN_THREAD_TIMER);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			gettRender().stopThread();
 		}
 		if (gettAudio() != null && gettAudio().isAlive()) {
+			try {
+				gettAudio().join(JOIN_THREAD_TIMER);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			gettAudio().stopThread();
 		}
-		if (gettPhysics() != null && gettPhysics().isAlive()) {
-			gettPhysics().stopThread();
-		}
 
-		if (gettRender() != null && gettRender().isAlive()) {
-			gettRender().stopThread();
+		if (gettPhysics() != null && gettPhysics().isAlive()) {
+			try {
+				gettPhysics().join(JOIN_THREAD_TIMER);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gettPhysics().stopThread();
 		}
 
 		getFrame().dispose();
