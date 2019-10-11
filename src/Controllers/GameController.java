@@ -98,6 +98,7 @@ public class GameController implements Runnable {
 	private RenderThread tRender;
 	private static boolean isAudioThreadStarted = false;
 	private static AudioThread tAudio = new AudioThread();
+	private static String mazefile;
 
 	private static int INVINCIBLE;
 
@@ -113,6 +114,7 @@ public class GameController implements Runnable {
 
 	public GameController(MainGame frame) {
 
+		mazefile = "maze.txt";
 		this.gamePanel = new GamePanel(this);
 
 		init();
@@ -130,7 +132,7 @@ public class GameController implements Runnable {
 
 	}
 
-	private void init() {
+	public void init() {
 		setRESUME(0);
 		setResume(false);
 		grille = null;
@@ -145,7 +147,7 @@ public class GameController implements Runnable {
 
 		Scanner sc = null;
 		try {
-			sc = new Scanner(new File("ressources" + File.separator + "maze.txt"));
+			sc = new Scanner(new File("ressources" + File.separator + mazefile));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1157,5 +1159,13 @@ public class GameController implements Runnable {
 	public static void setDeathLocation(Point deathLocation) {
 		GameController.deathLocation = deathLocation;
 	}
+	public String getMazeFile() {
+		return mazefile;
+	}
+
+	public static void setMazeFile(String mazetxt) {
+		GameController.mazefile = mazetxt;
+	}
+	
 
 }
