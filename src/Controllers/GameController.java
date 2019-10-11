@@ -188,7 +188,6 @@ public class GameController implements Runnable {
 				while (grille[i][j] == 0 && grille[i - 1][j] <= 25 && grille[i + 1][j] <= 25)
 					j++;
 				getListTunnelLeft().add(new Point(i, j));
-				System.out.println(i + " " + j);
 			}
 		}
 
@@ -450,18 +449,14 @@ public class GameController implements Runnable {
 		if (defaultSize != 0) {
 			if (!isResume()) {
 				if (getGhostOutside() < ghostList.size()) {
-					if (ghostCounter == 0) {
-						getGhostList().get(getFirstGhostToQuit()).updatePosition();
-						raw = getGhostList().get(getFirstGhostToQuit()).getY() / defaultSize;
-						column = getGhostList().get(getFirstGhostToQuit()).getX() / defaultSize;
-						if (grille[raw][column] == 15 || grille[raw][column] == 2) {
-							setGhostOutside(getGhostOutside() + 1);
-							getGhostList().get(getFirstGhostToQuit()).setOutside(true);
-							setFirstGhostToQuit((getFirstGhostToQuit() + 1) % ghostList.size());
-						}
+					getGhostList().get(getFirstGhostToQuit()).updatePosition();
+					raw = getGhostList().get(getFirstGhostToQuit()).getY() / defaultSize;
+					column = getGhostList().get(getFirstGhostToQuit()).getX() / defaultSize;
+					if (grille[raw][column] == 15 || grille[raw][column] == 2) {
+						setGhostOutside(getGhostOutside() + 1);
+						getGhostList().get(getFirstGhostToQuit()).setOutside(true);
+						setFirstGhostToQuit((getFirstGhostToQuit() + 1) % ghostList.size());
 					}
-					ghostCounter++;
-					ghostCounter = ghostCounter % 1;
 				}
 
 				for (int i = 0; i < getGhostList().size(); i++) {
@@ -575,11 +570,12 @@ public class GameController implements Runnable {
 			getPacMan().returnInitialPosition();
 			for (int i = 0; i < ghostList.size(); i++) {
 				getGhostList().get(i).returnInitialPosition();
+				getGhostList().get(i).setNormalStrategy();
 			}
 			getPacMan().initPM();
 			getPacMan().setNextDirection(KeyEvent.VK_LEFT);
 			getPacMan().loadImage();
-
+			setGhostOutside(0);
 			setPause(true);
 			setResume(true);
 

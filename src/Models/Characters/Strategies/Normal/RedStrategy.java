@@ -29,6 +29,12 @@ public class RedStrategy implements GhostStrategy{
 	@Override
 	public void updatePosition() {
 		// TODO Auto-generated method stub
+		if(!ghost.isOutside() && ghost.canMove(KeyEvent.VK_UP)) {
+			ghost.setDirection(KeyEvent.VK_UP);
+			ghost.move();
+			return;
+		}
+		
 		int direction = isPacManCorridor();
 		if(direction != -1) {
 			lastPosition = new Point();

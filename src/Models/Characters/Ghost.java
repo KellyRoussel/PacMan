@@ -126,7 +126,7 @@ public class Ghost extends Character {
 	public void returnInitialPosition() {
 		getPosition().x = initialPosition.x;
 		getPosition().y = initialPosition.y;
-
+		setOutside(false);
 		ghostRectangle.setLocation(initialPosition.x, initialPosition.y);
 		ghostAdvancedLowerShape.setLocation(initialPosition.x, initialPosition.y + (h / 2));
 		ghostAdvancedTopShape.setFrame(initialPosition.x, initialPosition.y, w, h / 2);

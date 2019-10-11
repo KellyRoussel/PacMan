@@ -30,7 +30,11 @@ public class PinkStrategy implements GhostStrategy{
 	@Override
 	
 	public void updatePosition() {
-		// TODO Auto-generated method stub
+		if(!ghost.isOutside() && ghost.canMove(KeyEvent.VK_UP)) {
+			ghost.setDirection(KeyEvent.VK_UP);
+			ghost.move();
+			return;
+		}
 		int direction = isPacManCorridor();
 		if(direction != -1) {
 			lastPosition = new Point();
@@ -58,29 +62,31 @@ public class PinkStrategy implements GhostStrategy{
 				}
 			}
 			else {
-				Point pacManPosition = GameController.getPacManPosition();
-				
-				int pmRaw = pacManPosition.y / GameController.getDefaultSize();
-				int pmColumn = pacManPosition.x / GameController.getDefaultSize();
-				
-				int ghostRaw = ghost.getPosition().y / GameController.getDefaultSize();
-				int ghostColumn = ghost.getPosition().x / GameController.getDefaultSize();
-				
-				int pmDirection = GameController.getPacManDirection();
-				
-				if(ghostRaw == pmRaw) {
-					if((pmDirection == KeyEvent.VK_UP ||pmDirection == KeyEvent.VK_DOWN) && ghost.canMove(pmDirection)) {
-						ghost.setDirection(pmDirection);
-						ghost.move();
-						return;
+				if(ghost.isOutside()) {
+					Point pacManPosition = GameController.getPacManPosition();
+					
+					int pmRaw = pacManPosition.y / GameController.getDefaultSize();
+					int pmColumn = pacManPosition.x / GameController.getDefaultSize();
+					
+					int ghostRaw = ghost.getPosition().y / GameController.getDefaultSize();
+					int ghostColumn = ghost.getPosition().x / GameController.getDefaultSize();
+					
+					int pmDirection = GameController.getPacManDirection();
+					
+					if(ghostRaw == pmRaw) {
+						if((pmDirection == KeyEvent.VK_UP ||pmDirection == KeyEvent.VK_DOWN) && ghost.canMove(pmDirection)) {
+							ghost.setDirection(pmDirection);
+							ghost.move();
+							return;
+						}
 					}
-				}
-				
-				if(ghostColumn == pmColumn) {
-					if((pmDirection == KeyEvent.VK_RIGHT ||pmDirection == KeyEvent.VK_LEFT) && ghost.canMove(pmDirection)) {
-						ghost.setDirection(pmDirection);
-						ghost.move();
-						return;
+					
+					if(ghostColumn == pmColumn) {
+						if((pmDirection == KeyEvent.VK_RIGHT ||pmDirection == KeyEvent.VK_LEFT) && ghost.canMove(pmDirection)) {
+							ghost.setDirection(pmDirection);
+							ghost.move();
+							return;
+						}
 					}
 				}
 				if (!ghost.canMove(ghost.getDirection()) || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {

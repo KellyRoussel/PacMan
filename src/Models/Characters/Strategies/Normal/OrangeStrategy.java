@@ -1,5 +1,6 @@
 package Models.Characters.Strategies.Normal;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -27,7 +28,11 @@ public class OrangeStrategy implements GhostStrategy{
 
 	@Override
 	public void updatePosition() {
-		// TODO Auto-generated method stub
+		if(!ghost.isOutside() && ghost.canMove(KeyEvent.VK_UP)) {
+			ghost.setDirection(KeyEvent.VK_UP);
+			ghost.move();
+			return;
+		}
 		if (ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
 			ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
 			if(!ghost.setRandomDirection(new ArrayList<Integer>()))
