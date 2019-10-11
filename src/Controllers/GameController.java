@@ -549,6 +549,7 @@ public class GameController implements Runnable {
 				getPacMan().returnInitialPosition();
 				for (int i = 0; i < getGhostList().size(); i++) {
 					getGhostList().get(i).returnInitialPosition();
+					getGhostList().get(i).setNormalStrategy();
 					getGhostList().get(i).setOutside(true);
 				}
 				getPacMan().initPM();
