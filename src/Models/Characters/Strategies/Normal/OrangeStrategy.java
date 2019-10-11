@@ -42,4 +42,11 @@ public class OrangeStrategy implements GhostStrategy{
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "orange" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
+
+
+	@Override
+	public void setOnRoad() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -7,5 +7,6 @@ public interface GhostStrategy {
 	public void updatePosition();
 	public void meet();
 	public void loadImage();
+	public void setOnRoad();
 }
 

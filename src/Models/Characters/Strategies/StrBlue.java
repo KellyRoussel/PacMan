@@ -141,5 +141,10 @@ public class StrBlue implements GhostStrategy{
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "ghost" + str + style + ".png");
     	ghost.setImage(ii.getImage());
 	}
+	@Override
+	public void setOnRoad() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

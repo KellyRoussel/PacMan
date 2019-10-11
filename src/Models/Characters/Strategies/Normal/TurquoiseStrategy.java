@@ -15,6 +15,7 @@ public class TurquoiseStrategy implements GhostStrategy{
 
 	private Ghost ghost;
 	private boolean onRoad = false;
+	private Point lastPosition;
 	
 	@Override
 	public void meet() {
@@ -36,26 +37,47 @@ public class TurquoiseStrategy implements GhostStrategy{
 
 		if(direction != -1) {
 			if(onRoad) {
-				if(!ghost.canMove(ghost.getDirection())) {
-					ghost.setOppositeDirection(ghost.getDirection());
-				}
+				lastPosition = new Point();
+				lastPosition.x = GameController.getPacManPosition().x;
+				lastPosition.y = GameController.getPacManPosition().y;
 			}
 			else{
-				onRoad = true;
 				int rand = (int)(Math.random()*2);
-				if(rand == 1 || !ghost.canMove(ghost.getOppositeDirection(direction)))
+				if(rand == 1 || !ghost.canMove(ghost.getOppositeDirection(direction))) {
+					onRoad = true;
+					lastPosition = new Point();
+					lastPosition.x = GameController.getPacManPosition().x;
+					lastPosition.y = GameController.getPacManPosition().y;
 					ghost.setDirection(direction);
+				}
 				else
 					ghost.setOppositeDirection(direction);
 			}
 		}
 		else {
-			if (onRoad || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
-				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
-					return;
+			if(onRoad){
+				int ghostRaw = ghost.getPosition().x / GameController.getDefaultSize();
+				int pmRaw = lastPosition.x / GameController.getDefaultSize();
+				
+				int ghostColumn = ghost.getPosition().y / GameController.getDefaultSize();
+				int pmColumn = lastPosition.y / GameController.getDefaultSize();
+				
+
+				if(ghostRaw == pmRaw && ghostColumn == pmColumn) {
+					onRoad = false;
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
+				}
 			}
-			onRoad = false;
+			else {
+				if (ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
+				}
+				onRoad = false;
+			}
 		}
 		ghost.move();
 	}
@@ -120,5 +142,11 @@ public class TurquoiseStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "turquoise" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
+	}
+	
+	@Override
+	public void setOnRoad() {
+		// TODO Auto-generated method stub
+		onRoad = false;
 	}
 }

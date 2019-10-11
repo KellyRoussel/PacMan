@@ -156,6 +156,12 @@ public class PinkStrategy implements GhostStrategy{
     	ImageIcon ii = new ImageIcon("ressources" + File.separator + "pink" + ghost.getDirectionString() + ".png");
     	ghost.setImage(ii.getImage());
 	}
+
+	@Override
+	public void setOnRoad() {
+		// TODO Auto-generated method stub
+		onRoad = false;
+	}
 	
 
 }

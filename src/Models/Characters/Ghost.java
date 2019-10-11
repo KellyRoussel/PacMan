@@ -413,7 +413,6 @@ public class Ghost extends Character {
 
 		if (availables.size() == 0) {
 			if (excluded.contains(getOppositeDirection(direction))) {
-				System.out.println("hahahha");
 				return false;
 			}
 			availables.add(getOppositeDirection(direction));
@@ -482,6 +481,7 @@ public class Ghost extends Character {
 	public void setNormalStrategy() {
 		// TODO Auto-generated method stub
 		setStrategy(normalStrategy);
+		normalStrategy.setOnRoad();
 	}
 
 	public void setEaten(boolean eaten) {
