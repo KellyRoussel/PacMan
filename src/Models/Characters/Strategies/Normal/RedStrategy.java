@@ -15,6 +15,7 @@ public class RedStrategy implements GhostStrategy{
 
 	private Ghost ghost;
 	private boolean onRoad;
+	private Point lastPosition;
 	@Override
 	public void meet() {
 		// TODO Auto-generated method stub
@@ -30,15 +31,36 @@ public class RedStrategy implements GhostStrategy{
 		// TODO Auto-generated method stub
 		int direction = isPacManCorridor();
 		if(direction != -1) {
+			lastPosition = new Point();
+			lastPosition.x = GameController.getPacManPosition().x;
+			lastPosition.y = GameController.getPacManPosition().y;
 			onRoad = true;
-			ghost.setDirection(direction);
+			ghost.setDirection(direction);	
 		}
 		else {
-			if (onRoad || ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
-				onRoad = false;
-				ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
-				if(!ghost.setRandomDirection(new ArrayList<Integer>()))
-					return;
+			if(onRoad){
+				int ghostRaw = ghost.getPosition().x / GameController.getDefaultSize();
+				int pmRaw = lastPosition.x / GameController.getDefaultSize();
+				
+				int ghostColumn = ghost.getPosition().y / GameController.getDefaultSize();
+				int pmColumn = lastPosition.y / GameController.getDefaultSize();
+				
+
+				if(ghostRaw == pmRaw && ghostColumn == pmColumn) {
+					System.out.println("opla");
+					onRoad = false;
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
+				}
+			}
+			else {
+				if(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()) != ghost.getAvailableDirections()) {
+					onRoad = false;
+					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+						return;
+				}
 			}
 		}
 		ghost.move();
