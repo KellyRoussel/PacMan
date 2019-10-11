@@ -2,18 +2,28 @@ package Mocktest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.Iterator;
+
+import javax.swing.ImageIcon;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Controllers.GameController;
+import Models.Characters.Ghost;
+import Models.Foods.Food;
+import Models.Foods.PacGum;
 import Views.Cursor;
 import Views.GameMenu;
 import Views.GamePanel;
 import Views.MainGame;
+import Views.StatusBar;
 
 class MockCollisionTest {
 	
@@ -43,28 +53,39 @@ class MockCollisionTest {
 		assertNotNull(gameController.getStatusBar(), " StatusBar init failed"); 
 	}
 
-	/*@Test
+	@Test
 	void testCollisionPacmanGhostNotInvincible() {
+		
+		Iterator iter = gameController.getGhostList().iterator();
+		while (iter.hasNext()) {
+			Ghost x = (Ghost) iter.next();
+			x.setPosition(gameController.getPacMan().getX() - 80, gameController.getPacMan().getY());
+		}
+		
 		gameController.setLives(1);
 		robot.keyPress(KeyEvent.VK_LEFT);
 		MySleep();
 		robot.keyRelease(KeyEvent.VK_LEFT);
-		System.out.println(gameController.getPacMan().isDead());
 		assertEquals(0, gameController.getLives(), "PacMan should be dead");
-		//assertEquals(true, gameController.getPacMan().isDead(), "PacMan should be dead");
-	}*/
+		
+	}
 	
 	@Test
 	void testCollisionPacmanGhostInvincible() {
-		gameController.setMazeFile("mazeTestPacmanAlive.txt");
-		gameController.init();
+		Iterator iter = gameController.getGhostList().iterator();
+		while (iter.hasNext()) {
+			Ghost xghost = (Ghost) iter.next();
+			xghost.setPosition(gameController.getPacMan().getX() - 80, gameController.getPacMan().getY());
+		}
+		
+		gameController.getFoodList().add(new PacGum(gameController.getPacMan().getWidth(), gameController.getPacMan().getHeight(), loadImage("pacGum.png"),
+				new Point(gameController.getPacMan().getX() - 30, gameController.getPacMan().getY())));
 		
 		gameController.setLives(1);
 		robot.keyPress(KeyEvent.VK_LEFT);
 		MySleep();
 		robot.keyRelease(KeyEvent.VK_LEFT);
 		assertEquals(1, gameController.getLives(), "PacMan should be alive");
-		//assertEquals(false, gameController.getPacMan().isDead(), "PacMan should be alive");
 	}
 	
 	public void MySleep() { 
@@ -73,6 +94,11 @@ class MockCollisionTest {
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Image loadImage(String fileName) {
+		ImageIcon icon = new ImageIcon("ressources" + File.separator + fileName);
+		return icon.getImage();
 	}
 	
 	@AfterEach
