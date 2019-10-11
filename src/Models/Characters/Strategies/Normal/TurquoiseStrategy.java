@@ -43,16 +43,15 @@ public class TurquoiseStrategy implements GhostStrategy{
 
 		if(direction != -1) {
 			if(onRoad) {
-				lastPosition = new Point();
-				lastPosition.x = GameController.getPacManPosition().x;
-				lastPosition.y = GameController.getPacManPosition().y;
 				if(!ghost.canMove(ghost.getDirection())) {
 					ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
 					if(!ghost.setRandomDirection(new ArrayList<Integer>()))
 						return;
-					ghost.move();
 					return;
 				}
+				lastPosition = new Point();
+				lastPosition.x = GameController.getPacManPosition().x;
+				lastPosition.y = GameController.getPacManPosition().y;
 			}
 			
 			else{
@@ -93,6 +92,11 @@ public class TurquoiseStrategy implements GhostStrategy{
 				}
 				onRoad = false;
 			}
+		}
+		if(!ghost.canMove(ghost.getDirection())) {
+			ghost.setAvailableDirections(ghost.getUpdatedAvailableDirections(new ArrayList<Integer>()));
+			if(!ghost.setRandomDirection(new ArrayList<Integer>()))
+				return;
 		}
 		ghost.move();
 	}
