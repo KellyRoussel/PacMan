@@ -120,17 +120,7 @@ public class StrBlue implements GhostStrategy{
 	@Override
 	public void loadImage() {
 		// TODO Auto-generated method stub
-		counter++;
-		if(counter == 3) {
-			counter = 0;
-			if(GameController.getInvincibleCounter() <= 5) {
-				style = (style + 1) % 2;
-				style *= 2;
-				style += 1;
-			}
-			else
-				style = (style + 1) % 4;
-		}
+		style = (style + 1) % 4;
 		String str = "";
 		if(ghost.isEaten()) {
 			str = "dead";
