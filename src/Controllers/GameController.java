@@ -235,14 +235,17 @@ public class GameController implements Runnable {
 				definePosition(RED_INITIAL_POSITION), "red", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new RedStrategy()));
 
-		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostturquoise.png"),
-				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
-				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
+		
 
 		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostpink.png"),
 				definePosition(PINK_INITIAL_POSITION), "pink", defaultSize, grille, getListTunnelLeft(),
 				getListTunnelRight(), nColumn, nRow, new PinkStrategy()));
 
+		
+		getGhostList().add(new Ghost((defaultSize * 4) / 3, (defaultSize * 4) / 3, loadImage("ghostturquoise.png"),
+				definePosition(TURQUOISE_INITIAL_POSITION), "turquoise", defaultSize, grille, getListTunnelLeft(),
+				getListTunnelRight(), nColumn, nRow, new TurquoiseStrategy()));
+		
 		setGhostOutside(0);
 
 		setFirstGhostToQuit((int) (Math.random() * ghostList.size()));
@@ -545,6 +548,7 @@ public class GameController implements Runnable {
 				getPacMan().returnInitialPosition();
 				for (int i = 0; i < getGhostList().size(); i++) {
 					getGhostList().get(i).returnInitialPosition();
+					getGhostList().get(i).setOutside(true);
 				}
 				getPacMan().initPM();
 				getPacMan().setNextDirection(KeyEvent.VK_LEFT);
